@@ -1,0 +1,29 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.itemPanel {
+			cursor: pointer;
+			color: white;
+			background-color: #050505;
+			display: inline-block
+		}
+		.itemPanel:hover {
+			color: black;
+			background-color: DodgerBlue;
+		}
+		.padding {
+			padding: 5px;
+		}
+	</ui:style>
+	<g:FocusPanel ui:field="itemPanel" height="40px" width="100%" addStyleNames="{style.itemPanel}">
+		<g:HorizontalPanel ui:field="itemHPanel" height="100%">
+			<g:Cell verticalAlignment="ALIGN_MIDDLE">
+				<g:Image ui:field="image" width="25px" height="25px" addStyleNames="{style.padding}" />
+			</g:Cell>
+			<g:Cell verticalAlignment="ALIGN_MIDDLE">
+				<g:Label ui:field="text" addStyleNames="{style.padding}" />
+			</g:Cell>
+		</g:HorizontalPanel>
+	</g:FocusPanel>
+</ui:UiBinder> 

@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.bold {
+			font-weight: bold;
+		}
+		.padding {
+			padding: 5px;
+		}
+	</ui:style>
+	<g:VerticalPanel width="100%">
+		<g:HorizontalPanel width="100%">
+			<g:Cell verticalAlignment="ALIGN_MIDDLE">
+				<g:Label text="Info" ui:field="valueName" addStyleNames="{style.bold},{style.padding}"/>
+			</g:Cell>
+			<g:Cell width="">
+				<g:TextBox ui:field="value" addStyleNames="{style.padding}" width="90%"/>
+			</g:Cell>
+		</g:HorizontalPanel>
+		<g:Cell horizontalAlignment="ALIGN_CENTER">
+			<g:HorizontalPanel width="50%">
+			<g:Button text="Save" ui:field="saveBtn" addStyleNames="{style.padding}"/>
+			<g:Cell horizontalAlignment="ALIGN_RIGHT">
+				<g:Button ui:field="cancelBtn" text="Cancel" addStyleNames="{style.padding}"/>
+			</g:Cell>
+		</g:HorizontalPanel>
+		</g:Cell>
+	</g:VerticalPanel>
+</ui:UiBinder> 

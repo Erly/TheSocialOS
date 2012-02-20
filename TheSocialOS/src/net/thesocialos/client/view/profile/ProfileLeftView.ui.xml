@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.avatar {
+			width: 130px;
+			height: 150px;
+			padding: 35px;
+		}
+	</ui:style>
+	<g:VerticalPanel>
+		<g:Image ui:field="photo" addStyleNames="{style.avatar}" />
+		<g:Label ui:field="name" />
+		<g:VerticalPanel ui:field="friendsCol">
+			<g:Label ui:field="friends">Friends (0)</g:Label>
+		</g:VerticalPanel>
+	</g:VerticalPanel>
+</ui:UiBinder> 

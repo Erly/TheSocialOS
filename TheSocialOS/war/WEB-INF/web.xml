@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5"
+         xmlns="http://java.sun.com/xml/ns/javaee">
+         
+
+  <context-param>
+  	<param-name>maxSize</param-name>
+  	<param-value>2097152</param-value> <!-- 2MB --> 
+  </context-param>
+  
+  <context-param>
+  	<!-- Useful in development mode to slow down the uploads in fast networks.
+  		 Put the number of miliseconds to sleep in each block received in the served. --> 
+  	<param-name>slowUploads</param-name>
+  	<param-value>200</param-value>
+  </context-param>
+  
+  <!-- Servlets -->
+  <servlet>
+  	<servlet-name>userService</servlet-name>
+  	<servlet-class>net.thesocialos.server.UserServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>userService</servlet-name>
+  	<url-pattern>/thesocialos/userService</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>uploadServlet</servlet-name>
+  	<!-- This is the default servlet, it puts files in session -->
+  	<servlet-class>gwtupload.server.UploadServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>uploadServlet</servlet-name>
+  	<url-pattern>*.gupld</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>TheSocialOS.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>

@@ -1,0 +1,42 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:DockLayoutPanel styleName="login">
+		<g:north size="150">
+			<g:Label text="Social OS" horizontalAlignment="ALIGN_CENTER" styleName="title" />
+		</g:north>
+		<g:center>
+			<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" width="100%" verticalAlignment="ALIGN_MIDDLE">
+			<g:Label text="The email you entered is in use." styleName="incorrect" ui:field="lblIncorrect"/>
+			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
+				<g:Cell width="100px" horizontalAlignment="ALIGN_RIGHT">
+					<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_MIDDLE" spacing="10">
+						<g:Label text="Email &nbsp;&nbsp;" ui:field="lblEmail" horizontalAlignment="ALIGN_RIGHT"/>
+						<g:Label text="Password" ui:field="lblPass" horizontalAlignment="ALIGN_RIGHT"/>
+						<g:Label text="Repeat your password" ui:field="lblPass2" horizontalAlignment="ALIGN_RIGHT"/>
+						<g:Label text="Name" ui:field="lblName" horizontalAlignment="ALIGN_RIGHT"/>
+						<g:Label text="Last name" ui:field="lblLastName" horizontalAlignment="ALIGN_RIGHT"/>
+					</g:VerticalPanel>
+				</g:Cell>
+				<g:Cell width="150px">
+					<g:VerticalPanel verticalAlignment="ALIGN_MIDDLE">
+						<g:TextBox width="165px" ui:field="txtEmail"/>
+						<g:PasswordTextBox width="165px" ui:field="txtPass"/>
+						<g:PasswordTextBox width="165px" ui:field="txtPass2"/>
+						<g:TextBox width="165px" ui:field="txtName"/>
+						<g:TextBox width="165px" ui:field="txtLastName"/>
+					</g:VerticalPanel>
+				</g:Cell>
+			</g:HorizontalPanel>
+			<g:HorizontalPanel spacing="10">
+				<g:Button ui:field="registerButton">Register</g:Button>
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

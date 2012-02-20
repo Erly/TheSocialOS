@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.profileAttr {
+			width: 100%;
+		}
+		.profileAttr:hover {
+			background-color: aliceblue;
+		}
+		.profileAttrPadding {
+			padding: 10px;
+		}
+		.profileAttrName {
+			color: grey;
+		}
+	</ui:style>
+	<g:FocusPanel addStyleNames="{style.profileAttr}" ui:field="focusPanel">
+		<g:HorizontalPanel>
+			<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" addStyleNames="{style.profileAttrPadding}" width="80px">
+				<g:Label ui:field="attrName" addStyleNames="{style.profileAttrName}" />
+			</g:VerticalPanel>
+			<g:VerticalPanel addStyleNames="{style.profileAttrPadding}">
+				<g:Label ui:field="attrValue" />
+			</g:VerticalPanel>
+		</g:HorizontalPanel>
+	</g:FocusPanel>
+</ui:UiBinder> 

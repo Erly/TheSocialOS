@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style src="../resources/DesktopBar.css" />
+	<g:FocusPanel ui:field="mainFocusPanel" addStyleNames="{style.menu}">
+		<g:VerticalPanel ui:field="mainVerticalPanel">
+			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" height="1">
+				<g:Image width="90px" height="100px" addStyleNames="{style.avatar}" ui:field="avatar"></g:Image>
+				<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" styleName="{style.userDataPanel}">
+					<g:Label text="FName SName" addStyleNames="{style.bolder}" ui:field="name" />
+					<g:Label text="Title" addStyleNames="{style.bold}" ui:field="title" />
+					<g:Label text="" height="10px" />
+					<g:Label text="email" ui:field="email" />
+					<g:Label text="" height="10px" />
+				</g:VerticalPanel>
+			</g:HorizontalPanel>
+			<g:Label styleName="{style.hSeparator}" />
+			<g:FlowPanel addStyleNames="{style.socialPanel}">
+				<g:Label text="Twitter" />
+				<g:Label text="Facebook" />
+				<g:Label text="Google+" />
+			</g:FlowPanel>
+			<g:Label styleName="{style.hSeparator}" />
+			<g:Cell horizontalAlignment="ALIGN_CENTER">
+				<g:HorizontalPanel width="80%">
+				<g:Cell horizontalAlignment="ALIGN_LEFT">
+					<g:FocusPanel ui:field="editProfilePanel" addStyleNames="{style.pointer}" >
+						<g:Label text="Edit profile" ui:field="editProfile" horizontalAlignment="ALIGN_CENTER"/>
+					</g:FocusPanel>
+				</g:Cell>
+				<g:Cell horizontalAlignment="ALIGN_CENTER">
+					<g:SimplePanel ></g:SimplePanel>
+				</g:Cell>
+				<g:Cell horizontalAlignment="ALIGN_RIGHT">
+					<g:FocusPanel ui:field="logoutPanel" addStyleNames="{style.pointer}" >
+						<g:Label text="Logout" ui:field="logout" horizontalAlignment="ALIGN_CENTER"/>
+					</g:FocusPanel>
+				</g:Cell>
+			</g:HorizontalPanel>
+			</g:Cell>
+		</g:VerticalPanel>
+	</g:FocusPanel>
+</ui:UiBinder> 

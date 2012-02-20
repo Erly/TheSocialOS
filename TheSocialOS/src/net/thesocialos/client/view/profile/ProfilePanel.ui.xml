@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:p="urn:import:net.thesocialos.client.view.profile">
+	<ui:style>
+	</ui:style>
+	<g:ScrollPanel>
+		<g:VerticalPanel>
+			<p:ProfileAttr attrName="Name:" attrValue="Juan Cuesta" ui:field="name" />
+			<p:ProfileAttr attrName="Title:" attrValue="Presidente de la comunidad" ui:field="title" />
+			<p:ProfileAttr attrName="Email:" attrValue="jcuesta@thesocialos.net" ui:field="email" />
+			<p:ProfileAttr attrName="Mobile:" attrValue="666666666" ui:field="mobile" />
+			<p:ProfileAttr attrName="Address:" attrValue="Desengaño 21 2ºA" ui:field="address" />
+		</g:VerticalPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 
