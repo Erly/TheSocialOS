@@ -14,6 +14,7 @@ public class UserDTO implements Serializable {
 	private String address;
 	private String avatar;
 	private String background;
+	private String channelID;
 	
 	
 	public UserDTO() {}
@@ -30,6 +31,21 @@ public class UserDTO implements Serializable {
 		setAddress(address);
 		setAvatar(avatar);
 		setBackground(background);
+	}
+
+
+	public UserDTO(Long id, String email, String name, String lastName, String title, String mobile, String address, String avatar, String background, String channelID) {
+		super();
+		setId(id);
+		setEmail(email);
+		setName(name);
+		setLastName(lastName);
+		setTitle(title);
+		setMobile(mobile);
+		setAddress(address);
+		setAvatar(avatar);
+		setBackground(background);
+		setChannelID(channelID);
 	}
 
 
@@ -130,6 +146,16 @@ public class UserDTO implements Serializable {
 
 	public void setBackground(String background) {
 		this.background = background;
+	}
+
+
+	public String getChannelID() {
+		return channelID;
+	}
+
+
+	public void setChannelID(String channelID) {
+		this.channelID = channelID;
 	}
 	
 }

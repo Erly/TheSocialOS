@@ -1,5 +1,6 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.view.window.DialogBoxExt;
 import net.thesocialos.client.view.window.MyCaption;
 import net.thesocialos.shared.App;
@@ -44,20 +45,23 @@ public class StartMenuItem extends Composite {
 		this.image.setUrl(image.getUrl());
 	}
 	
-	public StartMenuItem(App app) {
+	public StartMenuItem(final IApplication app) {
 		initWidget(uiBinder.createAndBindUi(this));
 		text.setText(app.getName());
 		image.setUrl(app.getImage());
-		final String url = app.getUrl();
+		//final String url = app.getUrl();
+		//final Composite application = app.getApp();
 		itemPanel.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				DialogBoxExt window = new DialogBoxExt(false, false, new MyCaption());
 				window.setText(text.getText());
-				Frame frame = new Frame(url);
-				frame.setSize("1024px", "600px");
-				window.add(frame);
+				//Frame frame = new Frame(url);
+				
+				window.add(app.run());
+				//app.setSize("1024px", "600px");
+				app.setSize(app.getWidth(),app.getHeight());
 				window.show();
 				window.setPopupPosition(10, 30);
 			}

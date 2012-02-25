@@ -1,5 +1,6 @@
 package net.thesocialos.client;
 
+import net.thesocialos.client.helper.Comet;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.i18n.SocialOSConstants;
 import net.thesocialos.client.i18n.SocialOSMessages;
@@ -33,9 +34,11 @@ public class TheSocialOS implements EntryPoint {
 	private AppController appControler;
 	private AbsolutePanel desktop;
 	private SimpleEventBus eventBus = new SimpleEventBus();
+
 	BusyIndicatorPresenter busyIndicator = new BusyIndicatorPresenter(eventBus, new BusyIndicatorView());
 	static UserProfilePresenter profilePresenter = null;
 	private UserDTO userDTO;
+	private Comet comet;
 	
 	// i18n initialization
 	private static SocialOSConstants constants = GWT.create(SocialOSConstants.class);
@@ -99,6 +102,10 @@ public class TheSocialOS implements EntryPoint {
 				} else {
 					// User is loged in
 					setCurrentUser(loggedUserDTO);
+					//User listening to the channel push
+					
+					comet = new Comet(eventBus);
+					comet.listenToChannel(userDTO);
 					createUI();
 				}
 			}

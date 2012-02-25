@@ -6,9 +6,14 @@ import java.util.Date;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.shared.App;
 import net.thesocialos.shared.UserDTO;
+import net.thesocialos.client.app.ChatApp;
+import net.thesocialos.client.app.IApplication;
+import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.view.StartMenu;
 import net.thesocialos.client.view.StartMenuItem;
+import net.thesocialos.client.view.chat.ChatPanel;
+
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -39,6 +44,7 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 public class DesktopPresenter implements Presenter {
 	
 	private SimpleEventBus eventBus;
+	private SimpleEventBus chatEventBus;
 	private AbsolutePanel desktop;
 	private boolean startMenuFocused = false;
 	private boolean userMenuFocused = false;
@@ -86,8 +92,10 @@ public class DesktopPresenter implements Presenter {
 	private final Display display;
 	
 	
-	public DesktopPresenter(SimpleEventBus eventBus, Display display) {
-		this.eventBus = eventBus;
+	public DesktopPresenter(SimpleEventBus[] eventBus, Display display) {
+		
+		this.eventBus = eventBus[0];
+		this.chatEventBus = eventBus[1];
 		this.display = display;
 	}
 
@@ -105,11 +113,20 @@ public class DesktopPresenter implements Presenter {
 		bindUserMenu(user);
 		bindSocialOS();
 		// Populate the Star Menu
-		ArrayList<App> appsData = new ArrayList<App>();
+		/*ArrayList<App> appsData = new ArrayList<App>();
 		appsData.add(new App("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png", "http://www.bitlet.org/"));
 		appsData.add(new App("Grooveshark Player", "http://img696.imageshack.us/img696/1622/11groovesharkicon256x25.png", "http://www.grooveshark.com"));
 		appsData.add(new App("Sketchpad", "http://profile.ak.fbcdn.net/hprofile-ak-snc4/23295_128946130463344_2641_n.jpg", "http://mugtug.com/sketchpad"));
-		
+		*/
+		ArrayList<IApplication> appsData = new ArrayList<IApplication>();
+		appsData.add(new FrameApp("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png", "http://www.bitlet.org/"
+				,"1024px", "600px"));
+		appsData.add(new FrameApp("Grooveshark Player", "http://img696.imageshack.us/img696/1622/11groovesharkicon256x25.png", "http://www.grooveshark.com"
+				,"1024px", "600px"));
+		appsData.add(new FrameApp("Sketchpad", "http://profile.ak.fbcdn.net/hprofile-ak-snc4/23295_128946130463344_2641_n.jpg", "http://mugtug.com/sketchpad"
+				,"1024px", "600px"));
+		appsData.add(new ChatApp("Xmpp","http://www.bitrix.es/upload/iblock/e03/xmpp.gif",chatEventBus, new ChatPanel(),
+				"450px", "300px"));
 		bindStartMenu(appsData);
 	}
 
@@ -244,7 +261,7 @@ public class DesktopPresenter implements Presenter {
 		
 	}
 	
-	private void bindStartMenu(ArrayList<App> appsData) {
+	private void bindStartMenu(ArrayList<IApplication> appsData) {
 		this.display.getStartMenu().setVisible(false);
 		VerticalPanel vPanel = ((StartMenu) this.display.getStartMenu()).getStartVPanel();
 		for (int i = 0; i < appsData.size(); i++) {

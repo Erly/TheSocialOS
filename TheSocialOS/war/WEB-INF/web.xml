@@ -30,6 +30,16 @@
   </servlet-mapping>
   
   <servlet>
+  	<servlet-name>chatService</servlet-name>
+  	<servlet-class>net.thesocialos.server.ChatServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>chatService</servlet-name>
+  	<url-pattern>/thesocialos/chatService</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
   	<servlet-name>uploadServlet</servlet-name>
   	<!-- This is the default servlet, it puts files in session -->
   	<servlet-class>gwtupload.server.UploadServlet</servlet-class>
@@ -39,6 +49,8 @@
   	<servlet-name>uploadServlet</servlet-name>
   	<url-pattern>*.gupld</url-pattern>
   </servlet-mapping>
+  
+ 
   
   <!-- Default page to serve -->
   <welcome-file-list>

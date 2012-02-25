@@ -65,6 +65,17 @@ public class User {
 	@Persistent
 	private Vector<Account> accounts;
 	
+	@Persistent
+	private String channelID;
+	
+	public void setChannelID(String channelID) {
+		this.channelID = channelID;
+	}
+
+	public String getChannelID() {
+		return channelID;
+	}
+
 	@Element (dependent = "true")
 	private  ArrayList<Group> grupos = new ArrayList<Group>();
 
@@ -79,6 +90,7 @@ public class User {
 		this.password = password;
 		this.name = name;
 		this.lastName = lastName;
+		
 	}
 
 	public String getKey() {
@@ -152,7 +164,7 @@ public class User {
 	      return null;
 	    }
 	    return new UserDTO(user.getKeyID(), user.getEmail(), user.getName(), user.getLastName(), user.getClass().getSimpleName(), user.getMobile(), 
-	    		user.getAddress(), "data:image/png;base64," + Base64Utilities.toBase64(user.getImage()), "data:image/png;base64," + Base64Utilities.toBase64(user.getBackground()));
+	    		user.getAddress(), "data:image/png;base64," + Base64Utilities.toBase64(user.getImage()), "data:image/png;base64," + Base64Utilities.toBase64(user.getBackground()),user.getChannelID());
 	  }
 
 

@@ -2,6 +2,8 @@ package net.thesocialos.client;
 
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.event.LogoutEventHandler;
+import net.thesocialos.client.event.MessageChatAvailableEvent;
+import net.thesocialos.client.event.MessageChatAvailableEventHandler;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.presenter.DesktopPresenter;
 import net.thesocialos.client.presenter.Presenter;
@@ -27,6 +29,10 @@ public class AppController implements ValueChangeHandler<String> {
 
 	private final SimpleEventBus eventBus;
 	
+	private SimpleEventBus chatEventBus = new SimpleEventBus();
+	
+	
+
 	private String lastToken = "";
 	
 	public AppController(SimpleEventBus eventBus) {
@@ -41,7 +47,7 @@ public class AppController implements ValueChangeHandler<String> {
 			Presenter presenter = null;
 			if(TheSocialOS.get().getCurrentUser() != null)
 				if (token.equals("desktop") && !lastToken.contains("profile")) {
-					presenter = new DesktopPresenter(eventBus, new DesktopView());
+					presenter = new DesktopPresenter(new SimpleEventBus[]{eventBus,chatEventBus}, new DesktopView());
 					presenter.go(TheSocialOS.get().root);
 				} else if (token.equals("profile")) {
 					loadProfile(presenter);
@@ -73,81 +79,45 @@ public class AppController implements ValueChangeHandler<String> {
 	}
 	
 	private void loadProfileLinks(Presenter presenter) {
-		if (lastToken.equals("desktop")) { // If on the desktop, create the profile window.
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		} else if (!lastToken.contains("profile")) { // If not on desktop or another profile screen, create the desktop and the profile window.
-			presenter = new DesktopPresenter(eventBus, new DesktopView());
-			presenter.go(TheSocialOS.get().root);
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		}
+		checkProfile(presenter);
 		TheSocialOS.profilePresenter.goProfileLinks(); // Finally load the links screen on the profile window.
 	}
 
 	private void loadProfileVideos(Presenter presenter) {
-		if (lastToken.equals("desktop")) {
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		} else if (!lastToken.contains("profile")) {
-			presenter = new DesktopPresenter(eventBus, new DesktopView());
-			presenter.go(TheSocialOS.get().root);
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		}
+		checkProfile(presenter);
 		TheSocialOS.profilePresenter.goProfileVideos();
 	}
 
 	private void loadProfileMusic(Presenter presenter) {
-		if (lastToken.equals("desktop")) {
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		} else if (!lastToken.contains("profile")) {
-			presenter = new DesktopPresenter(eventBus, new DesktopView());
-			presenter.go(TheSocialOS.get().root);
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		}
+		checkProfile(presenter);
 		TheSocialOS.profilePresenter.goProfileMusic();		
 	}
 
 	private void loadProfilePhotos(Presenter presenter) {
-		if (lastToken.equals("desktop")) {
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		} else if (!lastToken.contains("profile")) {
-			presenter = new DesktopPresenter(eventBus, new DesktopView());
-			presenter.go(TheSocialOS.get().root);
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		}
+		checkProfile(presenter);
 		TheSocialOS.profilePresenter.goProfilePhotos();
 	}
 
 	private void loadProfileTimeline(Presenter presenter) {
-		if (lastToken.equals("desktop")) {
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		} else if (!lastToken.contains("profile")) {
-			presenter = new DesktopPresenter(eventBus, new DesktopView());
-			presenter.go(TheSocialOS.get().root);
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		}
+		checkProfile(presenter);
 		TheSocialOS.profilePresenter.goProfileTimeline();
 	}
 
 	private void loadProfile(Presenter presenter) {
+		checkProfile(presenter);
+		TheSocialOS.profilePresenter.goProfile(); // Load the main profile screen in the profile window.
+	}
+	
+	private void checkProfile(Presenter presenter){
 		if (lastToken.equals("desktop")) { // If on the desktop, create the profile window.
 			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
 			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
 		} else if (!lastToken.contains("profile")) { // If not on desktop or another profile part, create the desktop and the profile window.
-			presenter = new DesktopPresenter(eventBus, new DesktopView());
+			presenter = new DesktopPresenter(new SimpleEventBus[]{eventBus,chatEventBus}, new DesktopView());
 			presenter.go(TheSocialOS.get().root);
 			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
 			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
 		}
-		TheSocialOS.profilePresenter.goProfile(); // Load the main profile screen in the profile window.
 	}
 
 	/**
@@ -160,6 +130,14 @@ public class AppController implements ValueChangeHandler<String> {
 			@Override
 			public void onLogout(LogoutEvent event) {
 				doLogout();
+			}
+		});
+		eventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
+			
+			@Override
+			public void onContentAvailable(MessageChatAvailableEvent contentAvailableEvent) {
+				chatEventBus.fireEvent(new MessageChatAvailableEvent(contentAvailableEvent.getMessageChat()));
+				
 			}
 		});
 	}
@@ -193,5 +171,13 @@ public class AppController implements ValueChangeHandler<String> {
 		} else {
 			History.fireCurrentHistoryState();
 		}
+	}
+
+	public SimpleEventBus getChatEventBus() {
+		return chatEventBus;
+	}
+	
+	public void setChatEventBus(SimpleEventBus chatEventBus) {
+		this.chatEventBus = chatEventBus;
 	}
 }
