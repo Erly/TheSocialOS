@@ -107,6 +107,9 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 		String uid = (String) session.getAttribute("uid");
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		User user = pm.getObjectById(User.class,uid);
+		
+		System.out.println(ofy.get(Chat.class).size());
+		
 		try {
 			lineChat = ofy.get(LineChat.class,user.getEmail());
 		} catch (Exception e) {
