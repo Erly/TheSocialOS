@@ -7,7 +7,11 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-log-3.1.5-javadoc.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-log-3.1.5.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtupload-0.6.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-3.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/TheSocialOS/war/WEB-INF/lib/objectify-3.1.jar!/javadoc"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

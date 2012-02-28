@@ -59,6 +59,8 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 	public List<Chat> examplePush(String text) {
 		HttpSession session = perThreadRequest.get().getSession();
 		Objectify ofy = ObjectifyService.begin();
+		
+		
 		List<Chat> list;
 		String uid = (String) session.getAttribute("uid");
 		PersistenceManager pm = PMF.get().getPersistenceManager();

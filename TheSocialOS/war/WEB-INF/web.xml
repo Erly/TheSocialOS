@@ -50,7 +50,13 @@
   	<url-pattern>*.gupld</url-pattern>
   </servlet-mapping>
   
+ <!--  Register Objectify Database -->
  
+ <servlet>
+	<servlet-name>LoadOnStart</servlet-name>
+	<servlet-class>net.thesocialos.server.LoadOnStart</servlet-class>
+	<load-on-startup>1</load-on-startup>
+</servlet>
   
   <!-- Default page to serve -->
   <welcome-file-list>

@@ -44,6 +44,7 @@ public class AppController implements ValueChangeHandler<String> {
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
 		if (token != null) {
+			
 			Presenter presenter = null;
 			if(TheSocialOS.get().getCurrentUser() != null)
 				if (token.equals("desktop") && !lastToken.contains("profile")) {
