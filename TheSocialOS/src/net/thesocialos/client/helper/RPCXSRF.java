@@ -4,8 +4,7 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.event.RPCInEvent;
 import net.thesocialos.client.event.RPCOutEvent;
 import net.thesocialos.client.service.ServiceAsync;
-import net.thesocialos.client.service.UserService;
-import net.thesocialos.client.service.UserServiceAsync;
+
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestTimeoutException;
@@ -37,7 +36,7 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 	}
 
 
-	private void XSRFService() {
+	private void XSRFService(int retry) {
 		onRPCOut(); // RPC Working
 		((ServiceDefTarget)xsrf).setServiceEntryPoint(GWT.getModuleBaseURL() + "xsrf");
 		xsrf.getNewXsrfToken(new AsyncCallback<XsrfToken>() {
@@ -101,8 +100,8 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 	}
 	
 	
-	public void go(){
-		XSRFService();
+	public void retry(int retry){
+		XSRFService(retry);
 		
 	}
 	

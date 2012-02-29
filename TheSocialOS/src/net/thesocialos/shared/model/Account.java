@@ -14,7 +14,6 @@ import com.googlecode.objectify.annotation.Parent;
 public abstract class Account implements Serializable {
 	
 	@Id Long id;
-	@Parent Key<User> owner; //One user has this account
 	
 	abstract void refresh();
 	

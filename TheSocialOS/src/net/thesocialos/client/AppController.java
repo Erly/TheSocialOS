@@ -10,10 +10,9 @@ import net.thesocialos.client.presenter.DesktopPresenter;
 import net.thesocialos.client.presenter.Presenter;
 import net.thesocialos.client.presenter.RegisterPresenter;
 import net.thesocialos.client.presenter.UserProfilePresenter;
-import net.thesocialos.client.service.UserService;
-import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.service.UserServiceXSRF;
 import net.thesocialos.client.service.UserServiceXSRFAsync;
+
 import net.thesocialos.client.view.DesktopView;
 import net.thesocialos.client.view.RegisterView;
 import net.thesocialos.client.view.profile.UserProfileView;

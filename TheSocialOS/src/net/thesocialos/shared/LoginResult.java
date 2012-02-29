@@ -2,17 +2,19 @@ package net.thesocialos.shared;
 
 import java.io.Serializable;
 
+import net.thesocialos.shared.model.User;
+
 @SuppressWarnings("serial")
 public class LoginResult implements Serializable {
 
-	private UserDTO user;
+	private User user;
 	private String sessionID;
 	private String key;
 	private Long duration;
 	
 	public LoginResult() {}
 	
-	public LoginResult(UserDTO user, String sessionID, String key,Long duration) {
+	public LoginResult(User user, String sessionID, String key,Long duration) {
 		this.user = user;
 		this.sessionID = sessionID;
 		this.key = key;
@@ -22,7 +24,7 @@ public class LoginResult implements Serializable {
 	/**
 	 * @return the user
 	 */
-	public UserDTO getUser() {
+	public User getUser() {
 		return user;
 	}
 

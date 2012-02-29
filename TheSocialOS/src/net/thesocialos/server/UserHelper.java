@@ -158,7 +158,7 @@ final static String userN = "user";
 					
 					user.setLastActive(new Date());
 					user.setChannelID(loginStarts(request.getSession(), user));
-					UserDTO userDTO = User.toDTO(user);
+					User userDTO = User.toDTO(user);
 					// Encapsulate the UserDTO and the encrypted key in a LoginResult object and send it to the client.
 					
 					
@@ -196,14 +196,45 @@ final static String userN = "user";
 		httpSession.setAttribute(sessionN, session);
 		return true;
 	}
+	/**
+	 * 
+	 * @param httpSession
+	 * @return
+	 */
+	public static synchronized net.thesocialos.shared.model.User getUserfromSession(HttpSession httpSession){
+		return (net.thesocialos.shared.model.User) httpSession.getAttribute(userN);
+	}
+	/**
+	 * 
+	 * @param httpSession
+	 * @return
+	 */
+	public static synchronized net.thesocialos.shared.model.Session getSessionfromSession(HttpSession httpSession){
+		return (net.thesocialos.shared.model.Session) httpSession.getAttribute(sessionN);
+	}
+	/**
+	 * 
+	 * @param sid
+	 * @param ofy
+	 * @return
+	 * @throws NotFoundException
+	 */
 	public static synchronized net.thesocialos.shared.model.Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException{
 		return ofy.get(SESSION,sid);
 		
 	}
+	/**
+	 * 
+	 * @param uid
+	 * @param ofy
+	 * @return User model
+	 * @throws NotFoundException
+	 */
 	public static synchronized net.thesocialos.shared.model.User getUserWithCookies(String uid, Objectify ofy) throws NotFoundException{
 		return ofy.get(USER,uid);
-		
 	}
+	
+	
 	/**
 	 * Check if the session is valid
 	 * @param jid

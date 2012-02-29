@@ -6,6 +6,7 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 
+
 import net.thesocialos.client.service.UserServiceXSRF;
 import net.thesocialos.server.model.User;
 import net.thesocialos.shared.Chat;
@@ -16,6 +17,8 @@ import net.thesocialos.shared.UserSummaryDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
 
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
+import com.googlecode.objectify.NotFoundException;
+import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
 @SuppressWarnings("serial")
@@ -62,14 +65,27 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 
 	
 	@Override
-	public UserDTO getLoggedUser(String[] ids) {
-		User user = UserHelper.getLoggedUser(ids, getThreadLocalRequest());
+	public net.thesocialos.shared.model.User getLoggedUser(String[] ids) {
+		Objectify ofy = ObjectifyService.begin();
+		net.thesocialos.shared.model.User user;
+		net.thesocialos.shared.model.Session session;
+		
+		try{
+			
+			user = UserHelper.getUserWithCookies(ids[0], ofy);
+			session = UserHelper.getSessionWithCookies(ids[1],ofy);
+			UserHelper.saveUsertohttpSession(session, user,perThreadRequest.get().getSession());
+			return user.toDto();
+		}catch (NotFoundException e) {
+			return null;
+		}
+		/*User user = UserHelper.getLoggedUser(ids, getThreadLocalRequest());
 		if (user!=null){
 			
 			return User.toDTO(user);
 			
-		}
-		return null;
+		}*/
+		
 	}
 	
 	@Override
@@ -90,6 +106,11 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 	public LoginResult login(String email, String password, boolean keptloged) {
 		
 		return UserHelper.login(email, password, keptloged, getThreadLocalRequest());
+		
+	}
+	@Override
+	public void createServerSession() {
+		// TODO Auto-generated method stub
 		
 	}
 

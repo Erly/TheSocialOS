@@ -8,13 +8,14 @@ import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.UserSummaryDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
+import net.thesocialos.shared.model.User;
 
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
 
-@RemoteServiceRelativePath("userServiceXSRF")
+@RemoteServiceRelativePath("RPCXSRF")
 
 @XsrfProtect
 public interface UserServiceXSRF extends RemoteService {
@@ -25,11 +26,15 @@ public interface UserServiceXSRF extends RemoteService {
 	
 	LoginResult login(String email, String password,boolean keptloged);
 	
-	UserDTO getLoggedUser(String[] ids);
+	
 	
 	void register(String email, String password, String name, String lastName) throws UserExistsException;
 	
 	void logout();
+	
+	void createServerSession();
+	
+	User getLoggedUser(String[] ids);
 	
 	
 

@@ -3,8 +3,6 @@ package net.thesocialos.client.helper;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.event.RPCInEvent;
 import net.thesocialos.client.event.RPCOutEvent;
-import net.thesocialos.client.service.UserService;
-import net.thesocialos.client.service.UserServiceAsync;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestTimeoutException;
@@ -14,12 +12,18 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.InvocationException;
 import com.google.gwt.user.client.rpc.SerializationException;
-
+/**
+ * 
+ * @author vssnake
+ * @deprecated use RPCXSRF instead
+ * @param <T>
+ */
+@Deprecated 
 public abstract class RPCCall<T> implements AsyncCallback<T> {
 
 	protected abstract void callService(AsyncCallback<T> cb);
 	
-	private final UserServiceAsync userService = GWT.create(UserService.class);
+	//private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	public RPCCall() {}
 

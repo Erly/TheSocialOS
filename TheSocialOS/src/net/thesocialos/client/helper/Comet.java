@@ -10,6 +10,7 @@ import net.thesocialos.shared.messages.ChannelTextMessage;
 import net.thesocialos.shared.messages.Message;
 import net.thesocialos.shared.messages.Message.Type;
 import net.thesocialos.shared.messages.MessageChat;
+import net.thesocialos.shared.model.User;
 
 
 import com.google.gwt.core.client.GWT;
@@ -31,10 +32,10 @@ public class Comet {
 		 
 	 }
 	
-	public void listenToChannel(UserDTO user){
+	public void listenToChannel(User user){
 		//channel = ChannelFactory.createChannel(user.getChannelID());
-		pushServiceStreamFactory=  (SerializationStreamFactory) PushService.App.getInstance();
-		channel = ChannelFactory.createChannel(user.getChannelID());
+		//pushServiceStreamFactory=  (SerializationStreamFactory) PushService.App.getInstance();
+		//channel = ChannelFactory.createChannel(user.getChannelID());
 		channel.open(new SocketListener() {
 			
 			@Override

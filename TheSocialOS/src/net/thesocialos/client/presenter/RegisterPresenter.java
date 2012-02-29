@@ -3,10 +3,9 @@ package net.thesocialos.client.presenter;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
-import net.thesocialos.client.service.UserService;
-import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.service.UserServiceXSRF;
 import net.thesocialos.client.service.UserServiceXSRFAsync;
+
 import net.thesocialos.shared.exceptions.UserExistsException;
 
 
@@ -114,6 +113,6 @@ public class RegisterPresenter implements Presenter {
 					Window.alert("Error: " + caught.getMessage());
 				
 			}
-		}.go();
+		}.retry(3);
 	}
 }

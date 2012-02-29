@@ -6,6 +6,7 @@ import java.util.Date;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.shared.App;
 import net.thesocialos.shared.UserDTO;
+import net.thesocialos.shared.model.User;
 import net.thesocialos.client.app.ChatApp;
 import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.app.FrameApp;
@@ -107,7 +108,7 @@ public class DesktopPresenter implements Presenter {
 		desktop.getElement().getStyle().clearPosition();
 		TheSocialOS.get().setDesktop(desktop);
 		
-		UserDTO user = TheSocialOS.get().getCurrentUser();
+		User user = TheSocialOS.get().getCurrentUser();
 		
 		bindDesktopBar(user);
 		bindUserMenu(user);
@@ -134,7 +135,7 @@ public class DesktopPresenter implements Presenter {
 	 * Binds the DesktopBar elements and adds its handlers.
 	 * @param user The data transfer object of the user that is logged in the system.
 	 */
-	private void bindDesktopBar(UserDTO user) {
+	private void bindDesktopBar(User user) {
 		// Create and initialize a timer for the clock refreshing
 		new Timer() {
 			@Override
@@ -172,7 +173,7 @@ public class DesktopPresenter implements Presenter {
 	 * Bind the user menu elements and adds its handlers.
 	 * @param user The data transfer object of the user that is logged on.
 	 */
-	private void bindUserMenu(UserDTO user) { 
+	private void bindUserMenu(User user) { 
 		if (user.getAvatar().equals("data:image/png;base64,null"))
 			this.display.getAvatar().setUrl("./images/anonymous_avatar.png");
 		else

@@ -1,20 +1,18 @@
 package net.thesocialos.client;
 
 import net.thesocialos.client.helper.Comet;
-import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.i18n.SocialOSConstants;
 import net.thesocialos.client.i18n.SocialOSMessages;
 import net.thesocialos.client.presenter.BusyIndicatorPresenter;
 import net.thesocialos.client.presenter.LoginPresenter;
 import net.thesocialos.client.presenter.UserProfilePresenter;
-import net.thesocialos.client.service.UserService;
-import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.service.UserServiceXSRF;
 import net.thesocialos.client.service.UserServiceXSRFAsync;
 import net.thesocialos.client.view.BusyIndicatorView;
 import net.thesocialos.client.view.LoginView;
 import net.thesocialos.shared.UserDTO;
+import net.thesocialos.shared.model.User;
 //import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -40,7 +38,7 @@ public class TheSocialOS implements EntryPoint {
 
 	BusyIndicatorPresenter busyIndicator = new BusyIndicatorPresenter(eventBus, new BusyIndicatorView());
 	static UserProfilePresenter profilePresenter = null;
-	private UserDTO userDTO;
+	private User user;
 	private Comet comet;
 	
 	// i18n initialization
@@ -51,8 +49,7 @@ public class TheSocialOS implements EntryPoint {
 	private String jSessionID, sessionID, userID;
 	
 	// RPC Services
-	private final UserServiceXSRFAsync userServiceXSRF = GWT.create(UserServiceXSRF.class);
-	private final UserServiceAsync userService = GWT.create(UserService.class);
+	private final UserServiceXSRFAsync userService = GWT.create(UserServiceXSRF.class);
 	
 	/**
 	 * This is the entry point method.
@@ -87,15 +84,11 @@ public class TheSocialOS implements EntryPoint {
 			appControler.go();
 		}
 		*/
-		new RPCCall<UserDTO>() {
+		new RPCXSRF<User>(userService) {
 
+			
 			@Override
-			protected void callService(AsyncCallback<UserDTO> cb) {
-				userService.getLoggedUser(ids, cb);
-				
-			}
-			@Override
-			public void onSuccess(UserDTO result) {
+			public void onSuccess(User result) {
 				if (result == null) {
 					// User is NOT logged on
 					if(History.getToken().equals("register")) 
@@ -110,7 +103,7 @@ public class TheSocialOS implements EntryPoint {
 					//User listening to the channel push
 					
 					comet = new Comet(eventBus);
-					comet.listenToChannel(userDTO);
+					//comet.listenToChannel(user);
 					createUI();
 				}
 				
@@ -119,6 +112,14 @@ public class TheSocialOS implements EntryPoint {
 			public void onFailure(Throwable caught) {
 				GWT.log(caught.getMessage());
 				Window.alert(caught.getMessage());
+			}
+			@Override
+			protected void XSRFcallService(AsyncCallback<User> cb) {
+				
+					userService.getLoggedUser(ids, cb);
+					
+				
+				
 			}
 			
 		}.retry(3);
@@ -139,23 +140,23 @@ public class TheSocialOS implements EntryPoint {
 	 * Sets the current user data transfer object so the rest of the application can use it.
 	 * @param loggedUserDTO The current user data transfer object
 	 */
-	public void setCurrentUser(UserDTO loggedUserDTO) {
+	public void setCurrentUser(User loggedUser) {
 		// Window.alert("Tu usuario es: " + loggedUserDTO.getEmail());
-		userDTO = loggedUserDTO;
+		user = loggedUser;
 	}
 	
 	/**
 	 * @return The current user data transfer object 
 	 */
-	public UserDTO getCurrentUser() {
-		return userDTO;
+	public User getCurrentUser() {
+		return user;
 	}
 	
 	/**
 	 * Deletes the current user data transfer object. Necessary for logging out.
 	 */
 	public void deleteCurrentUser() {
-		userDTO = null;
+		user = null;
 	}
 	
 	/**

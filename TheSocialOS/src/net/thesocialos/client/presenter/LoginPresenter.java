@@ -4,10 +4,9 @@ import java.util.Date;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
-import net.thesocialos.client.service.UserService;
-import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.service.UserServiceXSRF;
 import net.thesocialos.client.service.UserServiceXSRFAsync;
+
 import net.thesocialos.shared.LoginResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -113,7 +112,7 @@ public class LoginPresenter implements Presenter {
 			public void onFailure(Throwable caught) {
 				Window.alert("Error: " + caught.getMessage());
 			}
-		}.go();
+		}.retry(3);
 	
 		
 		

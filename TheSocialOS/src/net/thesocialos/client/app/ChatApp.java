@@ -149,7 +149,7 @@ public class ChatApp extends Application {
 				});
 			}
 				
-		}.go();
+		}.retry(3);
 		
 			
 			
@@ -182,7 +182,7 @@ public class ChatApp extends Application {
 					}
 				});
 			}
-		}.go();
+		}.retry(3);
 	}
 	public String getHeight() {
 		return height;

@@ -19,25 +19,16 @@
   </context-param>
   
   <!-- Servlets -->
-  <servlet>
-  	<servlet-name>userService</servlet-name>
-  	<servlet-class>net.thesocialos.server.UserServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-  	<servlet-name>userService</servlet-name>
-  	<url-pattern>/thesocialos/userService</url-pattern>
-  </servlet-mapping>
   
   
    <servlet>
-  	<servlet-name>userServiceXSRF</servlet-name>
+  	<servlet-name>RPCXSRF</servlet-name>
   	<servlet-class>net.thesocialos.server.UserXSRFimpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>userServiceXSRF</servlet-name>
-  	<url-pattern>/thesocialos/userServiceXSRF</url-pattern>
+  	<servlet-name>RPCXSRF</servlet-name>
+  	<url-pattern>/thesocialos/RPCXSRF</url-pattern>
   	
   	
   </servlet-mapping>

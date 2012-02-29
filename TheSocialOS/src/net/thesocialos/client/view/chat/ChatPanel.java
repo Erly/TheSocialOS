@@ -6,8 +6,7 @@ import net.thesocialos.client.app.ChatApp.Display;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.service.ChatService;
 import net.thesocialos.client.service.ChatServiceAsync;
-import net.thesocialos.client.service.UserService;
-import net.thesocialos.client.service.UserServiceAsync;
+
 import net.thesocialos.client.view.window.button;
 
 
