@@ -30,6 +30,8 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 	private void call(final int retriesLeft) {
 		onRPCOut(); // RPC Working
 		boolean isLoginOrRegister = false;
+		onCall(retriesLeft);
+		/*
 		if (History.getToken().equals("login") || History.getToken().equals("register")) {
 			isLoginOrRegister = true;
 			onCall(retriesLeft);
@@ -52,11 +54,10 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 						onRPCIn();
 						History.newItem("login");
 					}
-					/*if( !result )
-						throw new UserNotLoggedInException();*/
+					
 				}
 			});
-		
+		*/
 	}
 	
 	/**

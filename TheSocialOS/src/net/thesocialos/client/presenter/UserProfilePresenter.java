@@ -93,7 +93,7 @@ public class UserProfilePresenter implements Presenter {
 	}
 	/*
 	public void fetchUserDTO() {
-		new RPCCall<UserDTO>() {
+		new RPCXSRF<UserDTO>() {
 
 			@Override
 			protected void callService(AsyncCallback<UserDTO> cb) {

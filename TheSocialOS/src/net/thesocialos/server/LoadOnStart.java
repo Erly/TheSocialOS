@@ -26,7 +26,7 @@ import com.googlecode.objectify.ObjectifyService;
 public class LoadOnStart extends HttpServlet {
 
 	public void init(){
-		
+		/*
 		//User
 		ObjectifyService.register(Session.class);
 		ObjectifyService.register(Account.class);
@@ -47,7 +47,7 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(Google.class);
 		
 		
-		
+		*/
 		
 	}
 }

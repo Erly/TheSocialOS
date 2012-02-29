@@ -8,7 +8,7 @@ import net.thesocialos.shared.Chat;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface ChatServiceAsync {
+public interface ChatServiceAsync extends ServiceAsync {
 	void examplePush( String text,AsyncCallback<List<Chat>> callback);
 	
 	void getText(AsyncCallback<List<Chat>> callback);

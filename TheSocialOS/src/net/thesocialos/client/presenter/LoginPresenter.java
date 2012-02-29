@@ -3,8 +3,11 @@ package net.thesocialos.client.presenter;
 import java.util.Date;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.RPCCall;
+import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
+import net.thesocialos.client.service.UserServiceXSRF;
+import net.thesocialos.client.service.UserServiceXSRFAsync;
 import net.thesocialos.shared.LoginResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,6 +17,12 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.HasRpcToken;
+import com.google.gwt.user.client.rpc.RpcTokenException;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.google.gwt.user.client.rpc.XsrfToken;
+import com.google.gwt.user.client.rpc.XsrfTokenService;
+import com.google.gwt.user.client.rpc.XsrfTokenServiceAsync;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -23,7 +32,7 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class LoginPresenter implements Presenter {
 
-	private final UserServiceAsync userService = GWT.create(UserService.class);
+	private final UserServiceXSRFAsync userService = GWT.create(UserServiceXSRF.class);
 	
 	public interface Display {
 		HasClickHandlers getLoginButton();
@@ -70,36 +79,45 @@ public class LoginPresenter implements Presenter {
 	 * creates the necessary cookies, logs the user in and loads the desktop. 
 	 */
 	private void doLogin() {
-		new RPCCall<LoginResult>() {
-
-			@Override
-			protected void callService(AsyncCallback<LoginResult> cb) {
-				userService.login(LoginPresenter.this.display.getEmail().getValue().trim(),	LoginPresenter.this.display.getPassword().getValue().trim(),
-						display.getKeepLoged(),	cb);
-			}
+		
+		new RPCXSRF<LoginResult>(userService) {
 			
 			@Override
+			protected void XSRFcallService(AsyncCallback<LoginResult> cb) {
+				
+				userService.login(LoginPresenter.this.display.getEmail().getValue().trim(),	LoginPresenter.this.display.getPassword().getValue().trim(),
+						display.getKeepLoged(),	cb);
+				
+			}
 			public void onSuccess(LoginResult result) {
 				if(result == null) {	// The user or password is incorrect 
 					Label incorrect = (Label) LoginPresenter.this.display.getIncorrectLabel();
 					incorrect.setVisible(true);
+					
 				} else { // The user exists and the password is correct
 					TheSocialOS.get().setCurrentUser(result.getUser());
-					if (display.getKeepLoged()){
-						final long DURATION = 1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
-						Date expires = new Date(System.currentTimeMillis() + DURATION);
-						Cookies.setCookie("sid", result.getSessionID(), expires);
-						Cookies.setCookie("uid", result.getKey(), expires);
-					}
+					
+						if (result.getDuration() < 0){
+							Cookies.setCookie("sid", result.getSessionID());
+							Cookies.setCookie("uid", result.getKey());
+						}else{
+							Date expires = new Date(System.currentTimeMillis() + result.getDuration());
+							Cookies.setCookie("sid", result.getSessionID(), expires);
+							Cookies.setCookie("uid", result.getKey(), expires);
+						}
+						
+						
 					History.newItem("desktop");
 				}
 			}
-			
-			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("Error: " + caught.getMessage());
 			}
-		}.retry(3);
+		}.go();
+	
+		
+		
+		
 	}
 
 }

@@ -2,8 +2,11 @@ package net.thesocialos.client.presenter;
 
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.RPCCall;
+import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
+import net.thesocialos.client.service.UserServiceXSRF;
+import net.thesocialos.client.service.UserServiceXSRFAsync;
 import net.thesocialos.shared.exceptions.UserExistsException;
 
 
@@ -23,7 +26,7 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class RegisterPresenter implements Presenter {
 	
-	private final UserServiceAsync userService = GWT.create(UserService.class);
+	private final UserServiceXSRFAsync userService = GWT.create(UserServiceXSRF.class);
 	
 	public interface Display {
 		HasClickHandlers getRegisterButton();
@@ -88,10 +91,10 @@ public class RegisterPresenter implements Presenter {
 			incorrect.setVisible(true); // Make the incorrect label visible
 			return;
 		}
-		new RPCCall<Void>() {
+		new RPCXSRF<Void>(userService) {
 
 			@Override
-			protected void callService(AsyncCallback<Void> cb) {
+			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				userService.register(display.getEmail().getValue().trim(), display.getPassword().getValue().trim(),
 						display.getName().getValue().trim(), display.getLastName().getValue().trim(), cb);
 			}
@@ -111,6 +114,6 @@ public class RegisterPresenter implements Presenter {
 					Window.alert("Error: " + caught.getMessage());
 				
 			}
-		}.retry(3);
+		}.go();
 	}
 }

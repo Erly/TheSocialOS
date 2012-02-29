@@ -5,12 +5,15 @@ import net.thesocialos.client.event.LogoutEventHandler;
 import net.thesocialos.client.event.MessageChatAvailableEvent;
 import net.thesocialos.client.event.MessageChatAvailableEventHandler;
 import net.thesocialos.client.helper.RPCCall;
+import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.presenter.DesktopPresenter;
 import net.thesocialos.client.presenter.Presenter;
 import net.thesocialos.client.presenter.RegisterPresenter;
 import net.thesocialos.client.presenter.UserProfilePresenter;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
+import net.thesocialos.client.service.UserServiceXSRF;
+import net.thesocialos.client.service.UserServiceXSRFAsync;
 import net.thesocialos.client.view.DesktopView;
 import net.thesocialos.client.view.RegisterView;
 import net.thesocialos.client.view.profile.UserProfileView;
@@ -25,7 +28,7 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class AppController implements ValueChangeHandler<String> {
 
-	private final UserServiceAsync userService = GWT.create(UserService.class);
+	private final UserServiceXSRFAsync userService = GWT.create(UserServiceXSRF.class);
 
 	private final SimpleEventBus eventBus;
 	
@@ -147,16 +150,17 @@ public class AppController implements ValueChangeHandler<String> {
 	 * Deletes the cookies, the session and calls the method to delete the user  
 	 */
 	protected void doLogout() {
-		Cookies.removeCookie("JSESSIONID");
 		Cookies.removeCookie("sid");
 		Cookies.removeCookie("uid");
 		TheSocialOS.get().deleteCurrentUser();
-		new RPCCall<Void>() {
+		new RPCXSRF<Void>(userService) {
 
 			@Override
-			protected void callService(AsyncCallback<Void> cb) {
+			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				userService.logout(cb);
 			}
+
+			
 		};
 		History.newItem("login");
 	}

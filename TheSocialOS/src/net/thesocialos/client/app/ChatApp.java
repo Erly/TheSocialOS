@@ -7,6 +7,7 @@ import java.util.List;
 import net.thesocialos.client.event.MessageChatAvailableEvent;
 import net.thesocialos.client.event.MessageChatAvailableEventHandler;
 import net.thesocialos.client.helper.RPCCall;
+import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ChatService;
 import net.thesocialos.client.service.ChatServiceAsync;
 import net.thesocialos.client.view.chat.ChatPanel;
@@ -128,10 +129,10 @@ public class ChatApp extends Application {
 	
 	
 	private void sendMessage(String text){
-		new RPCCall<Void>(){
+		new RPCXSRF<Void>(chatService){
 
 			@Override
-			protected void callService(AsyncCallback<Void> cb) {
+			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				chatService.sendText(panel.getSendText().getText(), new AsyncCallback<Boolean>() {
 					
 					@Override
@@ -148,7 +149,7 @@ public class ChatApp extends Application {
 				});
 			}
 				
-		}.retry(3);
+		}.go();
 		
 			
 			
@@ -156,11 +157,10 @@ public class ChatApp extends Application {
 	}
 	private void getMessages(){
 		
-		new RPCCall<Void>() {
-
+		new RPCXSRF<Void>(chatService) {
 
 			@Override
-			protected void callService(AsyncCallback<Void> cb) {
+			protected void XSRFcallService(AsyncCallback<Void> cb) {
 
 				chatService.getText(new AsyncCallback<List<Chat>>() {
 					
@@ -169,10 +169,8 @@ public class ChatApp extends Application {
 						String textToAdd = "";
 						for (int i = 0; i < result.size(); i++) {
 							textToAdd += result.get(i).getText() + "\n";
-						}
-						
-						panel.getTextArea().setText(panel.getTextArea().getText() + textToAdd);
-						
+						}		
+						panel.getTextArea().setText(panel.getTextArea().getText() + textToAdd);			
 						panel.getTextArea().getElement().setScrollTop(panel.getTextArea().getElement().getScrollHeight());
 						System.out.println(result.toArray());
 					}
@@ -184,7 +182,7 @@ public class ChatApp extends Application {
 					}
 				});
 			}
-		}.retry(3);
+		}.go();
 	}
 	public String getHeight() {
 		return height;

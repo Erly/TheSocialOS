@@ -26,6 +26,7 @@ import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -33,6 +34,14 @@ import com.googlecode.objectify.ObjectifyService;
 
 @SuppressWarnings("serial")
 public class UserHelper extends RemoteServiceServlet{
+final static Class<net.thesocialos.shared.model.User> USER = net.thesocialos.shared.model.User.class;
+final static Class<net.thesocialos.shared.model.Session> SESSION = net.thesocialos.shared.model.Session.class;
+
+
+//final names;
+final static String sessionN = "session";
+final static String userN = "user";
+
 
 	/**
 	 * 
@@ -126,7 +135,7 @@ public class UserHelper extends RemoteServiceServlet{
 	 * @return
 	 */
 	public static LoginResult login(String email, String password, boolean checkLoged,HttpServletRequest request) {
-		
+		 long Duration = 1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query q = pm.newQuery("SELECT FROM " + User.class.getName() + " WHERE email == :userEmail");
 		q.setUnique(true);
@@ -136,21 +145,24 @@ public class UserHelper extends RemoteServiceServlet{
 			if (user != null)
 				if (BCrypt.checkpw(password, user.getPassword())) { // Encrypt the entered password and compare it with the stored one
 					HttpSession session = request.getSession();
+					
 					//user.setSessionID(session.getId());
 					session.setAttribute("uid", user.getKey());
 					if (checkLoged) {
-						final long DURATION = 1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
-						Date expires = new Date(System.currentTimeMillis() + DURATION);
+						
+						Date expires = new Date(System.currentTimeMillis() + Duration);
 						user.getSessions().add(new Session(session.getId(), user, expires));
+					}else{
+						Duration = -1;
 					}
-					//pm.makePersistent(user);//Save the session into the datastore
+					
 					user.setLastActive(new Date());
 					user.setChannelID(loginStarts(request.getSession(), user));
 					UserDTO userDTO = User.toDTO(user);
 					// Encapsulate the UserDTO and the encrypted key in a LoginResult object and send it to the client.
 					
 					
-					LoginResult result = new LoginResult(userDTO, session.getId(), user.getKey());
+					LoginResult result = new LoginResult(userDTO, session.getId(), user.getKey(),Duration);
 					
 					
 					return result;
@@ -162,17 +174,57 @@ public class UserHelper extends RemoteServiceServlet{
 			pm.close();
 		}
 	}
-	public static User getLoggedUser(String[] ids, HttpServletRequest request) {
+	/**
+	 * Return the object user
+	 * @param email
+	 * @param ofy Objectify instance
+	 * @return User object
+	 * @throws NotFoundException
+	 */
+	public static synchronized net.thesocialos.shared.model.User getUserWithEmail(String email,Objectify ofy) throws NotFoundException{
+		return (net.thesocialos.shared.model.User) ofy.query(USER).filter("email", email);
+	}
+	
+	/**
+	 * Set a User object in session
+	 * @param session a user session
+	 * @param httpSession HttpSession
+	 * @return
+	 */
+	public static synchronized boolean saveUsertohttpSession(net.thesocialos.shared.model.Session session,net.thesocialos.shared.model.User user, HttpSession httpSession){
+		httpSession.setAttribute(userN, user);
+		httpSession.setAttribute(sessionN, session);
+		return true;
+	}
+	public static synchronized net.thesocialos.shared.model.Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException{
+		return ofy.get(SESSION,sid);
+		
+	}
+	public static synchronized net.thesocialos.shared.model.User getUserWithCookies(String uid, Objectify ofy) throws NotFoundException{
+		return ofy.get(USER,uid);
+		
+	}
+	/**
+	 * Check if the session is valid
+	 * @param jid
+	 * @param httpSession
+	 * @return true if user is correct 
+	 */
+	public static synchronized boolean isSessionValid(String jid,HttpSession httpSession){
+		return httpSession.getId().equals(jid);
+	}
+	
+	public static synchronized User getLoggedUser(String[] ids, HttpServletRequest request) {
 		User user;
-		if ((user = UserHelper.checkSession(ids[0],request)) == null) // Verifying the session IDs
-			if ((user = UserHelper.checkSession(ids[1], ids[2])) != null){ // Verifying the cookies IDs
-				request.getSession().setAttribute("uid", ids[2]);
+			if ((user = UserHelper.checkSession(ids[0], ids[1])) != null){ // Verifying the cookies IDs
+				request.getSession().setAttribute("uid", ids[1]);
 				
 			} else
 				return null;
 		user.setChannelID(loginStarts(request.getSession(), user));
 		return user;
 	}
+	
 	
 	/**
 	 * Register a user

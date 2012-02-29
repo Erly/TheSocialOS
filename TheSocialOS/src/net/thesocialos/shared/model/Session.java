@@ -12,10 +12,19 @@ import com.googlecode.objectify.annotation.Parent;
 public class Session {
 
 	@Id Long id;
+	public Long getId() {
+		return id;
+	}
+
+	public String getSessionID() {
+		return SessionID;
+	}
+
+	
+
 	String SessionID; //SessionID of the cookie
 	Date expireDate; //Date to expire the session;
 	
-	@Parent Key<User> owner; //One user has this session
 	
 	public Session(){
 		

@@ -25,6 +25,8 @@ public class User implements Serializable {
 	
 	Key<OutConversation> offlineConversations[];
 	
+	Key<Session> sessions[];
+	
 	public User(){
 		
 	}

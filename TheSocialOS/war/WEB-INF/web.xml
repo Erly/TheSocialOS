@@ -29,6 +29,18 @@
   	<url-pattern>/thesocialos/userService</url-pattern>
   </servlet-mapping>
   
+  
+   <servlet>
+  	<servlet-name>userServiceXSRF</servlet-name>
+  	<servlet-class>net.thesocialos.server.UserXSRFimpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>userServiceXSRF</servlet-name>
+  	<url-pattern>/thesocialos/userServiceXSRF</url-pattern>
+  	
+  	
+  </servlet-mapping>
   <servlet>
   	<servlet-name>chatService</servlet-name>
   	<servlet-class>net.thesocialos.server.ChatServiceImpl</servlet-class>
@@ -50,6 +62,25 @@
   	<url-pattern>*.gupld</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  <servlet-name>xsrf</servlet-name>
+  <servlet-class>
+    com.google.gwt.user.server.rpc.XsrfTokenServiceServlet
+  </servlet-class>
+
+</servlet>
+<servlet-mapping>
+  <servlet-name>xsrf</servlet-name>
+  <url-pattern>/thesocialos/xsrf</url-pattern>
+</servlet-mapping>
+
+<context-param>
+  <param-name>gwt.xsrf.session_cookie_name</param-name>
+  <param-value>XSRF</param-value>
+</context-param>
+ 
+  
+ 
  <!--  Register Objectify Database -->
  
  <servlet>

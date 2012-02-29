@@ -2,6 +2,7 @@ package net.thesocialos.client;
 
 import net.thesocialos.client.helper.Comet;
 import net.thesocialos.client.helper.RPCCall;
+import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.i18n.SocialOSConstants;
 import net.thesocialos.client.i18n.SocialOSMessages;
 import net.thesocialos.client.presenter.BusyIndicatorPresenter;
@@ -9,6 +10,8 @@ import net.thesocialos.client.presenter.LoginPresenter;
 import net.thesocialos.client.presenter.UserProfilePresenter;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
+import net.thesocialos.client.service.UserServiceXSRF;
+import net.thesocialos.client.service.UserServiceXSRFAsync;
 import net.thesocialos.client.view.BusyIndicatorView;
 import net.thesocialos.client.view.LoginView;
 import net.thesocialos.shared.UserDTO;
@@ -48,6 +51,7 @@ public class TheSocialOS implements EntryPoint {
 	private String jSessionID, sessionID, userID;
 	
 	// RPC Services
+	private final UserServiceXSRFAsync userServiceXSRF = GWT.create(UserServiceXSRF.class);
 	private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	/**
@@ -69,7 +73,8 @@ public class TheSocialOS implements EntryPoint {
 		jSessionID = Cookies.getCookie("JSESSIONID");
 		sessionID = Cookies.getCookie("sid");
 		userID = Cookies.getCookie("uid");
-		final String[] ids = {jSessionID, sessionID, userID};
+		Cookies.setCookie("XSRF", "buu");
+		final String[] ids = {sessionID, userID};
 		
 		//Log.debug("CookieID -->" + sessionID);
 		/*
@@ -82,16 +87,16 @@ public class TheSocialOS implements EntryPoint {
 			appControler.go();
 		}
 		*/
-		
 		new RPCCall<UserDTO>() {
 
 			@Override
 			protected void callService(AsyncCallback<UserDTO> cb) {
 				userService.getLoggedUser(ids, cb);
+				
 			}
-
-			@Override public void onSuccess(UserDTO loggedUserDTO) {
-				if (loggedUserDTO == null) {
+			@Override
+			public void onSuccess(UserDTO result) {
+				if (result == null) {
 					// User is NOT logged on
 					if(History.getToken().equals("register")) 
 						appControler.go();
@@ -101,22 +106,23 @@ public class TheSocialOS implements EntryPoint {
 						History.newItem("login");
 				} else {
 					// User is loged in
-					setCurrentUser(loggedUserDTO);
+					setCurrentUser(result);
 					//User listening to the channel push
 					
 					comet = new Comet(eventBus);
 					comet.listenToChannel(userDTO);
 					createUI();
 				}
+				
 			}
-			
-			@Override public void onFailure(Throwable caught) {
+			@Override
+			public void onFailure(Throwable caught) {
 				GWT.log(caught.getMessage());
 				Window.alert(caught.getMessage());
-				/*if (Log.isErrorEnabled())
-				Log.error("Fallo rpc verificar sesión usuario");*/
 			}
+			
 		}.retry(3);
+		
 	}
 
 	/**
