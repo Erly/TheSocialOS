@@ -7,6 +7,7 @@ import net.thesocialos.client.service.UserServiceXSRF;
 import net.thesocialos.client.service.UserServiceXSRFAsync;
 
 import net.thesocialos.shared.exceptions.UserExistsException;
+import net.thesocialos.shared.model.User;
 
 
 import com.google.gwt.core.client.GWT;
@@ -88,14 +89,16 @@ public class RegisterPresenter implements Presenter {
 		if (this.display.getName().getValue().trim().isEmpty() || this.display.getLastName().getValue().trim().isEmpty()) {
 			incorrect.setText(TheSocialOS.getConstants().error_emptyTxt()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
+			
 			return;
 		}
 		new RPCXSRF<Void>(userService) {
 
 			@Override
 			protected void XSRFcallService(AsyncCallback<Void> cb) {
-				userService.register(display.getEmail().getValue().trim(), display.getPassword().getValue().trim(),
-						display.getName().getValue().trim(), display.getLastName().getValue().trim(), cb);
+				
+				userService.register(new User(display.getEmail().getValue().trim(),display.getPassword().getValue().trim(),null,null,
+						display.getName().getValue().trim(), display.getLastName().getValue().trim(),null), cb);
 			}
 			
 			@Override

@@ -4,6 +4,6 @@ package net.thesocialos.shared.model;
 public class Admin extends User {
 
 	public Admin(){
-		
+		super();
 	}
 }

@@ -3,6 +3,7 @@ package net.thesocialos.client.view.profile;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
 import net.thesocialos.shared.UserDTO;
+import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -26,15 +27,15 @@ public class ProfilePanel extends Composite implements Display {
 
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		UserDTO user = TheSocialOS.get().getCurrentUser();
+		User user = TheSocialOS.get().getCurrentUser();
 		name.attrName.setText(TheSocialOS.getConstants().name());
 		name.attrValue.setText(user.getName() + " " + user.getLastName());
 		title.attrName.setText(TheSocialOS.getConstants().title());
-		title.attrValue.setText(user.getTitle());
+		title.attrValue.setText(user.getRole());
 		//email.attrName.setText(TheSocialOS.getConstants()); Email is always email
 		email.attrValue.setText(user.getEmail());
 		mobile.attrName.setText(TheSocialOS.getConstants().mobile());
-		mobile.attrValue.setText(user.getMobile());
+		mobile.attrValue.setText(user.getMobilePhone());
 		address.attrName.setText(TheSocialOS.getConstants().address());
 		address.attrValue.setText(user.getAddress());
 		

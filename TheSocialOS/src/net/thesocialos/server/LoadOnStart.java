@@ -15,7 +15,6 @@ import net.thesocialos.shared.model.Oauth1;
 import net.thesocialos.shared.model.Oauth2;
 import net.thesocialos.shared.model.OutConversation;
 import net.thesocialos.shared.model.Twitter;
-import net.thesocialos.shared.model.UserDetails;
 
 import com.google.appengine.api.users.User;
 import com.google.gwt.dev.ModuleTabPanel.Session;

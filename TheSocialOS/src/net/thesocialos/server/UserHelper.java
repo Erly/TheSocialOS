@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import net.thesocialos.server.jdo.SearchJDO;
-import net.thesocialos.server.model.Session;
-import net.thesocialos.server.model.User;
+
 import net.thesocialos.server.utils.BCrypt;
 import net.thesocialos.server.utils.ChannelServer;
 import net.thesocialos.shared.Chat;
@@ -21,6 +20,8 @@ import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
+import net.thesocialos.shared.model.Session;
+import net.thesocialos.shared.model.User;
 
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
@@ -43,137 +44,10 @@ final static String sessionN = "session";
 final static String userN = "user";
 
 
-	/**
-	 * 
-	 * @param jsid
-	 * @param sid
-	 * @param uid
-	 * @param request
-	 * @return
-	 */
-	public static Boolean checkIds(String jsid, String sid, String uid, HttpServletRequest request) {
-		
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		User user;
-		
-		try{
-			String sid1 = (String) request.getSession().getId();
-			if (sid1.equals(jsid)) {
-				String uid1 =(String) request.getSession().getAttribute("uid");
-				user = pm.getObjectById(User.class, uid1);
-				if (user != null)
-					return true;
-			}
-			if (sid == null || uid == null)
-				return false;
-			user = pm.getObjectById(User.class, uid);
-			if (user == null || user.searchSession(sid) == null) 
-				return false;
-			else {
-				request.getSession().setAttribute("uid", uid);
-				return true;
-			}
-		} finally {
-			pm.close();
-		}
-	}
+
 	
-	/**
-	 * Verify if you have sessions id in server sessions
-	 * @return
-	 */
-	public static User checkSession(String sessionID, HttpServletRequest request){
-		
-			String sid = (String) request.getSession().getId();
-			if (sid.equals(sessionID)) {
-				String uid = (String) request.getSession().getAttribute("uid");
-				if (uid == null)
-					return null;
-				GWT.log(sid + " : " + uid);
-				PersistenceManager pm = PMF.get().getPersistenceManager();
-				try{
-					User user = pm.getObjectById(User.class, uid);
-					if (user != null)
-						return user;
-				} finally {
-					pm.close();
-				}
-			}
-			return null;
-	}
-	/**
-	 * 
-	 * @param sid ID of session
-	 * @param uid Code of user
-	 * @return The user
-	 */
-	public static User checkSession(String sid, String uid){
-		
-		if (sid == null || uid == null){
-			return null;
-		}
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		try{
-			User user = pm.getObjectById(User.class, uid);
-			if (user == null)
-				return null;
-			Session session = new SearchJDO().searchSession(user, sid);
-			if (session == null) 
-				return null;
-			return user;	
-			} finally {
-				pm.close();
-		}
-	}
 	
-	/**
-	 * Check if the user exist in the database
-	 * @param email
-	 * @param password
-	 * @param checkLoged
-	 * @param request
-	 * @return
-	 */
-	public static LoginResult login(String email, String password, boolean checkLoged,HttpServletRequest request) {
-		 long Duration = 1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Query q = pm.newQuery("SELECT FROM " + User.class.getName() + " WHERE email == :userEmail");
-		q.setUnique(true);
-		
-		try{
-			User user = (User) q.execute(email);
-			if (user != null)
-				if (BCrypt.checkpw(password, user.getPassword())) { // Encrypt the entered password and compare it with the stored one
-					HttpSession session = request.getSession();
-					
-					//user.setSessionID(session.getId());
-					session.setAttribute("uid", user.getKey());
-					if (checkLoged) {
-						
-						Date expires = new Date(System.currentTimeMillis() + Duration);
-						user.getSessions().add(new Session(session.getId(), user, expires));
-					}else{
-						Duration = -1;
-					}
-					
-					user.setLastActive(new Date());
-					user.setChannelID(loginStarts(request.getSession(), user));
-					User userDTO = User.toDTO(user);
-					// Encapsulate the UserDTO and the encrypted key in a LoginResult object and send it to the client.
-					
-					
-					LoginResult result = new LoginResult(userDTO, session.getId(), user.getKey(),Duration);
-					
-					
-					return result;
-				} else
-					return null;
-			else
-				return null;
-		} finally {
-			pm.close();
-		}
-	}
+	
 	/**
 	 * Return the object user
 	 * @param email
@@ -230,57 +104,36 @@ final static String userN = "user";
 	 * @return User model
 	 * @throws NotFoundException
 	 */
-	public static synchronized net.thesocialos.shared.model.User getUserWithCookies(String uid, Objectify ofy) throws NotFoundException{
-		return ofy.get(USER,uid);
+	public static synchronized net.thesocialos.shared.model.User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{	
+		return ofy.get(User.class,session.getUser().getString());
 	}
-	
-	
 	/**
-	 * Check if the session is valid
-	 * @param jid
-	 * @param httpSession
-	 * @return true if user is correct 
-	 */
-	public static synchronized boolean isSessionValid(String jid,HttpSession httpSession){
-		return httpSession.getId().equals(jid);
-	}
-	
-	public static synchronized User getLoggedUser(String[] ids, HttpServletRequest request) {
-		User user;
-			if ((user = UserHelper.checkSession(ids[0], ids[1])) != null){ // Verifying the cookies IDs
-				request.getSession().setAttribute("uid", ids[1]);
-				
-			} else
-				return null;
-		user.setChannelID(loginStarts(request.getSession(), user));
-		return user;
-	}
-	
-	
-	/**
-	 * Register a user
+	 * Return a user
 	 * @param email
-	 * @param password
-	 * @param name
-	 * @param lastName
-	 * @param pm
-	 * @throws UserExistsException
+	 * @param ofy
+	 * @return A user Class
+	 * @throws NotFoundException user has not found
 	 */
-	public static void register(String email, String password, String name, String lastName,PersistenceManager pm) throws UserExistsException {
-		Query q = pm.newQuery("SELECT FROM " + User.class.getName() + " WHERE email == :userEmail");
-		q.setUnique(true);
-		try{
-			User user = (User) q.execute(email);
-			if(user!=null){
-				throw new UserExistsException("Email '" + email + "' already registered");
-			} else {
-				user = new User(email, BCrypt.hashpw(password, BCrypt.gensalt()), name, lastName); // Encrypt the password
-				pm.makePersistent(user);	// Save the user in the datastore
-			}
-		} finally {
-			pm.close();
-		}
+	public static synchronized User autentificateUser (String email, Objectify ofy) throws NotFoundException{
+		return ofy.get(User.class,email);
 	}
+	/**
+	 * Create and add a new Session on one User
+	 * @param user
+	 * @param httpSession
+	 * @param duration
+	 * @param ofy
+	 * @return
+	 */
+	public static synchronized boolean addSessiontoUser (User user, HttpSession httpSession,
+			long duration,Objectify ofy){
+		Key<User> userKey = ObjectifyService.factory().getKey(user);
+		user.getSessions().add(ofy.put(new Session(httpSession.getId(), 
+				System.currentTimeMillis() + duration,userKey)));
+		return true;
+	}
+	
+	
 	
 	/**
 	 * @param session of one user

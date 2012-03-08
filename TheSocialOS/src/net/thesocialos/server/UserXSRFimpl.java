@@ -5,16 +5,19 @@ import java.util.ArrayList;
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 
 
 import net.thesocialos.client.service.UserServiceXSRF;
-import net.thesocialos.server.model.User;
+
+import net.thesocialos.server.utils.BCrypt;
 import net.thesocialos.shared.Chat;
 import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.UserSummaryDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
+import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
 import com.googlecode.objectify.NotFoundException;
@@ -56,11 +59,12 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 	}
 
 	@Override
-	public UserDTO getFriend(Long id) {
+	public User getFriend(Long id) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		User friend = pm.getObjectById(User.class, id);
-		UserDTO friendDTO = User.toDTO(friend);
-		return friendDTO;
+		
+		return User.toDTO(friend.getEmail(),friend.getAvatar(),friend.getBackground(),friend.getName(),friend.getLastName()
+				,friend.getRole());
 	}
 
 	
@@ -71,28 +75,31 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		net.thesocialos.shared.model.Session session;
 		
 		try{
-			
-			user = UserHelper.getUserWithCookies(ids[0], ofy);
 			session = UserHelper.getSessionWithCookies(ids[1],ofy);
+			user = UserHelper.getUserWithSession(session, ofy);
+			
 			UserHelper.saveUsertohttpSession(session, user,perThreadRequest.get().getSession());
-			return user.toDto();
+			return User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),user.getName(),
+					user.getLastName(),user.getRole());
 		}catch (NotFoundException e) {
 			return null;
 		}
-		/*User user = UserHelper.getLoggedUser(ids, getThreadLocalRequest());
-		if (user!=null){
-			
-			return User.toDTO(user);
-			
-		}*/
 		
 	}
 	
 	@Override
-	public void register(String email, String password, String name, String lastName) throws UserExistsException {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public void register(User user) throws UserExistsException {
+		Objectify ofy = ObjectifyService.begin();
 		
-		UserHelper.register(email, password, name, lastName, pm);
+		try{
+			ofy.get(User.class,user.getEmail());
+		}catch (NotFoundException e) {
+			throw new UserExistsException("Email '" + user.getEmail() + "' already registered");
+		}
+		//user = new User(email, BCrypt.hashpw(password, BCrypt.gensalt()), name, lastName); // Encrypt the password
+		user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
+		ofy.put(User.class);	// Save
+		
 	}
 
 	@Override
@@ -104,8 +111,34 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 	
 	@Override
 	public LoginResult login(String email, String password, boolean keptloged) {
-		
-		return UserHelper.login(email, password, keptloged, getThreadLocalRequest());
+		long duration = 262045019291741L;//1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
+		Objectify ofy = ObjectifyService.begin();
+		User user;
+		HttpSession session;
+		try{
+			user = UserHelper.getUserWithEmail(email, ofy);
+			session = perThreadRequest.get().getSession();
+		}catch (NotFoundException e){
+			return null;
+		}
+		if (BCrypt.checkpw(password, user.getPassword())== false) { // Encrypt the entered password and compare it with the stored one
+			return null;
+		}
+		/*
+		 * El usuario quiere seguir estando conectado
+		 */
+		if (keptloged) {
+			UserHelper.addSessiontoUser(user, session, duration, ofy); //Add new session to user
+		}else{
+			duration = -1;
+		}
+		user.setLastTimeActive(System.currentTimeMillis()); //Set last time to user is login
+
+		session.setAttribute("user",user); //Store user
+		ofy.put(user); //Save user
+		return new LoginResult(User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),
+				user.getName(),user.getLastName(),user.getRole()), session.getId(),duration);
+		 //UserHelper.login(email, password, keptloged, getThreadLocalRequest());
 		
 	}
 	@Override

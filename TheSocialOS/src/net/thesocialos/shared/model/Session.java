@@ -20,13 +20,23 @@ public class Session {
 		return SessionID;
 	}
 
-	
+	private Key<User> user;
 
 	String SessionID; //SessionID of the cookie
-	Date expireDate; //Date to expire the session;
+	Long expireDate; //Date to expire the session;
 	
 	
 	public Session(){
 		
+	}
+	
+	public Session(String SessionID, Long expireDate,Key<User> user){
+		this.SessionID = SessionID;
+		this.expireDate = expireDate;
+		this.user = user;
+	}
+	
+	public Key<User> getUser(){
+		return user;
 	}
 }

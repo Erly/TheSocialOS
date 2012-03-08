@@ -22,13 +22,13 @@ public interface UserServiceXSRF extends RemoteService {
 	
 	ArrayList<UserSummaryDTO> getFriendSummaries(String sid);
 	
-	UserDTO getFriend(Long id);
+	User getFriend(Long id);
 	
 	LoginResult login(String email, String password,boolean keptloged);
 	
 	
 	
-	void register(String email, String password, String name, String lastName) throws UserExistsException;
+	void register(User user) throws UserExistsException;
 	
 	void logout();
 	

@@ -1,11 +1,13 @@
 package net.thesocialos.shared.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Blob;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Unindexed;
 
@@ -13,15 +15,28 @@ import com.googlecode.objectify.annotation.Unindexed;
 @Cached
 public class User implements Serializable {
 
-	@Id Long id;
-	String email; //Email of the user
-	@Unindexed String password; //Password of the user
-	String avatar; //Avatar of the user
-	String background; //Background of the user
-	String firstName; //firstname
-	
 
-	String lastName; //lastname
+	@Id private String email; //Email of the user
+	@Unindexed private  String password; //Password of the user
+	private String avatar; //Avatar of the user
+	
+	private String background; //Background of the user
+	
+	private String firstName; //firstname
+	
+	private String role; //The role of the user
+	
+	private String address; // address of user
+
+	String lastName; //lastnameString address;
+	
+	String mobilePhone;
+	
+	String job;
+	
+	private Long lastTimeActive;
+	
+	
 	
 	Key<Group> groups[];
 	
@@ -29,29 +44,36 @@ public class User implements Serializable {
 	
 	Key<OutConversation> offlineConversations[];
 	
-	Key<Session> sessions[];
+	List<Key<Session>> sessions;
 	
 	Key<Account> accounts[];
 	
-	UserDetails details;
 	
-	public User(String email, String password, String picture, String background,String firstName,String lastName){
+
+	public User(String email, String password, String picture, String background,String firstName,String lastName,String role){
 		this.email = email;
 		this.password = password;
 		this.avatar = picture;
 		this.background = background;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.role = role;
 		
 	}
 	
-	public User(String email,String picture,String background,String firstName,String lastName){
+	
+	
+	public User(String email,String picture,String background,String firstName,String lastName,String role){
 		this.email = email;
-		
 		this.avatar = picture;
 		this.background = background;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.role = role;
+		
+	}
+	
+	public User(){
 		
 	}
 	
@@ -79,12 +101,12 @@ public class User implements Serializable {
 		this.offlineConversations = offlineConversations;
 	}
 
-	public Key<Session>[] getSessions() {
+	public List<Key<Session>> getSessions() {
 		return sessions;
 	}
 
-	public void setSessions(Key<Session>[] sessions) {
-		this.sessions = sessions;
+	public void addSessions(Key<Session> session) {
+		this.sessions.add(session);
 	}
 
 	public Key<Account>[] getAccounts() {
@@ -95,9 +117,7 @@ public class User implements Serializable {
 		this.accounts = accounts;
 	}
 
-	public Long getId() {
-		return id;
-	}
+	
 
 	public String getEmail() {
 		return email;
@@ -105,6 +125,9 @@ public class User implements Serializable {
 
 	public String getPassword() {
 		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getAvatar() {
@@ -121,12 +144,41 @@ public class User implements Serializable {
 	public String getLastName() {
 		return lastName;
 	}
-
 	
-
-	public User toDto(){
-		return new User(email, avatar, background, firstName, lastName);
+	public String getMobilePhone() {
+		return mobilePhone;
 	}
+
+	public String getRole() {
+		return role;
+	}
+	/**
+	 * Give the 
+	 * @return
+	 */
+	public Key<User>  getKey(){
+		return ObjectifyService.factory().getKey(this);
+	}
+
+	public static User toDTO(String email,String avatar,String background,String firstName,String lastName,String role){
+		return new User(email, avatar, background, firstName, lastName,role);
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public Long getLastTimeActive() {
+		return lastTimeActive;
+	}
+
+
+
+	public void setLastTimeActive(Long lastTimeActive) {
+		this.lastTimeActive = lastTimeActive;
+	}
+
+
 	
 	
 	

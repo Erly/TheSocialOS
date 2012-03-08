@@ -98,11 +98,9 @@ public class LoginPresenter implements Presenter {
 					
 						if (result.getDuration() < 0){
 							Cookies.setCookie("sid", result.getSessionID());
-							Cookies.setCookie("uid", result.getKey());
 						}else{
 							Date expires = new Date(System.currentTimeMillis() + result.getDuration());
 							Cookies.setCookie("sid", result.getSessionID(), expires);
-							Cookies.setCookie("uid", result.getKey(), expires);
 						}
 						
 						

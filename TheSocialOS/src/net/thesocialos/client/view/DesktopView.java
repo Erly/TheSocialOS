@@ -3,6 +3,7 @@ package net.thesocialos.client.view;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.DesktopPresenter.Display;
 import net.thesocialos.shared.UserDTO;
+import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
@@ -32,7 +33,7 @@ public class DesktopView extends Composite implements Display {
 		initWidget(uiBinder.createAndBindUi(this));
 		userMenu.editProfile.setText(TheSocialOS.getConstants().editProfile());
 		userMenu.logout.setText(TheSocialOS.getConstants().logout());
-		UserDTO user = TheSocialOS.get().getCurrentUser();
+		User user = TheSocialOS.get().getCurrentUser();
 		// desktop.getElement().getStyle().setBackgroundImage("url(/images/defaultBG.png) no-repeat");
 		if (!user.getBackground().equals("data:image/png;base64,null"))
 			background.setUrl(user.getBackground());
