@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import net.thesocialos.server.model.User;
+
 import net.thesocialos.shared.messages.Message;
+import net.thesocialos.shared.model.User;
 
 import com.google.appengine.api.channel.ChannelMessage;
 import com.google.appengine.api.channel.ChannelService;
@@ -73,7 +74,7 @@ public class ChannelServer {
 		  }
 	  
 	  private static void pushMessageById(List<String> userUniqueIds, Message msg) {
-		  
+		  /*
 		    String encodedMessage = encodeMessage(msg);
 		    for (String userUniqueId : userUniqueIds) {
 		      String key = getAppKeyForUser(userUniqueId);
@@ -89,9 +90,10 @@ public class ChannelServer {
 		            //+ " to client " + key, e);
 		      }
 		    }
+		    */
 		  }
 	  public static void PushallUsers(List<String> userUniqueIds, Message msg){
-
+		  /*
 		    String encodedMessage = encodeMessage(msg);
 		    for (String userUniqueId : userUniqueIds) {
 		      String key = getAppKeyForUser(userUniqueId);
@@ -107,7 +109,7 @@ public class ChannelServer {
 		            //+ " to client " + key, e);
 		      }
 		    }
-		  
+		  */
 	  }
 	  
 	 
@@ -124,7 +126,7 @@ public class ChannelServer {
 		   *            The message to be sent.
 		   */
 		public static void pushMessage(User user, Message msg) {
-		    if(user.getChannelID() == null){
+		   /* if(user.getChannelID() == null){
 		      //logger.log(Level.SEVERE, "Can't push a message to a null channeID. Maybe the Channel API is disabled in Connectr.");
 		      return;
 		      
@@ -134,8 +136,8 @@ public class ChannelServer {
 		  }
 		private static String getAppKeyForUser(String userUniqueId) {
 			    return APP_KEY + userUniqueId;
-			  }
-		  
+		 */	  }
+		 
 	  private static String encodeMessage(Message msg) {
 		
 		    try {
@@ -145,6 +147,7 @@ public class ChannelServer {
 		      throw new RuntimeException("Unable to encode a message for push.\n"
 		          + msg, e);
 		    }
+		    
 		  }
 	  
 	  /**

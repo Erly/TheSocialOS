@@ -1,6 +1,5 @@
 package net.thesocialos.server;
 
-import java.security.acl.Group;
 
 import javax.servlet.http.HttpServlet;
 
@@ -10,14 +9,16 @@ import net.thesocialos.shared.model.Conversation;
 import net.thesocialos.shared.model.Facebook;
 import net.thesocialos.shared.model.FlickR;
 import net.thesocialos.shared.model.Google;
+import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.Lines;
 import net.thesocialos.shared.model.Oauth1;
 import net.thesocialos.shared.model.Oauth2;
 import net.thesocialos.shared.model.OutConversation;
+import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.Twitter;
+import net.thesocialos.shared.model.User;
 
-import com.google.appengine.api.users.User;
-import com.google.gwt.dev.ModuleTabPanel.Session;
+
 import com.googlecode.objectify.ObjectifyService;
 
 
@@ -25,7 +26,7 @@ import com.googlecode.objectify.ObjectifyService;
 public class LoadOnStart extends HttpServlet {
 
 	public void init(){
-		/*
+		
 		//User
 		ObjectifyService.register(Session.class);
 		ObjectifyService.register(Account.class);
@@ -33,7 +34,7 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(Group.class);
 		ObjectifyService.register(Twitter.class);
 		ObjectifyService.register(User.class);
-		ObjectifyService.register(UserDetails.class);
+	
 		//Chat
 		ObjectifyService.register(Lines.class);
 		ObjectifyService.register(Conversation.class);
@@ -46,7 +47,7 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(Google.class);
 		
 		
-		*/
+		
 		
 	}
 }

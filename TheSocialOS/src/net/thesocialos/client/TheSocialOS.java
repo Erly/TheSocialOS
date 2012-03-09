@@ -102,7 +102,7 @@ public class TheSocialOS implements EntryPoint {
 					setCurrentUser(result);
 					//User listening to the channel push
 					
-					comet = new Comet(eventBus);
+					//comet = new Comet(eventBus);
 					//comet.listenToChannel(user);
 					createUI();
 				}

@@ -14,10 +14,6 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-
-
-import net.thesocialos.server.model.User;
 import net.thesocialos.server.utils.ChannelServer;
 
 
@@ -57,6 +53,7 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 	}
 	@Override
 	public List<Chat> examplePush(String text) {
+		/*
 		HttpSession session = perThreadRequest.get().getSession();
 		Objectify ofy = ObjectifyService.begin();
 		
@@ -64,7 +61,7 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 		List<Chat> list;
 		String uid = (String) session.getAttribute("uid");
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		User user = pm.getObjectById(User.class,uid);
+	//	User user = pm.getObjectById(User.class,uid);
 		ofy.put(new Chat(text,user.getEmail()));
 		LineChat lineChat;
 		if ((lineChat = ofy.get(LineChat.class,user.getKey()))==null){
@@ -98,10 +95,13 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 		//channelService.sendMessage(new ChannelMessage(channelKey, getMessageString()));
 		
 	//	ChannelServer.pushMessage(user,new MessageChatAvailableMessage())
+	 * 
+	 */
+		return null;
 	}
 	@Override
 	public List<Chat> getText() {
-		Query<Chat> chatQ;
+		/*Query<Chat> chatQ;
 		LineChat lineChat;
 		HttpSession session = perThreadRequest.get().getSession();
 		Objectify ofy = ObjectifyService.begin();
@@ -138,7 +138,8 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 		ofy.put(chat);
 		sendEvent(ofy);
 		
-		return true;
+		return true;*/
+		return null;
 	}
 	
 	private void sendEvent(Objectify ofy){
@@ -154,6 +155,11 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 		ChannelServer.PushallUsers(usersEmails, message);
 		
 		
+	}
+	@Override
+	public Boolean sendText(String text) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

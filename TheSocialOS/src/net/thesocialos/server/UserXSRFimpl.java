@@ -20,6 +20,7 @@ import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -75,13 +76,15 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		net.thesocialos.shared.model.Session session;
 		
 		try{
-			session = UserHelper.getSessionWithCookies(ids[1],ofy);
+			session = UserHelper.getSessionWithCookies(ids[0],ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
 			
 			UserHelper.saveUsertohttpSession(session, user,perThreadRequest.get().getSession());
 			return User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),user.getName(),
 					user.getLastName(),user.getRole());
 		}catch (NotFoundException e) {
+			return null;
+		}catch (Exception e){
 			return null;
 		}
 		
@@ -93,12 +96,13 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		
 		try{
 			ofy.get(User.class,user.getEmail());
-		}catch (NotFoundException e) {
 			throw new UserExistsException("Email '" + user.getEmail() + "' already registered");
+		}catch (NotFoundException e) {
+			user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
+			ofy.put(user);	// Save
 		}
 		//user = new User(email, BCrypt.hashpw(password, BCrypt.gensalt()), name, lastName); // Encrypt the password
-		user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
-		ofy.put(User.class);	// Save
+		
 		
 	}
 
@@ -117,7 +121,9 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		HttpSession session;
 		try{
 			user = UserHelper.getUserWithEmail(email, ofy);
+			Key<User> userKey = ObjectifyService.factory().getKey(user);
 			session = perThreadRequest.get().getSession();
+			
 		}catch (NotFoundException e){
 			return null;
 		}

@@ -9,11 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.allen_sauer.gwt.log.client.Log;
 
 
-import net.thesocialos.server.jdo.DeleteJDO;
-import net.thesocialos.server.jdo.SearchJDO;
-import net.thesocialos.server.model.Session;
 
-import net.thesocialos.server.model.User;
+import net.thesocialos.shared.model.User;
+
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.RpcTokenException;
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -123,7 +121,8 @@ public class ServiceSecurityLayer extends RemoteServiceServlet{
 			String sid = (String) getThreadLocalRequest().getSession().getAttribute("SID");
 			String uid = (String) getThreadLocalRequest().getSession().getAttribute("UID");
 			
-			return checkSession(sid,uid);
+		//	return checkSession(sid,uid);
+			return null;
 		
 	
 	}
@@ -134,7 +133,7 @@ public class ServiceSecurityLayer extends RemoteServiceServlet{
 	 * @return The user
 	 */
 	protected User checkSession(String sid, String uid){
-		
+		/*
 		
 		if (sid == null || uid == null){
 			return null;
@@ -142,9 +141,9 @@ public class ServiceSecurityLayer extends RemoteServiceServlet{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
 			User user = pm.getObjectById(User.class, uid);
-			Session session = new SearchJDO().searchSession(user, sid);
-			Log.debug(session.getUser().toString());
-			if (session != null){ 
+		//	Session session = new SearchJDO().searchSession(user, sid);
+			//Log.debug(session.getUser().toString());
+		//	if (session != null){ 
 				Log.debug("SecurityLayer-->usid: " + session.getSessionID());
 				Log.debug("SecurityLayer-->sid:  " + sid);
 				if (user == null || !session.getSessionID().equals(sid)) {//Verifing session id
@@ -162,7 +161,8 @@ public class ServiceSecurityLayer extends RemoteServiceServlet{
 		Log.debug("Session null");
 		return null;
 		
-		
+		*/
+		return null;
 	}
 	/**
 	 * The layer 

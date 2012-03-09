@@ -1,6 +1,7 @@
 package net.thesocialos.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -44,7 +45,7 @@ public class User implements Serializable {
 	
 	Key<OutConversation> offlineConversations[];
 	
-	List<Key<Session>> sessions;
+	List<Key<Session>> sessions = new ArrayList<Key<Session>>();
 	
 	Key<Account> accounts[];
 	
@@ -152,14 +153,7 @@ public class User implements Serializable {
 	public String getRole() {
 		return role;
 	}
-	/**
-	 * Give the 
-	 * @return
-	 */
-	public Key<User>  getKey(){
-		return ObjectifyService.factory().getKey(this);
-	}
-
+	
 	public static User toDTO(String email,String avatar,String background,String firstName,String lastName,String role){
 		return new User(email, avatar, background, firstName, lastName,role);
 	}

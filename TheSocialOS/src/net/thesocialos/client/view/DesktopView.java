@@ -35,8 +35,8 @@ public class DesktopView extends Composite implements Display {
 		userMenu.logout.setText(TheSocialOS.getConstants().logout());
 		User user = TheSocialOS.get().getCurrentUser();
 		// desktop.getElement().getStyle().setBackgroundImage("url(/images/defaultBG.png) no-repeat");
-		if (!user.getBackground().equals("data:image/png;base64,null"))
-			background.setUrl(user.getBackground());
+	//	if (!user.getBackground().equals("data:image/png;base64,null"))
+		//	background.setUrl(user.getBackground());
 	}
 
 	@Override

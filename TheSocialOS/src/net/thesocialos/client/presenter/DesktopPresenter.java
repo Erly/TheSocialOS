@@ -174,10 +174,14 @@ public class DesktopPresenter implements Presenter {
 	 * @param user The data transfer object of the user that is logged on.
 	 */
 	private void bindUserMenu(User user) { 
-		if (user.getAvatar().equals("data:image/png;base64,null"))
-			this.display.getAvatar().setUrl("./images/anonymous_avatar.png");
-		else
+		//TODO posible hack hay que revisar (En la url se puede meter cualquier cosa)
+		if (user.getAvatar() == null){
+				this.display.getAvatar().setUrl("./images/anonymous_avatar.png");
+		}else{
 			this.display.getAvatar().setUrl(user.getAvatar());
+			
+		}
+		
 		
 		this.display.getNameLabel().setText(user.getName() + " " + user.getLastName());
 		this.display.getTitleLabel().setText("User");

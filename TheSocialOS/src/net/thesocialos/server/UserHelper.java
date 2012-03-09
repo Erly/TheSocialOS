@@ -11,7 +11,6 @@ import javax.jdo.Transaction;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.thesocialos.server.jdo.SearchJDO;
 
 import net.thesocialos.server.utils.BCrypt;
 import net.thesocialos.server.utils.ChannelServer;
@@ -56,7 +55,8 @@ final static String userN = "user";
 	 * @throws NotFoundException
 	 */
 	public static synchronized net.thesocialos.shared.model.User getUserWithEmail(String email,Objectify ofy) throws NotFoundException{
-		return (net.thesocialos.shared.model.User) ofy.query(USER).filter("email", email);
+		return ofy.get(USER,email);
+		 
 	}
 	
 	/**
@@ -104,8 +104,9 @@ final static String userN = "user";
 	 * @return User model
 	 * @throws NotFoundException
 	 */
-	public static synchronized net.thesocialos.shared.model.User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{	
-		return ofy.get(User.class,session.getUser().getString());
+	public static synchronized net.thesocialos.shared.model.User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{
+		System.out.println(session.getUser().getName());
+		return ofy.get(User.class,session.getUser().getName());
 	}
 	/**
 	 * Return a user

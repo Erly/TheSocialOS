@@ -11,10 +11,8 @@ import com.googlecode.objectify.annotation.Parent;
 @Cached
 public class Session {
 
-	@Id Long id;
-	public Long getId() {
-		return id;
-	}
+	@Id String SessionID; //SessionID of the cookie
+	
 
 	public String getSessionID() {
 		return SessionID;
@@ -22,7 +20,7 @@ public class Session {
 
 	private Key<User> user;
 
-	String SessionID; //SessionID of the cookie
+	//String SessionID; 
 	Long expireDate; //Date to expire the session;
 	
 	
