@@ -17,6 +17,7 @@ import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.UserSummaryDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
+import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
@@ -74,7 +75,16 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		Objectify ofy = ObjectifyService.begin();
 		net.thesocialos.shared.model.User user;
 		net.thesocialos.shared.model.Session session;
-		
+		HttpSession httpSession = perThreadRequest.get().getSession();
+			if ((session = UserHelper.getSesssionHttpSession(httpSession)) != null
+					&& (user = UserHelper.getUserHttpSession(httpSession)) != null){
+				if (session.getSessionID().equalsIgnoreCase(ids[0])
+						&& session.getUser().getName().equalsIgnoreCase(user.getEmail())){
+					return User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),user.getName(),
+							user.getLastName(),user.getRole());
+				}
+				
+			}
 		try{
 			session = UserHelper.getSessionWithCookies(ids[0],ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
@@ -118,11 +128,11 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		long duration = 262045019291741L;//1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
 		Objectify ofy = ObjectifyService.begin();
 		User user;
-		HttpSession session;
+		HttpSession httpSession;
 		try{
 			user = UserHelper.getUserWithEmail(email, ofy);
-			Key<User> userKey = ObjectifyService.factory().getKey(user);
-			session = perThreadRequest.get().getSession();
+			
+			httpSession = perThreadRequest.get().getSession();
 			
 		}catch (NotFoundException e){
 			return null;
@@ -130,6 +140,9 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		if (BCrypt.checkpw(password, user.getPassword())== false) { // Encrypt the entered password and compare it with the stored one
 			return null;
 		}
+		Key<User> userKey = ObjectifyService.factory().getKey(user);
+		Session session = new Session(httpSession.getId(), 
+				System.currentTimeMillis() + duration,userKey);
 		/*
 		 * El usuario quiere seguir estando conectado
 		 */
@@ -139,11 +152,10 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 			duration = -1;
 		}
 		user.setLastTimeActive(System.currentTimeMillis()); //Set last time to user is login
-
-		session.setAttribute("user",user); //Store user
+		UserHelper.saveUsertohttpSession(session, user, httpSession); //Store user and session
 		ofy.put(user); //Save user
 		return new LoginResult(User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),
-				user.getName(),user.getLastName(),user.getRole()), session.getId(),duration);
+				user.getName(),user.getLastName(),user.getRole()), httpSession.getId(),duration);
 		 //UserHelper.login(email, password, keptloged, getThreadLocalRequest());
 		
 	}

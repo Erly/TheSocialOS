@@ -94,8 +94,7 @@ final static String userN = "user";
 	 * @throws NotFoundException
 	 */
 	public static synchronized net.thesocialos.shared.model.Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException{
-		return ofy.get(SESSION,sid);
-		
+		return ofy.get(SESSION,sid);	
 	}
 	/**
 	 * 
@@ -107,6 +106,22 @@ final static String userN = "user";
 	public static synchronized net.thesocialos.shared.model.User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{
 		System.out.println(session.getUser().getName());
 		return ofy.get(User.class,session.getUser().getName());
+	}
+	/**
+	 * Get User of Httpsession
+	 * @param httpSession
+	 * @return User Object
+	 */
+	public static synchronized User getUserHttpSession(HttpSession httpSession){
+		return (User) httpSession.getAttribute(userN);
+	}
+	/**
+	 * Get Session of HttpSession
+	 * @param httpSession
+	 * @return Session Object
+	 */
+	public static synchronized Session getSesssionHttpSession(HttpSession httpSession){
+		return (Session) httpSession.getAttribute(sessionN);
 	}
 	/**
 	 * Return a user
@@ -126,11 +141,10 @@ final static String userN = "user";
 	 * @param ofy
 	 * @return
 	 */
-	public static synchronized boolean addSessiontoUser (User user, HttpSession httpSession,
+	public static synchronized boolean addSessiontoUser (User user, Session session,
 			long duration,Objectify ofy){
-		Key<User> userKey = ObjectifyService.factory().getKey(user);
-		user.getSessions().add(ofy.put(new Session(httpSession.getId(), 
-				System.currentTimeMillis() + duration,userKey)));
+		
+		user.getSessions().add(ofy.put(session));
 		return true;
 	}
 	
