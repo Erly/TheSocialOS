@@ -41,6 +41,16 @@
   	<servlet-name>chatService</servlet-name>
   	<url-pattern>/thesocialos/chatService</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>oauth2callback</servlet-name>
+  	<servlet-class>net.thesocialos.server.Oauth2Callback</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>oauth2callback</servlet-name>
+  	<url-pattern>/</url-pattern>
+  </servlet-mapping>
   
   <servlet>
   	<servlet-name>uploadServlet</servlet-name>
