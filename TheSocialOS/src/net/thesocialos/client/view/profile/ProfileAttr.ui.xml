@@ -17,7 +17,7 @@
 	</ui:style>
 	<g:FocusPanel addStyleNames="{style.profileAttr}" ui:field="focusPanel">
 		<g:HorizontalPanel>
-			<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" addStyleNames="{style.profileAttrPadding}" width="80px">
+			<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" addStyleNames="{style.profileAttrPadding}" width="140px">
 				<g:Label ui:field="attrName" addStyleNames="{style.profileAttrName}" />
 			</g:VerticalPanel>
 			<g:VerticalPanel addStyleNames="{style.profileAttrPadding}">
