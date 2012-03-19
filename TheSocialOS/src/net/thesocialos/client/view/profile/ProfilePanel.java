@@ -1,8 +1,14 @@
 package net.thesocialos.client.view.profile;
 
+import java.util.Iterator;
+import java.util.List;
+
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
 import net.thesocialos.shared.UserDTO;
+import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.model.Facebook;
+import net.thesocialos.shared.model.Google;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
@@ -11,6 +17,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 public class ProfilePanel extends Composite implements Display {
 
@@ -21,6 +30,10 @@ public class ProfilePanel extends Composite implements Display {
 	@UiField ProfileAttr email;
 	@UiField ProfileAttr mobile;
 	@UiField ProfileAttr address;
+	@UiField ProfileAttr google;
+	@UiField ProfileAttr facebook;
+	Google googleAccount;
+	Facebook facebookAccount;
 
 	interface ProfilePanelUiBinder extends UiBinder<Widget, ProfilePanel> {
 	}
@@ -28,6 +41,16 @@ public class ProfilePanel extends Composite implements Display {
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 		User user = TheSocialOS.get().getCurrentUser();
+		List<Key<? extends Account>> accounts = user.getAccounts();
+		Iterator<Key<? extends Account>> it = accounts.iterator();
+		while (it.hasNext()) {
+			Key<? extends Account> key = it.next();
+			/*Account ac = ofy.get(key);
+			if (ac instanceof Google)
+				googleAccount = (Google)ac;
+			else if (ac instanceof Facebook)
+				facebookAccount = (Facebook)ac;*/
+		}
 		name.attrName.setText(TheSocialOS.getConstants().name());
 		name.attrValue.setText(user.getName() + " " + user.getLastName());
 		title.attrName.setText(TheSocialOS.getConstants().title());
@@ -38,7 +61,12 @@ public class ProfilePanel extends Composite implements Display {
 		mobile.attrValue.setText(user.getMobilePhone());
 		address.attrName.setText(TheSocialOS.getConstants().address());
 		address.attrValue.setText(user.getAddress());
-		
+		google.attrName.setText(TheSocialOS.getConstants().googleAccount());
+		if (null != googleAccount) {
+			google.attrValue.setText(user.getEmail());
+		} else {
+			google.setAttrLink("https://accounts.google.com/o/oauth2/auth?redirect_uri=http%3A%2F%2Fwww.thesocialos.net%2Foauth2callback&response_type=code&client_id=398121744591.apps.googleusercontent.com&approval_prompt=force&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar+https%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2F+https%3A%2F%2Fdocs.google.com%2Ffeeds%2F+https%3A%2F%2Fmail.google.com%2Fmail%2Ffeed%2Fatom+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.me+https%3A%2F%2Fpicasaweb.google.com%2Fdata%2F+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ftasks+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fgdata.youtube.com&access_type=offline", "Google Account login");
+		}
 	}
 
 	@Override

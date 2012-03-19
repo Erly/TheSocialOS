@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+<ui:style>
+		.label {
+			font-weight: bold;
+			color: white;
+			text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+			font-size: 12px;
+		}
+		.sublabel{
+			color: white;
+			text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+			font-size: 12px;
+		}
+	</ui:style>
+	<g:FocusPanel ui:field="panel">
+		<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" width="150px">
+			<g:Image ui:field="image" width="120px" height="120px" url="images/Folder.png" />
+			<g:Label ui:field="text" width="150px" text="new folder" addStyleNames="{style.label}" />
+			<g:Label ui:field="subText" width="150px" text="" addStyleNames="{style.sublabel}" />
+		</g:VerticalPanel>
+	</g:FocusPanel>
+</ui:UiBinder>

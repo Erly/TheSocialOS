@@ -1,15 +1,13 @@
 package net.thesocialos.shared.model;
 
-import java.sql.Date;
-
+import java.io.Serializable;
 import javax.persistence.Id;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
-import com.googlecode.objectify.annotation.Parent;
 
 @Cached
-public class Session {
+public class Session implements Serializable {
 
 	@Id String SessionID; //SessionID of the cookie
 	

@@ -2,23 +2,29 @@ package net.thesocialos.client.presenter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.shared.App;
-import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.model.User;
+import net.thesocialos.client.api.Picasa;
+import net.thesocialos.client.api.Picasa.Album;
+import net.thesocialos.client.app.Application;
 import net.thesocialos.client.app.ChatApp;
-import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.event.LogoutEvent;
+import net.thesocialos.client.view.Icon;
 import net.thesocialos.client.view.StartMenu;
 import net.thesocialos.client.view.StartMenuItem;
 import net.thesocialos.client.view.chat.ChatPanel;
+import net.thesocialos.client.view.window.FolderWindow;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -27,8 +33,11 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -119,7 +128,7 @@ public class DesktopPresenter implements Presenter {
 		appsData.add(new App("Grooveshark Player", "http://img696.imageshack.us/img696/1622/11groovesharkicon256x25.png", "http://www.grooveshark.com"));
 		appsData.add(new App("Sketchpad", "http://profile.ak.fbcdn.net/hprofile-ak-snc4/23295_128946130463344_2641_n.jpg", "http://mugtug.com/sketchpad"));
 		*/
-		ArrayList<IApplication> appsData = new ArrayList<IApplication>();
+		ArrayList<Application> appsData = new ArrayList<Application>();
 		appsData.add(new FrameApp("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png", "http://www.bitlet.org/"
 				,"1024px", "600px"));
 		appsData.add(new FrameApp("Grooveshark Player", "http://img696.imageshack.us/img696/1622/11groovesharkicon256x25.png", "http://www.grooveshark.com"
@@ -129,6 +138,38 @@ public class DesktopPresenter implements Presenter {
 		appsData.add(new ChatApp("Xmpp","http://www.bitrix.es/upload/iblock/e03/xmpp.gif",chatEventBus, new ChatPanel(),
 				"450px", "300px"));
 		bindStartMenu(appsData);
+		
+		Icon folder = new Icon(Icon.FOLDER_ICON, "Nueva carpeta");
+		this.display.getDesktop().add(folder, 10, 10);
+		
+		folder.addDoubleClickHandler(new DoubleClickHandler() {
+			
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				final Picasa picasa = new Picasa();
+				try {
+					picasa.getAlbumsRequest(new AsyncCallback<JavaScriptObject>() {
+						
+						@Override
+						public void onSuccess(JavaScriptObject result) {
+							JSONObject object = new JSONObject(result);
+							HashSet<Album> albums = picasa.getAlbums(object);
+							FolderWindow window = new FolderWindow("Picasa albums", albums);
+							window.show();
+						}
+						
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				} catch (RequestException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**
@@ -174,14 +215,12 @@ public class DesktopPresenter implements Presenter {
 	 * @param user The data transfer object of the user that is logged on.
 	 */
 	private void bindUserMenu(User user) { 
-		//TODO posible hack hay que revisar (En la url se puede meter cualquier cosa)
 		if (user.getAvatar() == null){
 				this.display.getAvatar().setUrl("./images/anonymous_avatar.png");
 		}else{
 			this.display.getAvatar().setUrl(user.getAvatar());
 			
-		}
-		
+		}		
 		
 		this.display.getNameLabel().setText(user.getName() + " " + user.getLastName());
 		this.display.getTitleLabel().setText("User");
@@ -217,8 +256,8 @@ public class DesktopPresenter implements Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				History.newItem("profile");
 				loseUserFocus();
+				History.newItem("profile");
 			}
 		});
 		
@@ -266,7 +305,7 @@ public class DesktopPresenter implements Presenter {
 		
 	}
 	
-	private void bindStartMenu(ArrayList<IApplication> appsData) {
+	private void bindStartMenu(ArrayList<Application> appsData) {
 		this.display.getStartMenu().setVisible(false);
 		VerticalPanel vPanel = ((StartMenu) this.display.getStartMenu()).getStartVPanel();
 		for (int i = 0; i < appsData.size(); i++) {

@@ -2,13 +2,12 @@ package net.thesocialos.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
 
-import com.google.appengine.api.datastore.Blob;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Unindexed;
 
@@ -35,9 +34,7 @@ public class User implements Serializable {
 	
 	String job;
 	
-	private Long lastTimeActive;
-	
-	
+	private Date lastTimeActive;
 	
 	Key<Group> groups[];
 	
@@ -47,9 +44,7 @@ public class User implements Serializable {
 	
 	List<Key<Session>> sessions = new ArrayList<Key<Session>>();
 	
-	Key<Account> accounts[];
-	
-	
+	List<Key<? extends Account>> accounts = new ArrayList<Key<? extends Account>>();
 
 	public User(String email, String password, String picture, String background,String firstName,String lastName,String role){
 		this.email = email;
@@ -61,8 +56,6 @@ public class User implements Serializable {
 		this.role = role;
 		
 	}
-	
-	
 	
 	public User(String email,String picture,String background,String firstName,String lastName,String role){
 		this.email = email;
@@ -110,15 +103,17 @@ public class User implements Serializable {
 		this.sessions.add(session);
 	}
 
-	public Key<Account>[] getAccounts() {
+	public List<Key<? extends Account>> getAccounts() {
 		return accounts;
 	}
 
-	public void setAccounts(Key<Account>[] accounts) {
+	public void setAccounts(ArrayList<Key<? extends Account>> accounts) {
 		this.accounts = accounts;
 	}
 
-	
+	public void addAccount(Key<? extends Account> account) {
+		accounts.add(account);
+	}
 
 	public String getEmail() {
 		return email;
@@ -162,20 +157,11 @@ public class User implements Serializable {
 		return address;
 	}
 
-	public Long getLastTimeActive() {
+	public Date getLastTimeActive() {
 		return lastTimeActive;
 	}
 
-
-
-	public void setLastTimeActive(Long lastTimeActive) {
+	public void setLastTimeActive(Date lastTimeActive) {
 		this.lastTimeActive = lastTimeActive;
 	}
-
-
-	
-	
-	
-	
-	
 }

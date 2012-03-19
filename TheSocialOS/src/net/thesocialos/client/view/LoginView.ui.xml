@@ -2,21 +2,32 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-		
+		.title {
+			margin-left: auto;
+			margin-right: auto;
+			width: 212px;
+			padding: 30px;
+		}
+		.copyright {
+			position: absolute;
+			bottom: 0px;
+		}
 	</ui:style>
 	<g:FlowPanel width="100%" height="100%" styleName="login">
-		<g:Label text="Social OS" horizontalAlignment="ALIGN_CENTER" styleName="title" />
+		<g:SimplePanel addStyleNames="{style.title}" >
+			<g:Image url="images/logo-big.png" altText="The Social OS" />
+		</g:SimplePanel>
 		<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" width="100%" verticalAlignment="ALIGN_MIDDLE">
 			<g:Label text="The email or password you entered is incorrect." styleName="incorrect" ui:field="lblIncorrect"/>
 			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
-				<g:Cell width="100px" horizontalAlignment="ALIGN_RIGHT">
-					<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_MIDDLE" spacing="10">
-						<g:Label text="Email &nbsp;&nbsp;" ui:field="lblEmail" horizontalAlignment="ALIGN_RIGHT"/>
+				<g:Cell width="80px" horizontalAlignment="ALIGN_RIGHT">
+					<g:VerticalPanel verticalAlignment="ALIGN_MIDDLE" spacing="10" horizontalAlignment="ALIGN_LEFT">
+						<g:Label text="Email" ui:field="lblEmail" horizontalAlignment="ALIGN_RIGHT"/>
 						<g:Label text="Password" ui:field="lblPass" horizontalAlignment="ALIGN_RIGHT"/>
 					</g:VerticalPanel>
 				</g:Cell>
 				<g:Cell width="150px">
-					<g:VerticalPanel verticalAlignment="ALIGN_MIDDLE">
+					<g:VerticalPanel verticalAlignment="ALIGN_MIDDLE" spacing="2">
 						<g:TextBox width="165px" ui:field="txtEmail"/>
 						<g:PasswordTextBox width="165px" ui:field="txtPass"/>
 					</g:VerticalPanel>
@@ -37,6 +48,12 @@
 			<g:HorizontalPanel spacing="10">
 				<g:Button ui:field="loginButton">Log In</g:Button>
 			</g:HorizontalPanel>
+		</g:VerticalPanel>
+		<g:VerticalPanel verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_CENTER" width="100%" addStyleNames="{style.copyright}">
+			<g:HorizontalPanel>
+				<g:Image url="http://code.google.com/appengine/images/appengine-silver-120x30.gif" />
+			</g:HorizontalPanel>
+			<g:Label text="This web is optimized for Google Chrome and Mozilla Firefox" />
 		</g:VerticalPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

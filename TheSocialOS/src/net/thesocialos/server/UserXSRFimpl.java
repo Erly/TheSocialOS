@@ -1,6 +1,7 @@
 package net.thesocialos.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
@@ -151,7 +152,7 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		}else{
 			duration = -1;
 		}
-		user.setLastTimeActive(System.currentTimeMillis()); //Set last time to user is login
+		user.setLastTimeActive(new Date()); //Set last time to user is login
 		UserHelper.saveUsertohttpSession(session, user, httpSession); //Store user and session
 		ofy.put(user); //Save user
 		return new LoginResult(User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),

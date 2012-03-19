@@ -49,7 +49,7 @@
   
   <servlet-mapping>
   	<servlet-name>oauth2callback</servlet-name>
-  	<url-pattern>/</url-pattern>
+  	<url-pattern>/oauth2callback</url-pattern>
   </servlet-mapping>
   
   <servlet>

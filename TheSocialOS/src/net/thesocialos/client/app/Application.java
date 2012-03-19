@@ -5,6 +5,11 @@ public abstract class Application implements IApplication {
 	private String name;
 	private String height;
 	private String widght;
+	
+	public Application(){
+		
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -17,9 +22,4 @@ public abstract class Application implements IApplication {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
-	public Application(){
-		
-	}
-	
 }

@@ -17,6 +17,9 @@
 
   <inherits name="gwtupload.GWTUpload"/>
   <stylesheet src="Upload.css"/>
+  
+  <inherits name="com.google.gwt.json.JSON" /> 
+  <inherits name="com.googlecode.objectify.Objectify" />
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='net.thesocialos.client.TheSocialOS'/>

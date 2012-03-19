@@ -1,13 +1,18 @@
 package net.thesocialos.client.api;
 
+import java.util.HashSet;
+
 import net.thesocialos.client.TheSocialOS;
 
-import com.google.gwt.dev.util.collect.HashSet;
-import com.google.gwt.http.client.Request;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.jsonp.client.JsonpRequestBuilder;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -19,7 +24,7 @@ public class Picasa {
 		
 	}
 	
-	public class Album {
+	public class Album implements Media {
 		private String id;
 		private String title;
 		private String summary;
@@ -30,7 +35,8 @@ public class Picasa {
 		/**
 		 * @return the id
 		 */
-		public String getId() {
+		@Override
+		public String getID() {
 			return id;
 		}
 		/**
@@ -42,7 +48,8 @@ public class Picasa {
 		/**
 		 * @return the title
 		 */
-		public String getTitle() {
+		@Override
+		public String getName() {
 			return title;
 		}
 		/**
@@ -66,6 +73,7 @@ public class Picasa {
 		/**
 		 * @return the thumbnailURL
 		 */
+		@Override
 		public String getThumbnailURL() {
 			return thumbnailURL;
 		}
@@ -78,7 +86,7 @@ public class Picasa {
 		/**
 		 * @return the numPhotos
 		 */
-		public int getNumPhotos() {
+		public int getElementCount() {
 			return numPhotos;
 		}
 		/**
@@ -110,49 +118,31 @@ public class Picasa {
 		 */
 		public void setCommentCount(int commentCount) {
 			this.commentCount = commentCount;
-		}
-		
+		}		
 	}
 	
-	public void getAlbumsRequest(RequestCallback cb) throws RequestException {
+	public void getAlbumsRequest(AsyncCallback<JavaScriptObject> cb) throws RequestException {
 		String picasaAPIurl = "http://picasaweb.google.com/data/feed/api/user/";
 		// Temporal way of obtaining the username until it is included in the UserDTO
 		String email = TheSocialOS.get().getCurrentUser().getEmail();
-		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, picasaAPIurl + email.substring(0, email.indexOf('@')));
-		builder.setCallback(cb);
-		Request request = builder.send();
+		String username = email.substring(0, email.indexOf('@'));
+				
+		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+		jsonp.requestObject(picasaAPIurl + username + "?alt=json-in-script", cb);
 	}
 	
-	public HashSet<Album> getAlbums(Response response) {
-		String text = response.getText();
-		Document xml = XMLParser.parse(text);
-		NodeList entries = xml.getElementsByTagName("entry");
+	public HashSet<Album> getAlbums(JSONObject object) {
 		HashSet<Album> albums = new HashSet<Album>();
-		for (int i = 0; i < entries.getLength(); i++) {
-			NodeList list = entries.item(i).getChildNodes();
+		JSONArray array = object.get("feed").isObject().get("entry").isArray();
+		for (int i = 0; i < array.size(); i++) {
 			Album album = new Album();
-			for (int j = 0; j < list.getLength(); j++) {
-				String name = list.item(j).getNodeName();
-				String value = list.item(j).getNodeValue();
-				System.out.println(list.item(j).toString());
-				if ("id".equals(name)) {
-					album.setId(value);
-				} else if ("title".equals(name)) {
-					album.setTitle(value);
-				} else if ("summary".equals(name)) {
-					album.setSummary(value);
-				} else if ("media:thumbail".equals(name)) {
-					String url = ((Element)list.item(j)).getAttribute("url");
-					album.setThumbnailURL(url);
-				} else if ("numphotos".equals(name)) {
-					album.setNumPhotos(Integer.parseInt(value));
-				} else if ("gphoto:commentingEnabled".equals(name)) {
-					album.setCommentingEnabled(Boolean.parseBoolean(value));
-				} else if ("commentCount".equals(name)) {
-					album.setCommentCount(Integer.parseInt(value));
-				}
-			}
+			album.id = array.get(i).isObject().get("id").isObject().get("$t").isString().stringValue();
+			album.title = array.get(i).isObject().get("title").isObject().get("$t").isString().stringValue();
+			album.summary = array.get(i).isObject().get("summary").isObject().get("$t").isString().stringValue();
+			album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
+			album.numPhotos = Integer.parseInt(array.get(i).isObject().get("gphoto$numphotos").isObject().get("$t").isNumber().toString());
+			album.commentingEnabled = Boolean.parseBoolean(array.get(i).isObject().get("gphoto$commentingEnabled").isObject().get("$t").isString().stringValue());
+			album.commentCount = Integer.parseInt(array.get(i).isObject().get("gphoto$commentCount").isObject().get("$t").isNumber().toString());
 			albums.add(album);
 		}
 		return albums;

@@ -94,4 +94,7 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("Address")
 	String address();
 
+	@DefaultStringValue("Google Account")
+	String googleAccount();
+
 }

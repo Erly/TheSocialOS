@@ -1,5 +1,7 @@
 package net.thesocialos.client;
 
+import net.thesocialos.client.event.AccountAddedEvent;
+import net.thesocialos.client.event.AccountAddedEventHandler;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.event.LogoutEventHandler;
 import net.thesocialos.client.event.MessageChatAvailableEvent;
@@ -135,12 +137,18 @@ public class AppController implements ValueChangeHandler<String> {
 				doLogout();
 			}
 		});
+		eventBus.addHandler(AccountAddedEvent.TYPE, new AccountAddedEventHandler() {
+			
+			@Override
+			public void onAcountAdd(AccountAddedEvent event) {
+				
+			}
+		});
 		eventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
 			
 			@Override
 			public void onContentAvailable(MessageChatAvailableEvent contentAvailableEvent) {
 				chatEventBus.fireEvent(new MessageChatAvailableEvent(contentAvailableEvent.getMessageChat()));
-				
 			}
 		});
 	}
@@ -157,9 +165,7 @@ public class AppController implements ValueChangeHandler<String> {
 			@Override
 			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				userService.logout(cb);
-			}
-
-			
+			}		
 		};
 		History.newItem("login");
 	}

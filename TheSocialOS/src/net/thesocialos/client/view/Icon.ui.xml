@@ -11,8 +11,8 @@
 	</ui:style>
 	<g:FocusPanel ui:field="panel">
 		<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" width="80px">
-			<g:Image ui:field="image" width="60px" height="60px" url="images/Folder.png"></g:Image>
-			<g:Label ui:field="text" width="80px" text="new folder" addStyleNames="{style.label}" ></g:Label>
+			<g:Image ui:field="image" width="60px" height="60px" url="images/Folder.png" />
+			<g:Label ui:field="text" width="80px" text="new folder" addStyleNames="{style.label}" />
 		</g:VerticalPanel>
 	</g:FocusPanel>
 </ui:UiBinder> 
