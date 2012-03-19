@@ -3,22 +3,24 @@ package net.thesocialos.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
-import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Facebook;
 import net.thesocialos.shared.model.Google;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
 public class Oauth2Response extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public Oauth2Response() {
 		// TODO Auto-generated constructor stub
@@ -44,8 +46,8 @@ public class Oauth2Response extends HttpServlet {
 			user.addAccount(ofy.put(facebookAccount));
 		}
 		
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.makePersistent(user);
+		ofy.put(user);
+		
 		try {
 			PrintWriter writer = response.getWriter();
 			writer.write("<Button onClick='javascript:window.close();'>Close window</Button>");

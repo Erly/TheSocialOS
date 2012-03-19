@@ -13,7 +13,7 @@ public class LoginResult implements Serializable {
 	
 	public LoginResult() {}
 	
-	public LoginResult(User user, String sessionID,Long duration) {
+	public LoginResult(User user, String sessionID, Long duration) {
 		this.user = user;
 		this.sessionID = sessionID;
 		this.duration = duration;
@@ -36,6 +36,4 @@ public class LoginResult implements Serializable {
 	public Long getDuration() {
 		return duration;
 	}
-
-
 }

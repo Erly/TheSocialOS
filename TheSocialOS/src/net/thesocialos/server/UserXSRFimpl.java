@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 
@@ -15,7 +14,6 @@ import net.thesocialos.server.utils.BCrypt;
 import net.thesocialos.shared.Chat;
 import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.LoginResult;
-import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.UserSummaryDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Session;
@@ -34,9 +32,9 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 	public void destroy(){
 		
 	}
+	
 	@Override
 	public void init(){
-		
 		try {
 			ObjectifyService.register(LineChat.class);
 			ObjectifyService.register(Chat.class);
@@ -66,8 +64,7 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		User friend = pm.getObjectById(User.class, id);
 		
-		return User.toDTO(friend.getEmail(),friend.getAvatar(),friend.getBackground(),friend.getName(),friend.getLastName()
-				,friend.getRole());
+		return User.toDTO(friend);
 	}
 
 	
@@ -81,8 +78,7 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 					&& (user = UserHelper.getUserHttpSession(httpSession)) != null){
 				if (session.getSessionID().equalsIgnoreCase(ids[0])
 						&& session.getUser().getName().equalsIgnoreCase(user.getEmail())){
-					return User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),user.getName(),
-							user.getLastName(),user.getRole());
+					return User.toDTO(user);
 				}
 				
 			}
@@ -91,8 +87,7 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 			user = UserHelper.getUserWithSession(session, ofy);
 			
 			UserHelper.saveUsertohttpSession(session, user,perThreadRequest.get().getSession());
-			return User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),user.getName(),
-					user.getLastName(),user.getRole());
+			return User.toDTO(user);
 		}catch (NotFoundException e) {
 			return null;
 		}catch (Exception e){
@@ -126,7 +121,7 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 	
 	@Override
 	public LoginResult login(String email, String password, boolean keptloged) {
-		long duration = 262045019291741L;//1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
+		long duration = 2592000000L;//1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
 		Objectify ofy = ObjectifyService.begin();
 		User user;
 		HttpSession httpSession;
@@ -143,7 +138,7 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		}
 		Key<User> userKey = ObjectifyService.factory().getKey(user);
 		Session session = new Session(httpSession.getId(), 
-				System.currentTimeMillis() + duration,userKey);
+				new Date(System.currentTimeMillis() + duration),userKey);
 		/*
 		 * El usuario quiere seguir estando conectado
 		 */
@@ -155,8 +150,7 @@ public class UserXSRFimpl extends XsrfProtectedServiceServlet implements UserSer
 		user.setLastTimeActive(new Date()); //Set last time to user is login
 		UserHelper.saveUsertohttpSession(session, user, httpSession); //Store user and session
 		ofy.put(user); //Save user
-		return new LoginResult(User.toDTO(user.getEmail(),user.getAvatar(),user.getBackground(),
-				user.getName(),user.getLastName(),user.getRole()), httpSession.getId(),duration);
+		return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 		 //UserHelper.login(email, password, keptloged, getThreadLocalRequest());
 		
 	}

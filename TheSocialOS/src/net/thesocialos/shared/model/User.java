@@ -17,7 +17,9 @@ public class User implements Serializable {
 
 
 	@Id private String email; //Email of the user
+	
 	@Unindexed private  String password; //Password of the user
+	
 	private String avatar; //Avatar of the user
 	
 	private String background; //Background of the user
@@ -149,8 +151,8 @@ public class User implements Serializable {
 		return role;
 	}
 	
-	public static User toDTO(String email,String avatar,String background,String firstName,String lastName,String role){
-		return new User(email, avatar, background, firstName, lastName,role);
+	public static User toDTO(User user) {
+		return new User(user.email, user.avatar, user.background, user.firstName, user.lastName, user.role);
 	}
 
 	public String getAddress() {
