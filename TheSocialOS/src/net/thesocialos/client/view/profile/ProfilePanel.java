@@ -11,7 +11,6 @@ import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
@@ -39,7 +38,6 @@ public class ProfilePanel extends Composite implements Display {
 		User user = TheSocialOS.get().getCurrentUser();
 		Map<Key<Account>, Account> accounts = TheSocialOS.get().getCurrentUserAccounts();
 		Iterator<Account> it = accounts.values().iterator();
-		Window.alert("Hay " + accounts.size() + " cuentas de usuario");
 		while (it.hasNext()) {
 			Account account = it.next();
 			if (account instanceof Google) {
@@ -47,7 +45,6 @@ public class ProfilePanel extends Composite implements Display {
 			} else if (account instanceof Facebook) {
 				facebookAccount = (Facebook) account;
 			}
-			Window.alert(account.getClass().getName());
 		}
 		name.attrName.setText(TheSocialOS.getConstants().name());
 		name.attrValue.setText(user.getName() + " " + user.getLastName());

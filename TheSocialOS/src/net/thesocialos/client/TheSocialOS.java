@@ -125,7 +125,6 @@ public class TheSocialOS implements EntryPoint {
 						@Override
 						public void onSuccess(Map<Key<Account>, Account> accounts) {
 							setCurrentUserAccounts(accounts);
-							Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
 							createUI();
 						}
 						

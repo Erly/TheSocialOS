@@ -83,31 +83,28 @@ public class Oauth2Response extends HttpServlet {
 		switch (type) {
 		case GOOGLE:
 			urlString = "https://www.googleapis.com/oauth2/v2/userinfo";
-			params = "access_token" + authToken;
+			params = "access_token=" + authToken;
 			jsonParameter = "email";
+			break;
 		case FACEBOOK:
 			urlString = "https://graph.facebook.com/me";
-			params = "access_token" + authToken;
+			params = "access_token=" + authToken;
 			jsonParameter = "username";
+			break;
 		case TWITTER:
 			urlString = "";
 			params = "" + authToken;
 			jsonParameter = "";
+			break;
 		case FLICKR:
 			urlString = "";
 			params = "" + authToken;
 			jsonParameter = "";
+			break;
 		}
 		try {
-			URL url = new URL(urlString);
+			URL url = new URL(urlString + "?" + params);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			
-			//post the parameters
-			conn.setDoOutput(true);
-			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-			wr.write(params);
-			wr.flush();
-			wr.close();
 			
 			// get the results
 			conn.connect();
@@ -123,8 +120,6 @@ public class Oauth2Response extends HttpServlet {
 			br.close();
 			JSONObject js = new JSONObject(results.toString());
 			username = js.getString(jsonParameter);
-			Log.warn(username);
-			GWT.log(username);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -72,9 +72,9 @@ public class AppController implements ValueChangeHandler<String> {
 				} else if (token.equals("profile-links")) {
 					loadProfileLinks(presenter);
 				} else if (token.equals("account-added")) {
-					token = lastToken;
-					History.newItem(lastToken);
-					eventBus.fireEvent(new AccountAddedEvent());
+					token = lastToken = "profile";
+					accountAdded();
+					//eventBus.fireEvent(new AccountAddedEvent());
 				} else if (token.equals("desktop")) {
 				} else {
 					History.newItem("desktop");
@@ -163,7 +163,7 @@ public class AppController implements ValueChangeHandler<String> {
 					@Override
 					public void onSuccess(Map<Key<Account>, Account> accounts) {
 						TheSocialOS.get().setCurrentUserAccounts(accounts);
-						Window.alert("Cuenta añadida");
+						//Window.alert("Cuenta añadida");
 						Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
 						TheSocialOS.profilePresenter.goProfile();
 					}
@@ -215,6 +215,31 @@ public class AppController implements ValueChangeHandler<String> {
 		} else {
 			History.fireCurrentHistoryState();
 		}
+	}
+	
+	private void accountAdded() {
+		new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+
+			@Override
+			protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
+				userService.getCloudAccounts(cb);
+			}
+			
+			@Override
+			public void onSuccess(Map<Key<Account>, Account> accounts) {
+				TheSocialOS.get().setCurrentUserAccounts(accounts);
+				//Window.alert("Cuenta añadida");
+				//Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
+				History.newItem("profile");
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log(caught.getMessage());
+				Window.alert(caught.getMessage());
+			}
+			
+		}.retry(3);
 	}
 
 	public SimpleEventBus getChatEventBus() {
