@@ -8,6 +8,10 @@
 	z-index: 9999;
 }
 
+.hand {
+	cursor: pointer; 
+}
+
 /** Example rules used by the template application (remove for your app) */
 h1 {
 	font-size: 2em;
@@ -54,7 +58,13 @@ h1 {
 }
 
 .login {
-	background-color: cornflowerblue;
+	background: cornflowerblue; /* Old browsers */
+	background: -moz-linear-gradient(top, white, cornflowerblue); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,white), color-stop(100%,cornflowerblue)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, white, cornflowerblue); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, white, cornflowerblue); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, white, cornflowerblue); /* IE10+ */
+	background: linear-gradient(top, white, cornflowerblue); /* W3C */
 }
 
 .incorrect {

@@ -3,8 +3,8 @@ package net.thesocialos.client.presenter;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
-import net.thesocialos.client.service.UserServiceXSRF;
-import net.thesocialos.client.service.UserServiceXSRFAsync;
+import net.thesocialos.client.service.UserService;
+import net.thesocialos.client.service.UserServiceAsync;
 
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.User;
@@ -26,7 +26,7 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class RegisterPresenter implements Presenter {
 	
-	private final UserServiceXSRFAsync userService = GWT.create(UserServiceXSRF.class);
+	private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	public interface Display {
 		HasClickHandlers getRegisterButton();
@@ -98,7 +98,7 @@ public class RegisterPresenter implements Presenter {
 			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				
 				userService.register(new User(display.getEmail().getValue().trim(),display.getPassword().getValue().trim(),null,null,
-						display.getName().getValue().trim(), display.getLastName().getValue().trim(),null), cb);
+						display.getName().getValue().trim(), display.getLastName().getValue().trim(), "User"), cb);
 			}
 			
 			@Override

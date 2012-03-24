@@ -4,6 +4,7 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.event.RPCInEvent;
 import net.thesocialos.client.event.RPCOutEvent;
 import net.thesocialos.client.service.ServiceAsync;
+import net.thesocialos.client.service.UserServiceAsync;
 
 
 import com.google.gwt.core.client.GWT;
@@ -24,17 +25,14 @@ import com.google.gwt.user.client.rpc.XsrfTokenServiceAsync;
 public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 
 	protected abstract void XSRFcallService(AsyncCallback<T> cb);
-	public XsrfTokenServiceAsync xsrf = (XsrfTokenServiceAsync)GWT.create(XsrfTokenService.class);
 	
-
+	private final XsrfTokenServiceAsync xsrf = (XsrfTokenServiceAsync)GWT.create(XsrfTokenService.class);
 	
-	public ServiceAsync user;
+	private final ServiceAsync service;
 	
-	public RPCXSRF(ServiceAsync user) {
-		this.user = user;
-	
+	public RPCXSRF(ServiceAsync service) {
+		this.service = service;
 	}
-
 
 	private void XSRFService(int retry) {
 		onRPCOut(); // RPC Working
@@ -42,8 +40,8 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 		xsrf.getNewXsrfToken(new AsyncCallback<XsrfToken>() {
 
 		  public void onSuccess(XsrfToken token) {
-			  onRPCIn(); // RPC finished working
-			    ((HasRpcToken) user).setRpcToken(token);
+			  //onRPCIn(); // RPC finished working
+			    ((HasRpcToken) service).setRpcToken(token);
 			    XSRFcallService(new AsyncCallback<T>() {
 
 				@Override
@@ -61,20 +59,16 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 					} catch (RequestTimeoutException timeoutException) {
 						Window.alert(TheSocialOS.getConstants().error_Timeout());
 					} catch (InvocationException invocationException) {
-						
-							RPCXSRF.this.onFailure(invocationException); // propagate exception
-						
+						RPCXSRF.this.onFailure(invocationException); // propagate exception
 					} catch (Throwable e) {
 						RPCXSRF.this.onFailure(e);
 					}
-					
 				}
 
 				@Override
 				public void onSuccess(T result) {
 					onRPCIn(); // RPC finished working
 					RPCXSRF.this.onSuccess(result);
-					
 				}
 			});
 
@@ -82,30 +76,24 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 
 		  public void onFailure(Throwable caught) {
 			  onRPCIn(); // RPC finished working
-		    try {
-		      throw caught;
-		    } catch (RpcTokenException e) {
+			  try {
+				  throw caught;
+			  } catch (RpcTokenException e) {
 		      // Can be thrown for several reasons:
 		      //   - duplicate session cookie, which may be a sign of a cookie
 		      //     overwrite attack
 		      //   - XSRF token cannot be generated because session cookie isn't
 		      //     present
-		    } catch (Throwable e) {
+			  } catch (Throwable e) {
 		      // unexpected
-		    }
+			  }
 		  }
-		});
-			
-			
+		});	
 	}
-	
 	
 	public void retry(int retry){
-		XSRFService(retry);
-		
+		XSRFService(retry);	
 	}
-	
-	
 	
 	/**
 	 * Fires an event indicating that the RPC request has finished.
@@ -119,8 +107,7 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 	 */
 	private void onRPCOut() {
 		TheSocialOS.get().getEventBus().fireEvent(new RPCOutEvent());
-	}
-	
+	}	
 
 	@Override
 	public void onFailure(Throwable caught) {

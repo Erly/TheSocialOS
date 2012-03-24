@@ -41,7 +41,6 @@ public class ProfilePanelPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				PopAsker asker = getNewValueAsker("Name");
-				
 			}
 		});
 		
@@ -58,7 +57,6 @@ public class ProfilePanelPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				PopAsker asker = getNewValueAsker("Mobile");
-				
 			}
 		});
 		
@@ -67,7 +65,6 @@ public class ProfilePanelPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				PopAsker asker = getNewValueAsker("Address");
-				
 			}
 		});
 	}

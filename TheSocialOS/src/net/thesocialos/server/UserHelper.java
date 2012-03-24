@@ -54,8 +54,8 @@ final static String userN = "user";
 	 * @return User object
 	 * @throws NotFoundException
 	 */
-	public static synchronized net.thesocialos.shared.model.User getUserWithEmail(String email,Objectify ofy) throws NotFoundException{
-		return ofy.get(USER,email);
+	public static synchronized User getUserWithEmail(String email,Objectify ofy) throws NotFoundException{
+		return ofy.get(USER, email);
 		 
 	}
 	
@@ -75,16 +75,16 @@ final static String userN = "user";
 	 * @param httpSession
 	 * @return
 	 */
-	public static synchronized net.thesocialos.shared.model.User getUserfromSession(HttpSession httpSession){
-		return (net.thesocialos.shared.model.User) httpSession.getAttribute(userN);
+	public static synchronized User getUserfromSession(HttpSession httpSession){
+		return (User) httpSession.getAttribute(userN);
 	}
 	/**
 	 * 
 	 * @param httpSession
 	 * @return
 	 */
-	public static synchronized net.thesocialos.shared.model.Session getSessionfromSession(HttpSession httpSession){
-		return (net.thesocialos.shared.model.Session) httpSession.getAttribute(sessionN);
+	public static synchronized Session getSessionfromSession(HttpSession httpSession){
+		return (Session) httpSession.getAttribute(sessionN);
 	}
 	/**
 	 * 
@@ -93,7 +93,7 @@ final static String userN = "user";
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public static synchronized net.thesocialos.shared.model.Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException{
+	public static synchronized Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException{
 		return ofy.get(SESSION,sid);	
 	}
 	/**
@@ -103,7 +103,7 @@ final static String userN = "user";
 	 * @return User model
 	 * @throws NotFoundException
 	 */
-	public static synchronized net.thesocialos.shared.model.User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{
+	public static synchronized User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{
 		System.out.println(session.getUser().getName());
 		return ofy.get(User.class,session.getUser().getName());
 	}
@@ -130,7 +130,7 @@ final static String userN = "user";
 	 * @return A user Class
 	 * @throws NotFoundException user has not found
 	 */
-	public static synchronized User autentificateUser (String email, Objectify ofy) throws NotFoundException{
+	public static synchronized User authenticateUser (String email, Objectify ofy) throws NotFoundException{
 		return ofy.get(User.class,email);
 	}
 	/**

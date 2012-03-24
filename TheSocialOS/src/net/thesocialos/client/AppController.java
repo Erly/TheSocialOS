@@ -1,42 +1,45 @@
 package net.thesocialos.client;
 
+import java.util.Map;
+import java.util.Set;
+
 import net.thesocialos.client.event.AccountAddedEvent;
 import net.thesocialos.client.event.AccountAddedEventHandler;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.event.LogoutEventHandler;
 import net.thesocialos.client.event.MessageChatAvailableEvent;
 import net.thesocialos.client.event.MessageChatAvailableEventHandler;
-import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.presenter.DesktopPresenter;
 import net.thesocialos.client.presenter.Presenter;
 import net.thesocialos.client.presenter.RegisterPresenter;
 import net.thesocialos.client.presenter.UserProfilePresenter;
-import net.thesocialos.client.service.UserServiceXSRF;
-import net.thesocialos.client.service.UserServiceXSRFAsync;
+import net.thesocialos.client.service.UserService;
+import net.thesocialos.client.service.UserServiceAsync;
 
 import net.thesocialos.client.view.DesktopView;
 import net.thesocialos.client.view.RegisterView;
 import net.thesocialos.client.view.profile.UserProfileView;
+import net.thesocialos.shared.model.Account;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.SimpleEventBus;
+import com.googlecode.objectify.Key;
 
 public class AppController implements ValueChangeHandler<String> {
 
-	private final UserServiceXSRFAsync userService = GWT.create(UserServiceXSRF.class);
+	private final UserServiceAsync userService = GWT.create(UserService.class);
 
 	private final SimpleEventBus eventBus;
 	
 	private SimpleEventBus chatEventBus = new SimpleEventBus();
 	
-	
-
 	private String lastToken = "";
 	
 	public AppController(SimpleEventBus eventBus) {
@@ -48,9 +51,11 @@ public class AppController implements ValueChangeHandler<String> {
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
 		if (token != null) {
-			
 			Presenter presenter = null;
-			if(TheSocialOS.get().getCurrentUser() != null)
+			if(TheSocialOS.get().getCurrentUser() != null) {
+				/*if (token.contains("profile")) {
+					lastToken = token;
+				}*/
 				if (token.equals("desktop") && !lastToken.contains("profile")) {
 					presenter = new DesktopPresenter(new SimpleEventBus[]{eventBus,chatEventBus}, new DesktopView());
 					presenter.go(TheSocialOS.get().root);
@@ -66,10 +71,15 @@ public class AppController implements ValueChangeHandler<String> {
 					loadProfileVideos(presenter);
 				} else if (token.equals("profile-links")) {
 					loadProfileLinks(presenter);
+				} else if (token.equals("account-added")) {
+					token = lastToken;
+					History.newItem(lastToken);
+					eventBus.fireEvent(new AccountAddedEvent());
+				} else if (token.equals("desktop")) {
 				} else {
 					History.newItem("desktop");
 				}
-			else
+			} else {
 				if (token.equals("register")) { 
 					presenter = new RegisterPresenter(eventBus, new RegisterView());
 					presenter.go(TheSocialOS.get().root);
@@ -79,6 +89,7 @@ public class AppController implements ValueChangeHandler<String> {
 					return;
 				} else
 					History.newItem("login");
+			}
 			lastToken = token;
 		}
 	}
@@ -137,13 +148,36 @@ public class AppController implements ValueChangeHandler<String> {
 				doLogout();
 			}
 		});
+		
 		eventBus.addHandler(AccountAddedEvent.TYPE, new AccountAddedEventHandler() {
 			
 			@Override
 			public void onAcountAdd(AccountAddedEvent event) {
-				
+				new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+
+					@Override
+					protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
+						userService.getCloudAccounts(cb);
+					}
+					
+					@Override
+					public void onSuccess(Map<Key<Account>, Account> accounts) {
+						TheSocialOS.get().setCurrentUserAccounts(accounts);
+						Window.alert("Cuenta añadida");
+						Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
+						TheSocialOS.profilePresenter.goProfile();
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						GWT.log(caught.getMessage());
+						Window.alert(caught.getMessage());
+					}
+					
+				}.retry(3);
 			}
 		});
+		
 		eventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
 			
 			@Override
@@ -165,7 +199,7 @@ public class AppController implements ValueChangeHandler<String> {
 			@Override
 			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				userService.logout(cb);
-			}		
+			}
 		};
 		History.newItem("login");
 	}

@@ -5,7 +5,6 @@
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
          
-
   <context-param>
   	<param-name>maxSize</param-name>
   	<param-value>2097152</param-value> <!-- 2MB --> 
@@ -19,19 +18,16 @@
   </context-param>
   
   <!-- Servlets -->
-  
-  
    <servlet>
-  	<servlet-name>RPCXSRF</servlet-name>
-  	<servlet-class>net.thesocialos.server.UserXSRFimpl</servlet-class>
+  	<servlet-name>userService</servlet-name>
+  	<servlet-class>net.thesocialos.server.UserServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>RPCXSRF</servlet-name>
-  	<url-pattern>/thesocialos/RPCXSRF</url-pattern>
-  	
-  	
+  	<servlet-name>userService</servlet-name>
+  	<url-pattern>/thesocialos/userService</url-pattern>
   </servlet-mapping>
+  
   <servlet>
   	<servlet-name>chatService</servlet-name>
   	<servlet-class>net.thesocialos.server.ChatServiceImpl</servlet-class>
@@ -53,6 +49,26 @@
   </servlet-mapping>
   
   <servlet>
+  	<servlet-name>oauth2callbackFB</servlet-name>
+  	<servlet-class>net.thesocialos.server.Oauth2CallbackFB</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>oauth2callbackFB</servlet-name>
+  	<url-pattern>/oauth2callbackFB</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>oauth2response</servlet-name>
+  	<servlet-class>net.thesocialos.server.Oauth2Response</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>oauth2response</servlet-name>
+  	<url-pattern>/oauth2response</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
   	<servlet-name>uploadServlet</servlet-name>
   	<!-- This is the default servlet, it puts files in session -->
   	<servlet-class>gwtupload.server.UploadServlet</servlet-class>
@@ -64,31 +80,26 @@
   </servlet-mapping>
   
   <servlet>
-  <servlet-name>xsrf</servlet-name>
-  <servlet-class>
-    com.google.gwt.user.server.rpc.XsrfTokenServiceServlet
-  </servlet-class>
-
-</servlet>
-<servlet-mapping>
-  <servlet-name>xsrf</servlet-name>
-  <url-pattern>/thesocialos/xsrf</url-pattern>
-</servlet-mapping>
-
-<context-param>
-  <param-name>gwt.xsrf.session_cookie_name</param-name>
-  <param-value>XSRF</param-value>
-</context-param>
- 
+  	<servlet-name>xsrf</servlet-name>
+  	<servlet-class>com.google.gwt.user.server.rpc.XsrfTokenServiceServlet</servlet-class>
+  </servlet>
   
- 
+  <servlet-mapping>
+  	<servlet-name>xsrf</servlet-name>
+  	<url-pattern>/thesocialos/xsrf</url-pattern>
+  </servlet-mapping>
+  
+  <context-param>
+  	<param-name>gwt.xsrf.session_cookie_name</param-name>
+  	<param-value>XSRF</param-value>
+  </context-param>
+  
  <!--  Register Objectify Database -->
- 
  <servlet>
-	<servlet-name>LoadOnStart</servlet-name>
+ 	<servlet-name>LoadOnStart</servlet-name>
 	<servlet-class>net.thesocialos.server.LoadOnStart</servlet-class>
 	<load-on-startup>1</load-on-startup>
-</servlet>
+ </servlet>
   
   <!-- Default page to serve -->
   <welcome-file-list>

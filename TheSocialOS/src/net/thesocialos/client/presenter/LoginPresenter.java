@@ -1,13 +1,17 @@
 package net.thesocialos.client.presenter;
 
 import java.util.Date;
+import java.util.Set;
+
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
-import net.thesocialos.client.service.UserServiceXSRF;
-import net.thesocialos.client.service.UserServiceXSRFAsync;
+import net.thesocialos.client.service.UserService;
+import net.thesocialos.client.service.UserServiceAsync;
 
 import net.thesocialos.shared.LoginResult;
+import net.thesocialos.shared.model.Account;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,7 +35,7 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class LoginPresenter implements Presenter {
 
-	private final UserServiceXSRFAsync userService = GWT.create(UserServiceXSRF.class);
+	private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	public interface Display {
 		HasClickHandlers getLoginButton();
@@ -83,10 +87,8 @@ public class LoginPresenter implements Presenter {
 			
 			@Override
 			protected void XSRFcallService(AsyncCallback<LoginResult> cb) {
-				
-				userService.login(LoginPresenter.this.display.getEmail().getValue().trim(),	LoginPresenter.this.display.getPassword().getValue().trim(),
-						display.getKeepLoged(),	cb);
-				
+				userService.login(LoginPresenter.this.display.getEmail().getValue().trim(),	
+						LoginPresenter.this.display.getPassword().getValue().trim(), display.getKeepLoged(), cb);
 			}
 			public void onSuccess(LoginResult result) {
 				if(result == null) {	// The user or password is incorrect 
@@ -96,14 +98,14 @@ public class LoginPresenter implements Presenter {
 				} else { // The user exists and the password is correct
 					TheSocialOS.get().setCurrentUser(result.getUser());
 					
-						if (result.getDuration() < 0){
-							Cookies.setCookie("sid", result.getSessionID());
-						}else{
-							Date expires = new Date(System.currentTimeMillis() + result.getDuration());
-							Cookies.setCookie("sid", result.getSessionID(), expires);
-						}
-						
-						
+					if (result.getDuration() < 0){
+						Cookies.setCookie("sid", result.getSessionID());
+					}else{
+						Date expires = new Date(System.currentTimeMillis() + result.getDuration());
+						Cookies.setCookie("sid", result.getSessionID(), expires);
+					}
+					TheSocialOS.get().refreshCloudAccounts();
+					
 					History.newItem("desktop");
 				}
 			}
@@ -111,10 +113,6 @@ public class LoginPresenter implements Presenter {
 				Window.alert("Error: " + caught.getMessage());
 			}
 		}.retry(3);
-	
-		
-		
-		
 	}
 
 }

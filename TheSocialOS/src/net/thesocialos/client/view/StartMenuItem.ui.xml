@@ -6,7 +6,7 @@
 			cursor: pointer;
 			color: white;
 			background-color: #050505;
-			display: inline-block
+			display: inline-block;
 		}
 		.itemPanel:hover {
 			color: black;

@@ -5,9 +5,13 @@ import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
 import com.googlecode.objectify.condition.IfDefault;
 
-@SuppressWarnings("serial")
 @Subclass
 public abstract class Oauth2 extends Account {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@NotSaved(IfDefault.class) static String CLIENTID;
 	@NotSaved(IfDefault.class) static final String PRODUCTNAME ="TheSocialOS";
 	

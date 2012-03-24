@@ -1,5 +1,12 @@
 package net.thesocialos.client;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import net.thesocialos.client.helper.Comet;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.i18n.SocialOSConstants;
@@ -7,11 +14,11 @@ import net.thesocialos.client.i18n.SocialOSMessages;
 import net.thesocialos.client.presenter.BusyIndicatorPresenter;
 import net.thesocialos.client.presenter.LoginPresenter;
 import net.thesocialos.client.presenter.UserProfilePresenter;
-import net.thesocialos.client.service.UserServiceXSRF;
-import net.thesocialos.client.service.UserServiceXSRFAsync;
+import net.thesocialos.client.service.UserService;
+import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.view.BusyIndicatorView;
 import net.thesocialos.client.view.LoginView;
-import net.thesocialos.shared.UserDTO;
+import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.User;
 //import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
@@ -23,6 +30,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.SimpleEventBus;
+import com.googlecode.objectify.Key;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -39,6 +47,7 @@ public class TheSocialOS implements EntryPoint {
 	BusyIndicatorPresenter busyIndicator = new BusyIndicatorPresenter(eventBus, new BusyIndicatorView());
 	static UserProfilePresenter profilePresenter = null;
 	private User user;
+	private Map<Key<Account>, Account> accounts = new HashMap<Key<Account>, Account>();
 	private Comet comet;
 	
 	// i18n initialization
@@ -49,7 +58,7 @@ public class TheSocialOS implements EntryPoint {
 	private String jSessionID, sessionID, userID;
 	
 	// RPC Services
-	private final UserServiceXSRFAsync userService = GWT.create(UserServiceXSRF.class);
+	private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	/**
 	 * This is the entry point method.
@@ -69,9 +78,9 @@ public class TheSocialOS implements EntryPoint {
 	private void getLoggedUser() {
 		jSessionID = Cookies.getCookie("JSESSIONID");
 		sessionID = Cookies.getCookie("sid");
-		userID = Cookies.getCookie("uid");
+		//userID = Cookies.getCookie("uid");
+		//final String[] ids = {sessionID, userID};
 		Cookies.setCookie("XSRF", "buu");
-		final String[] ids = {sessionID, userID};
 		
 		//Log.debug("CookieID -->" + sessionID);
 		/*
@@ -85,7 +94,11 @@ public class TheSocialOS implements EntryPoint {
 		}
 		*/
 		new RPCXSRF<User>(userService) {
-
+			
+			@Override
+			protected void XSRFcallService(AsyncCallback<User> cb) {
+				userService.getLoggedUser(sessionID, cb);
+			}
 			
 			@Override
 			public void onSuccess(User result) {
@@ -100,28 +113,51 @@ public class TheSocialOS implements EntryPoint {
 				} else {
 					// User is loged in
 					setCurrentUser(result);
+					//Window.alert("Cargando cuentas");
+					//refreshCloudAccounts();
+					new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+
+						@Override
+						protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
+							userService.getCloudAccounts(cb);
+						}
+						
+						@Override
+						public void onSuccess(Map<Key<Account>, Account> accounts) {
+							setCurrentUserAccounts(accounts);
+							Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
+							createUI();
+						}
+						
+						@Override
+						public void onFailure(Throwable caught) {
+							GWT.log(caught.getMessage());
+							Window.alert("An error ocurred loading your third party srvies accounts. Please contact with support@thesocialos.net so we can resolve it");
+							createUI();
+						}
+					}.retry(3);
+					/*Window.alert("" + TheSocialOS.get().accounts.size());
+					Collection<Account> accounts = TheSocialOS.get().accounts.values();
+					Iterator<Account> it = accounts.iterator();
+					while (it.hasNext()) {
+						Window.alert("Cuenta a punto de cargarse");
+						Window.alert(it.next().toString());
+						Window.alert("Cuenta cargada");
+					}*/
+					//createUI();
+					
 					//User listening to the channel push
 					
 					//comet = new Comet(eventBus);
 					//comet.listenToChannel(user);
-					createUI();
 				}
-				
 			}
+
 			@Override
 			public void onFailure(Throwable caught) {
 				GWT.log(caught.getMessage());
 				Window.alert(caught.getMessage());
-			}
-			@Override
-			protected void XSRFcallService(AsyncCallback<User> cb) {
-				
-					userService.getLoggedUser(ids, cb);
-					
-				
-				
-			}
-			
+			}			
 		}.retry(3);
 		
 	}
@@ -229,5 +265,40 @@ public class TheSocialOS implements EntryPoint {
 	 */
 	public void setDesktop(AbsolutePanel desktop) {
 		this.desktop = desktop;
+	}
+	
+	public void refreshCloudAccounts() {
+		new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+
+			@Override
+			protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
+				userService.getCloudAccounts(cb);
+			}
+			
+			@Override
+			public void onSuccess(Map<Key<Account>, Account> accounts) {
+				setCurrentUserAccounts(accounts);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log(caught.getMessage());
+				Window.alert(caught.getMessage());
+			}
+		}.retry(3);
+	}
+	
+	/**
+	 * @param accounts the accounts to set
+	 */
+	public void setCurrentUserAccounts(Map<Key<Account>, Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	/**
+	 * @return the accounts
+	 */
+	public Map<Key<Account>, Account> getCurrentUserAccounts() {
+		return accounts;
 	}
 }

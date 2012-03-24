@@ -49,7 +49,7 @@
 		</g:west>
 		<g:center>
 			<g:SimplePanel ui:field="mainPanel">
-				<d:ProfilePanel addStyleNames="{style.mainPanel}" />
+				<!-- <d:ProfilePanel addStyleNames="{style.mainPanel}" />  -->
 			</g:SimplePanel>
 		</g:center>
 	</g:DockLayoutPanel>

@@ -2,9 +2,13 @@ package net.thesocialos.shared.model;
 
 import com.googlecode.objectify.annotation.Subclass;
 
-@SuppressWarnings("serial")
 @Subclass
 public class FlickR extends Oauth1 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	void refresh() {
