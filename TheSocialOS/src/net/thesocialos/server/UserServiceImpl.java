@@ -53,25 +53,6 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public ArrayList<UserSummaryDTO> getFriendSummaries(String sid) {
-		ArrayList<UserSummaryDTO> userSummaries = new ArrayList<UserSummaryDTO>();
-		
-		// Convert friends to UserSummaryDTO and introduce them in an ArrayList
-		
-		// Return the ArrayList
-		return userSummaries;
-	}
-
-	@Override
-	public User getFriend(String id) {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		User friend = pm.getObjectById(User.class, id);
-		
-		return User.toDTO(friend);
-	}
-
 	
 	@Override
 	public User getLoggedUser(String sid) {
@@ -90,7 +71,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			session = UserHelper.getSessionWithCookies(sid, ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
 			user.setLastTimeActive(new Date());
-			UserHelper.saveUsertohttpSession(session, user, httpSession);
+			UserHelper.saveUsertohttpSession(session, user, (Objectify)httpSession.getAttribute("objetify"), httpSession);
 			ofy.put(user);
 			return User.toDTO(user);
 		}catch (NotFoundException e) {
@@ -149,7 +130,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		}
 		
 		user.setLastTimeActive(new Date()); //Set last time to user is login
-		UserHelper.saveUsertohttpSession(session, user, httpSession); //Store user and session
+		UserHelper.saveUsertohttpSession(session, user, (Objectify)httpSession.getAttribute("objetify"), httpSession); //Store user and session
 		ofy.put(user); //Save user
 		return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 	}

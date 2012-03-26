@@ -2,6 +2,7 @@ package net.thesocialos.client.api;
 
 import java.util.HashSet;
 
+import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -124,7 +125,7 @@ public class Picasa {
 	public void getAlbumsRequest(AsyncCallback<JavaScriptObject> cb) throws RequestException {
 		String picasaAPIurl = "http://picasaweb.google.com/data/feed/api/user/";
 		// Temporal way of obtaining the username until it is included in the UserDTO
-		String email = TheSocialOS.get().getCurrentUser().getEmail();
+		String email = CacheLayer.getUser(false).getEmail();
 		String username = email.substring(0, email.indexOf('@'));
 				
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();

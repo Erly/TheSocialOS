@@ -1,5 +1,6 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.DesktopPresenter.Display;
 import net.thesocialos.shared.UserDTO;
@@ -25,6 +26,7 @@ public class DesktopView extends Composite implements Display {
 	@UiField UserMenu userMenu;
 	@UiField AbsolutePanel desktop;
 	@UiField Image background;
+	@UiField AbsolutePanel absoluteDesktop;
 
 	interface DesktopUiBinder extends UiBinder<Widget, DesktopView> {
 	}
@@ -33,7 +35,7 @@ public class DesktopView extends Composite implements Display {
 		initWidget(uiBinder.createAndBindUi(this));
 		userMenu.editProfile.setText(TheSocialOS.getConstants().editProfile());
 		userMenu.logout.setText(TheSocialOS.getConstants().logout());
-		User user = TheSocialOS.get().getCurrentUser();
+		User user = CacheLayer.getUser(false);
 		// desktop.getElement().getStyle().setBackgroundImage("url(/images/defaultBG.png) no-repeat");
 	//	if (!user.getBackground().equals("data:image/png;base64,null"))
 		//	background.setUrl(user.getBackground());
@@ -127,5 +129,17 @@ public class DesktopView extends Composite implements Display {
 	@Override
 	public HasClickHandlers getSocialOSButton() {
 		return desktopBar.socialOSButton;
+	}
+
+	@Override
+	public DesktopBar getDesktopBar() {
+		// TODO Auto-generated method stub
+		return desktopBar;
+	}
+
+	@Override
+	public AbsolutePanel getScreen() {
+		// TODO Auto-generated method stub
+		return absoluteDesktop;
 	}
 }

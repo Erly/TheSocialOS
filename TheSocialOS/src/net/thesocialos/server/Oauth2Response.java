@@ -48,7 +48,7 @@ public class Oauth2Response extends HttpServlet {
 		String serviceName = request.getParameter("serviceName");
 		//String uid = request.getParameter("uid");
 		Objectify ofy = ObjectifyService.begin();
-		Session session = UserHelper.getSessionfromSession(request.getSession());
+		Session session = UserHelper.getSesssionHttpSession(request.getSession());
 		User user = UserHelper.getUserWithSession(session, ofy);
 		if ("google".equalsIgnoreCase(serviceName)) {
 			Google googleAccount = new Google();
@@ -64,7 +64,7 @@ public class Oauth2Response extends HttpServlet {
 			user.addAccount(ofy.put(facebookAccount));
 		}
 		
-		UserHelper.saveUsertohttpSession(session, user, request.getSession());
+		UserHelper.saveUsertohttpSession(session, user, (Objectify)request.getSession().getAttribute("objetify"), request.getSession());
 		ofy.put(user);
 		
 		try {

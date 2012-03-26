@@ -19,6 +19,7 @@ import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.view.BusyIndicatorView;
 import net.thesocialos.client.view.LoginView;
 import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.model.User;
 //import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
@@ -112,7 +113,7 @@ public class TheSocialOS implements EntryPoint {
 						History.newItem("login");
 				} else {
 					// User is loged in
-					setCurrentUser(result);
+					CacheLayer.setUser(result);
 					//Window.alert("Cargando cuentas");
 					//refreshCloudAccounts();
 					new RPCXSRF<Map<Key<Account>, Account>>(userService) {
@@ -135,14 +136,7 @@ public class TheSocialOS implements EntryPoint {
 							createUI();
 						}
 					}.retry(3);
-					/*Window.alert("" + TheSocialOS.get().accounts.size());
-					Collection<Account> accounts = TheSocialOS.get().accounts.values();
-					Iterator<Account> it = accounts.iterator();
-					while (it.hasNext()) {
-						Window.alert("Cuenta a punto de cargarse");
-						Window.alert(it.next().toString());
-						Window.alert("Cuenta cargada");
-					}*/
+					
 					//createUI();
 					
 					//User listening to the channel push
@@ -169,29 +163,6 @@ public class TheSocialOS implements EntryPoint {
 			History.newItem("desktop");
 		appControler.go();
 		
-	}
-	
-	/**
-	 * Sets the current user data transfer object so the rest of the application can use it.
-	 * @param loggedUserDTO The current user data transfer object
-	 */
-	public void setCurrentUser(User loggedUser) {
-		// Window.alert("Tu usuario es: " + loggedUserDTO.getEmail());
-		user = loggedUser;
-	}
-	
-	/**
-	 * @return The current user data transfer object 
-	 */
-	public User getCurrentUser() {
-		return user;
-	}
-	
-	/**
-	 * Deletes the current user data transfer object. Necessary for logging out.
-	 */
-	public void deleteCurrentUser() {
-		user = null;
 	}
 	
 	/**

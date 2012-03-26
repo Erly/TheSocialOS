@@ -1,5 +1,6 @@
 package net.thesocialos.client.presenter;
 
+import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.view.profile.ProfilePanel;
@@ -54,7 +55,7 @@ public class UserProfilePresenter implements Presenter {
 	 * Binds this presenter to its view, loads data on its elements and adds its handlers.
 	 */
 	public void bind() {
-		String imageUrl = TheSocialOS.get().getCurrentUser().getAvatar();
+		String imageUrl = CacheLayer.getUser(false).getAvatar();
 		if (imageUrl.equals("data:image/png;base64,null"))
 			this.display.getAvatar().setUrl("./images/anonymous_avatar.png");
 		else

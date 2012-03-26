@@ -1,8 +1,6 @@
 package net.thesocialos.client;
 
 import java.util.Map;
-import java.util.Set;
-
 import net.thesocialos.client.event.AccountAddedEvent;
 import net.thesocialos.client.event.AccountAddedEventHandler;
 import net.thesocialos.client.event.LogoutEvent;
@@ -52,10 +50,7 @@ public class AppController implements ValueChangeHandler<String> {
 		String token = event.getValue();
 		if (token != null) {
 			Presenter presenter = null;
-			if(TheSocialOS.get().getCurrentUser() != null) {
-				/*if (token.contains("profile")) {
-					lastToken = token;
-				}*/
+			if(CacheLayer.getUser(true) != null) {
 				if (token.equals("desktop") && !lastToken.contains("profile")) {
 					presenter = new DesktopPresenter(new SimpleEventBus[]{eventBus,chatEventBus}, new DesktopView());
 					presenter.go(TheSocialOS.get().root);
@@ -193,7 +188,7 @@ public class AppController implements ValueChangeHandler<String> {
 	protected void doLogout() {
 		Cookies.removeCookie("sid");
 		Cookies.removeCookie("uid");
-		TheSocialOS.get().deleteCurrentUser();
+		CacheLayer.deleteUser();
 		new RPCXSRF<Void>(userService) {
 
 			@Override

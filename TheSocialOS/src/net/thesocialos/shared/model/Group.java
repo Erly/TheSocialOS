@@ -8,11 +8,34 @@ import com.googlecode.objectify.annotation.Cached;
 public class Group {
 	
 	@Id Long id;
-	String name; //Group name
-	Key<User> owner; //Administrator of this group
-
+	private String name; //Group name
+	private Key<User> owner; //Administrator of this group
+	
 	
 	public Group(){
 		
 	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public Key<User> getOwner() {
+		return owner;
+	}
+
+
+	public void setOwner(Key<User> owner) {
+		this.owner = owner;
+	}
+	
+	public Long getId(){
+		return id;
+	}
+
+
+	
+	
 }

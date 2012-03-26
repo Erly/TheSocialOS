@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	
+		<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER">
+			<g:Label text="Ejemplo: " ui:field="lblLabel" width="64px" horizontalAlignment="ALIGN_LEFT"/>
+			<g:Label text="HOla hola hola HOLAAA" ui:field="lblText" height="" width="100px" horizontalAlignment="ALIGN_LEFT"/>
+		</g:HorizontalPanel>
+		
+
+</ui:UiBinder> 

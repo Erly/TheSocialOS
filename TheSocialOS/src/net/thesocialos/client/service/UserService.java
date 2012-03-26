@@ -23,10 +23,6 @@ import com.googlecode.objectify.Key;
 @XsrfProtect
 public interface UserService extends RemoteService {
 	
-	ArrayList<UserSummaryDTO> getFriendSummaries(String sid);
-	
-	User getFriend(String id);
-	
 	LoginResult login(String email, String password, boolean keeploged);
 	
 	void register(User user) throws UserExistsException;

@@ -2,6 +2,7 @@ package net.thesocialos.server;
 
 
 import java.util.Date;
+import java.util.List;
 
 import javax.jdo.JDOCanRetryException;
 import javax.jdo.JDOException;
@@ -41,12 +42,8 @@ final static Class<net.thesocialos.shared.model.Session> SESSION = net.thesocial
 //final names;
 final static String sessionN = "session";
 final static String userN = "user";
+final static String OBJECITIFY = "objetify";
 
-
-
-	
-	
-	
 	/**
 	 * Return the object user
 	 * @param email
@@ -65,11 +62,13 @@ final static String userN = "user";
 	 * @param httpSession HttpSession
 	 * @return
 	 */
-	public static synchronized boolean saveUsertohttpSession(net.thesocialos.shared.model.Session session,net.thesocialos.shared.model.User user, HttpSession httpSession){
+	public static synchronized boolean saveUsertohttpSession(Session session, User user,Objectify ofy, HttpSession httpSession){
 		httpSession.setAttribute(userN, user);
 		httpSession.setAttribute(sessionN, session);
+		httpSession.setAttribute(OBJECITIFY, ofy);
 		return true;
 	}
+	
 	/**
 	 * 
 	 * @param httpSession
@@ -78,14 +77,9 @@ final static String userN = "user";
 	public static synchronized User getUserfromSession(HttpSession httpSession){
 		return (User) httpSession.getAttribute(userN);
 	}
-	/**
-	 * 
-	 * @param httpSession
-	 * @return
-	 */
-	public static synchronized Session getSessionfromSession(HttpSession httpSession){
-		return (Session) httpSession.getAttribute(sessionN);
-	}
+	
+
+	
 	/**
 	 * 
 	 * @param sid
@@ -96,6 +90,7 @@ final static String userN = "user";
 	public static synchronized Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException{
 		return ofy.get(SESSION,sid);	
 	}
+	
 	/**
 	 * 
 	 * @param uid
@@ -107,6 +102,7 @@ final static String userN = "user";
 		System.out.println(session.getUser().getName());
 		return ofy.get(User.class,session.getUser().getName());
 	}
+	
 	/**
 	 * Get User of Httpsession
 	 * @param httpSession
@@ -115,6 +111,7 @@ final static String userN = "user";
 	public static synchronized User getUserHttpSession(HttpSession httpSession){
 		return (User) httpSession.getAttribute(userN);
 	}
+	
 	/**
 	 * Get Session of HttpSession
 	 * @param httpSession
@@ -123,6 +120,7 @@ final static String userN = "user";
 	public static synchronized Session getSesssionHttpSession(HttpSession httpSession){
 		return (Session) httpSession.getAttribute(sessionN);
 	}
+	
 	/**
 	 * Return a user
 	 * @param email
@@ -133,6 +131,7 @@ final static String userN = "user";
 	public static synchronized User authenticateUser (String email, Objectify ofy) throws NotFoundException{
 		return ofy.get(User.class,email);
 	}
+	
 	/**
 	 * Create and add a new Session on one User
 	 * @param user
@@ -147,8 +146,6 @@ final static String userN = "user";
 		user.getSessions().add(ofy.put(session));
 		return true;
 	}
-	
-	
 	
 	/**
 	 * @param session of one user
@@ -173,4 +170,10 @@ final static String userN = "user";
 	}
 	
 
+	/*
+	 * Friends Code
+	 */
+	public static Objectify getBBDD(HttpSession session){
+		return (Objectify) session.getAttribute(OBJECITIFY);
+	}
 }

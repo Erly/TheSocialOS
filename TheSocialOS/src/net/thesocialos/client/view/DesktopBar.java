@@ -25,6 +25,10 @@ public class DesktopBar extends Composite {
 	@UiField FocusPanel userPanel;
 	@UiField FocusPanel startButton;
 	@UiField FocusPanel socialOSButton;
+	@UiField FocusPanel focusContacts;
+	@UiField Label lblContacts;
 
-
+	public FocusPanel getFocusContact(){
+		return focusContacts;
+	}
 }

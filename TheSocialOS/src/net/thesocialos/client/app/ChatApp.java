@@ -41,7 +41,6 @@ public class ChatApp extends Application {
 		this.panel = panel;
 		bind();
 	}
-	
 	public interface Display {
 		
 		Button getSendButton();

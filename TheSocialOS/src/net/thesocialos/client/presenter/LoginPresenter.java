@@ -3,8 +3,8 @@ package net.thesocialos.client.presenter;
 import java.util.Date;
 import java.util.Set;
 
+import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
@@ -96,8 +96,8 @@ public class LoginPresenter implements Presenter {
 					incorrect.setVisible(true);
 					
 				} else { // The user exists and the password is correct
-					TheSocialOS.get().setCurrentUser(result.getUser());
-					
+					//TheSocialOS.get().setCurrentUser(result.getUser());
+					CacheLayer.setUser(result.getUser());
 					if (result.getDuration() < 0){
 						Cookies.setCookie("sid", result.getSessionID());
 					}else{

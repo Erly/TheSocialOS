@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
+import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.shared.model.User;
 import net.thesocialos.client.api.Picasa;
@@ -11,8 +12,12 @@ import net.thesocialos.client.api.Picasa.Album;
 import net.thesocialos.client.app.Application;
 import net.thesocialos.client.app.ChatApp;
 import net.thesocialos.client.app.FrameApp;
+import net.thesocialos.client.desktop.DesktopEventOnOpen;
+import net.thesocialos.client.desktop.DesktopManager;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.view.Icon;
+import net.thesocialos.client.view.ContactsView;
+import net.thesocialos.client.view.DesktopBar;
 import net.thesocialos.client.view.StartMenu;
 import net.thesocialos.client.view.StartMenuItem;
 import net.thesocialos.client.view.chat.ChatPanel;
@@ -55,12 +60,21 @@ public class DesktopPresenter implements Presenter {
 	
 	private SimpleEventBus eventBus;
 	private SimpleEventBus chatEventBus;
+	/*
+	 * All declarations of the desktop 
+	 */
+	ContactsPresenter contacsPresenter;
+	
 	private AbsolutePanel desktop;
 	private boolean startMenuFocused = false;
 	private boolean userMenuFocused = false;
+	DesktopManager desktopManager;
+	//ContactsPresenter contactsPresenter = new ContactsPresenter(new ContactsView());
 	
 	public interface Display {
 		AbsolutePanel getDesktop();
+		
+		AbsolutePanel getScreen();
 		
 		Widget getUserMenu();
 		
@@ -97,6 +111,8 @@ public class DesktopPresenter implements Presenter {
 		FocusPanel getLogoutPanel();
 		
 		Widget asWidget();
+		
+		DesktopBar getDesktopBar();
 	}
 	
 	private final Display display;
@@ -116,18 +132,16 @@ public class DesktopPresenter implements Presenter {
 		desktop = this.display.getDesktop();
 		desktop.getElement().getStyle().clearPosition();
 		TheSocialOS.get().setDesktop(desktop);
-		
-		User user = TheSocialOS.get().getCurrentUser();
+		//Run the desktopManager
+		this.desktopManager = new DesktopManager(eventBus, display.getScreen(), display.getDesktop());
+		User user = CacheLayer.getUser(true);
 		
 		bindDesktopBar(user);
 		bindUserMenu(user);
 		bindSocialOS();
-		// Populate the Star Menu
-		/*ArrayList<App> appsData = new ArrayList<App>();
-		appsData.add(new App("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png", "http://www.bitlet.org/"));
-		appsData.add(new App("Grooveshark Player", "http://img696.imageshack.us/img696/1622/11groovesharkicon256x25.png", "http://www.grooveshark.com"));
-		appsData.add(new App("Sketchpad", "http://profile.ak.fbcdn.net/hprofile-ak-snc4/23295_128946130463344_2641_n.jpg", "http://mugtug.com/sketchpad"));
-		*/
+		bindContacts();
+
+		// Populate the Star Menu		
 		ArrayList<Application> appsData = new ArrayList<Application>();
 		appsData.add(new FrameApp("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png", "http://www.bitlet.org/"
 				,"1024px", "600px"));
@@ -219,7 +233,6 @@ public class DesktopPresenter implements Presenter {
 				this.display.getAvatar().setUrl("./images/anonymous_avatar.png");
 		}else{
 			this.display.getAvatar().setUrl(user.getAvatar());
-			
 		}		
 		
 		this.display.getNameLabel().setText(user.getName() + " " + user.getLastName());
@@ -375,6 +388,26 @@ public class DesktopPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				errorWindow.center();
+			}
+		});
+	}
+	
+	private void bindContacts(){
+		display.getDesktopBar().getFocusContact().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+				//desktop.add(contactsPresenter.getContactsPresenter());
+				System.out.println("boton pulsado");
+				if (contacsPresenter == null){
+					contacsPresenter = new ContactsPresenter(new ContactsView());
+				}
+				eventBus.fireEvent(new DesktopEventOnOpen(contacsPresenter));
+				//display.getScreen().add(contactsPresenter.display.asWidget());
+				//contactsPresenter.display.asWidget().setVisible(true);
+				//contactsPresenter.go(null);
 			}
 		});
 	}

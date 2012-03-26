@@ -14,10 +14,6 @@ import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.User;
 
 public interface UserServiceAsync extends ServiceAsync{
-
-	void getFriendSummaries(String sid, AsyncCallback<ArrayList<UserSummaryDTO>> callback);
-	
-	void getFriend(String id, AsyncCallback<User> callback);
 	
 	void login(String email, String password,boolean keeploged, AsyncCallback<LoginResult> callback);
 	
