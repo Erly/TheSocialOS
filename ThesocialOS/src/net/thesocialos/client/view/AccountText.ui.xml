@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+		.vertical-aling{
+			vertical-align: text-bottom;
+		}
+	</ui:style>
+		<g:HorizontalPanel spacing="5" height="30px" width="100%" horizontalAlignment="ALIGN_CENTER">
+			<g:VerticalPanel width="160px">
+				<g:Label height="5px"/>
+				<g:Label text="Nombre Cuenta:" ui:field="lblAccount"/>
+			</g:VerticalPanel>
+			<g:Button ui:field="btnAccount" text="@Vssnake" height="30px" width="100px"/>
+		</g:HorizontalPanel>
+		
+</ui:UiBinder> 

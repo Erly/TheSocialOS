@@ -1,0 +1,2 @@
+serviceClass: net.thesocialos.client.service.ChatService
+path: A7008175A605EA92EBF00C731C1BEACF.gwt.rpc

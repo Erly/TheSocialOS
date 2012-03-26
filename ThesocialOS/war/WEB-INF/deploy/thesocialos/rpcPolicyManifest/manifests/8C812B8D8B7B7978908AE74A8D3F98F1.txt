@@ -1,0 +1,2 @@
+serviceClass: net.thesocialos.client.service.ContacsService
+path: 6B4FA21A8EEDB6B198F2C6E716FC7386.gwt.rpc

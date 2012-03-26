@@ -1,0 +1,2 @@
+serviceClass: net.thesocialos.client.service.UserServiceXSRF
+path: C8AEF94050401DB34B5CBBDC4B6F561F.gwt.rpc
