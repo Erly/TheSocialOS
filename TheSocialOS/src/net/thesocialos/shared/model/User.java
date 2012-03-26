@@ -46,6 +46,8 @@ public class User implements Serializable {
 	
 	List<Key<Session>> sessions = new ArrayList<Key<Session>>();
 	
+	List<Key<User>> contacts = new ArrayList<Key<User>>();
+	
 	List<Key<? extends Account>> accounts = new ArrayList<Key<? extends Account>>();
 
 	public User(String email, String password, String picture, String background,String firstName,String lastName,String role){
@@ -74,6 +76,7 @@ public class User implements Serializable {
 	}
 	
 	public Key<Group>[] getGroups() {
+		
 		return groups;
 	}
 
@@ -83,6 +86,9 @@ public class User implements Serializable {
 
 	public Key<Conversation>[] getConversations() {
 		return conversations;
+	}
+	public List<Key<User>> getContacts(){
+		return contacts;
 	}
 
 	public void setConversations(Key<Conversation>[] conversations) {
