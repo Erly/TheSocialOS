@@ -8,8 +8,8 @@
 	</ui:style>
 	
 		<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER">
-			<g:Label text="Ejemplo: " ui:field="lblLabel" width="64px" horizontalAlignment="ALIGN_LEFT"/>
-			<g:Label text="HOla hola hola HOLAAA" ui:field="lblText" height="" width="100px" horizontalAlignment="ALIGN_LEFT"/>
+			<g:Label text="Ejemplo: " ui:field="lblLabel"  horizontalAlignment="ALIGN_LEFT"/>
+			<g:Label text="HOla" ui:field="lblText" horizontalAlignment="ALIGN_LEFT"/>
 		</g:HorizontalPanel>
 		
 

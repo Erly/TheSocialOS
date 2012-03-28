@@ -23,8 +23,10 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
-public class ChatApp extends Application {
+public class ChatApp implements IApplication {
 
+	private String name;
+	private String image;
 	Display panel;
 	String message= "hellow World";
 	SimpleEventBus chatEventBus;
@@ -165,5 +167,29 @@ public class ChatApp extends Application {
 	
 	public void setWidth(String width) {
 		this.width = width;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public String getImage() {
+		// TODO Auto-generated method stub
+		return image;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+		
+	}
+
+	@Override
+	public void setImage(String image) {
+		this.image = image;
+		
 	}
 }

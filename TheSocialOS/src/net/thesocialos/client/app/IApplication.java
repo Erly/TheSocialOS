@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public interface IApplication {
 	
+	
 	public Widget run();
 	
 	public void setSize(String width, String height);
@@ -16,4 +17,8 @@ public interface IApplication {
 	public String getWidth();
 	
 	public String getHeight();
+	
+	public void setName(String name);
+	
+	public void setImage(String image);
 }

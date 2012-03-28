@@ -3,8 +3,10 @@ package net.thesocialos.client.app;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Widget;
 
-public class FrameApp extends Application{
+public class FrameApp implements IApplication{
 	
+	private String name;
+	private String image;
 	private String url;
 	private Frame frame;
 	private String height;
@@ -56,5 +58,29 @@ public class FrameApp extends Application{
 	
 	public void setWidth(String width) {
 		this.width = width;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public String getImage() {
+		// TODO Auto-generated method stub
+		return image;
+	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		this.name = name;
+	}
+
+	@Override
+	public void setImage(String image) {
+		// TODO Auto-generated method stub
+		this.image = image;
 	}
 }
