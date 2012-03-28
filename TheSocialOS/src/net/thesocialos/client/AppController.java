@@ -40,18 +40,24 @@ public class AppController implements ValueChangeHandler<String> {
 	
 	private String lastToken = "";
 	
+	private String previousToken = "";
+	
 	public AppController(SimpleEventBus eventBus) {
 		this.eventBus = eventBus;
-		bind(); // Bind the appController to History to control its changes
+		bind(); // Bind the appController to History to control its changes 
 	}
 
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
 		if (token != null) {
+			previousToken = lastToken;
+			lastToken = token;
 			Presenter presenter = null;
 			if(CacheLayer.getUser(true) != null) {
-				if (token.equals("desktop") && !lastToken.contains("profile")) {
+				if (token.equals("desktop") && previousToken.contains("profile")) {
+					
+				} else if (token.equals("desktop")) {
 					presenter = new DesktopPresenter(new SimpleEventBus[]{eventBus,chatEventBus}, new DesktopView());
 					presenter.go(TheSocialOS.get().root);
 				} else if (token.equals("profile")) {
@@ -67,10 +73,9 @@ public class AppController implements ValueChangeHandler<String> {
 				} else if (token.equals("profile-links")) {
 					loadProfileLinks(presenter);
 				} else if (token.equals("account-added")) {
-					token = lastToken = "profile";
+					//token = lastToken = "profile";
 					accountAdded();
 					//eventBus.fireEvent(new AccountAddedEvent());
-				} else if (token.equals("desktop")) {
 				} else {
 					History.newItem("desktop");
 				}
@@ -85,7 +90,6 @@ public class AppController implements ValueChangeHandler<String> {
 				} else
 					History.newItem("login");
 			}
-			lastToken = token;
 		}
 	}
 	
@@ -120,10 +124,10 @@ public class AppController implements ValueChangeHandler<String> {
 	}
 	
 	private void checkProfile(Presenter presenter){
-		if (lastToken.equals("desktop")) { // If on the desktop, create the profile window.
+		if (previousToken.equals("desktop")) { // If on the desktop, create the profile window.
 			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
 			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		} else if (!lastToken.contains("profile")) { // If not on desktop or another profile part, create the desktop and the profile window.
+		} else if (!previousToken.contains("profile")) { // If not on desktop or another profile part, create the desktop and the profile window.
 			presenter = new DesktopPresenter(new SimpleEventBus[]{eventBus,chatEventBus}, new DesktopView());
 			presenter.go(TheSocialOS.get().root);
 			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());

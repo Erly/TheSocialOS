@@ -35,9 +35,11 @@
 	padding-right: 5px;
 	position: relative;
 	z-index: 1000;
+	color: #8097FF;
 }
 .userbar:hover {
-	background-color: IndianRed;
+	background-color: #477ea2;
+	color: white;
 }
 .socialos {
 	cursor: pointer;
@@ -55,7 +57,8 @@
 	box-shadow: 0 -3px 5px #ccc;*/
 }
 .socialos:hover {
-	background-color: IndianRed;
+	background-color: #477ea2;
+	color: white;
 }
 .socialos-clicked {
 	outline: 0;
@@ -66,7 +69,6 @@
 }
 .links {
 	cursor: pointer;
-	color: #8097FF;
 	font-size: 12px;
 	vertical-align: middle;
 }

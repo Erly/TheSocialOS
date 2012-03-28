@@ -153,7 +153,8 @@ desktopbar {
 }
 
 .startbutton:hover {
-	background-color: IndianRed;
+	background-color: #477ea2;
+	color: white;
 }
 
 .startbutton-focused {
@@ -173,10 +174,12 @@ desktopbar {
 	padding-right: 5px;
 	position: relative;
 	z-index: 1000;
+	color: #8097FF;
 }
 
 .userbar:hover {
-	background-color: IndianRed;
+	background-color: #477ea2;
+	color: white;
 }
 
 .userbar-focused {
