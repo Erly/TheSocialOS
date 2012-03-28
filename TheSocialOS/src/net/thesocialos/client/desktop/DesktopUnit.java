@@ -10,9 +10,9 @@ public abstract class DesktopUnit {
 	protected boolean isMinimized;
 	public enum TypeUnit  {APPLICATION,INFO,POPUP}
 	protected  TypeUnit typeUnit;
-	public abstract void Tofront();
+	public abstract void toFront();
 	
-	public abstract void Toback(int position);
+	public abstract void toPosition(int position);
 	
 	public abstract int getposition();
 	

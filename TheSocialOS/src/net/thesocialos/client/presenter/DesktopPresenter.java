@@ -9,9 +9,9 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.shared.model.User;
 import net.thesocialos.client.api.Picasa;
 import net.thesocialos.client.api.Picasa.Album;
-import net.thesocialos.client.app.Application;
 import net.thesocialos.client.app.ChatApp;
 import net.thesocialos.client.app.FrameApp;
+import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
 import net.thesocialos.client.event.LogoutEvent;
@@ -142,7 +142,7 @@ public class DesktopPresenter implements Presenter {
 		bindContacts();
 
 		// Populate the Star Menu		
-		ArrayList<Application> appsData = new ArrayList<Application>();
+		ArrayList<IApplication> appsData = new ArrayList<IApplication>();
 		appsData.add(new FrameApp("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png", "http://www.bitlet.org/"
 				,"1024px", "600px"));
 		appsData.add(new FrameApp("Grooveshark Player", "http://img696.imageshack.us/img696/1622/11groovesharkicon256x25.png", "http://www.grooveshark.com"
@@ -318,7 +318,7 @@ public class DesktopPresenter implements Presenter {
 		
 	}
 	
-	private void bindStartMenu(ArrayList<Application> appsData) {
+	private void bindStartMenu(ArrayList<IApplication> appsData) {
 		this.display.getStartMenu().setVisible(false);
 		VerticalPanel vPanel = ((StartMenu) this.display.getStartMenu()).getStartVPanel();
 		for (int i = 0; i < appsData.size(); i++) {
