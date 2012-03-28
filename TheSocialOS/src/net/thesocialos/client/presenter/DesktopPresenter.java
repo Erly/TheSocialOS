@@ -134,7 +134,7 @@ public class DesktopPresenter implements Presenter {
 		TheSocialOS.get().setDesktop(desktop);
 		//Run the desktopManager
 		this.desktopManager = new DesktopManager(eventBus, display.getScreen(), display.getDesktop());
-		User user = CacheLayer.getUser(true);
+		User user = CacheLayer.UserCalls.getUser();
 		
 		bindDesktopBar(user);
 		bindUserMenu(user);

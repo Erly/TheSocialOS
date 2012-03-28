@@ -54,7 +54,7 @@ public class AppController implements ValueChangeHandler<String> {
 			previousToken = lastToken;
 			lastToken = token;
 			Presenter presenter = null;
-			if(CacheLayer.getUser(true) != null) {
+			if(CacheLayer.UserCalls.getUser() != null) {
 				if (token.equals("desktop") && previousToken.contains("profile")) {
 					
 				} else if (token.equals("desktop")) {
@@ -161,9 +161,7 @@ public class AppController implements ValueChangeHandler<String> {
 					
 					@Override
 					public void onSuccess(Map<Key<Account>, Account> accounts) {
-						TheSocialOS.get().setCurrentUserAccounts(accounts);
-						//Window.alert("Cuenta añadida");
-						Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
+						CacheLayer.UserCalls.setAccounts(accounts);
 						TheSocialOS.profilePresenter.goProfile();
 					}
 					
@@ -192,7 +190,7 @@ public class AppController implements ValueChangeHandler<String> {
 	protected void doLogout() {
 		Cookies.removeCookie("sid");
 		Cookies.removeCookie("uid");
-		CacheLayer.deleteUser();
+		CacheLayer.UserCalls.deleteUser();
 		new RPCXSRF<Void>(userService) {
 
 			@Override
@@ -226,7 +224,7 @@ public class AppController implements ValueChangeHandler<String> {
 			
 			@Override
 			public void onSuccess(Map<Key<Account>, Account> accounts) {
-				TheSocialOS.get().setCurrentUserAccounts(accounts);
+				CacheLayer.UserCalls.setAccounts(accounts);
 				//Window.alert("Cuenta añadida");
 				//Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
 				History.newItem("profile");

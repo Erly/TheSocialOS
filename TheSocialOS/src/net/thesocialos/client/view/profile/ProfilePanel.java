@@ -38,7 +38,7 @@ public class ProfilePanel extends Composite implements Display {
 
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		User user = CacheLayer.getUser(false);
+		User user = CacheLayer.UserCalls.getUser();
 		Map<Key<Account>, Account> accounts = TheSocialOS.get().getCurrentUserAccounts();
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {

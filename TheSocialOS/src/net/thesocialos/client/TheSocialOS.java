@@ -47,8 +47,6 @@ public class TheSocialOS implements EntryPoint {
 
 	BusyIndicatorPresenter busyIndicator = new BusyIndicatorPresenter(eventBus, new BusyIndicatorView());
 	static UserProfilePresenter profilePresenter = null;
-	private User user;
-	private Map<Key<Account>, Account> accounts = new HashMap<Key<Account>, Account>();
 	private Comet comet;
 	
 	// i18n initialization
@@ -113,7 +111,7 @@ public class TheSocialOS implements EntryPoint {
 						History.newItem("login");
 				} else {
 					// User is loged in
-					CacheLayer.setUser(result);
+					CacheLayer.UserCalls.setUser(result);
 					//Window.alert("Cargando cuentas");
 					//refreshCloudAccounts();
 					new RPCXSRF<Map<Key<Account>, Account>>(userService) {
@@ -125,7 +123,7 @@ public class TheSocialOS implements EntryPoint {
 						
 						@Override
 						public void onSuccess(Map<Key<Account>, Account> accounts) {
-							setCurrentUserAccounts(accounts);
+							CacheLayer.UserCalls.setAccounts(accounts);
 							createUI();
 						}
 						
@@ -235,40 +233,5 @@ public class TheSocialOS implements EntryPoint {
 	 */
 	public void setDesktop(AbsolutePanel desktop) {
 		this.desktop = desktop;
-	}
-	
-	public void refreshCloudAccounts() {
-		new RPCXSRF<Map<Key<Account>, Account>>(userService) {
-
-			@Override
-			protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
-				userService.getCloudAccounts(cb);
-			}
-			
-			@Override
-			public void onSuccess(Map<Key<Account>, Account> accounts) {
-				setCurrentUserAccounts(accounts);
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log(caught.getMessage());
-				Window.alert(caught.getMessage());
-			}
-		}.retry(3);
-	}
-	
-	/**
-	 * @param accounts the accounts to set
-	 */
-	public void setCurrentUserAccounts(Map<Key<Account>, Account> accounts) {
-		this.accounts = accounts;
-	}
-
-	/**
-	 * @return the accounts
-	 */
-	public Map<Key<Account>, Account> getCurrentUserAccounts() {
-		return accounts;
 	}
 }

@@ -35,7 +35,7 @@ public class DesktopView extends Composite implements Display {
 		initWidget(uiBinder.createAndBindUi(this));
 		userMenu.editProfile.setText(TheSocialOS.getConstants().editProfile());
 		userMenu.logout.setText(TheSocialOS.getConstants().logout());
-		User user = CacheLayer.getUser(false);
+		User user = CacheLayer.UserCalls.getUser();
 		// desktop.getElement().getStyle().setBackgroundImage("url(/images/defaultBG.png) no-repeat");
 	//	if (!user.getBackground().equals("data:image/png;base64,null"))
 		//	background.setUrl(user.getBackground());
