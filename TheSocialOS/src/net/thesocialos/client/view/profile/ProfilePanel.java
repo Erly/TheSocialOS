@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
-import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Facebook;
 import net.thesocialos.shared.model.Google;
@@ -14,7 +13,6 @@ import net.thesocialos.shared.model.User;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.googlecode.objectify.Key;
@@ -39,7 +37,7 @@ public class ProfilePanel extends Composite implements Display {
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 		User user = CacheLayer.UserCalls.getUser();
-		Map<Key<Account>, Account> accounts = TheSocialOS.get().getCurrentUserAccounts();
+		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {
 			Account account = it.next();

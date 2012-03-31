@@ -15,6 +15,7 @@ import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
 import net.thesocialos.client.event.LogoutEvent;
+import net.thesocialos.client.helper.AppIconHelper;
 import net.thesocialos.client.view.Icon;
 import net.thesocialos.client.view.ContactsView;
 import net.thesocialos.client.view.DesktopBar;
@@ -153,37 +154,7 @@ public class DesktopPresenter implements Presenter {
 				"450px", "300px"));
 		bindStartMenu(appsData);
 		
-		Icon folder = new Icon(Icon.FOLDER_ICON, "Nueva carpeta");
-		this.display.getDesktop().add(folder, 10, 10);
-		
-		folder.addDoubleClickHandler(new DoubleClickHandler() {
-			
-			@Override
-			public void onDoubleClick(DoubleClickEvent event) {
-				final Picasa picasa = new Picasa();
-				try {
-					picasa.getAlbumsRequest(new AsyncCallback<JavaScriptObject>() {
-						
-						@Override
-						public void onSuccess(JavaScriptObject result) {
-							JSONObject object = new JSONObject(result);
-							HashSet<Album> albums = picasa.getAlbums(object);
-							FolderWindow window = new FolderWindow("Picasa albums", albums);
-							window.show();
-						}
-						
-						@Override
-						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
-							
-						}
-					});
-				} catch (RequestException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
+		AppIconHelper.populateDesktopWithIcons(desktop);
 	}
 
 	/**

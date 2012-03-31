@@ -42,32 +42,33 @@ public class CacheLayer {
 			CacheLayer.UserCalls.user = user;
 		}
 		
-		public static void getAccounts(Boolean cached, final AsyncCallback<Map<Key<Account>, Account>> callback) {
-			if (cached && null != accounts) {
-				callback.onSuccess(accounts);
-			}
-			
-			new RPCXSRF<Map<Key<Account>, Account>> (userService) {
-
-				@Override
-				protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
-					userService.getCloudAccounts(cb);
-				}
-				
-				public void onSuccess(Map<Key<Account>, Account> accounts){
-					CacheLayer.UserCalls.accounts = accounts;
-					callback.onSuccess(accounts);
-				}
-				
-				public void onFailure(Throwable caught){
-					callback.onFailure(caught);
-				}
-				
-			}.retry(3);
+		public static Map<Key<Account>, Account> getAccounts() {
+			return accounts;
 		}
 		
 		public static void setAccounts(Map<Key<Account>, Account> accounts) {
 			CacheLayer.UserCalls.accounts = accounts;
+		}
+
+		public static void refreshAccounts() {
+			new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+
+				@Override
+				protected void XSRFcallService(
+						AsyncCallback<Map<Key<Account>, Account>> cb) {
+					userService.getCloudAccounts(cb);
+				}
+				
+				@Override
+				public void onSuccess(Map<Key<Account>, Account> accounts) {
+					CacheLayer.UserCalls.setAccounts(accounts);
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+				}
+			}.retry(3);
 		}
 	}
 	

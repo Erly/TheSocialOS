@@ -1,14 +1,20 @@
 package net.thesocialos.client.api;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.model.Google;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.googlecode.objectify.Key;
 
 public class Picasa {
 	
@@ -129,12 +135,23 @@ public class Picasa {
 	
 	public void getAlbumsRequest(AsyncCallback<JavaScriptObject> cb) throws RequestException {
 		String picasaAPIurl = "http://picasaweb.google.com/data/feed/api/user/";
-		// Temporal way of obtaining the username until it is included in the UserDTO
-		String email = CacheLayer.UserCalls.getUser().getEmail();
+		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
+		Iterator<Account> it = accounts.values().iterator();
+		Google googleAccount = null;
+		while (it.hasNext()) {
+			Account account = it.next();
+			if (account instanceof Google) {
+				googleAccount = (Google) account;
+				break;
+			}
+		}
+		if (null == googleAccount)
+			return;
+		String email = googleAccount.getUsername();
 		String username = email.substring(0, email.indexOf('@'));
 		
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-		jsonp.requestObject(picasaAPIurl + username + "?alt=json", cb);
+		jsonp.requestObject(picasaAPIurl + username + "?alt=json&" + googleAccount.getAuthToken(), cb);
 	}
 	
 	public HashSet<Album> getAlbums(JSONObject object) {

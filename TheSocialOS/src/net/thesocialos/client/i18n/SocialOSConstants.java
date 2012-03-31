@@ -112,4 +112,15 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("Groups")
 	String groups();
 
+	/**
+	 * Folder name Constants
+	 */
+	@DefaultStringValue("Pictures")
+	String  pictures();
+	@DefaultStringValue("Videos")
+	String  videos();
+	@DefaultStringValue("Music")
+	String music();
+	@DefaultStringValue("Other")
+	String other();
 }
