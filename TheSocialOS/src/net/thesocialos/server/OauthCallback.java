@@ -17,7 +17,6 @@ import org.scribe.oauth.OAuthService;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
-import net.thesocialos.server.json.JSONArray;
 import net.thesocialos.server.json.JSONException;
 import net.thesocialos.server.json.JSONObject;
 import net.thesocialos.shared.model.FlickR;
@@ -62,7 +61,7 @@ public class OauthCallback extends HttpServlet {
 			user.addAccount(ofy.put(twitterAccount));
 		} else if (request.getServletPath().contains("flickr")) {
 			flickrAccount = new FlickR(accessToken.getToken(), accessToken.getSecret());
-			flickrAccount.setUsername(getUsername(FLICKR, accessToken));
+			flickrAccount.setUsername(getFlickrUsername(accessToken));
 			user.addAccount(ofy.put(flickrAccount));
 		} else {
 			try {
@@ -95,23 +94,35 @@ public class OauthCallback extends HttpServlet {
 			request = new OAuthRequest(Verb.GET, "http://api.twitter.com/1/account/verify_credentials.json");
 			params = "screen_name";
 			break;
-		case FLICKR:
-			request = new OAuthRequest(Verb.GET, "http://api.flickr.com/services/rest");
-			request.addQuerystringParameter("format", "json");
-			//params[0] = "username";
-			params = "_content";
-			break;
 		default:
 			return "";
 		}
-		
 		service.signRequest(accessToken, request);
 		Response resp = request.send();
 		String body = resp.getBody();
-		JSONObject js;
 		try {
-			js = new JSONObject(body);
+			JSONObject js = new JSONObject(body);
 			return js.getString(params);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String getFlickrUsername(Token accessToken) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.flickr.com/services/rest");
+		request.addQuerystringParameter("method", "flickr.test.login");
+		request.addQuerystringParameter("format", "json");
+		request.addQuerystringParameter("nojsoncallback", "1");
+		service.signRequest(accessToken, request);
+		Response resp = request.send();
+		String body = resp.getBody();
+		try {
+			JSONObject js = new JSONObject(body);
+			JSONObject userjs = js.getJSONObject("user");
+			return userjs.getJSONObject("username").getString("_content");
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

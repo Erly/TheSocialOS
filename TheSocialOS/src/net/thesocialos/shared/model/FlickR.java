@@ -21,8 +21,8 @@ public class FlickR extends Oauth1 {
 	}
 
 	public FlickR(String token, String secret) {
-		this.token = token;
-		this.tokenSecret = secret;
+		this.setToken(token);
+		this.setTokenSecret(secret);
 	}
 
 }

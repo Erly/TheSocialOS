@@ -21,7 +21,7 @@ public class Twitter extends Oauth1 {
 	}
 
 	public Twitter(String token, String tokenSecret) {
-		this.token = token;
-		this.tokenSecret = tokenSecret;
+		this.setToken(token);
+		this.setTokenSecret(tokenSecret);
 	}
 }

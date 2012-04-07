@@ -6,9 +6,6 @@
 		.padding {
 			padding: 5px;
 		}
-		.hand {
-			cursor: pointer;
-		}
 	</ui:style>
 	<g:DecoratorPanel addStyleNames="{style.padding}">
 		<g:VerticalPanel>

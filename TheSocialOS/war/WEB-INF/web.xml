@@ -85,7 +85,7 @@
   
   <servlet-mapping>
   	<servlet-name>twittercallback</servlet-name>
-  	<url-pattern>/twitterllback</url-pattern>
+  	<url-pattern>/twittercallback</url-pattern>
   </servlet-mapping>
   
   <servlet>
