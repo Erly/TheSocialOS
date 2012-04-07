@@ -71,7 +71,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			session = UserHelper.getSessionWithCookies(sid, ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
 			user.setLastTimeActive(new Date());
-			UserHelper.saveUsertohttpSession(session, user, (Objectify)httpSession.getAttribute("objetify"), httpSession);
+			UserHelper.saveUsertohttpSession(session, user, httpSession);
 			ofy.put(user);
 			return User.toDTO(user);
 		}catch (NotFoundException e) {
@@ -130,7 +130,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		}
 		
 		user.setLastTimeActive(new Date()); //Set last time to user is login
-		UserHelper.saveUsertohttpSession(session, user, (Objectify)httpSession.getAttribute("objetify"), httpSession); //Store user and session
+		UserHelper.saveUsertohttpSession(session, user, httpSession); //Store user and session
 		ofy.put(user); //Save user
 		return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 	}

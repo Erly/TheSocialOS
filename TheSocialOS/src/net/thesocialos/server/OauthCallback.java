@@ -1,0 +1,122 @@
+package net.thesocialos.server;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+
+import net.thesocialos.server.json.JSONArray;
+import net.thesocialos.server.json.JSONException;
+import net.thesocialos.server.json.JSONObject;
+import net.thesocialos.shared.model.FlickR;
+import net.thesocialos.shared.model.Session;
+import net.thesocialos.shared.model.Twitter;
+import net.thesocialos.shared.model.User;
+
+public class OauthCallback extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7384724356709314551L;
+	private static final int TWITTER = 0;
+	private static final int FLICKR = 1;
+	
+	OAuthService service = null;
+	Twitter twitterAccount = null;
+	FlickR flickrAccount = null;
+
+	public OauthCallback() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void service(HttpServletRequest request, HttpServletResponse response) {
+		String oauthToken = request.getParameter("oauth_token");
+		String oauthVerifier = request.getParameter("oauth_verifier");
+		
+		service = (OAuthService) request.getSession().getAttribute("OAuthService");
+		
+		Token requestToken = (Token) request.getSession().getAttribute("OAuthRequestToken");
+		Verifier verifier = new Verifier(oauthVerifier);
+		Token accessToken = service.getAccessToken(requestToken, verifier);
+		
+		Objectify ofy = ObjectifyService.begin();
+		
+		Session session = UserHelper.getSesssionHttpSession(request.getSession());
+		User user = UserHelper.getUserHttpSession(request.getSession());
+		if (request.getServletPath().contains("twitter")) {
+			twitterAccount = new Twitter(accessToken.getToken(), accessToken.getSecret());
+			twitterAccount.setUsername(getUsername(TWITTER, accessToken));
+			user.addAccount(ofy.put(twitterAccount));
+		} else if (request.getServletPath().contains("flickr")) {
+			flickrAccount = new FlickR(accessToken.getToken(), accessToken.getSecret());
+			flickrAccount.setUsername(getUsername(FLICKR, accessToken));
+			user.addAccount(ofy.put(flickrAccount));
+		} else {
+			try {
+				PrintWriter writer = response.getWriter();
+				writer.write("There wan an error fulfilling the request. Please contact with support@thesocialos.net so it can be fixed");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		
+		UserHelper.saveUsertohttpSession(session, user, request.getSession());
+		ofy.put(user);
+		
+		try {
+			PrintWriter writer = response.getWriter();
+			writer.write("<center><Button onClick=\"javascript:window.opener.location.hash='account-added';window.close();\">Close window</Button></center>");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private String getUsername(int type, Token accessToken) {
+		OAuthRequest request = null;
+		String params = null;
+		switch (type) {
+		case TWITTER:
+			request = new OAuthRequest(Verb.GET, "http://api.twitter.com/1/account/verify_credentials.json");
+			params = "screen_name";
+			break;
+		case FLICKR:
+			request = new OAuthRequest(Verb.GET, "http://api.flickr.com/services/rest");
+			request.addQuerystringParameter("format", "json");
+			//params[0] = "username";
+			params = "_content";
+			break;
+		default:
+			return "";
+		}
+		
+		service.signRequest(accessToken, request);
+		Response resp = request.send();
+		String body = resp.getBody();
+		JSONObject js;
+		try {
+			js = new JSONObject(body);
+			return js.getString(params);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+}

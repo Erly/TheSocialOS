@@ -20,7 +20,7 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 
 	@Override
 	public Map<Key<User>,User> getFriendsList() throws FriendNotFoundException {
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy = ObjectifyService.begin();
 		User user = UserHelper.getUserfromSession(perThreadRequest.get().getSession());
 		List<Key<User>> contacts = user.getContacts();
 		
@@ -38,7 +38,7 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 	@Override
 	public List<User> getFriendsSuggestionList(String text)
 			throws FriendNotFoundException {
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy = ObjectifyService.begin();
 		StringTokenizer tokens = new StringTokenizer(text);
 		List<String> userNames = new ArrayList<String>();
 		User user = UserHelper.getUserfromSession(perThreadRequest.get().getSession());

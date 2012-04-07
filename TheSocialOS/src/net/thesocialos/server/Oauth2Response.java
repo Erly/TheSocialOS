@@ -3,7 +3,6 @@ package net.thesocialos.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -13,9 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.mortbay.log.Log;
-
-import com.google.gwt.core.client.GWT;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
@@ -34,8 +30,6 @@ public class Oauth2Response extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final int GOOGLE = 0;
 	private static final int FACEBOOK = 1;
-	private static final int TWITTER = 2;
-	private static final int FLICKR = 3;
 	
 
 	public Oauth2Response() {
@@ -64,7 +58,7 @@ public class Oauth2Response extends HttpServlet {
 			user.addAccount(ofy.put(facebookAccount));
 		}
 		
-		UserHelper.saveUsertohttpSession(session, user, (Objectify)request.getSession().getAttribute("objetify"), request.getSession());
+		UserHelper.saveUsertohttpSession(session, user, request.getSession());
 		ofy.put(user);
 		
 		try {
@@ -90,16 +84,6 @@ public class Oauth2Response extends HttpServlet {
 			urlString = "https://graph.facebook.com/me";
 			params = "access_token=" + authToken;
 			jsonParameter = "username";
-			break;
-		case TWITTER:
-			urlString = "";
-			params = "" + authToken;
-			jsonParameter = "";
-			break;
-		case FLICKR:
-			urlString = "";
-			params = "" + authToken;
-			jsonParameter = "";
 			break;
 		}
 		try {

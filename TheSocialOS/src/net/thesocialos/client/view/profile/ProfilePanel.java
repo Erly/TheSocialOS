@@ -7,7 +7,9 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Facebook;
+import net.thesocialos.shared.model.FlickR;
 import net.thesocialos.shared.model.Google;
+import net.thesocialos.shared.model.Twitter;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
@@ -19,6 +21,26 @@ import com.googlecode.objectify.Key;
 
 public class ProfilePanel extends Composite implements Display {
 
+	private String googleURL = "https://accounts.google.com/o/oauth2/auth?" + 
+			"redirect_uri=http%3A%2F%2Fwww.thesocialos.net%2Foauth2callback&" + 
+			"response_type=code&client_id=398121744591.apps.googleusercontent.com&" + 
+			"approval_prompt=force&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar+" +
+			"https%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2F+https%3A%2F%2Fdocs.google.com%2Ffeeds%2F+" +
+			"https%3A%2F%2Fmail.google.com%2Fmail%2Ffeed%2Fatom+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.me+" +
+			"https%3A%2F%2Fpicasaweb.google.com%2Fdata%2F+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ftasks+" +
+			"https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+" +
+			"https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fgdata.youtube.com&" +
+			"access_type=offline";
+	
+	private String facebookURL = "https://graph.facebook.com/oauth/authorize?client_id=124427357682835&" +
+			"display=page&redirect_uri=http://www.thesocialos.net/oauth2callbackFB&scope=user_status," +
+			"publish_stream,offline_access,email";
+	
+	private String twitterURL = "http://www.thesocialos.net/oauthlogin?serviceType=twitter"; /*"https://api.twitter.com/oauth/request_token?" +
+			"oauth_callback=http://www.thesocialos.net/oauthcallback&x_auth_access_type=write";*/
+	
+	private String flickrURL = "http://www.thesocialos.net/oauthlogin?serviceType=flickr";
+	
 	private static ProfilePanelUiBinder uiBinder = GWT
 			.create(ProfilePanelUiBinder.class);
 	@UiField ProfileAttr name;
@@ -28,25 +50,21 @@ public class ProfilePanel extends Composite implements Display {
 	@UiField ProfileAttr address;
 	@UiField ProfileAttr google;
 	@UiField ProfileAttr facebook;
+	@UiField ProfileAttr twitter;
+	@UiField ProfileAttr flickr;
+	Map<Key<Account>, Account> accounts;
 	Google googleAccount;
 	Facebook facebookAccount;
+	Twitter twitterAccount;
+	FlickR flickrAccount;
 
 	interface ProfilePanelUiBinder extends UiBinder<Widget, ProfilePanel> {
 	}
 
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
+		populateAccountsMap();
 		User user = CacheLayer.UserCalls.getUser();
-		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
-		Iterator<Account> it = accounts.values().iterator();
-		while (it.hasNext()) {
-			Account account = it.next();
-			if (account instanceof Google) {
-				googleAccount = (Google) account;
-			} else if (account instanceof Facebook) {
-				facebookAccount = (Facebook) account;
-			}
-		}
 		name.attrName.setText(TheSocialOS.getConstants().name());
 		name.attrValue.setText(user.getName() + " " + user.getLastName());
 		title.attrName.setText(TheSocialOS.getConstants().title());
@@ -63,17 +81,7 @@ public class ProfilePanel extends Composite implements Display {
 			google.attrValue.setText(googleAccount.getUsername()); // TODO change the email for the Google Account email
 		} else {
 			google.attrValue.addStyleName("hand");
-			google.setAttrLink("https://accounts.google.com/o/oauth2/auth?" + 
-					"redirect_uri=http%3A%2F%2Fwww.thesocialos.net%2Foauth2callback&" + 
-					"response_type=code&client_id=398121744591.apps.googleusercontent.com&" + 
-					"approval_prompt=force&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar+" +
-					"https%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2F+https%3A%2F%2Fdocs.google.com%2Ffeeds%2F+" +
-					"https%3A%2F%2Fmail.google.com%2Fmail%2Ffeed%2Fatom+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.me+" +
-					"https%3A%2F%2Fpicasaweb.google.com%2Fdata%2F+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ftasks+" +
-					"https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+" +
-					"https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fgdata.youtube.com&" +
-					"access_type=offline", 
-					"Google Account login");
+			google.setAttrLink(googleURL, "Google Account login");
 		}
 		
 		facebook.attrName.setText(TheSocialOS.getConstants().facebookAccount());
@@ -81,10 +89,40 @@ public class ProfilePanel extends Composite implements Display {
 			facebook.attrValue.setText(facebookAccount.getUsername()); // TODO change the email for the Facebook Account name
 		} else {
 			facebook.attrValue.addStyleName("hand");
-			facebook.setAttrLink("https://graph.facebook.com/oauth/authorize?client_id=124427357682835&" +
-					"display=page&redirect_uri=http://www.thesocialos.net/oauth2callbackFB&scope=user_status," +
-					"publish_stream,offline_access,email", 
-					"Facebook Account Login");
+			facebook.setAttrLink(facebookURL, "Facebook Account Login");
+		}
+		
+		twitter.attrName.setText(TheSocialOS.getConstants().twitterAccount());
+		if (null != twitterAccount) {
+			twitter.attrValue.setText(twitterAccount.getUsername());
+		} else {
+			twitter.attrValue.addStyleName("hand");
+			twitter.setAttrLink(twitterURL, "Twitter Account Login");
+		}
+		
+		flickr.attrName.setText(TheSocialOS.getConstants().flickrAccount());
+		if (null != flickrAccount) {
+			flickr.attrValue.setText(flickrAccount.getUsername());
+		} else {
+			flickr.attrValue.addStyleName("hand");
+			flickr.setAttrLink(flickrURL, "Flickr Account Login");
+		}
+	}
+
+	private void populateAccountsMap() {
+		accounts = CacheLayer.UserCalls.getAccounts();
+		Iterator<Account> it = accounts.values().iterator();
+		while (it.hasNext()) {
+			Account account = it.next();
+			if (account instanceof Google) {
+				googleAccount = (Google) account;
+			} else if (account instanceof Facebook) {
+				facebookAccount = (Facebook) account;
+			} else if (account instanceof Twitter) {
+				twitterAccount = (Twitter) account;
+			} else if (account instanceof FlickR) {
+				flickrAccount = (FlickR) account;
+			}
 		}
 	}
 

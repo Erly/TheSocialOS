@@ -6,6 +6,9 @@
 		.padding {
 			padding: 5px;
 		}
+		.hand {
+			cursor: pointer;
+		}
 	</ui:style>
 	<g:DecoratorPanel addStyleNames="{style.padding}">
 		<g:VerticalPanel>
@@ -16,6 +19,8 @@
 			<p:ProfileAttr attrName="Address:" attrValue="Desengaño 21 2ºA" ui:field="address" />
 			<p:ProfileAttr attrName="Google Account:" attrValue="Sign in" ui:field="google" />
 			<p:ProfileAttr attrName="Facebook Account:" attrValue="Sign in" ui:field="facebook" />
+			<p:ProfileAttr attrName="Twitter Account:" attrValue="Sign in" ui:field="twitter" />
+			<p:ProfileAttr attrName="Flickr Account:" attrValue="Sign in" ui:field="flickr" />
 		</g:VerticalPanel>
 	</g:DecoratorPanel>
 </ui:UiBinder> 
