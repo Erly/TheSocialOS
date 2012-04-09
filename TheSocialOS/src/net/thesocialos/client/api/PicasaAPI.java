@@ -140,7 +140,7 @@ public class PicasaAPI {
 		String username = email.substring(0, email.indexOf('@'));
 		
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-		jsonp.requestObject(picasaAPIurl + username + "?alt=json&" + googleAccount.getAuthToken(), new AsyncCallback<JavaScriptObject>() {
+		jsonp.requestObject(picasaAPIurl + username + "?alt=json&access_token=" + googleAccount.getAuthToken(), new AsyncCallback<JavaScriptObject>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
-import net.thesocialos.client.api.PicasaAPI.Album;
 import net.thesocialos.client.view.window.FolderWindow;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Facebook;
@@ -14,6 +13,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.googlecode.objectify.Key;
 
@@ -85,7 +85,7 @@ public class FacebookAPI {
 		return albums;
 	}
 	
-	public void loadAlbumsInFolder(FolderWindow folder) {
+	public void loadAlbumsInFolder(final FolderWindow folder) {
 		String facebookAPIurl = "https://graph.facebook.com/";
 		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
 		Iterator<Account> it = accounts.values().iterator();
@@ -100,7 +100,9 @@ public class FacebookAPI {
 		if (null == facebookAccount)
 			return;
 		String username = facebookAccount.getUsername();
-		loadAlbumInFolder(folder, facebookAPIurl + username + "/albums?access_token=" + facebookAccount.getAuthToken());
+		facebookAPIurl += username + "/albums?access_token=" + facebookAccount.getAuthToken();
+		Window.alert(facebookAPIurl);
+		loadAlbumInFolder(folder, facebookAPIurl);
 	}
 	
 	private void loadAlbumInFolder(final FolderWindow folder, String facebookUrl) {
@@ -110,7 +112,8 @@ public class FacebookAPI {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				
+				System.out.println(caught.getMessage());
+				caught.printStackTrace();
 			}
 
 			@Override
@@ -122,16 +125,18 @@ public class FacebookAPI {
 					Album album = new Album();
 					album.id = array.get(i).isObject().get("id").isString().stringValue();
 					album.name = array.get(i).isObject().get("name").isString().stringValue();
-					album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
+					album.thumbnailURL = "http://www.thesocialos.net/images/Folder.png";
+					//album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
 					album.numPhotos = Integer.parseInt(array.get(i).isObject().get("count").isNumber().toString());
 					albums.add(album);
 				}
 				folder.addMedia(albums);
-				
 				JSONObject js = object.get("paging").isObject();
-				JSONString nextAlbumsUrl = js.get("next").isString();
-				if (null != nextAlbumsUrl && !"".equals(nextAlbumsUrl))
-					loadAlbumInFolder(folder, nextAlbumsUrl.stringValue());
+				if (null != js) {
+					JSONString nextAlbumsUrl = js.get("next").isString();
+					if (null != nextAlbumsUrl && !"".equals(nextAlbumsUrl))
+						loadAlbumInFolder(folder, nextAlbumsUrl.stringValue());
+				}
 			}
 		});
 	}

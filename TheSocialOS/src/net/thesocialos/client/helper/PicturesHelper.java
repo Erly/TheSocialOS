@@ -1,16 +1,8 @@
 package net.thesocialos.client.helper;
 
-import java.util.HashSet;
-
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.PicasaAPI;
-import net.thesocialos.client.api.PicasaAPI.Album;
 import net.thesocialos.client.view.window.FolderWindow;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class PicturesHelper {
 	

@@ -13,7 +13,7 @@ import net.thesocialos.client.view.Thumbnail;
 public class FolderWindow {
 
 	FlexTable table = new FlexTable();
-	String title = "";
+	public String title = "";
 	private int i = 0;
 	private int j = 0;
 	
