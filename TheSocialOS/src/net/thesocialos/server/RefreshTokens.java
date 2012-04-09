@@ -4,34 +4,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 import net.thesocialos.server.json.JSONException;
 import net.thesocialos.server.json.JSONObject;
+import net.thesocialos.shared.model.Google;
 
-public class Oauth2Callback extends HttpServlet {
-
-	public Oauth2Callback() {
-		// TODO Auto-generated constructor stub
-	}
+public class RefreshTokens {
 	
-	public void service(HttpServletRequest request, HttpServletResponse response) {
+	public static Google refreshGoogle(Google googleAccount) {
 		try {
-			String authCode = (String) request.getParameter("code");
 			String urlString = "https://accounts.google.com/o/oauth2/token";
-			String params = "code=" + authCode + "&" +
-					"client_id=398121744591.apps.googleusercontent.com&" +
+			String params = "client_id=398121744591.apps.googleusercontent.com&" +
 					"client_secret=WByUe_YHFd07JWEzMpWZ6cGf&" +
-					"redirect_uri=http://www.thesocialos.net/oauth2callback&" +
-					"grant_type=authorization_code";
-			String serviceName = "google";
-			
+					"grant_type=refresh_token&" +
+					"refresh_token=" + googleAccount.getRefreshToken();
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			
@@ -52,22 +41,17 @@ public class Oauth2Callback extends HttpServlet {
 			String oneline;
 			while ( (oneline = br.readLine()) != null) {
 				results.append(oneline);
-				//writer.println(oneline);
-				//System.out.println(oneline);
 			}
 			br.close();
 			try {
 				JSONObject js = new JSONObject(results.toString());
-				//JSONArray js2 = js.getJSONArray("values");
-				String authToken = null, refreshToken = null;
-				authToken = js.getString("access_token");
-				refreshToken = js.getString("refresh_token");
+				String authToken = js.getString("access_token");
 				int expires_in = js.getInt("expires_in");
-				request.getRequestDispatcher("oauth2response?authToken=" + authToken +"&refreshToken=" + refreshToken + "&expires_in=" + expires_in + "&serviceName=" + serviceName).forward(request, response);
+				googleAccount.setAuthToken(authToken);
+				// We use expires_in - 10 to compensate the delay
+				googleAccount.setExpireDate(new Date(System.currentTimeMillis() + (expires_in - 10) * 1000));
+				return googleAccount;
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ServletException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -75,6 +59,6 @@ public class Oauth2Callback extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return googleAccount;
 	}
-
 }

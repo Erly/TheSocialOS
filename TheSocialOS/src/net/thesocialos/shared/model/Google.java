@@ -15,8 +15,7 @@ public class Google extends Oauth2 {
 	}
 	
 	@Override
-	void refresh() {
-		// TODO Auto-generated method stub
-
+	public void refresh() {
+		
 	}
 }

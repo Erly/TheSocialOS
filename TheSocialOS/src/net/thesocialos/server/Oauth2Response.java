@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,13 +46,17 @@ public class Oauth2Response extends HttpServlet {
 		Session session = UserHelper.getSesssionHttpSession(request.getSession());
 		User user = UserHelper.getUserWithSession(session, ofy);
 		if ("google".equalsIgnoreCase(serviceName)) {
+			int expires_in = Integer.parseInt(request.getParameter("expires_in"));
 			Google googleAccount = new Google();
+			// We use expires_in - 10 to compensate the delay
+			googleAccount.setExpireDate(new Date(System.currentTimeMillis() + (expires_in - 10) * 1000));
 			googleAccount.setAuthToken(authToken);
 			googleAccount.setRefreshToken(refreshToken);
 			googleAccount.setUsername(getUsername(GOOGLE, authToken));
 			user.addAccount(ofy.put(googleAccount));
 		} else if ("facebook".equalsIgnoreCase(serviceName)) {
 			Facebook facebookAccount = new Facebook();
+			facebookAccount.setExpireDate(new Date(System.currentTimeMillis() + 60 * 24 * 60 * 60 * 1000));
 			facebookAccount.setAuthToken(authToken);
 			//facebookAccount.setRefreshToken(refreshToken);
 			facebookAccount.setUsername(getUsername(FACEBOOK, authToken));

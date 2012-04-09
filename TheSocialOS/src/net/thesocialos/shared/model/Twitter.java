@@ -11,7 +11,7 @@ public class Twitter extends Oauth1 {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	void refresh() {
+	public void refresh() {
 		// TODO Auto-generated method stub
 
 	}

@@ -123,7 +123,7 @@ public class PicasaAPI {
 	}
 	
 	public void loadAlbumsInFolder(final FolderWindow folder) {
-		String picasaAPIurl = "http://picasaweb.google.com/data/feed/api/user/";
+		String picasaAPIurl = "https://picasaweb.google.com/data/feed/api/user/";
 		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
 		Iterator<Account> it = accounts.values().iterator();
 		Google googleAccount = null;

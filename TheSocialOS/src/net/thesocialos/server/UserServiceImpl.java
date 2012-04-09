@@ -17,6 +17,7 @@ import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.model.Google;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
@@ -144,7 +145,25 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
 		List<Key<? extends Account>> accountsKeys = user.getAccounts();
 		Map<Key<Account>, Account> accounts = ofy.get(accountsKeys);
+		if (refreshAccountTokens(accounts, ofy))
+			return ofy.get(accountsKeys);
 		return accounts;
+	}
+
+	private boolean refreshAccountTokens(Map<Key<Account>, Account> accounts, Objectify ofy) {
+		boolean changed = false;
+		Iterator<Account> it = accounts.values().iterator();
+		while (it.hasNext()) {
+			Account ac = it.next();
+			if (ac instanceof Google) {
+				Google gac = (Google) ac;
+				if (null == gac.getExpireDate() || gac.getExpireDate().before(new Date())) {
+					changed = true;
+					ofy.put(RefreshTokens.refreshGoogle(gac));
+				}
+			}
+		}
+		return changed;
 	}
 
 	@Override
