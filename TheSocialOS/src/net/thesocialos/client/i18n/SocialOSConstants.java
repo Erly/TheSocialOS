@@ -99,5 +99,17 @@ public interface SocialOSConstants extends Constants {
 
 	@DefaultStringValue("Facebook Account")
 	String facebookAccount();
+	
+	/**
+	 * User Constantas
+	 */
+	@DefaultStringValue("Contact")
+	String  contact();
+	@DefaultStringValue("Contacts")
+	String  contacts();
+	@DefaultStringValue("Group")
+	String group();
+	@DefaultStringValue("Groups")
+	String groups();
 
 }

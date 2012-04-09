@@ -15,11 +15,10 @@ public class LabelText extends Composite {
 
 	private static LabelTextUiBinder uiBinder = GWT
 			.create(LabelTextUiBinder.class);
-	@UiField Label lblLabel;
-	@UiField Label lblText;
 	final private PopupPanel popPanel = new PopupPanel(true);
 	Label popupLabel = new Label();
-	
+	@UiField Label lblLabel;
+	@UiField Label lblText;
 
 	interface LabelTextUiBinder extends UiBinder<Widget, LabelText> {
 	}
@@ -38,26 +37,6 @@ public class LabelText extends Composite {
 		popPanel.setStyleName("popup");
 		popPanel.add(popupLabel);
 		popupLabel.setWordWrap(true);
-	}
-
-	
-
-
-
-	@UiHandler("lblText")
-	void onLblTextMouseOver(MouseOverEvent event) {
-			
-			
-		 int x = event.getClientX();
-		 int y = event.getClientY();
-		 popupLabel.setText(lblText.getText());
-		
-		 popPanel.setPopupPosition(x, y);
-		 popPanel.show();
-	}
-	@UiHandler("lblText")
-	void onLblTextMouseOut(MouseOutEvent event) {
-		popPanel.hide();
 	}
 	
 	public void setLabelText(String labelText){
