@@ -172,4 +172,9 @@ public class User implements Serializable {
 	public void setLastTimeActive(Date lastTimeActive) {
 		this.lastTimeActive = lastTimeActive;
 	}
+
+	public void overwriteAccountsList(List<Key<? extends Account>> newAccountsKeys) {
+		this.accounts.clear();
+		this.accounts.addAll(newAccountsKeys);
+	}
 }

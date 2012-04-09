@@ -46,8 +46,7 @@ public class ProfilePanel extends Composite implements Display {
 			"xmpp_login,ads_management,create_event,manage_friendlists,manage_notifications,user_online_presence," +
 			"friends_online_presence,publish_checkins,publish_stream,rsvp_event,publish_actions,user_actions.music," +
 			"friends_actions.music,user_actions.news,friends_actions.news,user_actions.video,friends_actions.video," +
-			"user_actions:APP_NAMESPACE,friends_actions:APP_NAMESPACE,user_games_activity,friends_games_activity," +
-			"manage_pages";
+			"user_games_activity,friends_games_activity,manage_pages";
 	
 	private String twitterURL = "http://www.thesocialos.net/oauthlogin?serviceType=twitter"; /*"https://api.twitter.com/oauth/request_token?" +
 			"oauth_callback=http://www.thesocialos.net/oauthcallback&x_auth_access_type=write";*/

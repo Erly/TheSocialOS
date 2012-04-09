@@ -1,14 +1,7 @@
 package net.thesocialos.client.service;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
-
-
-import net.thesocialos.server.UserHelper;
 import net.thesocialos.shared.LoginResult;
-import net.thesocialos.shared.UserDTO;
-import net.thesocialos.shared.UserSummaryDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.User;
@@ -34,4 +27,6 @@ public interface UserService extends RemoteService {
 	User getLoggedUser(String sid);
 	
 	Map<Key<Account>, Account> getCloudAccounts();
+	
+	void removeDeletedAccounts();
 }
