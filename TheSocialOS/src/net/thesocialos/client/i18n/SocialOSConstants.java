@@ -87,18 +87,18 @@ public interface SocialOSConstants extends Constants {
 	 */
 	@DefaultStringValue("Title")
 	String title();
-
 	@DefaultStringValue("Mobile")
 	String mobile();
-
 	@DefaultStringValue("Address")
 	String address();
-
 	@DefaultStringValue("Google Account")
 	String googleAccount();
-
 	@DefaultStringValue("Facebook Account")
 	String facebookAccount();
+	@DefaultStringValue("Twitter Account")
+	String twitterAccount();
+	@DefaultStringValue("FlickR Account")
+	String flickrAccount();
 	
 	/**
 	 * User Constantas
@@ -112,4 +112,15 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("Groups")
 	String groups();
 
+	/**
+	 * Folder name Constants
+	 */
+	@DefaultStringValue("Pictures")
+	String  pictures();
+	@DefaultStringValue("Videos")
+	String  videos();
+	@DefaultStringValue("Music")
+	String music();
+	@DefaultStringValue("Other")
+	String other();
 }
