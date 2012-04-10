@@ -2,6 +2,7 @@ package net.thesocialos.client.view.profile;
 
 import net.thesocialos.client.CacheLayer;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
@@ -39,7 +40,9 @@ public class ProfilePanel extends Composite implements Display {
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 		User user = CacheLayer.UserCalls.getUser();
-		Map<Key<Account>, Account> accounts = TheSocialOS.get().getCurrentUserAccounts();
+		
+		//Map<Key<Account>, Account> accounts = TheSocialOS.get().getCurrentUserAccounts();
+		Map<Key<Account>, Account> accounts = new LinkedHashMap<>();
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {
 			Account account = it.next();
