@@ -13,7 +13,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.googlecode.objectify.Key;
 
@@ -101,7 +100,6 @@ public class FacebookAPI {
 			return;
 		String username = facebookAccount.getUsername();
 		facebookAPIurl += username + "/albums?access_token=" + facebookAccount.getAuthToken();
-		Window.alert(facebookAPIurl);
 		loadAlbumInFolder(folder, facebookAPIurl);
 	}
 	
@@ -130,7 +128,8 @@ public class FacebookAPI {
 					album.numPhotos = Integer.parseInt(array.get(i).isObject().get("count").isNumber().toString());
 					albums.add(album);
 				}
-				folder.addMedia(albums);
+				if (albums.size() > 0)
+					folder.addMedia(albums);
 				JSONObject js = object.get("paging").isObject();
 				if (null != js) {
 					JSONString nextAlbumsUrl = js.get("next").isString();

@@ -1,6 +1,7 @@
 package net.thesocialos.client.helper;
 
 import net.thesocialos.client.api.FacebookAPI;
+import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.PicasaAPI;
 import net.thesocialos.client.view.window.FolderWindow;
 
@@ -41,7 +42,6 @@ public class PicturesHelper {
 	 * @param albums The Hashset in which the albums are going to be saved
 	 */
 	private static void loadFlickrAlbums(final FolderWindow folder) {
-		// TODO Auto-generated method stub
-		
+		new FlickrAPI().loadAlbumsInFolder(folder);
 	}
 }
