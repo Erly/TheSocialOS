@@ -85,7 +85,6 @@ public class LoginPresenter implements Presenter {
 					incorrect.setVisible(true);
 					
 				} else { // The user exists and the password is correct
-					//TheSocialOS.get().setCurrentUser(result.getUser());
 					CacheLayer.UserCalls.setUser(result.getUser());
 					if (result.getDuration() < 0){
 						Cookies.setCookie("sid", result.getSessionID());

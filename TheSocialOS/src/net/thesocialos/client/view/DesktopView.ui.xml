@@ -14,7 +14,7 @@
 			top: 29px;
 		}
 		.desktop {
-			position: fixed;
+			position: absolute;
 			top: 30px;
 			bottom: 0px;
 			overflow-x: hidden;

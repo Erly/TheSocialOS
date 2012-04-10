@@ -11,8 +11,8 @@ public class FlickR extends Oauth1 {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@NotSaved(IfDefault.class) public static String CONSUMER_KEY = "cc01bd2671d139d49a97d10179ff6341";
-	@NotSaved(IfDefault.class) public static String CONSUMER_SECRET = "3d016edebfd20a11";
+	@NotSaved(IfDefault.class) public final static String CONSUMER_KEY = "cc01bd2671d139d49a97d10179ff6341";
+	@NotSaved(IfDefault.class) public final static String CONSUMER_SECRET = "3d016edebfd20a11";
 
 	@Override
 	public void refresh() {

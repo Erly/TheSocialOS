@@ -25,6 +25,7 @@ import net.thesocialos.client.view.chat.ChatPanel;
 import net.thesocialos.client.view.window.FolderWindow;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -131,7 +132,8 @@ public class DesktopPresenter implements Presenter {
 	 */
 	public void bind() {
 		desktop = this.display.getDesktop();
-		desktop.getElement().getStyle().clearPosition();
+		desktop.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		//desktop.getElement().getStyle().clearPosition();
 		TheSocialOS.get().setDesktop(desktop);
 		//Run the desktopManager
 		this.desktopManager = new DesktopManager(eventBus, display.getScreen(), display.getDesktop());

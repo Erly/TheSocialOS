@@ -13,7 +13,7 @@ public class PicturesHelper {
 	 */
 	protected static void loadPictureAlbums() {
 		//final HashSet<Album> albums = new HashSet<Picasa.Album>();
-		FolderWindow folder = new FolderWindow("Picture albums");
+		FolderWindow folder = new FolderWindow("Picture albums", FolderWindow.PICTURES);
 		loadPicasaAlbums(folder);
 		loadFacebookAlbums(folder);
 		loadFlickrAlbums(folder);
