@@ -17,6 +17,7 @@ import net.thesocialos.shared.model.OutConversation;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.Twitter;
 import net.thesocialos.shared.model.User;
+import net.thesocialos.shared.model.UserToDTO;
 
 
 import com.googlecode.objectify.ObjectifyService;
@@ -34,6 +35,7 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(Group.class);
 		ObjectifyService.register(Twitter.class);
 		ObjectifyService.register(User.class);
+		ObjectifyService.register(UserToDTO.class);
 	
 		//Chat
 		ObjectifyService.register(Lines.class);

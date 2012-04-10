@@ -1,16 +1,21 @@
 package net.thesocialos.server;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import net.thesocialos.client.service.ContacsService;
 import net.thesocialos.shared.exceptions.FriendNotFoundException;
+import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.User;
+import net.thesocialos.shared.model.UserToDTO;
 
+import com.google.gwt.dev.js.rhino.ObjToIntMap.Iterator;
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
@@ -24,12 +29,14 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 		User user = UserHelper.getUserfromSession(perThreadRequest.get().getSession());
 		List<Key<User>> contacts = user.getContacts();
 		
-				
-		if (contacts == null){
+		User user1 = ofy.get(UserToDTO.class,"unai@thesocialos.net");
+		System.out.println(user1.getPassword());		
+		if (contacts == null || contacts.isEmpty()){
 			throw new FriendNotFoundException("User not has Contacts");
 		}
 		
 		Map<Key<User>, User> usuarios = ofy.get(contacts);
+		
 		//ArrayList<String> list = new ArrayList<String>();
 		//Arrays.
 		return usuarios;
@@ -77,6 +84,19 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 	@Override
 	public User getFriend(String email) throws FriendNotFoundException {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<Key<User>, User> getUsers() throws UsersNotFoundException {
+		// TODO Auto-generated method stub
+		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		try {
+			Map<Key<User>, UserToDTO> users = UserHelper.getUsers(ofy);
+			
+		} catch (NotFoundException e) {
+			// TODO: handle exception
+		}
 		return null;
 	}
 

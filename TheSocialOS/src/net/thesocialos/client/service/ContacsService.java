@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.thesocialos.shared.exceptions.FriendNotFoundException;
+import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -22,4 +23,6 @@ public interface ContacsService extends RemoteService {
 	List<User> getFriendsSuggestionList(String text) throws FriendNotFoundException;
 	
 	User getFriend(String email) throws FriendNotFoundException;
+	
+	Map<Key<User>,User> getUsers() throws UsersNotFoundException;
 }

@@ -67,7 +67,15 @@
   	<servlet-name>oauth2response</servlet-name>
   	<url-pattern>/oauth2response</url-pattern>
   </servlet-mapping>
+   <servlet>
+  	<servlet-name>ContactsRPC</servlet-name>
+  	<servlet-class>net.thesocialos.server.Contactsimpl</servlet-class>
+  </servlet>
   
+  <servlet-mapping>
+  	<servlet-name>ContactsRPC</servlet-name>
+  	<url-pattern>/thesocialos/ContactsRPC</url-pattern>
+  </servlet-mapping>
   <servlet>
   	<servlet-name>uploadServlet</servlet-name>
   	<!-- This is the default servlet, it puts files in session -->

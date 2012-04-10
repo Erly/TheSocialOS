@@ -22,6 +22,7 @@ public class CacheLayer {
 
 	static User user;
 	static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
+	static Map<Key<User>, User> users = new LinkedHashMap<Key<User>, User>();
 	static LinkedHashMap<String, Session> sessions;
 	static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
 	
@@ -72,6 +73,11 @@ public class CacheLayer {
 				callback.onSuccess(contacts);
 			}
 		}
+		public static void getUsers(boolean refreshUsers,AsyncCallback<Map<Key<User>,User>> callback){
+			if (users.isEmpty() || refreshUsers){
+				
+			}
+		}
 		public static Boolean addContact(){
 			return null;
 		}
@@ -79,7 +85,6 @@ public class CacheLayer {
 			
 			return null;
 		}
-		
 		static private void getContacts(final AsyncCallback<Map<Key<User>,User>> callback){
 			
 			new RPCXSRF<Map<Key<User>,User>> (contactService) {
@@ -102,7 +107,11 @@ public class CacheLayer {
 				
 			}.retry(3);
 		}
+		private static void getUsers(final AsyncCallback<Map<Key<User>,User>> callback){
+			
+		}
 	}
+	
 	
 	public class GroupCalls{
 		

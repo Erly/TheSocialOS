@@ -6,10 +6,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
+import net.thesocialos.server.utils.IfUserSecureClass;
+
+import com.google.gwt.editor.client.Editor.Ignore;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Unindexed;
+import com.googlecode.objectify.condition.If;
+import com.googlecode.objectify.condition.ValueIf;
 
 @SuppressWarnings("serial")
 @Cached
@@ -18,7 +24,7 @@ public class User implements Serializable {
 
 	@Id private String email; //Email of the user
 	
-	@Unindexed private  String password; //Password of the user
+	@Unindexed  @net.thesocialos.server.utils.Ignore(IfUserSecureClass.class) private  String password; //Password of the user
 	
 	private String avatar; //Avatar of the user
 	
@@ -172,4 +178,5 @@ public class User implements Serializable {
 	public void setLastTimeActive(Date lastTimeActive) {
 		this.lastTimeActive = lastTimeActive;
 	}
+	
 }

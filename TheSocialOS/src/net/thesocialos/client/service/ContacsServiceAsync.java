@@ -15,4 +15,6 @@ public interface ContacsServiceAsync extends ServiceAsync {
 	void getFriendsSuggestionList(String text, AsyncCallback <List<User>> callback);
 	
 	void getFriend(String email, AsyncCallback<User> callback);
+	
+	void getUsers(AsyncCallback <Map<Key<User>,User>> callback);
 }

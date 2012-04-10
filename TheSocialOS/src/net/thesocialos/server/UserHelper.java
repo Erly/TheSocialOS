@@ -3,6 +3,7 @@ package net.thesocialos.server;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.jdo.JDOCanRetryException;
 import javax.jdo.JDOException;
@@ -20,8 +21,10 @@ import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
+import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
+import net.thesocialos.shared.model.UserToDTO;
 
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
@@ -175,5 +178,18 @@ final static String OBJECITIFY = "objetify";
 	 */
 	public static Objectify getBBDD(HttpSession session){
 		return (Objectify) session.getAttribute(OBJECITIFY);
+	}
+	
+	/**
+	 * Get all Users for BBDD
+	 * @param ofy
+	 * @return Todos los usuarios de la BBDD
+	 * @throws NotFoundException
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<Key<User>, UserToDTO>  getUsers(Objectify ofy) throws NotFoundException{
+		
+			return ofy.get(UserToDTO.class);
+		
 	}
 }
