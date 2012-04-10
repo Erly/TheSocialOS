@@ -1,14 +1,18 @@
 package net.thesocialos.server;
 
 import java.util.Date;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import net.thesocialos.server.utils.ChannelServer;
 import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
+import net.thesocialos.shared.model.UserToDTO;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -144,5 +148,18 @@ final static String OBJECITIFY = "objetify";
 		ofy.put(lineChat);		
 	    session.setAttribute("channelID", user.getEmail());
 	    return token;
+	}
+	
+	/**
+	 * Get all Users for BBDD
+	 * @param ofy
+	 * @return Todos los usuarios de la BBDD
+	 * @throws NotFoundException
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<Key<User>, UserToDTO> getUsers(Objectify ofy) throws NotFoundException{
+		
+			return ofy.get(UserToDTO.class);
+		
 	}
 }

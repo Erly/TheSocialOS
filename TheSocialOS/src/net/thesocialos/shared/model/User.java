@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
+import net.thesocialos.server.utils.IfUserSecureClass;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
@@ -18,7 +19,7 @@ public class User implements Serializable {
 
 	@Id private String email; //Email of the user
 	
-	@Unindexed private  String password; //Password of the user
+	@Unindexed  @net.thesocialos.server.utils.Ignore(IfUserSecureClass.class) private  String password; //Password of the user
 	
 	private String avatar; //Avatar of the user
 	
@@ -172,7 +173,7 @@ public class User implements Serializable {
 	public void setLastTimeActive(Date lastTimeActive) {
 		this.lastTimeActive = lastTimeActive;
 	}
-
+	
 	public void overwriteAccountsList(List<Key<? extends Account>> newAccountsKeys) {
 		this.accounts.clear();
 		this.accounts.addAll(newAccountsKeys);

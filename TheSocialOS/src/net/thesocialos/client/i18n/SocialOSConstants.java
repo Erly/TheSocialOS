@@ -97,7 +97,7 @@ public interface SocialOSConstants extends Constants {
 	String facebookAccount();
 	@DefaultStringValue("Twitter Account")
 	String twitterAccount();
-	@DefaultStringValue("FlickR Account")
+	@DefaultStringValue("Flickr Account")
 	String flickrAccount();
 	
 	/**
