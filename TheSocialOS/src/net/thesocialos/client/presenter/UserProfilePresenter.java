@@ -55,7 +55,7 @@ public class UserProfilePresenter implements Presenter {
 	 * Binds this presenter to its view, loads data on its elements and adds its handlers.
 	 */
 	public void bind() {
-		String imageUrl = CacheLayer.getUser(false).getAvatar();
+		String imageUrl = CacheLayer.UserCalls.getUser().getAvatar();
 		if (imageUrl.equals("data:image/png;base64,null"))
 			this.display.getAvatar().setUrl("./images/anonymous_avatar.png");
 		else

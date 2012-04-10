@@ -152,16 +152,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 			}
 		};
 	}
-	@Override
-	public void Tofront() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void Toback(int position) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	@Override
 	public int getposition() {
 		// TODO Auto-generated method stub
@@ -196,6 +187,16 @@ public class SearchBoxPresenter extends DesktopUnit {
 	}
 	@Override
 	public void getID() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void toFront() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void toPosition(int position) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,6 +1,7 @@
 package net.thesocialos.client.presenter;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import net.thesocialos.client.CacheLayer;
@@ -32,6 +33,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
+import com.googlecode.objectify.Key;
 
 public class LoginPresenter implements Presenter {
 
@@ -97,14 +99,27 @@ public class LoginPresenter implements Presenter {
 					
 				} else { // The user exists and the password is correct
 					//TheSocialOS.get().setCurrentUser(result.getUser());
-					CacheLayer.setUser(result.getUser());
+					CacheLayer.UserCalls.setUser(result.getUser());
 					if (result.getDuration() < 0){
 						Cookies.setCookie("sid", result.getSessionID());
 					}else{
 						Date expires = new Date(System.currentTimeMillis() + result.getDuration());
 						Cookies.setCookie("sid", result.getSessionID(), expires);
 					}
-					TheSocialOS.get().refreshCloudAccounts();
+					CacheLayer.UserCalls.getAccounts(false, new AsyncCallback<Map<Key<Account>, Account>>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onSuccess(Map<Key<Account>, Account> result) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
 					
 					History.newItem("desktop");
 				}

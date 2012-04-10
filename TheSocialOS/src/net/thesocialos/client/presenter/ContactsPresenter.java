@@ -221,12 +221,12 @@ public class ContactsPresenter extends DesktopUnit {
 	}
 
 	@Override
-	public void Tofront() {
+	public void toFront() {
 		
 	}
 
 	@Override
-	public void Toback(int position) {
+	public void toPosition(int position) {
 		
 	}
 
