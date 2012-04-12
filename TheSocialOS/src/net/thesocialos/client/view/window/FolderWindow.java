@@ -110,6 +110,26 @@ public class FolderWindow {
 			}
 		}
 	}
+	
+	public void addMedia(Media media) {
+		if (!hasAlbums) {
+			hasAlbums = true;
+			infoPanel.removeFromParent();
+		}
+		TypeAndService typeAndService = getTypeAndService(media);
+		// If it a picture prefetch it, so the popup loads in the correct position (and the image loads faster ;) )
+		if (typeAndService.type == TYPE.PICTURE)
+			Image.prefetch(((MediaPicture)media).getUrl());
+		Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type, typeAndService.service);
+		thumb.addDoubleClickHandler(new DblClickHandlerHelper(media).getDoubleClickHandler());
+		table.setWidget(j, i, thumb);
+		table.getFlexCellFormatter().setVerticalAlignment(j, i, HasVerticalAlignment.ALIGN_TOP);
+		i++;
+		if (i % 4 == 0) {
+			j++;
+			i = 0;
+		}
+	}
 
 	private TypeAndService getTypeAndService(Media media) {
 		TypeAndService typeAndService = null;

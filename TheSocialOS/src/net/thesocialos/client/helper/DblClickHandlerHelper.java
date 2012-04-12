@@ -3,6 +3,7 @@ package net.thesocialos.client.helper;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.Media;
+import net.thesocialos.client.api.MediaPicture;
 import net.thesocialos.client.api.PicasaAPI;
 import net.thesocialos.client.api.PicasaAPI.Album;
 import net.thesocialos.client.view.window.FolderWindow;
@@ -54,11 +55,7 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
-			popup.add(new Image(((PicasaAPI.Picture)media).getUrl()));
-			popup.setAnimationEnabled(true);
-			popup.setGlassEnabled(true);
-			popup.center();
+			openImage();
 		}
 	};
 	
@@ -76,11 +73,7 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
-			popup.add(new Image(((FacebookAPI.Picture)media).getUrl()));
-			popup.setAnimationEnabled(true);
-			popup.setGlassEnabled(true);
-			popup.center();
+			openImage();
 		}
 	};
 	
@@ -88,8 +81,9 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			// TODO Auto-generated method stub
-			
+			FolderWindow folder = new FolderWindow(media.getName());
+			new FlickrAPI().loadPicturesInFolder((FlickrAPI.Album) media, folder);
+			folder.show();
 		}
 	};
 	
@@ -97,8 +91,7 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			// TODO Auto-generated method stub
-			
+			openImage();
 		}
 	};
 	
@@ -119,4 +112,12 @@ public class DblClickHandlerHelper {
 			
 		}
 	};
+
+	protected void openImage() {
+		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
+		popup.add(new Image(((MediaPicture)media).getUrl()));
+		popup.setAnimationEnabled(true);
+		popup.setGlassEnabled(true);
+		popup.center();
+	}
 }
