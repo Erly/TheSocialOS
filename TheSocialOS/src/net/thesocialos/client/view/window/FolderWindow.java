@@ -14,6 +14,7 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.Media;
+import net.thesocialos.client.api.MediaPicture;
 import net.thesocialos.client.api.PicasaAPI;
 import net.thesocialos.client.helper.DblClickHandlerHelper;
 import net.thesocialos.client.view.Thumbnail;
@@ -95,6 +96,9 @@ public class FolderWindow {
 		while (iterator.hasNext()) {
 			Media media = iterator.next();
 			TypeAndService typeAndService = getTypeAndService(media);
+			// If it a picture prefetch it, so the popup loads in the correct position (and the image loads faster ;) )
+			if (typeAndService.type == TYPE.PICTURE)
+				Image.prefetch(((MediaPicture)media).getUrl());
 			Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type, typeAndService.service);
 			thumb.addDoubleClickHandler(new DblClickHandlerHelper(media).getDoubleClickHandler());
 			table.setWidget(j, i, thumb);
@@ -113,11 +117,14 @@ public class FolderWindow {
 			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.PICASA);
 		} else if (media instanceof PicasaAPI.Picture) {
 			typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.PICASA);
-			Image.prefetch(((PicasaAPI.Picture)media).getUrl());
 		} else if (media instanceof FacebookAPI.Album) {
 			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.FACEBOOK);
+		} else if (media instanceof FacebookAPI.Picture) {
+			typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.FACEBOOK);
 		} else if (media instanceof FlickrAPI.Album) {
 			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.FLICKR);
+		} else if (media instanceof FlickrAPI.Picture) {
+			typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.FLICKR);
 		}
 		return typeAndService;
 	}

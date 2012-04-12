@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -13,13 +12,10 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.googlecode.objectify.Key;
 
 import net.thesocialos.client.CacheLayer;
-import net.thesocialos.client.api.PicasaAPI.Album;
 import net.thesocialos.client.oauth.OAuth;
 import net.thesocialos.client.view.window.FolderWindow;
 import net.thesocialos.shared.model.Account;
@@ -31,7 +27,7 @@ public class FlickrAPI {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public class Album implements Media {
+	public class Album implements MediaAlbum {
 		private String id;
 		private String title;
 		private String summary;
@@ -74,6 +70,7 @@ public class FlickrAPI {
 		/**
 		 * @return the numPhotos
 		 */
+		@Override
 		public int getElementCount() {
 			return numPhotos;
 		}
@@ -91,6 +88,38 @@ public class FlickrAPI {
 			return commentCount;
 		}
 	}
+	
+	public class Picture implements MediaPicture {
+
+		private String id;
+		private String title;
+		private String url;
+		private String thumbnailURL;
+		private boolean commentingEnabled;
+		private int commentCount;
+		
+		@Override
+		public String getID() {
+			return id;
+		}
+
+		@Override
+		public String getName() {
+			return title;
+		}
+
+		@Override
+		public String getThumbnailURL() {
+			return thumbnailURL;
+		}
+		
+		@Override
+		public String getUrl() {
+			return url;
+		}
+		
+	}
+
 	
 	public void loadAlbumsInFolder(final FolderWindow folder) {
 		String url = "http://api.flickr.com/services/rest/?method=flickr.photosets.getList&nojsoncallback=1&per_page=9999";

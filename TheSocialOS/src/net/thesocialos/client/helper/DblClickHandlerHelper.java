@@ -26,11 +26,11 @@ public class DblClickHandlerHelper {
 			return picasaPicture;
 		} else if (media instanceof FacebookAPI.Album) {
 			return facebookAlbum;
-		} else if (media instanceof FacebookAPI) {			//FacebookAPI.Picture
+		} else if (media instanceof FacebookAPI.Picture) {
 			return facebookPicture;
 		} else if (media instanceof FlickrAPI.Album) {
 			return flickrAlbum;
-		} else if (media instanceof FlickrAPI) {			//FlickAPI.Picture
+		} else if (media instanceof FlickrAPI.Picture) {
 			return flickrPicture;
 		}/* else if (media instanceof PicasaAPI) {			  YoutubeAPI.Album
 			return youtubeAlbum;
@@ -45,7 +45,7 @@ public class DblClickHandlerHelper {
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
 			FolderWindow folder = new FolderWindow(media.getName());
-			new PicasaAPI().loadPicturesInFolder((Album) media, folder);
+			new PicasaAPI().loadPicturesInFolder((PicasaAPI.Album) media, folder);
 			folder.show();
 		}
 	};
@@ -66,8 +66,9 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			// TODO Auto-generated method stub
-			
+			FolderWindow folder = new FolderWindow(media.getName());
+			new FacebookAPI().loadPicturesInFolder((FacebookAPI.Album) media, folder);
+			folder.show();
 		}
 	};
 	
@@ -75,8 +76,11 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			// TODO Auto-generated method stub
-			
+			DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
+			popup.add(new Image(((FacebookAPI.Picture)media).getUrl()));
+			popup.setAnimationEnabled(true);
+			popup.setGlassEnabled(true);
+			popup.center();
 		}
 	};
 	

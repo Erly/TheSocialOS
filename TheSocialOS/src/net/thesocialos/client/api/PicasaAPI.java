@@ -14,7 +14,6 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.googlecode.objectify.Key;
 
@@ -24,7 +23,7 @@ public class PicasaAPI {
 		
 	}
 	
-	public class Album implements Media {
+	public class Album implements MediaAlbum {
 
 		private String id;
 		private String title;
@@ -86,7 +85,7 @@ public class PicasaAPI {
 		}		
 	}
 	
-	public class Picture implements Media {
+	public class Picture implements MediaPicture {
 
 		private String id;
 		private String title;
@@ -109,32 +108,28 @@ public class PicasaAPI {
 		public String getThumbnailURL() {
 			return thumbnailURL;
 		}
-
-		@Override
-		public int getElementCount() {
-			return 1;
-		}
 		
+		@Override
 		public String getUrl() {
 			return url;
+		}
+		
+		public boolean isCommentingEnabled() {
+			return commentingEnabled;
+		}
+		
+		public int getCommentCount() {
+			return commentCount;
 		}
 		
 	}
 	
 	public void getAlbumsRequest(AsyncCallback<JavaScriptObject> cb) throws RequestException {
 		String picasaAPIurl = "http://picasaweb.google.com/data/feed/api/user/";
-		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
-		Iterator<Account> it = accounts.values().iterator();
-		Google googleAccount = null;
-		while (it.hasNext()) {
-			Account account = it.next();
-			if (account instanceof Google) {
-				googleAccount = (Google) account;
-				break;
-			}
-		}
+		Google googleAccount = getGoogleAccount();
 		if (null == googleAccount)
 			return;
+		
 		String email = googleAccount.getUsername();
 		String username = email.substring(0, email.indexOf('@'));
 		
