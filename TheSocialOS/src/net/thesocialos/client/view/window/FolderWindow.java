@@ -6,6 +6,7 @@ import java.util.Iterator;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -14,6 +15,7 @@ import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.Media;
 import net.thesocialos.client.api.PicasaAPI;
+import net.thesocialos.client.helper.DblClickHandlerHelper;
 import net.thesocialos.client.view.Thumbnail;
 import net.thesocialos.client.view.Thumbnail.SERVICE;
 import net.thesocialos.client.view.Thumbnail.TYPE;
@@ -94,6 +96,7 @@ public class FolderWindow {
 			Media media = iterator.next();
 			TypeAndService typeAndService = getTypeAndService(media);
 			Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type, typeAndService.service);
+			thumb.addDoubleClickHandler(new DblClickHandlerHelper(media).getDoubleClickHandler());
 			table.setWidget(j, i, thumb);
 			table.getFlexCellFormatter().setVerticalAlignment(j, i, HasVerticalAlignment.ALIGN_TOP);
 			i++;
@@ -108,6 +111,9 @@ public class FolderWindow {
 		TypeAndService typeAndService = null;
 		if (media instanceof PicasaAPI.Album) {
 			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.PICASA);
+		} else if (media instanceof PicasaAPI.Picture) {
+			typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.PICASA);
+			Image.prefetch(((PicasaAPI.Picture)media).getUrl());
 		} else if (media instanceof FacebookAPI.Album) {
 			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.FACEBOOK);
 		} else if (media instanceof FlickrAPI.Album) {
