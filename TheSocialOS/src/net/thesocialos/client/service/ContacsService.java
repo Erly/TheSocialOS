@@ -3,10 +3,12 @@ package net.thesocialos.client.service;
 import java.util.List;
 import java.util.Map;
 
+import net.thesocialos.shared.exceptions.ContactException;
 import net.thesocialos.shared.exceptions.FriendNotFoundException;
 import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.User;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -24,5 +26,9 @@ public interface ContacsService extends RemoteService {
 	
 	User getFriend(String email) throws FriendNotFoundException;
 	
-	Map<Key<User>,User> getUsers() throws UsersNotFoundException;
+	Map<String,User> getUsers() throws UsersNotFoundException;
+	
+	Boolean addPetitionContact(User contactUser) throws ContactException;
+	
+	Map<String,User> getPetitionContact() throws ContactException;
 }

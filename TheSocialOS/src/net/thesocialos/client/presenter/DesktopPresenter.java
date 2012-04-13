@@ -18,6 +18,7 @@ import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.view.Icon;
 import net.thesocialos.client.view.ContactsView;
 import net.thesocialos.client.view.DesktopBar;
+import net.thesocialos.client.view.SearchBoxView;
 import net.thesocialos.client.view.StartMenu;
 import net.thesocialos.client.view.StartMenuItem;
 import net.thesocialos.client.view.chat.ChatPanel;
@@ -64,6 +65,7 @@ public class DesktopPresenter implements Presenter {
 	 * All declarations of the desktop 
 	 */
 	ContactsPresenter contacsPresenter;
+	SearchBoxPresenter searchBoxPresenter;
 	
 	private AbsolutePanel desktop;
 	private boolean startMenuFocused = false;
@@ -140,6 +142,7 @@ public class DesktopPresenter implements Presenter {
 		bindUserMenu(user);
 		bindSocialOS();
 		bindContacts();
+		bindSearchBox();
 
 		// Populate the Star Menu		
 		ArrayList<IApplication> appsData = new ArrayList<IApplication>();
@@ -397,17 +400,33 @@ public class DesktopPresenter implements Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				
-				//desktop.add(contactsPresenter.getContactsPresenter());
-				System.out.println("boton pulsado");
+	
+			
 				if (contacsPresenter == null){
 					contacsPresenter = new ContactsPresenter(new ContactsView());
 				}
 				eventBus.fireEvent(new DesktopEventOnOpen(contacsPresenter));
-				//display.getScreen().add(contactsPresenter.display.asWidget());
-				//contactsPresenter.display.asWidget().setVisible(true);
-				//contactsPresenter.go(null);
+
+			}
+		});
+	}
+	
+	private void bindSearchBox(){
+		
+		display.getDesktopBar().getSearchBox().addClickHandler(new ClickHandler() {
+		
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				if (searchBoxPresenter == null){
+					searchBoxPresenter = new SearchBoxPresenter(new SearchBoxView());
+				}
+				System.out.println(display.getDesktopBar().getSearchBox().getAbsoluteLeft());
+				System.out.println(searchBoxPresenter.display.getSearchBoxPanel().getOffsetWidth());
+				int x = display.getDesktopBar().getSearchBox().getAbsoluteLeft() - (searchBoxPresenter.display.getSearchBoxPanel().getOffsetWidth());
+				int y = display.getDesktopBar().getSearchBox().getOffsetHeight();
+				searchBoxPresenter.setPosition(x, y);
+				eventBus.fireEvent(new DesktopEventOnOpen(searchBoxPresenter));
 			}
 		});
 	}

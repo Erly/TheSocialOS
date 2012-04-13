@@ -8,7 +8,9 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import net.thesocialos.server.utils.IfUserSecureClass;
+import net.thesocialos.client.service.ContacsService;
+
+
 
 import com.google.gwt.editor.client.Editor.Ignore;
 import com.googlecode.objectify.Key;
@@ -24,23 +26,23 @@ public class User implements Serializable {
 
 	@Id private String email; //Email of the user
 	
-	@Unindexed  @net.thesocialos.server.utils.Ignore(IfUserSecureClass.class) private  String password; //Password of the user
+	@Unindexed private  String password; //Password of the user
 	
-	private String avatar; //Avatar of the user
+	@Unindexed private String avatar; //Avatar of the user
 	
-	private String background; //Background of the user
+	@Unindexed private String background; //Background of the user
 	
 	private String firstName; //firstname
 	
-	private String role; //The role of the user
+	@Unindexed private String role; //The role of the user
 	
 	private String address; // address of user
 
-	String lastName; //lastnameString address;
+	@Unindexed String lastName; //lastnameString address;
 	
-	String mobilePhone;
+	@Unindexed String mobilePhone;
 	
-	String job;
+	@Unindexed String job;
 	
 	private Date lastTimeActive;
 	
@@ -53,6 +55,10 @@ public class User implements Serializable {
 	List<Key<Session>> sessions = new ArrayList<Key<Session>>();
 	
 	List<Key<User>> contacts = new ArrayList<Key<User>>();
+	/*
+	 * Las peticiones de amistad de los contactos
+	 */
+	private List<Key<User>> petitionsContacts = new ArrayList<Key<User>>();
 	
 	List<Key<? extends Account>> accounts = new ArrayList<Key<? extends Account>>();
 
@@ -95,6 +101,46 @@ public class User implements Serializable {
 	}
 	public List<Key<User>> getContacts(){
 		return contacts;
+	}
+	/**
+	 * Añade un contacto al usuario
+	 * @param contact El contacto a añadir
+	 * @return true si se a podido añadir. False si ya estaba añadido
+	 */
+	public boolean addContact(Key<User> contact){
+		if (contacts.contains(contact))
+			return false;
+		contacts.add(contact);
+		return true;
+		
+	}
+	public List<Key<User>> getpetitionsContacts(){
+		return petitionsContacts;
+	}
+	/**
+	 * Añade una invitación de contacto al usuario
+	 * @param contact El contacto a añadir
+	 * @return true si se a podido añadir. False si ya estaba añadido
+	 */
+	public boolean addPetitionContacts(Key<User> contact){
+		if (petitionsContacts.contains(contact) || contacts.contains(contact)){
+			return false;
+		}
+		petitionsContacts.add(contact);
+		return true;
+	}
+	/**
+	 * Añade un contacto desde la lista de invitaciones
+	 * @param contact El contacto a añadir
+	 * @return true si se a podido añadir. False si ya estaba añadido
+	 */
+	public boolean addPetitionContactTOContact(Key<User> contact){
+		if (petitionsContacts.contains(contact) && (contacts.contains(contact) == false)){
+			contacts.add(contact);
+			petitionsContacts.remove(contact);
+			return true;
+		}
+		return false;
 	}
 
 	public void setConversations(Key<Conversation>[] conversations) {
@@ -166,6 +212,7 @@ public class User implements Serializable {
 	public static User toDTO(User user) {
 		return new User(user.email, user.avatar, user.background, user.firstName, user.lastName, user.role);
 	}
+	
 
 	public String getAddress() {
 		return address;

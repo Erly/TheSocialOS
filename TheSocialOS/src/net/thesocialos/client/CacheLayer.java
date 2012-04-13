@@ -24,7 +24,8 @@ public class CacheLayer {
 
 	static User user;
 	static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
-	static Map<Key<User>, User> users = new LinkedHashMap<Key<User>, User>();
+	//Usuarios de la aplicación
+	static Map<String, User> users = new LinkedHashMap<String, User>();
 	static LinkedHashMap<String, Session> sessions;
 	static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
 
@@ -89,12 +90,15 @@ public class CacheLayer {
 	 */
 	public static class ContactCalls{
 		
-		static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
 		
 		public static User getContact(String email){
 			return null;
 		}
-		
+		/**
+		 * Obtiene los contactos
+		 * @param cached if true si se quiere cojer los cacheados
+		 * @param callback
+		 */
 		public static void getContacts(boolean cached, AsyncCallback<Map<Key<User>,User>> callback){
 			if (contacts.isEmpty() || !cached){
 				ContactCalls.getContacts(callback);
@@ -102,24 +106,52 @@ public class CacheLayer {
 				callback.onSuccess(contacts);
 			}
 		}
-
-		public static void getUsers(boolean refreshUsers,AsyncCallback<Map<Key<User>,User>> callback){
-			if (users.isEmpty() || refreshUsers){
-				
+		/**
+		 * Obtiene los usuarios del servidor
+		 * @param cached if true si se quiere cojer los cacheados
+		 * @param callback
+		 */
+		public static void getUsers(boolean cached,AsyncCallback<Map<String,User>> callback){
+			if (users.isEmpty() || cached){
+				getUsers(callback);
+			}else{
+				callback.onSuccess(users);
 			}
 		}
-
 		public static Boolean addContact(){
 			return null;
-		}
-		
+		}	
 		public static Boolean putAllContacts(){
 			
 			return null;
 		}
 
+		/**
+		 * Añade un usuario una peticion del usuario logeado
+		 * @param callback true si a tenido exito
+		 * @param contactUser El usuario a que enviar la petición
+		 */
+		public static void addPetitionContact (final User contactUser,final AsyncCallback<Boolean> callback){
+			new RPCXSRF<Boolean>(contactService) {
 
+				@Override
+				protected void XSRFcallService(AsyncCallback<Boolean> cb) {
+					contactService.addPetitionContact(contactUser, callback);
+				}
+				public void onSuccess(Boolean success){
+					callback.onSuccess(success);
+				}
+				
+				public void onFailure(Throwable caught){
+					callback.onFailure(caught);
+				}
+			}.retry(3);
+		}
 		
+		/**
+		 * Llamada asincrona para recoger los contactos del servidor
+		 * @param callback
+		 */
 		static private void getContacts(final AsyncCallback<Map<Key<User>, User>> callback){
 			new RPCXSRF<Map<Key<User>, User>> (contactService) {
 
@@ -130,7 +162,7 @@ public class CacheLayer {
 				}
 				
 				public void onSuccess(Map<Key<User>, User> contacts){
-					CacheLayer.ContactCalls.contacts = contacts;
+					CacheLayer.contacts = contacts;
 					callback.onSuccess(contacts);
 				}
 				
@@ -140,10 +172,32 @@ public class CacheLayer {
 				
 			}.retry(3);
 		}
-		private static void getUsers(final AsyncCallback<Map<Key<User>,User>> callback){
-			
+		/**
+		 * Llamada asincrona para recoger los usuarios del servidor
+		 * @param callback 
+		 */
+		private static void getUsers(final AsyncCallback<Map<String,User>> callback){
+			new RPCXSRF<Map<String,User>>(contactService) {
+
+				@Override
+				protected void XSRFcallService(
+						AsyncCallback<Map<String, User>> cb) {
+					contactService.getUsers(cb);
+					
+				}
+				public void onSuccess(Map<String,User> users){
+					CacheLayer.users = users;
+					callback.onSuccess(users);
+				}
+				
+				public void onFailure(Throwable caught){
+					callback.onFailure(caught);
+				}
+			}.retry(3);
+
 		}
 	}
+		
 	
 
 	

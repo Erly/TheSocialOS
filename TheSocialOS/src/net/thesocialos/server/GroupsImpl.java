@@ -20,7 +20,7 @@ public class GroupsImpl extends XsrfProtectedServiceServlet implements GroupsSer
 	public Map<Key<Group>, Group> getUserGroups() throws GroupNotFoundException {
 		HttpSession httpSession = perThreadRequest.get().getSession();
 		Objectify ofy = UserHelper.getBBDD(httpSession);
-		User user = UserHelper.getUserfromSession(httpSession);
+		User user = UserHelper.getUserHttpSession(httpSession);
 		Map<Key<Group>, Group> groups;
 		try {
 			groups = ofy.get(Group.class,user.getGroups());

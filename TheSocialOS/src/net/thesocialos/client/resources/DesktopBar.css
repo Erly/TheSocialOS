@@ -44,17 +44,12 @@
 .socialos {
 	cursor: pointer;
 	font-weight: bolder;
-	height: 100%;
 	padding-left: 5px;
 	padding-right: 5px;
-	vertical-align: middle;
-	width: 120px;
-	position: relative;
+	position:absolute;
+    left:45%;
+    top:0%;
 	z-index: 1000;
-	/*border-left: 1px solid grey;
-	border-right: 1px solid grey;
-	border-bottom: 1px solid grey;
-	box-shadow: 0 -3px 5px #ccc;*/
 }
 .socialos:hover {
 	background-color: #477ea2;
@@ -67,6 +62,33 @@
 	border-right: 1px solid grey;
 	box-shadow: 0 -3px 5px #ccc;
 }
+
+.searchBox {
+	cursor: pointer;
+	font-weight: bolder;
+
+	padding-left: 5px;
+	padding-right: 5px;
+
+	position:absolute;
+    left:25%;
+    top:0%;
+
+	z-index: 1000;
+
+}
+.searchBox:hover {
+	background-color: #477ea2;
+	color: white;
+}
+.searchBox-clicked {
+	outline: 0;
+	background-color: #ffffff;
+	border-left: 1px solid grey;
+	border-right: 1px solid grey;
+	box-shadow: 0 -3px 5px #ccc;
+}
+
 .links {
 	cursor: pointer;
 	font-size: 12px;

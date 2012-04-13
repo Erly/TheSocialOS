@@ -71,15 +71,23 @@ final static String OBJECITIFY = "objetify";
 		httpSession.setAttribute(OBJECITIFY, ofy);
 		return true;
 	}
-	
 	/**
-	 * 
+	 * Guarda cambios hechos en el usuario tanto en la BBDD como en la session
+	 * @param user
 	 * @param httpSession
+	 * @param ofy
 	 * @return
 	 */
-	public static synchronized User getUserfromSession(HttpSession httpSession){
-		return (User) httpSession.getAttribute(userN);
+	public static synchronized boolean saveUser(User user,HttpSession httpSession, Objectify ofy){
+		if (((User) httpSession.getAttribute(userN)).getEmail().equalsIgnoreCase(user.getEmail())!= true){
+			return false;
+		}
+		httpSession.setAttribute(userN, user);
+		ofy.put(user);
+		return true;
 	}
+	
+	
 	
 
 	
@@ -102,7 +110,6 @@ final static String OBJECITIFY = "objetify";
 	 * @throws NotFoundException
 	 */
 	public static synchronized User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{
-		System.out.println(session.getUser().getName());
 		return ofy.get(User.class,session.getUser().getName());
 	}
 	

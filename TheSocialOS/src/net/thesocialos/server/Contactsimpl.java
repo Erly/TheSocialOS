@@ -2,11 +2,14 @@ package net.thesocialos.server;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import net.thesocialos.client.service.ContacsService;
+import net.thesocialos.shared.exceptions.ContactException;
 import net.thesocialos.shared.exceptions.FriendNotFoundException;
 import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.User;
@@ -26,11 +29,10 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 	@Override
 	public Map<Key<User>,User> getFriendsList() throws FriendNotFoundException {
 		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
-		User user = UserHelper.getUserfromSession(perThreadRequest.get().getSession());
+		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
 		List<Key<User>> contacts = user.getContacts();
 		
-		User user1 = ofy.get(UserToDTO.class,"unai@thesocialos.net");
-		System.out.println(user1.getPassword());		
+			
 		if (contacts == null || contacts.isEmpty()){
 			throw new FriendNotFoundException("User not has Contacts");
 		}
@@ -48,7 +50,7 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
 		StringTokenizer tokens = new StringTokenizer(text);
 		List<String> userNames = new ArrayList<String>();
-		User user = UserHelper.getUserfromSession(perThreadRequest.get().getSession());
+		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
 		
 		
 		while (tokens.hasMoreTokens()){
@@ -88,16 +90,56 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 	}
 
 	@Override
-	public Map<Key<User>, User> getUsers() throws UsersNotFoundException {
+	public Map<String, User> getUsers() throws UsersNotFoundException {
 		// TODO Auto-generated method stub
 		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
-		try {
-			Map<Key<User>, UserToDTO> users = UserHelper.getUsers(ofy);
-			
-		} catch (NotFoundException e) {
-			// TODO: handle exception
+		Query<User> queryusers = ofy.query(User.class);
+		Map<String,User> users = new LinkedHashMap<String, User>();
+		if (queryusers.count() == 0){
+			throw new UsersNotFoundException("No users in the database");
 		}
-		return null;
+		for (User user: queryusers){
+			users.put(user.getEmail(), User.toDTO(user));
+		}
+		
+		return users;
+	}
+	
+	
+	/**
+	 * Añade una peticion nueva al contacto
+	 */
+	@Override
+	public Boolean addPetitionContact(User contactUser) throws ContactException {
+		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
+		Key<User> contactKey;
+		try {
+			contactKey = ObjectifyService.factory().getKey(contactUser);
+		} catch (Exception e) {
+			throw new ContactException("Fail to parse the key");
+		}
+		
+		if (user.addPetitionContacts(contactKey)){
+			UserHelper.saveUser(user, perThreadRequest.get().getSession(), ofy);
+			return true;
+		}
+		throw new ContactException("key duplicated");
+	}
+
+	@Override
+	public Map<String, User> getPetitionContact() throws ContactException {
+		java.util.Iterator<User> iteratorPetitions  = 
+				UserHelper.getBBDD(perThreadRequest.get().getSession()).get(User.class,
+				UserHelper.getUserHttpSession(perThreadRequest.get().getSession()).getpetitionsContacts()).values().iterator();
+		Map<String, User> petitions = new LinkedHashMap<String, User>();
+		while (iteratorPetitions.hasNext()) {
+			User userPetition = iteratorPetitions.next();
+			petitions.put(userPetition.getEmail(), userPetition);
+			
+		}
+		
+		return petitions;
 	}
 
 }

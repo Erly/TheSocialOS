@@ -28,6 +28,7 @@ import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyOpts;
 import com.googlecode.objectify.ObjectifyService;
 
 @SuppressWarnings("serial")
@@ -56,7 +57,9 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 	
 	@Override
 	public User getLoggedUser(String sid) {
-		Objectify ofy = ObjectifyService.begin();
+		ObjectifyOpts opts = new ObjectifyOpts().setSessionCache(true);
+	    Objectify ofy = ObjectifyService.begin(opts);
+		
 		User user;
 		Session session;
 		HttpSession httpSession = perThreadRequest.get().getSession();
@@ -71,7 +74,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			session = UserHelper.getSessionWithCookies(sid, ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
 			user.setLastTimeActive(new Date());
-			UserHelper.saveUsertohttpSession(session, user, (Objectify)httpSession.getAttribute("objetify"), httpSession);
+			UserHelper.saveUsertohttpSession(session, user, ofy, httpSession);
 			ofy.put(user);
 			return User.toDTO(user);
 		}catch (NotFoundException e) {
@@ -105,7 +108,8 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 	@Override
 	public LoginResult login(String email, String password, boolean keeploged) {
 		long duration = 2592000000L;//1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
-		Objectify ofy = ObjectifyService.begin();
+		ObjectifyOpts opts = new ObjectifyOpts().setSessionCache(true);
+	    Objectify ofy = ObjectifyService.begin(opts);
 		User user;
 		HttpSession httpSession = perThreadRequest.get().getSession();
 		
@@ -130,7 +134,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		}
 		
 		user.setLastTimeActive(new Date()); //Set last time to user is login
-		UserHelper.saveUsertohttpSession(session, user, (Objectify)httpSession.getAttribute("objetify"), httpSession); //Store user and session
+		UserHelper.saveUsertohttpSession(session, user, ofy, httpSession); //Store user and session
 		ofy.put(user); //Save user
 		return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 	}
@@ -143,7 +147,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 
 	@Override
 	public Map<Key<Account>, Account> getCloudAccounts() {
-		Objectify ofy = ObjectifyService.begin();
+		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
 		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
 		List<Key<? extends Account>> accountsKeys = user.getAccounts();
 		Map<Key<Account>, Account> accounts = ofy.get(accountsKeys);

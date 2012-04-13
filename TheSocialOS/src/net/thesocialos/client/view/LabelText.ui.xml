@@ -7,9 +7,9 @@
 		}
 	</ui:style>
 	
-		<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER">
-			<g:Label text="Ejemplo: " ui:field="lblLabel"  horizontalAlignment="ALIGN_LEFT"/>
-			<g:Label text="HOla" ui:field="lblText" horizontalAlignment="ALIGN_LEFT"/>
+		<g:HorizontalPanel horizontalAlignment="ALIGN_LEFT">
+			<g:Label text="Ejemplo: " ui:field="lblLabel"  horizontalAlignment="ALIGN_LEFT" width="87px"/>
+			<g:Label text="HOla" ui:field="lblText" horizontalAlignment="ALIGN_LEFT" width="185px"/>
 		</g:HorizontalPanel>
 		
 

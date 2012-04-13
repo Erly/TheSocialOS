@@ -1,0 +1,36 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:net.thesocialos.client.view">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+		.border{
+			
+   	 		border: 1px solid #CCCCCC;
+    		margin: 1px;
+
+		}
+	</ui:style>
+	<g:HTMLPanel>
+	
+			<g:HorizontalPanel width="370px" height="100px" borderWidth="1" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
+				<g:Image url="images/anonymous_avatar.png" width="122px" height="144px"/>
+				<g:AbsolutePanel height="152px" width="274px">
+					<g:at left="10" top="81">
+						<p1:LabelText width="209px" height="18px" labelText="Nombre:" text="Unai" ui:field="lblName"/>
+					</g:at>
+					<g:at left="10" top="105">
+						<p1:LabelText width="209px" height="18px" text="Correa" labelText="Apellido:" ui:field="lblSurname"/>
+					</g:at>
+					<g:at left="10" top="20">
+						<g:VerticalPanel width="260px" height="51px" styleName="{style.border}" spacing="1" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_LEFT">
+							<g:Label text="    Email:" ui:field="lblEmail"/>
+							<g:Label text="virtual.solid.snake@gmail.com" width="254px" height="18px" ui:field="lblEmailText" direction="RTL" horizontalAlignment="ALIGN_CENTER"/>
+						</g:VerticalPanel>
+					</g:at>
+				</g:AbsolutePanel>
+			</g:HorizontalPanel>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

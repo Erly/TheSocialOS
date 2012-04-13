@@ -88,6 +88,8 @@ public class ContactsPresenter extends DesktopUnit {
 	
 	public ContactsPresenter(Display display){
 		programID = "001";
+		
+		
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		 KEY_PROVIDER = new ProvidesKey<User>() {
@@ -136,7 +138,10 @@ public class ContactsPresenter extends DesktopUnit {
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				contactList.add(new User("vssnake@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
+				contactList.add(new User("vssnake1@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
+				contactList.add(new User("vssnake2@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
+				contactDataProvider.addDataDisplay(display.getUserListBox());
 				
 			}
 		});
@@ -226,12 +231,12 @@ public class ContactsPresenter extends DesktopUnit {
 	}
 
 	@Override
-	public void toPosition(int position) {
+	public void toZPosition(int position) {
 		
 	}
 
 	@Override
-	public int getposition() {
+	public int getZposition() {
 		return 0;
 	}
 
@@ -243,6 +248,7 @@ public class ContactsPresenter extends DesktopUnit {
 
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
+		
 		absolutePanel.add(display.asWidget());
 		display.asWidget().setVisible(true);
 		getFriends();
@@ -266,5 +272,25 @@ public class ContactsPresenter extends DesktopUnit {
 	@Override
 	public void getID() {
 		
+	}
+
+	@Override
+	public void setPosition(int x, int y) {
+		// TODO Auto-generated method stub
+		this.x = x;
+		this.y = y;
+		
+	}
+
+	@Override
+	public int getXPosition() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getYPosition() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

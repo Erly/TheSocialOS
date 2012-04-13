@@ -15,15 +15,47 @@
 		vertical-align: middle;
 		text-align: center;
 		}
+		.{style.white} {
+		}
+	.button {
+	 position: static;
+	}	
+	.button:hover {
+	background-color: #477ea2;
+	color: white;
+	}
+	
 			
 	</ui:style>
-	<g:HTMLPanel styleName="{style.black}">
-		<g:VerticalPanel width="453px" height="287px" horizontalAlignment="ALIGN_CENTER" styleName="{style.black}">
-			<g:TextBox width="99%" height="39px" styleName="{style.font}" text="Enter the text here...."/>
-			<p1:CellList ui:field="cellList" height="207px" width="100%" styleName="{style.white}"/>
+	<g:HTMLPanel styleName="{style.black}"  width="458px" height="291px">
+		<g:VerticalPanel ui:field="searchPanel" width="453px" height="287px" horizontalAlignment="ALIGN_LEFT" styleName="{style.black}">
+			<g:TextBox width="99%" height="39px" styleName="{style.font}" text="Enter the text here...." ui:field="txtSearch"/>
+			<g:HorizontalPanel height="213px" >
+				<g:TabLayoutPanel barHeight="0" barUnit="EM" width="257px" height="216px" stylePrimaryName="{style.white}">
+				<g:tab>
+					<g:header>New tab</g:header>
+					<g:ScrollPanel height="100%" styleName="{style.white}" width="256px">
+				<p1:CellList ui:field="cellList" height="100%" width="100%" keyboardSelectionPolicy="BOUND_TO_SELECTION" />
+			</g:ScrollPanel>
+				</g:tab>
+				<g:tab>
+					<g:header>New tab</g:header>
+					<g:ScrollPanel width="100%" height="100%">
+						<p1:CellList width="100%" height="100%" ui:field="cellList_1"/>
+					</g:ScrollPanel>
+				</g:tab>
+			</g:TabLayoutPanel>
+				<g:VerticalPanel height="100%" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" width="99%">
+					<g:Image width="189px" url="images/anonymous_avatar.png" styleName="{style.black}" height="181px" ui:field="imgAvatar"/>
+					<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" styleName="{style.white}" height="100%" width="100%">
+						<g:Label text="Invitar" height="100%" width="113px" styleName="{style.button}" ui:field="lblInvite"/>
+						<g:Label text="Info" width="85px" height="100%" styleName="{style.button}" ui:field="lblInfo"/>
+					</g:HorizontalPanel>
+				</g:VerticalPanel>
+			</g:HorizontalPanel>
 			<g:HorizontalPanel styleName="{style.white}" width="100%" height="100%" horizontalAlignment="ALIGN_CENTER">
-				<g:Label text="Friends" ui:field="lblFriends" width="50%"/>
-				<g:Label text="Groups" ui:field="lblGroups" width="50%"/>
+				<g:Label text="Friends" ui:field="lblFriends" width="225px" height="100%" styleName="{style.button}"/>
+				<g:Label text="Groups" ui:field="lblGroups" width="225px" styleName="{style.button}" height="100%"/>
 			</g:HorizontalPanel>
 		</g:VerticalPanel>
 	</g:HTMLPanel>

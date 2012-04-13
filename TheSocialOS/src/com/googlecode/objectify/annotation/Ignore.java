@@ -1,11 +1,9 @@
-package net.thesocialos.server.utils;
+package com.googlecode.objectify.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.googlecode.objectify.condition.If;
 
 /**
  * <p>Flags a field of a POJO entity that should be completely ignored by Objectify.  It will not be saved
@@ -17,5 +15,4 @@ import com.googlecode.objectify.condition.If;
 @Target({ElementType.FIELD})
 public @interface Ignore
 {
-	Class<? extends If<?, ?>>[] value() default { com.googlecode.objectify.condition.Always.class };
 }
