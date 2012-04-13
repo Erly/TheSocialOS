@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client" xmlns:p2="urn:import:net.thesocialos.client.view">
+	<ui:style>
+		.black{
+			padding: 2px;
+			background: black;
+		}
+		.white{
+			background:  white;
+		}
+		.style.white {
+		}
+	</ui:style>
+	
+		<g:VerticalPanel width="451px" height="217px"  borderWidth="1">
+			<g:StackLayoutPanel width="100%" height="270px" unit="EM" ui:field="stackLayoutPanel">
+				<g:stack>
+					<g:header size="2">Contacts</g:header>
+					<p1:CellList ui:field="cellListFriends" styleName="{style.white}"/>
+				</g:stack>
+				<g:stack>
+					<g:header size="2">Groups</g:header>
+					<p1:CellList ui:field="cellListGroups"/>
+				</g:stack>
+			</g:StackLayoutPanel>
+			<g:HorizontalPanel styleName="{style.white}" width="100%" height="100%" horizontalAlignment="ALIGN_CENTER" borderWidth="1" verticalAlignment="ALIGN_MIDDLE">
+				<p2:LabelText labelText="Amigos:" text="2" width="233px" height="100%" ui:field="labelTextFriends"/>
+				<p2:LabelText labelText="Grupo:" text="5" width="173px" height="100%" ui:field="labelTextGroups"/>
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
+	
+</ui:UiBinder> 

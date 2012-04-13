@@ -3,6 +3,7 @@ package net.thesocialos.client.presenter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
@@ -14,10 +15,12 @@ import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
+import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.view.Icon;
 import net.thesocialos.client.view.ContactsView;
 import net.thesocialos.client.view.DesktopBar;
+import net.thesocialos.client.view.NotificationsBoxView;
 import net.thesocialos.client.view.SearchBoxView;
 import net.thesocialos.client.view.StartMenu;
 import net.thesocialos.client.view.StartMenuItem;
@@ -66,6 +69,7 @@ public class DesktopPresenter implements Presenter {
 	 */
 	ContactsPresenter contacsPresenter;
 	SearchBoxPresenter searchBoxPresenter;
+	NotificationsBoxPresenter notificationBoxPresenter;
 	
 	private AbsolutePanel desktop;
 	private boolean startMenuFocused = false;
@@ -143,6 +147,8 @@ public class DesktopPresenter implements Presenter {
 		bindSocialOS();
 		bindContacts();
 		bindSearchBox();
+		bindPetitionsBox();
+		refreshData();
 
 		// Populate the Star Menu		
 		ArrayList<IApplication> appsData = new ArrayList<IApplication>();
@@ -157,7 +163,7 @@ public class DesktopPresenter implements Presenter {
 		bindStartMenu(appsData);
 		
 		Icon folder = new Icon(Icon.FOLDER_ICON, "Nueva carpeta");
-		this.display.getDesktop().add(folder, 10, 10);
+//		this.display.getDesktop().add(folder, 10, 10);
 		
 		folder.addDoubleClickHandler(new DoubleClickHandler() {
 			
@@ -196,6 +202,7 @@ public class DesktopPresenter implements Presenter {
 	private void bindDesktopBar(User user) {
 		// Create and initialize a timer for the clock refreshing
 		new Timer() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 				int min = new Date().getMinutes();
@@ -421,8 +428,6 @@ public class DesktopPresenter implements Presenter {
 				if (searchBoxPresenter == null){
 					searchBoxPresenter = new SearchBoxPresenter(new SearchBoxView());
 				}
-				System.out.println(display.getDesktopBar().getSearchBox().getAbsoluteLeft());
-				System.out.println(searchBoxPresenter.display.getSearchBoxPanel().getOffsetWidth());
 				int x = display.getDesktopBar().getSearchBox().getAbsoluteLeft() - (searchBoxPresenter.display.getSearchBoxPanel().getOffsetWidth());
 				int y = display.getDesktopBar().getSearchBox().getOffsetHeight();
 				searchBoxPresenter.setPosition(x, y);
@@ -431,6 +436,43 @@ public class DesktopPresenter implements Presenter {
 		});
 	}
 
+	private void bindPetitionsBox(){
+		display.getDesktopBar().getPetitionsButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if (notificationBoxPresenter == null){
+					notificationBoxPresenter = new NotificationsBoxPresenter(new NotificationsBoxView());
+				}
+				int x = display.getDesktopBar().getPetitionsButton().getAbsoluteLeft();
+				int y = display.getDesktopBar().getPetitionsButton().getOffsetHeight();
+				notificationBoxPresenter.setPosition(x, y);
+				eventBus.fireEvent(new DesktopEventOnOpen(notificationBoxPresenter));
+				
+			}
+		});
+	}
+	/**
+	 * Refresh all information of the desktop: Group Petitions, User Petitions, Chat...
+	 */
+	private void refreshData(){
+		CacheLayer.ContactCalls.getContactPetitions(false, new AsyncCallback<Map<String,User>>() {
+			
+			@Override
+			public void onSuccess(Map<String, User> result) {
+				// TODO Auto-generated method stub
+				TheSocialOS.getEventBus().fireEvent(new ContactsPetitionChangeEvent());
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				
+				TheSocialOS.getEventBus().fireEvent(new ContactsPetitionChangeEvent());
+				
+			}
+		});
+	}
 	@Override
 	public void go(final HasWidgets container) {
 		container.clear(); // Clear the screen

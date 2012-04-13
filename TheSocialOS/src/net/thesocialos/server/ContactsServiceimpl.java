@@ -3,6 +3,7 @@ package net.thesocialos.server;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.User;
 import net.thesocialos.shared.model.UserToDTO;
 
-import com.google.gwt.dev.js.rhino.ObjToIntMap.Iterator;
+
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
@@ -24,7 +25,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 
 @SuppressWarnings("serial")
-public class Contactsimpl extends XsrfProtectedServiceServlet implements ContacsService {
+public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements ContacsService {
 
 	@Override
 	public Map<Key<User>,User> getFriendsList() throws FriendNotFoundException {
@@ -112,16 +113,19 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 	@Override
 	public Boolean addPetitionContact(User contactUser) throws ContactException {
 		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
-		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
+		User userPetition;
 		Key<User> contactKey;
 		try {
-			contactKey = ObjectifyService.factory().getKey(contactUser);
+			userPetition = ofy.get(User.class,contactUser.getEmail());
+			contactKey = ObjectifyService.factory().getKey(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()));
+			
 		} catch (Exception e) {
 			throw new ContactException("Fail to parse the key");
 		}
 		
-		if (user.addPetitionContacts(contactKey)){
-			UserHelper.saveUser(user, perThreadRequest.get().getSession(), ofy);
+		if (userPetition.addPetitionContacts(contactKey)){
+			ofy.put(userPetition);
+			//UserHelper.saveUser(user, perThreadRequest.get().getSession(), ofy);
 			return true;
 		}
 		throw new ContactException("key duplicated");
@@ -129,17 +133,70 @@ public class Contactsimpl extends XsrfProtectedServiceServlet implements Contacs
 
 	@Override
 	public Map<String, User> getPetitionContact() throws ContactException {
-		java.util.Iterator<User> iteratorPetitions  = 
-				UserHelper.getBBDD(perThreadRequest.get().getSession()).get(User.class,
-				UserHelper.getUserHttpSession(perThreadRequest.get().getSession()).getpetitionsContacts()).values().iterator();
-		Map<String, User> petitions = new LinkedHashMap<String, User>();
+		Objectify ofy =  UserHelper.getBBDD(perThreadRequest.get().getSession());
+		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
+		Map<String, User> petitions;
+		Map<Key<User>,User> keyContacts = null;
+		
+		try{
+			keyContacts = ofy.get(user.getpetitionsContacts());
+			
+		}catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			//throw new ContactException("No Petitions");
+		}
+		Iterator<User> iteratorPetitions = keyContacts.values().iterator();
+		petitions = new LinkedHashMap<String, User>();
 		while (iteratorPetitions.hasNext()) {
 			User userPetition = iteratorPetitions.next();
 			petitions.put(userPetition.getEmail(), userPetition);
-			
+		}
+
+		return petitions;
+	}
+
+	@Override
+	public Boolean acceptContact(String email) throws ContactException {
+		// TODO Auto-generated method stub
+		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		User contactToAccept; 
+		User userLoged = null;
+		try{
+			contactToAccept = ofy.get(User.class,email);
+			userLoged = ofy.get(User.class,UserHelper.getUserHttpSession(perThreadRequest.get().getSession()).getEmail());
+		}catch (NotFoundException e) {
+			throw new ContactException("User or contact not found");
 		}
 		
-		return petitions;
+		Key<User> contactKey = ObjectifyService.factory().getKey(contactToAccept);
+		if (userLoged.getpetitionsContacts().contains(ObjectifyService.factory().getKey(contactKey))){
+			Key<User> userKey = ObjectifyService.factory().getKey(userLoged);
+			userLoged.addPetitionContactTOContact(contactKey);
+			
+			contactToAccept.addContact(userKey);
+			ofy.put(userLoged);
+			ofy.put(contactToAccept);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean denyContact(String email) throws ContactException {
+		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		User contactToAccept; 
+		User userLoged = null;
+		try {
+			contactToAccept = ofy.get(User.class,email);
+			userLoged = ofy.get(User.class,UserHelper.getUserHttpSession(perThreadRequest.get().getSession()).getEmail());
+		} catch (NotFoundException e) {
+			throw new ContactException("User or contact not found");
+		}
+		Key<User> contactKey = ObjectifyService.factory().getKey(contactToAccept);
+			Boolean erase = userLoged.getpetitionsContacts().remove(contactKey);
+			userLoged.getContacts().add(contactKey);
+			ofy.put(userLoged);
+			return erase;
 	}
 
 }

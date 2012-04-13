@@ -89,6 +89,44 @@
 	box-shadow: 0 -3px 5px #ccc;
 }
 
+.petitionsBox {
+	cursor: pointer;
+	font-weight: bolder;
+
+	padding-left: 5px;
+	padding-right: 5px;
+
+	position:absolute;
+    left:60%;
+    top:0%;
+
+	z-index: 1000;
+
+}
+.petitionsBox:hover {
+	background-color: #477ea2;
+	color: white;
+}
+
+.petitionsNumber {
+	color: white;
+	width:20px;
+	padding:2px;	
+	border:4px black;
+	margin:0px;
+	
+}
+.petitionsNumber-red{
+	color:red;
+}
+.searchBox-clicked {
+	outline: 0;
+	background-color: #ffffff;
+	border-left: 1px solid grey;
+	border-right: 1px solid grey;
+	box-shadow: 0 -3px 5px #ccc;
+}
+
 .links {
 	cursor: pointer;
 	font-size: 12px;

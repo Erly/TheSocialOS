@@ -17,6 +17,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
 
 public class SearchBoxView extends Composite implements Display{
 
@@ -57,6 +58,7 @@ public class SearchBoxView extends Composite implements Display{
 	@UiField Label lblInvite;
 	@UiField Label lblInfo;
 	@UiField Image imgAvatar;
+	@UiField StackLayoutPanel stackLayout;
 
 	interface SearchBoxUiBinder extends UiBinder<Widget, SearchBoxView> {
 	}
@@ -112,6 +114,12 @@ public class SearchBoxView extends Composite implements Display{
 	public Image getAvatarIMG() {
 		// TODO Auto-generated method stub
 		return imgAvatar;
+	}
+
+	@Override
+	public StackLayoutPanel getStackLayout() {
+		// TODO Auto-generated method stub
+		return stackLayout;
 	}
 
 }

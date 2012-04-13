@@ -31,4 +31,8 @@ public interface ContacsService extends RemoteService {
 	Boolean addPetitionContact(User contactUser) throws ContactException;
 	
 	Map<String,User> getPetitionContact() throws ContactException;
+	
+	Boolean acceptContact(String email) throws ContactException;
+	
+	Boolean denyContact(String email) throws ContactException;
 }

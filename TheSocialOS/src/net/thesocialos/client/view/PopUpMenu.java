@@ -1,34 +1,66 @@
 package net.thesocialos.client.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.MenuItem;
 
-public class PopUpMenu extends Composite{
-
-	private static PopUpMenuUiBinder uiBinder = GWT
-			.create(PopUpMenuUiBinder.class);
-
-	interface PopUpMenuUiBinder extends UiBinder<Widget, PopUpMenu> {
+public class PopUpMenu extends PopupPanel{
+	@UiField MenuItem MenuISendPriv;
+	@UiField MenuItem MenuIAccept;
+	@UiField MenuItem MenuIDeny;
+	@UiField MenuItem MenuIViewPerfil;
+	interface Binder extends UiBinder<Widget, PopUpMenu> { } 
+	private static final Binder binder = GWT.create(Binder.class);
+	
+	public MenuItem getMenuIViewPerfil() {
+		return MenuIViewPerfil;
 	}
+
+
+
+
+	public MenuItem getMenuISendPriv() {
+		return MenuISendPriv;
+	}
+
+
+
+
+	public MenuItem getMenuIDeny() {
+		return MenuIDeny;
+	}
+
+
+
+
+	public MenuItem getMenuIAccept() {
+		return MenuIAccept;
+	}
+
+
+	
+
+	interface PopUpmenuUiBinder extends
+	UiBinder<Widget, PopUpMenu> {
+}
 
 	public PopUpMenu() {
-		initWidget(uiBinder.createAndBindUi(this));
+		super(true);
+		add(binder.createAndBindUi(this));
 	}
 
 
 
-	public PopUpMenu(String firstName) {
-		initWidget(uiBinder.createAndBindUi(this));
-
+	
+	public void show(int x, int y){
+		this.setPopupPosition(x, y);
+		this.show();
 	}
+	
+	
 
 
 

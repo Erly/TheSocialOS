@@ -21,4 +21,8 @@ public interface ContacsServiceAsync extends ServiceAsync {
 	void addPetitionContact(User contactUser,AsyncCallback<Boolean>  callback);
 	
 	void getPetitionContact(AsyncCallback <Map<String,User>> callback);
+	
+	void acceptContact(String email,AsyncCallback<Boolean> callback);
+	
+	void denyContact(String email,AsyncCallback<Boolean> callback);
 }

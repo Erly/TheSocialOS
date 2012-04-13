@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -75,6 +76,8 @@ public class SearchBoxPresenter extends DesktopUnit {
 		
 		VerticalPanel getSearchBoxPanel();
 		
+		StackLayoutPanel getStackLayout();
+		
 		void setComponentsList(CellList<User> cellList);
 	}
 	
@@ -105,7 +108,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				//display.setComponentsList(new CellList<User>(usersCell()));
+				display.getStackLayout().showWidget(0);
 				
 			}
 		});
@@ -114,7 +117,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
+				display.getStackLayout().showWidget(1);
 				
 			}
 		});
@@ -193,15 +196,14 @@ public class SearchBoxPresenter extends DesktopUnit {
 		});
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-			    System.out.println(selectionModel.getSelectedObject().getName());
-			    System.out.println(selectionModel.getSelectedObject().getLastName());
+
 			}
 		});
 		display.getComponentsList().addDomHandler(new ContextMenuHandler() {
 			
 			@Override
 			public void onContextMenu(ContextMenuEvent event) {
-				System.out.println("boton derecho pulsado");
+	
 				
 				DomEvent.fireNativeEvent(Document.get().createClickEvent(0, event.getNativeEvent().getScreenX(),
 						event.getNativeEvent().getScreenY(), event.getNativeEvent().getClientX(), 
@@ -269,8 +271,6 @@ public class SearchBoxPresenter extends DesktopUnit {
 	}
 	@Override
 	public void setPosition(int x, int y) {
-		System.out.println(display.asWidget().getOffsetHeight());
-		
 		this.x = x;
 		this.y = y;
 		

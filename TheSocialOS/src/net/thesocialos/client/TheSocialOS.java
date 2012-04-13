@@ -43,7 +43,7 @@ public class TheSocialOS implements EntryPoint {
 	private static TheSocialOS singleton;
 	private AppController appControler;
 	private AbsolutePanel desktop;
-	private SimpleEventBus eventBus = new SimpleEventBus();
+	private static SimpleEventBus eventBus = new SimpleEventBus();
 
 	BusyIndicatorPresenter busyIndicator = new BusyIndicatorPresenter(eventBus, new BusyIndicatorView());
 	static UserProfilePresenter profilePresenter = null;
@@ -195,7 +195,7 @@ public class TheSocialOS implements EntryPoint {
 	/**
 	 * @return The main eventBus instance.
 	 */
-	public SimpleEventBus getEventBus() {
+	public static SimpleEventBus getEventBus() {
 		return eventBus;
 	}
 	
@@ -234,4 +234,5 @@ public class TheSocialOS implements EntryPoint {
 	public void setDesktop(AbsolutePanel desktop) {
 		this.desktop = desktop;
 	}
+	
 }

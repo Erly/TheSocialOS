@@ -69,7 +69,7 @@
   </servlet-mapping>
    <servlet>
   	<servlet-name>ContactsRPC</servlet-name>
-  	<servlet-class>net.thesocialos.server.Contactsimpl</servlet-class>
+  	<servlet-class>net.thesocialos.server.ContactsServiceimpl</servlet-class>
   </servlet>
   
   <servlet-mapping>

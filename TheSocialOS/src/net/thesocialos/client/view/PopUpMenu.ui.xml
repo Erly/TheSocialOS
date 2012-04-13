@@ -6,11 +6,12 @@
 			font-weight: bold;
 		}
 	</ui:style>
-	<g:PopupPanel>
+	
 		<g:MenuBar animationEnabled="true" vertical="true">
-			<g:MenuItem text="Invitar"/>
-			<g:MenuItem text="Ver Perfil"/>
-			<g:MenuItem text="Enviar Privado"/>
+			<g:MenuItem text="Ver Perfil" ui:field="MenuIViewPerfil"/>
+			<g:MenuItem text="Enviar Privado" ui:field="MenuISendPriv"/>
+			<g:MenuItem text="Aceptar" ui:field="MenuIAccept"/>
+			<g:MenuItem text="Denegar" ui:field="MenuIDeny"/>
 		</g:MenuBar>
-	</g:PopupPanel>
+	
 </ui:UiBinder> 

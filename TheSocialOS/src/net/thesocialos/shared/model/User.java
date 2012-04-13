@@ -143,6 +143,7 @@ public class User implements Serializable {
 		return false;
 	}
 
+
 	public void setConversations(Key<Conversation>[] conversations) {
 		this.conversations = conversations;
 	}
