@@ -20,7 +20,7 @@ public abstract class Account implements Serializable {
 	
 	private String username;
 	
-	abstract void refresh();
+	public abstract void refresh();
 	
 	public Account(){
 		

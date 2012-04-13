@@ -52,7 +52,8 @@ public class AppController implements ValueChangeHandler<String> {
 		String token = event.getValue();
 		if (token != null) {
 			previousToken = lastToken;
-			lastToken = token;
+			if (!token.equals("account-added"))
+				lastToken = token;
 			Presenter presenter = null;
 			if(CacheLayer.UserCalls.getUser() != null) {
 				if (token.equals("desktop") && previousToken.contains("profile")) {

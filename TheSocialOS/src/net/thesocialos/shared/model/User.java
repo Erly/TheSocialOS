@@ -6,18 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
-import net.thesocialos.client.service.ContacsService;
-
-
-
-import com.google.gwt.editor.client.Editor.Ignore;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Unindexed;
-import com.googlecode.objectify.condition.If;
-import com.googlecode.objectify.condition.ValueIf;
 
 @SuppressWarnings("serial")
 @Cached
@@ -227,4 +219,8 @@ public class User implements Serializable {
 		this.lastTimeActive = lastTimeActive;
 	}
 	
+	public void overwriteAccountsList(List<Key<? extends Account>> newAccountsKeys) {
+		this.accounts.clear();
+		this.accounts.addAll(newAccountsKeys);
+	}
 }

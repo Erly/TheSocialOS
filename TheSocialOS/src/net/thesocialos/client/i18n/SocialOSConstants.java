@@ -95,6 +95,10 @@ public interface SocialOSConstants extends Constants {
 	String googleAccount();
 	@DefaultStringValue("Facebook Account")
 	String facebookAccount();
+	@DefaultStringValue("Twitter Account")
+	String twitterAccount();
+	@DefaultStringValue("Flickr Account")
+	String flickrAccount();
 	
 	/**
 	 * User Constantas
@@ -107,12 +111,6 @@ public interface SocialOSConstants extends Constants {
 	String group();
 	@DefaultStringValue("Groups")
 	String groups();
-	@DefaultStringValue("Twitter Account")
-	String twitterAccount();
-	@DefaultStringValue("FlickR Account")
-	String flickrAccount();
-	
-
 
 	/**
 	 * Folder name Constants

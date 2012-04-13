@@ -62,7 +62,8 @@ public class Oauth2Callback extends HttpServlet {
 				String authToken = null, refreshToken = null;
 				authToken = js.getString("access_token");
 				refreshToken = js.getString("refresh_token");
-				request.getRequestDispatcher("oauth2response?authToken=" + authToken +"&refreshToken=" + refreshToken + "&serviceName=" + serviceName).forward(request, response);
+				int expires_in = js.getInt("expires_in");
+				request.getRequestDispatcher("oauth2response?authToken=" + authToken +"&refreshToken=" + refreshToken + "&expires_in=" + expires_in + "&serviceName=" + serviceName).forward(request, response);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

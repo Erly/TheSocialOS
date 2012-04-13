@@ -8,15 +8,26 @@
 			text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 			font-size: 12px;
 		}
-		.sublabel{
+		.sublabel {
 			color: white;
 			text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 			font-size: 12px;
 		}
+		.imagesPanel {
+			position: relative;
+		}
+		.badge {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
 	</ui:style>
 	<g:FocusPanel ui:field="panel">
 		<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" width="150px">
-			<g:Image ui:field="image" width="120px" height="120px" url="images/Folder.png" />
+			<g:FlowPanel addStyleNames="{style.imagesPanel}">
+				<g:Image ui:field="image" width="120px" height="120px" url="images/Folder.png" />
+				<g:Image ui:field="badge" width ="20px" height="20px" addStyleNames="{style.badge}"/>
+			</g:FlowPanel>
 			<g:Label ui:field="text" width="150px" text="new folder" addStyleNames="{style.label}" />
 			<g:Label ui:field="subText" width="150px" text="" addStyleNames="{style.sublabel}" />
 		</g:VerticalPanel>

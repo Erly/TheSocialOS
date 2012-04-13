@@ -2,12 +2,9 @@ package net.thesocialos.server;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
-
-import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
@@ -18,9 +15,9 @@ import net.thesocialos.server.utils.BCrypt;
 import net.thesocialos.shared.Chat;
 import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.LoginResult;
-import net.thesocialos.shared.UserSummaryDTO;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.model.Google;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
@@ -74,7 +71,8 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			session = UserHelper.getSessionWithCookies(sid, ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
 			user.setLastTimeActive(new Date());
-			UserHelper.saveUsertohttpSession(session, user, ofy, httpSession);
+
+			UserHelper.saveUsertohttpSession(session, user, httpSession);
 			ofy.put(user);
 			return User.toDTO(user);
 		}catch (NotFoundException e) {
@@ -134,7 +132,9 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		}
 		
 		user.setLastTimeActive(new Date()); //Set last time to user is login
-		UserHelper.saveUsertohttpSession(session, user, ofy, httpSession); //Store user and session
+
+		UserHelper.saveUsertohttpSession(session, user, httpSession); //Store user and session
+
 		ofy.put(user); //Save user
 		return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 	}
@@ -147,10 +147,55 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 
 	@Override
 	public Map<Key<Account>, Account> getCloudAccounts() {
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+
+		removeDeletedAccounts();
+		Objectify ofy = ObjectifyService.begin();
 		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
 		List<Key<? extends Account>> accountsKeys = user.getAccounts();
 		Map<Key<Account>, Account> accounts = ofy.get(accountsKeys);
+		if (refreshAccountTokens(accounts, ofy))
+			return ofy.get(accountsKeys);
 		return accounts;
+	}
+
+	private boolean refreshAccountTokens(Map<Key<Account>, Account> accounts, Objectify ofy) {
+		boolean changed = false;
+		Iterator<Account> it = accounts.values().iterator();
+		while (it.hasNext()) {
+			Account ac = it.next();
+			if (ac instanceof Google) {
+				Google gac = (Google) ac;
+				if (null == gac.getExpireDate() || gac.getExpireDate().before(new Date())) {
+					changed = true;
+					ofy.put(RefreshTokens.refreshGoogle(gac));
+				}
+			}
+		}
+		return changed;
+	}
+
+	@Override
+	public void removeDeletedAccounts() {
+		Objectify ofy = ObjectifyService.begin();
+		HttpSession httpSession = perThreadRequest.get().getSession();
+		User user = UserHelper.getUserHttpSession(httpSession);
+		Session session = UserHelper.getSesssionHttpSession(httpSession);
+		List<Key<? extends Account>> accountsKeys = user.getAccounts();
+		List<Key<? extends Account>> newAccountsKeys = new ArrayList<Key<? extends Account>>();
+		Iterator<Key<? extends Account>> it = accountsKeys.iterator();
+		while (it.hasNext()) {
+			Key<? extends Account> accountKey = it.next();
+			try {
+				Account ac = ofy.get(accountKey);
+				if (null != ac)
+					newAccountsKeys.add(accountKey);
+			} catch (NotFoundException ex) {
+				ex.printStackTrace();
+				System.out.println("Key not found proceeding to remove it from the user object");
+			}
+		}
+		user.overwriteAccountsList(newAccountsKeys);
+		ofy.put(user);
+		UserHelper.saveUsertohttpSession(session, user, httpSession);
 	}
 }

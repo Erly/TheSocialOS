@@ -8,8 +8,8 @@ import java.util.Map;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.shared.model.User;
-import net.thesocialos.client.api.Picasa;
-import net.thesocialos.client.api.Picasa.Album;
+import net.thesocialos.client.api.PicasaAPI;
+import net.thesocialos.client.api.PicasaAPI.Album;
 import net.thesocialos.client.app.ChatApp;
 import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.app.IApplication;
@@ -17,6 +17,7 @@ import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 import net.thesocialos.client.event.LogoutEvent;
+import net.thesocialos.client.helper.AppIconHelper;
 import net.thesocialos.client.view.Icon;
 import net.thesocialos.client.view.ContactsView;
 import net.thesocialos.client.view.DesktopBar;
@@ -28,6 +29,7 @@ import net.thesocialos.client.view.chat.ChatPanel;
 import net.thesocialos.client.view.window.FolderWindow;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -136,7 +138,8 @@ public class DesktopPresenter implements Presenter {
 	 */
 	public void bind() {
 		desktop = this.display.getDesktop();
-		desktop.getElement().getStyle().clearPosition();
+		desktop.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		//desktop.getElement().getStyle().clearPosition();
 		TheSocialOS.get().setDesktop(desktop);
 		//Run the desktopManager
 		this.desktopManager = new DesktopManager(eventBus, display.getScreen(), display.getDesktop());
@@ -162,37 +165,10 @@ public class DesktopPresenter implements Presenter {
 				"450px", "300px"));
 		bindStartMenu(appsData);
 		
-		Icon folder = new Icon(Icon.FOLDER_ICON, "Nueva carpeta");
-//		this.display.getDesktop().add(folder, 10, 10);
 		
-		folder.addDoubleClickHandler(new DoubleClickHandler() {
-			
-			@Override
-			public void onDoubleClick(DoubleClickEvent event) {
-				final Picasa picasa = new Picasa();
-				try {
-					picasa.getAlbumsRequest(new AsyncCallback<JavaScriptObject>() {
-						
-						@Override
-						public void onSuccess(JavaScriptObject result) {
-							JSONObject object = new JSONObject(result);
-							HashSet<Album> albums = picasa.getAlbums(object);
-							FolderWindow window = new FolderWindow("Picasa albums", albums);
-							window.show();
-						}
-						
-						@Override
-						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
-							
-						}
-					});
-				} catch (RequestException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
+
+		AppIconHelper.populateDesktopWithIcons(desktop);
+
 	}
 
 	/**

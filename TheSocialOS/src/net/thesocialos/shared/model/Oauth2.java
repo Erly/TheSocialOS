@@ -1,5 +1,7 @@
 package net.thesocialos.shared.model;
 
+import java.util.Date;
+
 import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Subclass;
 import com.googlecode.objectify.annotation.Unindexed;
@@ -18,6 +20,8 @@ public abstract class Oauth2 extends Account {
 	@Unindexed private String authToken; //Token to login
 	
 	@Unindexed private String refreshToken; //Token to refresh the authToken
+	
+	@Unindexed private Date expireDate;
 	
 	public Oauth2(){
 		
@@ -49,5 +53,19 @@ public abstract class Oauth2 extends Account {
 	 */
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
+	}
+
+	/**
+	 * @return the expireDate
+	 */
+	public Date getExpireDate() {
+		return expireDate;
+	}
+
+	/**
+	 * @param expireDate the expireDate to set
+	 */
+	public void setExpireDate(Date expireDate) {
+		this.expireDate = expireDate;
 	}
 }

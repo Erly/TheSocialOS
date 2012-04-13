@@ -10,11 +10,10 @@
   <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
-	<!-- Objectify -->
- 	<inherits name="com.googlecode.objectify.Objectify" />
 
   <!-- Other module inherits                                      -->
-
+  <inherits name="com.googlecode.objectify.Objectify" />
+  
   <inherits name="gwtupload.GWTUpload"/>
   <stylesheet src="Upload.css"/>
   
@@ -36,6 +35,7 @@
   <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
   	<extend-property name="log_level" values="DEBUG,WARN"/>
   	
-   
+  <script src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"/>
+  <script src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"/>
 
 </module>

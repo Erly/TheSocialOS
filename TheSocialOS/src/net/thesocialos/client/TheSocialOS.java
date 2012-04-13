@@ -1,13 +1,6 @@
 package net.thesocialos.client;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-
-import net.thesocialos.client.helper.Comet;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.i18n.SocialOSConstants;
 import net.thesocialos.client.i18n.SocialOSMessages;
@@ -19,7 +12,6 @@ import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.view.BusyIndicatorView;
 import net.thesocialos.client.view.LoginView;
 import net.thesocialos.shared.model.Account;
-import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.model.User;
 //import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
@@ -47,7 +39,7 @@ public class TheSocialOS implements EntryPoint {
 
 	BusyIndicatorPresenter busyIndicator = new BusyIndicatorPresenter(eventBus, new BusyIndicatorView());
 	static UserProfilePresenter profilePresenter = null;
-	private Comet comet;
+	//private Comet comet;
 	
 	// i18n initialization
 	private static SocialOSConstants constants = GWT.create(SocialOSConstants.class);
@@ -134,8 +126,6 @@ public class TheSocialOS implements EntryPoint {
 							createUI();
 						}
 					}.retry(3);
-					
-					//createUI();
 					
 					//User listening to the channel push
 					
@@ -234,5 +224,8 @@ public class TheSocialOS implements EntryPoint {
 	public void setDesktop(AbsolutePanel desktop) {
 		this.desktop = desktop;
 	}
+
 	
+
 }
+

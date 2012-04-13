@@ -77,6 +77,36 @@
   	<url-pattern>/thesocialos/ContactsRPC</url-pattern>
   </servlet-mapping>
   <servlet>
+  	<servlet-name>oauthLogin</servlet-name>
+  	<servlet-class>net.thesocialos.server.OauthLogin</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>oauthLogin</servlet-name>
+  	<url-pattern>/oauthlogin</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>twittercallback</servlet-name>
+  	<servlet-class>net.thesocialos.server.OauthCallback</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>twittercallback</servlet-name>
+  	<url-pattern>/twittercallback</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>flickrcallback</servlet-name>
+  	<servlet-class>net.thesocialos.server.OauthCallback</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>flickrcallback</servlet-name>
+  	<url-pattern>/flickrcallback</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
   	<servlet-name>uploadServlet</servlet-name>
   	<!-- This is the default servlet, it puts files in session -->
   	<servlet-class>gwtupload.server.UploadServlet</servlet-class>

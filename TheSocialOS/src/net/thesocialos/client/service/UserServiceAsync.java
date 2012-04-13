@@ -1,15 +1,10 @@
 package net.thesocialos.client.service;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.googlecode.objectify.Key;
 
 import net.thesocialos.shared.LoginResult;
-import net.thesocialos.shared.UserDTO;
-import net.thesocialos.shared.UserSummaryDTO;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.User;
 
@@ -26,4 +21,6 @@ public interface UserServiceAsync extends ServiceAsync{
 	void getLoggedUser(String sid, AsyncCallback<User> callback);
 	
 	void getCloudAccounts(AsyncCallback<Map<Key<Account>, Account>> callback);
+	
+	void removeDeletedAccounts(AsyncCallback<Void> callback);
 }

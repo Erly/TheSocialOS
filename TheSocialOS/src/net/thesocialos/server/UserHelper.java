@@ -1,45 +1,26 @@
 package net.thesocialos.server;
 
-
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
-import javax.jdo.JDOCanRetryException;
-import javax.jdo.JDOException;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import javax.jdo.Transaction;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
-import net.thesocialos.server.utils.BCrypt;
 import net.thesocialos.server.utils.ChannelServer;
-import net.thesocialos.shared.Chat;
 import net.thesocialos.shared.LineChat;
-import net.thesocialos.shared.LoginResult;
-import net.thesocialos.shared.UserDTO;
-import net.thesocialos.shared.exceptions.UserExistsException;
-import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
-import net.thesocialos.shared.model.UserToDTO;
 
-import com.google.appengine.api.channel.ChannelService;
-import com.google.appengine.api.channel.ChannelServiceFactory;
-import com.google.gwt.core.client.GWT;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
-
 @SuppressWarnings("serial")
 public class UserHelper extends RemoteServiceServlet{
-final static Class<net.thesocialos.shared.model.User> USER = net.thesocialos.shared.model.User.class;
-final static Class<net.thesocialos.shared.model.Session> SESSION = net.thesocialos.shared.model.Session.class;
+final static Class<User> USER = net.thesocialos.shared.model.User.class;
+final static Class<Session> SESSION = net.thesocialos.shared.model.Session.class;
 
 
 //final names;
@@ -65,10 +46,9 @@ final static String OBJECITIFY = "objetify";
 	 * @param httpSession HttpSession
 	 * @return
 	 */
-	public static synchronized boolean saveUsertohttpSession(Session session, User user,Objectify ofy, HttpSession httpSession){
+	public static synchronized boolean saveUsertohttpSession(Session session, User user, HttpSession httpSession){
 		httpSession.setAttribute(userN, user);
 		httpSession.setAttribute(sessionN, session);
-		httpSession.setAttribute(OBJECITIFY, ofy);
 		return true;
 	}
 	/**
@@ -99,7 +79,7 @@ final static String OBJECITIFY = "objetify";
 	 * @throws NotFoundException
 	 */
 	public static synchronized Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException{
-		return ofy.get(SESSION,sid);	
+		return ofy.get(SESSION, sid);	
 	}
 	
 	/**
@@ -110,7 +90,11 @@ final static String OBJECITIFY = "objetify";
 	 * @throws NotFoundException
 	 */
 	public static synchronized User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{
+
 		return ofy.get(User.class,session.getUser().getName());
+
+
+
 	}
 	
 	/**
@@ -139,7 +123,7 @@ final static String OBJECITIFY = "objetify";
 	 * @throws NotFoundException user has not found
 	 */
 	public static synchronized User authenticateUser (String email, Objectify ofy) throws NotFoundException{
-		return ofy.get(User.class,email);
+		return ofy.get(User.class, email);
 	}
 	
 	/**
@@ -165,38 +149,17 @@ final static String OBJECITIFY = "objetify";
 		Objectify ofy = ObjectifyService.begin();
 		LineChat lineChat;
 		String token = 	ChannelServer.createChannel(user.getEmail());
-			try {
-				lineChat = ofy.get(LineChat.class,user.getEmail());
-				lineChat.setChannel(token);
-				lineChat.setDate(new Date().getTime());
-			} catch (NotFoundException e) {
-				lineChat = new LineChat(user.getEmail(), token, new Date().getTime());
-			
-			}
-			ofy.put(lineChat);		
-	       session.setAttribute("channelID", user.getEmail());
-	       return token;
-	        
+		try {
+			lineChat = ofy.get(LineChat.class,user.getEmail());
+			lineChat.setChannel(token);
+			lineChat.setDate(new Date().getTime());
+		} catch (NotFoundException e) {
+			lineChat = new LineChat(user.getEmail(), token, new Date().getTime());
+		}
+		ofy.put(lineChat);		
+	    session.setAttribute("channelID", user.getEmail());
+	    return token;
 	}
 	
-
-	/*
-	 * Friends Code
-	 */
-	public static Objectify getBBDD(HttpSession session){
-		return (Objectify) session.getAttribute(OBJECITIFY);
-	}
 	
-	/**
-	 * Get all Users for BBDD
-	 * @param ofy
-	 * @return Todos los usuarios de la BBDD
-	 * @throws NotFoundException
-	 */
-	@SuppressWarnings("unchecked")
-	public static Map<Key<User>, UserToDTO>  getUsers(Objectify ofy) throws NotFoundException{
-		
-			return ofy.get(UserToDTO.class);
-		
-	}
 }

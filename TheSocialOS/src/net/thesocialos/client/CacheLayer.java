@@ -22,6 +22,7 @@ import com.googlecode.objectify.Key;
 public class CacheLayer {
 
 
+
 	static User user;
 	static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
 	//Usuarios de la aplicación
@@ -30,6 +31,7 @@ public class CacheLayer {
 	static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
 	//Usuarios en espera de aceptar la solicitud
 	private static Map<String,User> petitionsContacts = new LinkedHashMap<String, User>();
+
 
 	
 	private final static UserServiceAsync userService = GWT.create(UserService.class);
@@ -53,32 +55,33 @@ public class CacheLayer {
 			CacheLayer.UserCalls.user = user;
 		}
 		
-		public static void getAccounts(Boolean cached, final AsyncCallback<Map<Key<Account>, Account>> callback) {
-			if (cached && null != accounts) {
-				callback.onSuccess(accounts);
-			}
-			
-			new RPCXSRF<Map<Key<Account>, Account>> (userService) {
-
-				@Override
-				protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
-					userService.getCloudAccounts(cb);
-				}
-				
-				public void onSuccess(Map<Key<Account>, Account> accounts){
-					CacheLayer.UserCalls.accounts = accounts;
-					callback.onSuccess(accounts);
-				}
-				
-				public void onFailure(Throwable caught){
-					callback.onFailure(caught);
-				}
-				
-			}.retry(3);
+		public static Map<Key<Account>, Account> getAccounts() {
+			return accounts;
 		}
 		
 		public static void setAccounts(Map<Key<Account>, Account> accounts) {
 			CacheLayer.UserCalls.accounts = accounts;
+		}
+
+		public static void refreshAccounts() {
+			new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+
+				@Override
+				protected void XSRFcallService(
+						AsyncCallback<Map<Key<Account>, Account>> cb) {
+					userService.getCloudAccounts(cb);
+				}
+				
+				@Override
+				public void onSuccess(Map<Key<Account>, Account> accounts) {
+					CacheLayer.UserCalls.setAccounts(accounts);
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+				}
+			}.retry(3);
 		}
 	}
 	
@@ -114,6 +117,7 @@ public class CacheLayer {
 				callback.onSuccess(contacts);
 			}
 		}
+
 		/**
 		 * Obtiene los usuarios del servidor
 		 * @param cached if true si se quiere cojer los cacheados
@@ -126,6 +130,7 @@ public class CacheLayer {
 				callback.onSuccess(users);
 			}
 		}
+
 		public static Boolean addContact(){
 			return null;
 		}	
@@ -133,6 +138,7 @@ public class CacheLayer {
 			
 			return null;
 		}
+
 		public static void updateContacts(){
 			getContacts(new AsyncCallback<Map<Key<User>, User>>() {
 				
@@ -149,6 +155,7 @@ public class CacheLayer {
 				}
 			});
 		}
+
 
 		
 		public static void getContactPetitions(boolean cached,final AsyncCallback<Map<String,User>> callback){
@@ -234,7 +241,6 @@ public class CacheLayer {
 		static private void getContacts(final AsyncCallback<Map<Key<User>, User>> callback){
 			new RPCXSRF<Map<Key<User>, User>> (contactService) {
 
-
 				@Override
 				protected void XSRFcallService(AsyncCallback<Map<Key<User>, User>> cb) {
 					contactService.getFriendsList(cb);
@@ -251,7 +257,7 @@ public class CacheLayer {
 				
 			}.retry(3);
 		}
-		/**
+	/**
 		 * Llamada asincrona para recoger los usuarios del servidor
 		 * @param callback 
 		 */
@@ -302,15 +308,11 @@ public class CacheLayer {
 				}
 			}.retry(3);
 		}
+
 	}
 		
 	
-
-	
-	
-
 	public static class GroupCalls{
-
 		
 		static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
 	}

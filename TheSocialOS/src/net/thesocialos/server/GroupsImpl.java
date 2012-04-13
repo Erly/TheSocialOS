@@ -12,6 +12,7 @@ import net.thesocialos.shared.model.User;
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 @SuppressWarnings("serial")
 public class GroupsImpl extends XsrfProtectedServiceServlet implements GroupsService{
@@ -19,8 +20,9 @@ public class GroupsImpl extends XsrfProtectedServiceServlet implements GroupsSer
 	@Override
 	public Map<Key<Group>, Group> getUserGroups() throws GroupNotFoundException {
 		HttpSession httpSession = perThreadRequest.get().getSession();
-		Objectify ofy = UserHelper.getBBDD(httpSession);
+		Objectify ofy = ObjectifyService.begin();
 		User user = UserHelper.getUserHttpSession(httpSession);
+
 		Map<Key<Group>, Group> groups;
 		try {
 			groups = ofy.get(Group.class,user.getGroups());

@@ -15,7 +15,7 @@ public class Facebook extends Oauth2 {
 	}
 
 	@Override
-	void refresh() {
+	public void refresh() {
 		// TODO Auto-generated method stub
 
 	}

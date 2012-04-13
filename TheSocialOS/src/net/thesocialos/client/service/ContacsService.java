@@ -25,6 +25,7 @@ public interface ContacsService extends RemoteService {
 	List<User> getFriendsSuggestionList(String text) throws FriendNotFoundException;
 	
 	User getFriend(String email) throws FriendNotFoundException;
+
 	
 	Map<String,User> getUsers() throws UsersNotFoundException;
 	
@@ -35,4 +36,5 @@ public interface ContacsService extends RemoteService {
 	Boolean acceptContact(String email) throws ContactException;
 	
 	Boolean denyContact(String email) throws ContactException;
+
 }

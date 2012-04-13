@@ -3,8 +3,11 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:p="urn:import:net.thesocialos.client.view.profile">
 	<ui:style>
+		.padding {
+			padding: 5px;
+		}
 	</ui:style>
-	<g:ScrollPanel>
+	<g:DecoratorPanel addStyleNames="{style.padding}">
 		<g:VerticalPanel>
 			<p:ProfileAttr attrName="Name:" attrValue="Juan Cuesta" ui:field="name" />
 			<p:ProfileAttr attrName="Title:" attrValue="Presidente de la comunidad" ui:field="title" />
@@ -13,6 +16,8 @@
 			<p:ProfileAttr attrName="Address:" attrValue="Desengaño 21 2ºA" ui:field="address" />
 			<p:ProfileAttr attrName="Google Account:" attrValue="Sign in" ui:field="google" />
 			<p:ProfileAttr attrName="Facebook Account:" attrValue="Sign in" ui:field="facebook" />
+			<p:ProfileAttr attrName="Twitter Account:" attrValue="Sign in" ui:field="twitter" />
+			<p:ProfileAttr attrName="Flickr Account:" attrValue="Sign in" ui:field="flickr" />
 		</g:VerticalPanel>
-	</g:ScrollPanel>
+	</g:DecoratorPanel>
 </ui:UiBinder> 

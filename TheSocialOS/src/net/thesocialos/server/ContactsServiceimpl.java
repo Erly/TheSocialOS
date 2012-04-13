@@ -14,7 +14,6 @@ import net.thesocialos.shared.exceptions.ContactException;
 import net.thesocialos.shared.exceptions.FriendNotFoundException;
 import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.User;
-import net.thesocialos.shared.model.UserToDTO;
 
 
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
@@ -29,7 +28,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 
 	@Override
 	public Map<Key<User>,User> getFriendsList() throws FriendNotFoundException {
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy = ObjectifyService.begin();
 		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
 		List<Key<User>> contacts = user.getContacts();
 		
@@ -48,7 +47,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	@Override
 	public List<User> getFriendsSuggestionList(String text)
 			throws FriendNotFoundException {
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy = ObjectifyService.begin();
 		StringTokenizer tokens = new StringTokenizer(text);
 		List<String> userNames = new ArrayList<String>();
 		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
@@ -93,7 +92,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	@Override
 	public Map<String, User> getUsers() throws UsersNotFoundException {
 		// TODO Auto-generated method stub
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy = ObjectifyService.begin();
 		Query<User> queryusers = ofy.query(User.class);
 		Map<String,User> users = new LinkedHashMap<String, User>();
 		if (queryusers.count() == 0){
@@ -112,7 +111,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	 */
 	@Override
 	public Boolean addPetitionContact(User contactUser) throws ContactException {
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy = ObjectifyService.begin();
 		User userPetition;
 		Key<User> contactKey;
 		try {
@@ -133,7 +132,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 
 	@Override
 	public Map<String, User> getPetitionContact() throws ContactException {
-		Objectify ofy =  UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy =  ObjectifyService.begin();
 		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
 		Map<String, User> petitions;
 		Map<Key<User>,User> keyContacts = null;
@@ -158,7 +157,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	@Override
 	public Boolean acceptContact(String email) throws ContactException {
 		// TODO Auto-generated method stub
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy = ObjectifyService.begin();
 		User contactToAccept; 
 		User userLoged = null;
 		try{
@@ -183,7 +182,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 
 	@Override
 	public Boolean denyContact(String email) throws ContactException {
-		Objectify ofy = UserHelper.getBBDD(perThreadRequest.get().getSession());
+		Objectify ofy = ObjectifyService.begin();
 		User contactToAccept; 
 		User userLoged = null;
 		try {

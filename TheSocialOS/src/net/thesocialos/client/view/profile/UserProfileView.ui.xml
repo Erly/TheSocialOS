@@ -48,9 +48,8 @@
 			<g:SimplePanel addStyleNames="{style.black}" />
 		</g:west>
 		<g:center>
-			<g:SimplePanel ui:field="mainPanel">
-				<!-- <d:ProfilePanel addStyleNames="{style.mainPanel}" />  -->
-			</g:SimplePanel>
+			<g:ScrollPanel ui:field="mainPanel">
+			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 
