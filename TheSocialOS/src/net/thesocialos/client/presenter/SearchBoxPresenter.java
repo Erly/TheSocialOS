@@ -87,7 +87,13 @@ public class SearchBoxPresenter extends DesktopUnit {
 				return item == null ? null :  item.getEmail();
 			}
 		};
+		/*
+		 * Inicializado el adaptador de la cellList de usuario
+		 */
 		selectionModel = new SingleSelectionModel<User>(KEY_USERS_PROVIDER);
+		display.getComponentsList().setSelectionModel(selectionModel);
+		dataProvider = new ListDataProvider<User>(usersList);
+		dataProvider.addDataDisplay(display.getComponentsList());
 		handlers();
 	}
 	/*
@@ -160,19 +166,21 @@ public class SearchBoxPresenter extends DesktopUnit {
 	 */
 	private void getUsers(){
 		
-		display.getComponentsList().setSelectionModel(selectionModel);
-		dataProvider = new ListDataProvider<User>(usersList);
 		
+		usersList.clear();
+		dataProvider.flush();
+		dataProvider.refresh();
 		CacheLayer.ContactCalls.getUsers(true, new AsyncCallback<Map<String,User>>() {
 			
 			@Override
 			public void onSuccess(Map<String, User> result) {
 				
 				//display.setComponentsList(new CellList<User>(usersCell()));
-				usersList.clear();
+				
 				usersList.addAll(result.values());
-		
-				dataProvider.addDataDisplay(display.getComponentsList());
+				dataProvider.flush();
+				dataProvider.refresh();
+				
 				
 				
 			}
