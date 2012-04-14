@@ -30,7 +30,7 @@ public class FlickrAPI {
 	public class Album implements MediaAlbum {
 		private String id;
 		private String title;
-		private String summary;
+		private String description;
 		private String thumbnailURL;
 		private int numPhotos;
 		private boolean commentingEnabled;
@@ -53,10 +53,11 @@ public class FlickrAPI {
 		}
 		
 		/**
-		 * @return the summary
+		 * @return the description
 		 */
-		public String getSummary() {
-			return summary;
+		@Override
+		public String getDescription() {
+			return description;
 		}
 		
 		/**
@@ -117,6 +118,11 @@ public class FlickrAPI {
 		public String getUrl() {
 			return url;
 		}
+
+		@Override
+		public String getDescription() {
+			return "";
+		}
 		
 	}
 
@@ -139,7 +145,7 @@ public class FlickrAPI {
 					Album album = new Album();
 					album.id = array.get(i).isObject().get("id").isString().stringValue();
 					album.title = array.get(i).isObject().get("title").isObject().get("_content").isString().stringValue();
-					album.summary = array.get(i).isObject().get("description").isObject().get("_content").isString().stringValue();
+					album.description = array.get(i).isObject().get("description").isObject().get("_content").isString().stringValue();
 					album.thumbnailURL = "http://www.thesocialos.net/images/Folder.png";
 					//album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
 					album.numPhotos = Integer.parseInt(array.get(i).isObject().get("photos").isString().stringValue());

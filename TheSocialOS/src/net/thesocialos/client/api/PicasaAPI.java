@@ -50,13 +50,6 @@ public class PicasaAPI {
 		}
 		
 		/**
-		 * @return the summary
-		 */
-		public String getSummary() {
-			return summary;
-		}
-		
-		/**
 		 * @return the thumbnailURL
 		 */
 		@Override
@@ -64,6 +57,10 @@ public class PicasaAPI {
 			return thumbnailURL;
 		}
 		
+		@Override
+		public String getDescription() {
+			return summary;
+		}
 		/**
 		 * @return the numPhotos
 		 */
@@ -120,6 +117,11 @@ public class PicasaAPI {
 		
 		public int getCommentCount() {
 			return commentCount;
+		}
+
+		@Override
+		public String getDescription() {
+			return "";
 		}
 		
 	}

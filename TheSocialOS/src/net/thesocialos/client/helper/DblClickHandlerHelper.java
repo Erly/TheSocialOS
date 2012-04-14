@@ -5,12 +5,13 @@ import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.Media;
 import net.thesocialos.client.api.MediaPicture;
 import net.thesocialos.client.api.PicasaAPI;
-import net.thesocialos.client.api.PicasaAPI.Album;
+import net.thesocialos.client.api.YoutubeAPI;
 import net.thesocialos.client.view.window.FolderWindow;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Image;
 
 public class DblClickHandlerHelper {
@@ -33,14 +34,16 @@ public class DblClickHandlerHelper {
 			return flickrAlbum;
 		} else if (media instanceof FlickrAPI.Picture) {
 			return flickrPicture;
-		}/* else if (media instanceof PicasaAPI) {			  YoutubeAPI.Album
+		} else if (media instanceof YoutubeAPI.Album) {
 			return youtubeAlbum;
-		} else if (media instanceof PicasaAPI) {			  YoutubeAPI.Video
+		} else if (media instanceof YoutubeAPI.Video) {
 			return youtubeVideo;
-		}*/
+		} else if (media instanceof YoutubeAPI.Folder) {
+			return youtubeFolder;
+		}
 		return null;
 	}
-	
+
 	private DoubleClickHandler picasaAlbum = new DoubleClickHandler() {
 		
 		@Override
@@ -99,8 +102,9 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			// TODO Auto-generated method stub
-			
+			FolderWindow folder = new FolderWindow(media.getName());
+			new YoutubeAPI().loadPlaylistVideosInFolder((YoutubeAPI.Album) media, folder);
+			folder.show();
 		}
 	};
 	
@@ -108,14 +112,43 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			// TODO Auto-generated method stub
-			
+			openVideo();
+		}
+	};
+	
+	private DoubleClickHandler youtubeFolder = new DoubleClickHandler() {
+		
+		@Override
+		public void onDoubleClick(DoubleClickEvent event) {
+			FolderWindow folder = new FolderWindow(media.getName());
+			switch (((YoutubeAPI.Folder)media).getType()) {
+			case UPLOADS:
+				new YoutubeAPI().loadUploadsInFolder(folder);
+				break;
+			case PLAYLIST:
+				new YoutubeAPI().loadPlaylistsInFolder(folder);
+				break;
+			case FAVORITES:
+				new YoutubeAPI().loadFavoritesInFolder(folder);
+				break;
+			}
+			folder.show();
 		}
 	};
 
 	protected void openImage() {
 		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
 		popup.add(new Image(((MediaPicture)media).getUrl()));
+		popup.setAnimationEnabled(true);
+		popup.setGlassEnabled(true);
+		popup.center();
+	}
+
+	protected void openVideo() {
+		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
+		Frame frame = new Frame(((MediaPicture)media).getUrl());
+		frame.setSize("560px", "315px");
+		popup.add(frame);
 		popup.setAnimationEnabled(true);
 		popup.setGlassEnabled(true);
 		popup.center();

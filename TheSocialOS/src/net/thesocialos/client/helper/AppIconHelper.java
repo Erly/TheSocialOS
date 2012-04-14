@@ -27,7 +27,15 @@ public class AppIconHelper {
 			
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
-				PicturesHelper.loadPictureAlbums();
+				MediaHelper.loadPictureAlbums();
+			}
+		});
+		
+		videos.addDoubleClickHandler(new DoubleClickHandler() {
+			
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				MediaHelper.loadVideoFolders();
 			}
 		});
 	}

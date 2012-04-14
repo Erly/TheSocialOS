@@ -7,4 +7,6 @@ public interface Media {
 	public String getName();
 	
 	public String getThumbnailURL();
+	
+	public String getDescription();
 }

@@ -45,6 +45,11 @@ public class FacebookAPI {
 		public int getElementCount() {
 			return numPhotos;
 		}
+
+		@Override
+		public String getDescription() {
+			return "";
+		}
 		
 	}
 	
@@ -73,6 +78,11 @@ public class FacebookAPI {
 		@Override
 		public String getUrl() {
 			return url;
+		}
+
+		@Override
+		public String getDescription() {
+			return "";
 		}
 		
 	}

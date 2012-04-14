@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
@@ -16,6 +17,7 @@ import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.Media;
 import net.thesocialos.client.api.MediaPicture;
 import net.thesocialos.client.api.PicasaAPI;
+import net.thesocialos.client.api.YoutubeAPI;
 import net.thesocialos.client.helper.DblClickHandlerHelper;
 import net.thesocialos.client.view.Thumbnail;
 import net.thesocialos.client.view.Thumbnail.SERVICE;
@@ -101,6 +103,7 @@ public class FolderWindow {
 				Image.prefetch(((MediaPicture)media).getUrl());
 			Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type, typeAndService.service);
 			thumb.addDoubleClickHandler(new DblClickHandlerHelper(media).getDoubleClickHandler());
+			thumb.setTitle(media.getDescription());
 			table.setWidget(j, i, thumb);
 			table.getFlexCellFormatter().setVerticalAlignment(j, i, HasVerticalAlignment.ALIGN_TOP);
 			i++;
@@ -122,6 +125,7 @@ public class FolderWindow {
 			Image.prefetch(((MediaPicture)media).getUrl());
 		Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type, typeAndService.service);
 		thumb.addDoubleClickHandler(new DblClickHandlerHelper(media).getDoubleClickHandler());
+		thumb.setTitle(media.getDescription());
 		table.setWidget(j, i, thumb);
 		table.getFlexCellFormatter().setVerticalAlignment(j, i, HasVerticalAlignment.ALIGN_TOP);
 		i++;
@@ -145,6 +149,12 @@ public class FolderWindow {
 			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.FLICKR);
 		} else if (media instanceof FlickrAPI.Picture) {
 			typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.FLICKR);
+		} else if (media instanceof YoutubeAPI.Album) {
+			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.YOUTUBE);
+		} else if (media instanceof YoutubeAPI.Video) {
+			typeAndService = new TypeAndService(TYPE.VIDEO, SERVICE.YOUTUBE);
+		} else if (media instanceof YoutubeAPI.Folder) {
+			typeAndService = new TypeAndService(TYPE.FOLDER, SERVICE.YOUTUBE);
 		}
 		return typeAndService;
 	}

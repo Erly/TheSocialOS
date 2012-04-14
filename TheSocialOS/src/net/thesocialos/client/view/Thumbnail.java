@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class Thumbnail extends Composite implements HasText {
 
 	public enum TYPE {
-		ALBUM, PICTURE,	VIDEO, MUSIC;
+		ALBUM, PICTURE,	VIDEO, MUSIC, FOLDER;
 	}
 	
 	public enum SERVICE {
