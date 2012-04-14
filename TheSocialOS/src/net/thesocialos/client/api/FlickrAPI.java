@@ -129,7 +129,7 @@ public class FlickrAPI {
 	
 	public void loadAlbumsInFolder(final FolderWindow folder) {
 		String url = "http://api.flickr.com/services/rest/?method=flickr.photosets.getList&nojsoncallback=1&per_page=9999";
-		FlickR flickrAccount = getFlickrAccount();
+		final FlickR flickrAccount = getFlickrAccount();
 		if (null == flickrAccount)
 			return;
 		
@@ -139,21 +139,40 @@ public class FlickrAPI {
 			@Override
 			public void onResponseReceived(Request request, Response response) {
 				JSONObject object = JSONParser.parseStrict(response.getText()).isObject(); 
-				HashSet<Album> albums = new HashSet<Album>();
 				JSONArray array = object.get("photosets").isObject().get("photoset").isArray();
 				for (int i = 0; i < array.size(); i++) {
 					Album album = new Album();
 					album.id = array.get(i).isObject().get("id").isString().stringValue();
 					album.title = array.get(i).isObject().get("title").isObject().get("_content").isString().stringValue();
 					album.description = array.get(i).isObject().get("description").isObject().get("_content").isString().stringValue();
-					album.thumbnailURL = "http://www.thesocialos.net/images/Folder.png";
-					//album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
 					album.numPhotos = Integer.parseInt(array.get(i).isObject().get("photos").isString().stringValue());
 					album.commentingEnabled = array.get(i).isObject().get("can_comment").isNumber().toString().equals('1') ? true : false;
 					album.commentCount = Integer.parseInt(array.get(i).isObject().get("count_comments").isString().stringValue());
-					albums.add(album);
+					String cover_photo_id = array.get(i).isObject().get("primary").isString().stringValue();
+					loadAlbumInFolder(album, cover_photo_id, folder, flickrAccount);
 				}
-				folder.addMedia(albums);
+			}
+			
+			@Override
+			public void onError(Request request, Throwable exception) {
+				Window.alert(exception.getMessage());
+			}
+		});
+	}
+	
+	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder, FlickR flickrAccount) {
+		String url = "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&nojsoncallback=1&per_page=9999";
+		url += "&photo_id=" + cover_photo_id;
+		
+		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(), flickrAccount.getTokenSecret(), url);
+		send(url, new RequestCallback() {
+			
+			@Override
+			public void onResponseReceived(Request request, Response response) {
+				JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
+				JSONArray array = object.get("sizes").isObject().get("size").isArray();
+				album.thumbnailURL = array.get(1).isObject().get("source").isString().stringValue();
+				folder.addMedia(album);
 			}
 			
 			@Override
