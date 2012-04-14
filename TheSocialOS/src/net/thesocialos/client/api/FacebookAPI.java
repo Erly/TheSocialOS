@@ -51,6 +51,10 @@ public class FacebookAPI {
 			return "";
 		}
 		
+		public void setThumbnailUrl(String url) {
+			this.thumbnailURL = url;
+		}
+		
 	}
 	
 	public class Picture implements MediaPicture {
@@ -86,44 +90,6 @@ public class FacebookAPI {
 		}
 		
 	}
-
-	
-	public void getAlbumsRequest(AsyncCallback<JavaScriptObject> cb) {
-		String facebookAPIurl = "https://graph.facebook.com/";
-		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
-		Iterator<Account> it = accounts.values().iterator();
-		Facebook facebookAccount = null;
-		while (it.hasNext()) {
-			Account account = it.next();
-			if (account instanceof Facebook) {
-				facebookAccount = (Facebook) account;
-				break;
-			}
-		}
-		if (null == facebookAccount)
-			return;
-		String username = facebookAccount.getUsername();
-		
-		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-		jsonp.requestObject(facebookAPIurl + username + "/albums?" + facebookAccount.getAuthToken(), cb);
-	}
-	
-	public HashSet<Album> getAlbums(JSONObject object) {
-		HashSet<Album> albums = new HashSet<Album>();
-		JSONArray array = object.get("data").isArray();
-		for (int i = 0; i < array.size(); i++) {
-			Album album = new Album();
-			album.id = array.get(i).isObject().get("id").isString().stringValue();
-			album.name = array.get(i).isObject().get("name").isString().stringValue();
-			album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
-			album.numPhotos = Integer.parseInt(array.get(i).isObject().get("count").isNumber().toString());
-			albums.add(album);
-		}
-		/* This method only loads the first page of albums for now
-		 * JSONObject js = object.get("paging").isObject();
-		 */
-		return albums;
-	}
 	
 	public void loadAlbumsInFolder(final FolderWindow folder) {
 		String facebookAPIurl = "https://graph.facebook.com/";
@@ -133,10 +99,10 @@ public class FacebookAPI {
 			return;
 		String username = facebookAccount.getUsername();
 		facebookAPIurl += username + "/albums?access_token=" + facebookAccount.getAuthToken();
-		loadAlbumInFolder(folder, facebookAPIurl);
+		loadAlbumsInFolder(folder, facebookAPIurl, facebookAccount);
 	}
 
-	private void loadAlbumInFolder(final FolderWindow folder, String facebookUrl) {
+	private void loadAlbumsInFolder(final FolderWindow folder, String facebookUrl, final Facebook facebookAccount) {
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
 		jsonp.requestObject(facebookUrl, new AsyncCallback<JavaScriptObject>() {
 
@@ -150,29 +116,47 @@ public class FacebookAPI {
 			@Override
 			public void onSuccess(JavaScriptObject result) {
 				JSONObject object = new JSONObject(result);
-				HashSet<Album> albums = new HashSet<Album>();
 				JSONArray array = object.get("data").isArray();
 				for (int i = 0; i < array.size(); i++) {
 					Album album = new Album();
 					album.id = array.get(i).isObject().get("id").isString().stringValue();
 					album.name = array.get(i).isObject().get("name").isString().stringValue();
-					album.thumbnailURL = "http://www.thesocialos.net/images/Folder.png";
-					//album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
 					album.numPhotos = Integer.parseInt(array.get(i).isObject().get("count").isNumber().toString());
-					albums.add(album);
+					String cover_photo_id = array.get(i).isObject().get("cover_photo").isString().stringValue();
+					loadAlbumInFolder(album, cover_photo_id, folder, facebookAccount);
 				}
-				if (albums.size() > 0)
-					folder.addMedia(albums);
-				JSONValue js = object.get("paging").isObject();
+				JSONValue js = object.get("paging");
 				if (null != js) {
 					JSONString nextAlbumsUrl = js.isObject().get("next").isString();
 					if (null != nextAlbumsUrl && !"".equals(nextAlbumsUrl))
-						loadAlbumInFolder(folder, nextAlbumsUrl.stringValue());
+						loadAlbumsInFolder(folder, nextAlbumsUrl.stringValue(), facebookAccount);
 				}
 			}
 		});
 	}
 	
+	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder, Facebook facebookAccount) {
+		String facebookAPIurl = "https://graph.facebook.com/" + cover_photo_id + "?access_token=" + facebookAccount.getAuthToken();
+		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+		jsonp.requestObject(facebookAPIurl, new AsyncCallback<JavaScriptObject>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				System.out.println(caught.getMessage());
+				caught.printStackTrace();
+			}
+
+			@Override
+			public void onSuccess(JavaScriptObject result) {
+				JSONObject object = new JSONObject(result);	
+				album.setThumbnailUrl(object.get("picture").isString().stringValue());
+				folder.addMedia(album);
+			}
+		});
+		
+	}
+
 	public void loadPicturesInFolder(Album album, final FolderWindow folder) {
 		String facebookAPIurl = "https://graph.facebook.com/";
 		Facebook facebookAccount = getFacebookAccount();
