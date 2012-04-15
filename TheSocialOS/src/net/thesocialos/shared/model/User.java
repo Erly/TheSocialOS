@@ -40,9 +40,11 @@ public class User implements Serializable {
 	
 	Key<Group> groups[];
 	
-	Key<Conversation> conversations[];
+	private List<Key<Conversation>> conversations;
 	
-	Key<OutConversation> offlineConversations[];
+	private List<Key<OutStandingLines>> linesOffline; //Messages send offline mode
+	
+	
 	
 	List<Key<Session>> sessions = new ArrayList<Key<Session>>();
 	
@@ -88,9 +90,7 @@ public class User implements Serializable {
 		this.groups = groups;
 	}
 
-	public Key<Conversation>[] getConversations() {
-		return conversations;
-	}
+	
 	public List<Key<User>> getContacts(){
 		return contacts;
 	}
@@ -136,17 +136,9 @@ public class User implements Serializable {
 	}
 
 
-	public void setConversations(Key<Conversation>[] conversations) {
-		this.conversations = conversations;
-	}
+	
 
-	public Key<OutConversation>[] getOfflineConversations() {
-		return offlineConversations;
-	}
 
-	public void setOfflineConversations(Key<OutConversation>[] offlineConversations) {
-		this.offlineConversations = offlineConversations;
-	}
 
 	public List<Key<Session>> getSessions() {
 		return sessions;
@@ -222,5 +214,32 @@ public class User implements Serializable {
 	public void overwriteAccountsList(List<Key<? extends Account>> newAccountsKeys) {
 		this.accounts.clear();
 		this.accounts.addAll(newAccountsKeys);
+	}
+	
+	public List<Key<Conversation>> getListKeyConversations(){
+		return conversations;
+	}
+	/**
+	 * Añade una conversacion
+	 * @param conversation la key a añadir
+	 * @return true si correcto | false si no
+	 */
+	public boolean addKeyConversation(Key<Conversation> conversation){
+		return conversations.add(conversation);
+	}
+	/**
+	 * Obtiene todos los mensajes en modo desconectado
+	 * @return
+	 */
+	public List<Key<OutStandingLines>> getListKeyOfflineMessages(){
+		return linesOffline;
+	}
+	/**
+	 * Añade un mesaje en modo desconectado
+	 * @param offlineMessage la key a guardar
+	 * @return true si correcto | false si no
+	 */
+	public boolean addKeyOfflineMessage(Key<OutStandingLines> offlineMessage){
+		return linesOffline.add(offlineMessage);
 	}
 }

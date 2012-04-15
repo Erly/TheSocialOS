@@ -13,7 +13,7 @@ import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.Lines;
 import net.thesocialos.shared.model.Oauth1;
 import net.thesocialos.shared.model.Oauth2;
-import net.thesocialos.shared.model.OutConversation;
+
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.Twitter;
 import net.thesocialos.shared.model.User;
@@ -38,7 +38,7 @@ public class LoadOnStart extends HttpServlet {
 		//Chat
 		ObjectifyService.register(Lines.class);
 		ObjectifyService.register(Conversation.class);
-		ObjectifyService.register(OutConversation.class);
+		
 		//SocialOS
 		ObjectifyService.register(Oauth1.class);
 		ObjectifyService.register(Oauth2.class);
