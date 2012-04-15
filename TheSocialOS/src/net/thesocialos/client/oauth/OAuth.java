@@ -1,5 +1,6 @@
 package net.thesocialos.client.oauth;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -7,6 +8,34 @@ import com.google.gwt.http.client.RequestException;
 
 public class OAuth {
 	
+	/*		Functions needed to avoid Same Origin Policy (In twitter calls for example)		*/
+	
+	public interface JSONHandler {
+		public void handleJSON(JavaScriptObject obj);
+	}
+	
+	public native static void  makeJSONRequest(String url, JSONHandler handler) /*-{
+		$wnd.jsonCallback = function(jsonObj) {
+    		@net.thesocialos.client.oauth.OAuth::dispatchJSON(Lcom/google/gwt/core/client/JavaScriptObject;Lnet/thesocialos/client/oauth/OAuth$JSONHandler;)(jsonObj, handler);
+    	}
+      
+       // create SCRIPT tag, and set SRC attribute equal to JSON feed URL + callback function name
+       var script = $wnd.document.createElement("script");
+       //script.setAttribute("src", url+"&callback=jsonCallback");
+       script.setAttribute("src", url);
+       script.setAttribute("type", "text/javascript");
+       
+       $wnd.document.getElementsByTagName("head")[0].appendChild(script);
+       
+	}-*/;
+	
+	public static void dispatchJSON(JavaScriptObject jsonObj, JSONHandler handler) {
+		handler.handleJSON(jsonObj);
+	}
+	
+	/*			SIGN THE REQUEST METHODS (for all OAuth1 requests)				*/
+	
+	@Deprecated
 	public native static String signRequest(String key, String secret, String url) /*-{
 		var accessor = {consumerSecret: secret};
 		var message = {
@@ -33,17 +62,4 @@ public class OAuth {
 	public native static String signRequest(String key, String secret, String accessToken, String accessTokenSecret, String url) /*-{
 		return $wnd.makeSignedRequest(key, secret, accessToken, accessTokenSecret, url);
 	}-*/;
-	
-	protected void send(String Url, RequestCallback cb) {
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, Url);
-		builder.setTimeoutMillis(10000);
-		builder.setCallback(cb);
-		
-		Request req = null;
-		try {
-			req = builder.send();
-		} catch (RequestException e) {
-			cb.onError(req, e);
-		}
-	}
 }

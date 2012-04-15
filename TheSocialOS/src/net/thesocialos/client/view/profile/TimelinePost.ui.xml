@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
 		.post {
-			border = 1px solid black;
+			border: 1px solid black;
 		}
 		.black {
 			font-weight: bold;
@@ -12,11 +12,10 @@
 			padding: 5px;
 		}
 	</ui:style>
-	<g:HorizontalPanel width="300px" addStyleNames="{style.post}" height="">
-		<g:Image width="40px" height="40px" addStyleNames="{style.padding}">
-		</g:Image>
+	<g:HorizontalPanel width="100%" addStyleNames="{style.post}" height="">
+		<g:Image ui:field="photo" width="40px" height="40px" addStyleNames="{style.padding}" />
 		<g:VerticalPanel width="100%">
-			<g:Label ui:field="post" text="Tweet" />
+			<g:HTML ui:field="post" text="Tweet" />
 			<g:Cell verticalAlignment="ALIGN_BOTTOM" height="20px">
 				<g:HorizontalPanel height="" verticalAlignment="ALIGN_MIDDLE" width="100%">
 					<g:Label ui:field="user" text="User Surname @username" addStyleNames="{style.black}" />

@@ -1,8 +1,12 @@
 package net.thesocialos.client.view.profile;
 
+import net.thesocialos.client.api.TwitterAPI.Tweet;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Label;
@@ -11,7 +15,8 @@ public class TimelinePost extends Composite {
 
 	private static TimelinePostUiBinder uiBinder = GWT
 			.create(TimelinePostUiBinder.class);
-	@UiField Label post;
+	@UiField Image photo;
+	@UiField HTML post;
 	@UiField Label user;
 	@UiField Label time;
 
@@ -21,12 +26,13 @@ public class TimelinePost extends Composite {
 	public TimelinePost() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
-	public TimelinePost(String post, String user, String time) {
+
+	public TimelinePost(Tweet tweet) {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.post.setText(post);
-		this.user.setText(user);
-		this.time.setText(time);
+		this.photo.setUrl(tweet.getProfile_image_url());
+		this.post.setHTML(tweet.getText());
+		this.user.setText(tweet.getUser_name() + " @" + tweet.getScreen_name());
+		this.time.setText("");
 	}
 
 	/**
@@ -39,8 +45,8 @@ public class TimelinePost extends Composite {
 	/**
 	 * @param post the post to set
 	 */
-	public void setPost(Label post) {
-		this.post = post;
+	public void setPost(String post) {
+		this.post.setHTML(post);
 	}
 
 	/**
