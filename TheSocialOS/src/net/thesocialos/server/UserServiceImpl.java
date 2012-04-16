@@ -61,7 +61,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		Session session;
 		HttpSession httpSession = perThreadRequest.get().getSession();
 		if ((session = UserHelper.getSesssionHttpSession(httpSession)) != null
-				&& (user = UserHelper.getUserHttpSession(httpSession)) != null){
+				&& (user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy)) != null){
 			if (session.getSessionID().equalsIgnoreCase(sid)
 					&& session.getUser().getName().equalsIgnoreCase(user.getEmail())){
 				return User.toDTO(user);
@@ -72,7 +72,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			user = UserHelper.getUserWithSession(session, ofy);
 			user.setLastTimeActive(new Date());
 
-			UserHelper.saveUsertohttpSession(session, user, httpSession);
+			UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 			ofy.put(user);
 			return User.toDTO(user);
 		}catch (NotFoundException e) {
@@ -133,7 +133,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		
 		user.setLastTimeActive(new Date()); //Set last time to user is login
 
-		UserHelper.saveUsertohttpSession(session, user, httpSession); //Store user and session
+		UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession); //Store user and session
 
 		ofy.put(user); //Save user
 		return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
@@ -150,7 +150,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 
 		removeDeletedAccounts();
 		Objectify ofy = ObjectifyService.begin();
-		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
+		User user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
 		List<Key<? extends Account>> accountsKeys = user.getAccounts();
 		Map<Key<Account>, Account> accounts = ofy.get(accountsKeys);
 		if (refreshAccountTokens(accounts, ofy))
@@ -178,7 +178,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 	public void removeDeletedAccounts() {
 		Objectify ofy = ObjectifyService.begin();
 		HttpSession httpSession = perThreadRequest.get().getSession();
-		User user = UserHelper.getUserHttpSession(httpSession);
+		User user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy);
 		Session session = UserHelper.getSesssionHttpSession(httpSession);
 		List<Key<? extends Account>> accountsKeys = user.getAccounts();
 		List<Key<? extends Account>> newAccountsKeys = new ArrayList<Key<? extends Account>>();
@@ -196,6 +196,6 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		}
 		user.overwriteAccountsList(newAccountsKeys);
 		ofy.put(user);
-		UserHelper.saveUsertohttpSession(session, user, httpSession);
+		UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 	}
 }

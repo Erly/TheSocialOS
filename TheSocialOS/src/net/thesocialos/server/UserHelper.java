@@ -37,17 +37,27 @@ final static String OBJECITIFY = "objetify";
 	 */
 	public static synchronized User getUserWithEmail(String email,Objectify ofy) throws NotFoundException{
 		return ofy.get(USER, email);
-		 
+	}
+	/**
+	 * Get the loged User
+	 * @param httpSession
+	 * @param ofy
+	 * @return
+	 * @throws NotFoundException
+	 */
+	public static synchronized User getUserSession(HttpSession httpSession, Objectify ofy) throws NotFoundException{
+		String email =  (String)httpSession.getAttribute(userN);
+		return (User) ofy.get(USER,email);
 	}
 	
 	/**
-	 * Set a User object in session
+	 * Set a User String of the session
 	 * @param session a user session
 	 * @param httpSession HttpSession
 	 * @return
 	 */
-	public static synchronized boolean saveUsertohttpSession(Session session, User user, HttpSession httpSession){
-		httpSession.setAttribute(userN, user);
+	public static synchronized boolean saveUsertohttpSession(Session session, String userEmail, HttpSession httpSession){
+		httpSession.setAttribute(userN, userEmail);
 		httpSession.setAttribute(sessionN, session);
 		return true;
 	}
@@ -102,8 +112,8 @@ final static String OBJECITIFY = "objetify";
 	 * @param httpSession
 	 * @return User Object
 	 */
-	public static synchronized User getUserHttpSession(HttpSession httpSession){
-		return (User) httpSession.getAttribute(userN);
+	public static synchronized String getUserHttpSession(HttpSession httpSession){
+		return (String) httpSession.getAttribute(userN);
 	}
 	
 	/**

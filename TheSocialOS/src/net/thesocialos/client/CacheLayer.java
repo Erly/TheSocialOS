@@ -25,7 +25,7 @@ public class CacheLayer {
 
 	static User user;
 	static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
-	//Usuarios de la aplicación
+	//Usuarios de la aplicaciï¿½n
 	static Map<String, User> users = new LinkedHashMap<String, User>();
 	static LinkedHashMap<String, Session> sessions;
 	static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
@@ -99,7 +99,7 @@ public class CacheLayer {
 		 * @return numero de peticiones en int
 		 */
 		public static int getCountPetitionsContanct(){
-			return contacts.size();
+			return petitionsContacts.size();
 		}
 		
 		public static User getContact(String email){
@@ -139,19 +139,41 @@ public class CacheLayer {
 			return null;
 		}
 
-		public static void updateContacts(){
+		public static void updateContacts(final AsyncCallback<Boolean> callback){
 			getContacts(new AsyncCallback<Map<Key<User>, User>>() {
 				
 				@Override
 				public void onSuccess(Map<Key<User>, User> result) {
-					// TODO Auto-generated method stub
+					
 					contacts = result;
+					if (callback!= null)
+					callback.onSuccess(true);
 				}
 				
 				@Override
 				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
+				
+					if (callback!= null)
+					callback.onSuccess(false);
+				}
+			});
+		}
+		public static void updatePetitionsContacts(final AsyncCallback<Boolean> callback){
+			getContactPetitions(new AsyncCallback<Map<String,User>>() {
+				
+				@Override
+				public void onSuccess(Map<String, User> result) {
+					petitionsContacts = result;
+					if (callback!= null)
+					callback.onSuccess(true);
 					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+
+					if (callback!= null)
+					callback.onSuccess(false);
 				}
 			});
 		}
@@ -166,16 +188,16 @@ public class CacheLayer {
 			}
 		}
 		/**
-		 * Añade un usuario una peticion del usuario logeado
+		 * Aï¿½ade un usuario una peticion del usuario logeado
 		 * @param callback true si a tenido exito
-		 * @param contactUser El usuario a que enviar la petición
+		 * @param contactUser El usuario a que enviar la peticiï¿½n
 		 */
 		public static void addPetitionContact (final User contactUser,final AsyncCallback<Boolean> callback){
 			new RPCXSRF<Boolean>(contactService) {
 
 				@Override
 				protected void XSRFcallService(AsyncCallback<Boolean> cb) {
-					contactService.addPetitionContact(contactUser, callback);
+					contactService.addPetitionContact(contactUser, cb);
 				}
 				public void onSuccess(Boolean success){
 					callback.onSuccess(success);
@@ -199,7 +221,7 @@ public class CacheLayer {
 				@Override
 				protected void XSRFcallService(AsyncCallback<Boolean> cb) {
 					// TODO Auto-generated method stub
-					contactService.acceptContact(contact.getEmail(), callback);
+					contactService.acceptContact(contact.getEmail(), cb);
 				}
 				@Override
 				public void onSuccess(Boolean result){
@@ -222,7 +244,7 @@ public class CacheLayer {
 				@Override
 				protected void XSRFcallService(AsyncCallback<Boolean> cb) {
 					// TODO Auto-generated method stub
-					contactService.denyContact(contact.getEmail(), callback);
+					contactService.denyContact(contact.getEmail(), cb);
 				}
 				@Override
 				public void onSuccess(Boolean result){
@@ -292,13 +314,12 @@ public class CacheLayer {
 				@Override
 				protected void XSRFcallService(
 						AsyncCallback<Map<String, User>> cb) {
-					System.out.println("llama petitions");
 					contactService.getPetitionContact(cb);
 					
 				}
 				@Override
 				public void onSuccess(Map<String,User> petitionsContacts){
-					System.out.println("onSucces petitions");
+			
 					CacheLayer.petitionsContacts = petitionsContacts;
 					callback.onSuccess(petitionsContacts);
 				}

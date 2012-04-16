@@ -247,4 +247,7 @@ public class AppController implements ValueChangeHandler<String> {
 	public void setChatEventBus(SimpleEventBus chatEventBus) {
 		this.chatEventBus = chatEventBus;
 	}
+	
+	
+	
 }

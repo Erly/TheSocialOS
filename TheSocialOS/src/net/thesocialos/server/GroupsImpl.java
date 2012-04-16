@@ -19,9 +19,9 @@ public class GroupsImpl extends XsrfProtectedServiceServlet implements GroupsSer
 
 	@Override
 	public Map<Key<Group>, Group> getUserGroups() throws GroupNotFoundException {
-		HttpSession httpSession = perThreadRequest.get().getSession();
 		Objectify ofy = ObjectifyService.begin();
-		User user = UserHelper.getUserHttpSession(httpSession);
+		
+		User user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
 
 		Map<Key<Group>, Group> groups;
 		try {

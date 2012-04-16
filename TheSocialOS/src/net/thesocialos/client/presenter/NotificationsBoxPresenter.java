@@ -21,9 +21,12 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
+import net.thesocialos.client.AppController;
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
+import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 import net.thesocialos.client.presenter.SearchBoxPresenter.Display;
 import net.thesocialos.client.view.LabelText;
 import net.thesocialos.client.view.PopAsker;
@@ -96,6 +99,7 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 				usersList.addAll(result.values());
 				dataProvider.flush();
 				dataProvider.refresh();
+				TheSocialOS.getEventBus().fireEvent(new ContactsPetitionChangeEvent());
 			}
 			
 			@Override
@@ -144,7 +148,9 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 					public void onSuccess(Boolean result) {
 						// TODO Auto-generated method stub
 						getContactPetitions(false);
-						CacheLayer.ContactCalls.updateContacts();
+						CacheLayer.ContactCalls.updateContacts(null);
+						
+						
 					}
 					
 					@Override
@@ -160,17 +166,17 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 			
 			@Override
 			public void execute() {
-				CacheLayer.ContactCalls.acceptAContact(user, new AsyncCallback<Boolean>() {
+				CacheLayer.ContactCalls.denyAContact(user, new AsyncCallback<Boolean>() {
 					
 					@Override
 					public void onSuccess(Boolean result) {
 						getContactPetitions(false);
-						CacheLayer.ContactCalls.updateContacts();
+					
 					}
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						System.out.println(caught);
+						
 						
 					}
 				});
