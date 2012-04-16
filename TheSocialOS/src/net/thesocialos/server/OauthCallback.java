@@ -54,7 +54,7 @@ public class OauthCallback extends HttpServlet {
 		Objectify ofy = ObjectifyService.begin();
 		
 		Session session = UserHelper.getSesssionHttpSession(request.getSession());
-		User user = UserHelper.getUserHttpSession(request.getSession());
+		User user = UserHelper.getUserSession(request.getSession(), ofy);
 		if (request.getServletPath().contains("twitter")) {
 			twitterAccount = new Twitter(accessToken.getToken(), accessToken.getSecret());
 			twitterAccount.setUsername(getUsername(TWITTER, accessToken));
@@ -74,7 +74,7 @@ public class OauthCallback extends HttpServlet {
 			return;
 		}
 		
-		UserHelper.saveUsertohttpSession(session, user, request.getSession());
+		
 		ofy.put(user);
 		
 		try {

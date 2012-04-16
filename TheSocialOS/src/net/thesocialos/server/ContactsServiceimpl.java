@@ -29,7 +29,9 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	@Override
 	public Map<Key<User>,User> getFriendsList() throws FriendNotFoundException {
 		Objectify ofy = ObjectifyService.begin();
-		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
+		
+		
+		User user = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
 		List<Key<User>> contacts = user.getContacts();
 		
 			
@@ -50,7 +52,8 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 		Objectify ofy = ObjectifyService.begin();
 		StringTokenizer tokens = new StringTokenizer(text);
 		List<String> userNames = new ArrayList<String>();
-		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
+		
+		User user = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
 		
 		
 		while (tokens.hasMoreTokens()){
@@ -107,7 +110,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	
 	
 	/**
-	 * Añade una peticion nueva al contacto
+	 * Aï¿½ade una peticion nueva al contacto
 	 */
 	@Override
 	public Boolean addPetitionContact(User contactUser) throws ContactException {
@@ -133,7 +136,8 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	@Override
 	public Map<String, User> getPetitionContact() throws ContactException {
 		Objectify ofy =  ObjectifyService.begin();
-		User user = UserHelper.getUserHttpSession(perThreadRequest.get().getSession());
+		
+		User user = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
 		Map<String, User> petitions;
 		Map<Key<User>,User> keyContacts = null;
 		
@@ -162,7 +166,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 		User userLoged = null;
 		try{
 			contactToAccept = ofy.get(User.class,email);
-			userLoged = ofy.get(User.class,UserHelper.getUserHttpSession(perThreadRequest.get().getSession()).getEmail());
+			userLoged = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
 		}catch (NotFoundException e) {
 			throw new ContactException("User or contact not found");
 		}
@@ -187,7 +191,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 		User userLoged = null;
 		try {
 			contactToAccept = ofy.get(User.class,email);
-			userLoged = ofy.get(User.class,UserHelper.getUserHttpSession(perThreadRequest.get().getSession()).getEmail());
+			userLoged = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
 		} catch (NotFoundException e) {
 			throw new ContactException("User or contact not found");
 		}

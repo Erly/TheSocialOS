@@ -63,7 +63,7 @@ public class Oauth2Response extends HttpServlet {
 			user.addAccount(ofy.put(facebookAccount));
 		}
 		
-		UserHelper.saveUsertohttpSession(session, user, request.getSession());
+		
 		ofy.put(user);
 		
 		try {
