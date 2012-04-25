@@ -54,15 +54,9 @@ public class ChatApp implements IApplication {
 		ChatPanel getChatPanel();
 	}
 	
-	@Override
-	public Widget run() {	
-		return panel.getChatPanel();
-	}
 	
-	@Override
-	public void setSize(String width, String height) {
-		panel.getChatPanel().setSize(width, height);
-	}
+	
+	
 	
 	private void bind(){
 		chatEventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler(){

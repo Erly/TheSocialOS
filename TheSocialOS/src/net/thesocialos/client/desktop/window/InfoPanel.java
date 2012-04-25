@@ -1,4 +1,4 @@
-package net.thesocialos.client.view.window;
+package net.thesocialos.client.desktop.window;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;

@@ -351,7 +351,29 @@ desktopbar {
 	border-top: 1px solid #F1F1F1;
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
+	user-select: none;
 }
+
+.sos-Window .Footer {
+	background: #F1F1F1;
+	padding: 1px 1px 1px 1px;
+	border-bottom-left-radius : 4px;
+	border-bottom-right-radius : 4px;
+}
+.sos-Window .Footer-resize{
+	background: #F1F1F1;
+	cursor:se-resize;
+	
+}
+
+
+.sos-Window .resize{
+	background: #F1F1F1;
+
+}
+. sos-Window .resize:hover{
+}
+
 
 .sos-Window .dialogContent {
 	
@@ -360,9 +382,8 @@ desktopbar {
 .sos-Window .dialogMiddleCenter {
 	padding: 3px;
 	background: white;
-	border-bottom-left-radius: 4px;
-	border-bottom-right-radius: 4px;
-}
+	/*border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;*/
 
 .sos-Window .dialogBottomCenter {
 	background: url(/thesocialos/gwt/cleano/images/hborder.png) repeat-x
@@ -407,7 +428,7 @@ desktopbar {
 }
 
 .sos-window .dialogTopCenter {
-	border-radius: 4px;
+	/*border-radius: 4px;*/
 	background: black;
 }
 
@@ -437,4 +458,79 @@ desktopbar {
 		-8px -36px;
 	-background: url(/thesocialos/gwt/cleano/images/circles_ie6.png)
 		no-repeat -8px -36px;
+}
+
+.resize{
+	  cursor:pointer; 
+	cursor:se-resize;
+
+}
+.resize:hover{
+	cursor:pointer;
+	cursor:se-resize;
+}
+center-label {
+	vertical-align: bottom;
+	text-align: center;
+}
+
+/* Chat Panel */
+
+
+.chatBlock_Popup{
+	background-color: gray;
+  	border-color: gray gray gray gray;
+  	border-width: 1px 3px 3px 1px;
+  	border-style: solid solid solid solid;
+  	
+}
+
+
+
+.chatMenu_circle_green{
+			
+	width:100px;
+	height:100px;
+	display:block;
+	border-radius:50px;
+	-moz-border-radius:50px;
+	-webkit-border-radius:50px;
+	-khtml-border-radius:50px;
+	font-size:20px;
+	color:#fff;
+	line-height:100px;
+	text-align:center;
+	background:#00FF00}
+		}
+.chatMenu_circle_red{
+	width:100px;
+	height:100px;		
+	border-radius:50px;
+	-moz-border-radius:50px;
+	-webkit-border-radius:50px;
+	-khtml-border-radius:50px;
+	font-size:20px;
+	color:#fff;
+	line-height:100px;
+	text-align:center;
+	background:#FF0000
+		}
+		
+.chatBlock_background_red{
+	background-color: red;
+	border-style:solid;
+	border-width:1px;
+	border-radius:2px;
+	-moz-box-shadow: 5px 5px 5px #888;
+	-webkit-box-shadow: 5px 5px 5px #888;
+	box-shadow: 5px 5px 5px #888;
+}
+.chatBlock_background_white{
+	background-color: white;
+	border-style:solid;
+	border-width:1px;
+	border-radius:2px;
+	-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px #888;
 }

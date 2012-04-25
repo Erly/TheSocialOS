@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Image;
 
 public class DesktopBar extends Composite {
 
@@ -49,6 +50,10 @@ public class DesktopBar extends Composite {
 	@UiField Label lblPetitions;
 	@UiField Label lblPetitionsNumber;
 	@UiField FocusPanel PetitionsButton;
+	@UiField FocusPanel ProgramsButton;
+	@UiField Image imgProgram;
+	@UiField Label labelProgram;
+	
 
 	public FocusPanel getFocusContact(){
 		return focusContacts;
@@ -62,6 +67,15 @@ public class DesktopBar extends Composite {
 	}
 	public Label getPetitionsNumber(){
 		return lblPetitionsNumber;
+	}
+	public FocusPanel getProgramsButton(){
+		return ProgramsButton;
+	}
+	public Image getImgProgram(){
+		return imgProgram;
+	}
+	public Label getLabelProgram(){
+		return labelProgram;
 	}
 	/**
 	 * Set in the widget a number of petitions is waiting

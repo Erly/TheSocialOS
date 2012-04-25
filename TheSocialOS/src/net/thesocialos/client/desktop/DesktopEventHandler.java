@@ -9,4 +9,6 @@ public interface DesktopEventHandler extends EventHandler {
 	void onOpen(DesktopEventOnOpen event);
 	void onMaximize(DesktopEventOnMaximize event);
 	void onMinimize(DesktopEventOnMinimize event);
+	void onEndDrag(DesktopEventonEndDrag event);
+	void onTop(DesktopEventOnTop event);
 }

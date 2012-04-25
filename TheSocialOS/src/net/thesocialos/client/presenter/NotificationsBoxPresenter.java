@@ -24,6 +24,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import net.thesocialos.client.AppController;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
@@ -48,7 +49,7 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 	List<User> usersList = new ArrayList<User>();
 	
 	public NotificationsBoxPresenter(Display display){
-		programID = "002";
+		programID = AppConstants.NOTIFICATIONS;
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		
@@ -231,17 +232,6 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 		
 	}
 
-	@Override
-	public int getXPosition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getYPosition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public void close(AbsolutePanel absolutePanel) {
@@ -256,28 +246,39 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 		
 	}
 
+	
+	
+
+	
+
 	@Override
-	public void minimize() {
+	public int getWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setSize(int height, int width) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void maximize() {
+	public int getAbsoluteLeft() {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
 
 	@Override
-	public void isMinimized() {
+	public int getAbsoluteTop() {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void getID() {
-		// TODO Auto-generated method stub
-		
+		return 0;
 	}
 
 }

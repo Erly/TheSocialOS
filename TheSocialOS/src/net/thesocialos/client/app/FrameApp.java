@@ -16,7 +16,6 @@ public class FrameApp implements IApplication{
 		
 	}
 
-	@Override
 	public Widget run() {
 		// TODO Auto-generated method stub
 		return frame = new Frame(url);
@@ -39,7 +38,6 @@ public class FrameApp implements IApplication{
 		this.url = url;
 	}
 	
-	@Override
 	public void setSize(String width, String height) {
 		frame.setSize(width, height);
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
 import net.thesocialos.client.view.PopUpInfoContact;
@@ -82,7 +83,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 	}
 	
 	public SearchBoxPresenter(Display display){
-		programID = "002";
+		programID = AppConstants.SEARCHBOX;
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
@@ -239,26 +240,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 		
 		
 	}
-	@Override
-	public void minimize() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void maximize() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void isMinimized() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void getID() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public void toFront() {
 		// TODO Auto-generated method stub
@@ -276,12 +258,27 @@ public class SearchBoxPresenter extends DesktopUnit {
 		
 	}
 	@Override
-	public int getXPosition() {
+	public int getWidth() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 	@Override
-	public int getYPosition() {
+	public int getHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void setSize(int height, int width) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int getAbsoluteLeft() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getAbsoluteTop() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

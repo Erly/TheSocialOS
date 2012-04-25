@@ -1,8 +1,9 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.app.IApplication;
-import net.thesocialos.client.view.window.DialogBoxExt;
-import net.thesocialos.client.view.window.MyCaption;
+import net.thesocialos.client.desktop.window.Footer;
+import net.thesocialos.client.desktop.window.MyCaption;
 import net.thesocialos.shared.App;
 
 import com.google.gwt.core.client.GWT;
@@ -21,6 +22,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.WindowPanelLayout;
+import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 public class StartMenuItem extends Composite {
 
@@ -49,19 +52,19 @@ public class StartMenuItem extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		text.setText(app.getName());
 		image.setUrl(app.getImage());
-		//final String url = app.getUrl();
-		//final Composite application = app.getApp();
+		final String url = ((FrameApp) app).getUrl();
+		//final Composite application = ((FrameApp) app).getApp();
 		itemPanel.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				DialogBoxExt window = new DialogBoxExt(false, false, new MyCaption());
+				WindowPanelLayout window = new WindowPanelLayout(false, false, new MyCaption(),new Footer());
 				window.setText(text.getText());
-				//Frame frame = new Frame(url);
+				Frame frame = new Frame(url);
 				
-				window.add(app.run());
+				window.add(((FrameApp) app).run());
 				//app.setSize("1024px", "600px");
-				app.setSize(app.getWidth(),app.getHeight());
+				//app.setSize(app.getWidth(),app.getHeight());
 				window.show();
 				window.setPopupPosition(10, 30);
 			}

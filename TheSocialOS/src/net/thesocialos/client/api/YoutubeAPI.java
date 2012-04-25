@@ -15,7 +15,7 @@ import com.googlecode.objectify.Key;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.api.YoutubeAPI.Folder.TYPE;
-import net.thesocialos.client.view.window.FolderWindow;
+import net.thesocialos.client.desktop.window.FolderWindow;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Google;
 

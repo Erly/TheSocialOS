@@ -12,6 +12,9 @@
 			<g:MenuItem text="Enviar Privado" ui:field="MenuISendPriv"/>
 			<g:MenuItem text="Aceptar" ui:field="MenuIAccept"/>
 			<g:MenuItem text="Denegar" ui:field="MenuIDeny"/>
+			<g:MenuItem text="New menu">
+				<g:MenuBar vertical="true"/>
+			</g:MenuItem>
 		</g:MenuBar>
 	
 </ui:UiBinder> 

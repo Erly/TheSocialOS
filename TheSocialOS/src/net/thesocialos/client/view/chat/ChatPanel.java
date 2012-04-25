@@ -3,11 +3,11 @@ package net.thesocialos.client.view.chat;
 import java.util.List;
 
 import net.thesocialos.client.app.ChatApp.Display;
+import net.thesocialos.client.desktop.window.button;
 import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.service.ChatService;
 import net.thesocialos.client.service.ChatServiceAsync;
 
-import net.thesocialos.client.view.window.button;
 
 
 import com.google.gwt.core.client.GWT;

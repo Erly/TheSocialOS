@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
@@ -87,9 +88,7 @@ public class ContactsPresenter extends DesktopUnit {
 	}
 	
 	public ContactsPresenter(Display display){
-		programID = "001";
-		
-		
+		programID = AppConstants.CONTACTS;
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		 KEY_PROVIDER = new ProvidesKey<User>() {
@@ -254,25 +253,7 @@ public class ContactsPresenter extends DesktopUnit {
 		getFriends();
 	}
 
-	@Override
-	public void minimize() {
-		
-	}
-
-	@Override
-	public void maximize() {
-		
-	}
-
-	@Override
-	public void isMinimized() {
-		
-	}
-
-	@Override
-	public void getID() {
-		
-	}
+	
 
 	@Override
 	public void setPosition(int x, int y) {
@@ -282,14 +263,34 @@ public class ContactsPresenter extends DesktopUnit {
 		
 	}
 
+
+
 	@Override
-	public int getXPosition() {
+	public int getWidth() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int getYPosition() {
+	public int getHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setSize(int height, int width) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getAbsoluteLeft() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getAbsoluteTop() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
