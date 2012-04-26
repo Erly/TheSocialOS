@@ -17,8 +17,6 @@ package net.thesocialos.shared.messages;
 
 import java.io.Serializable;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
 @SuppressWarnings("serial")
 public abstract class Message implements Serializable {
 	

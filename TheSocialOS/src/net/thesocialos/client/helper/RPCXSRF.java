@@ -4,11 +4,8 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.event.RPCInEvent;
 import net.thesocialos.client.event.RPCOutEvent;
 import net.thesocialos.client.service.ServiceAsync;
-import net.thesocialos.client.service.UserServiceAsync;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestTimeoutException;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.HasRpcToken;
@@ -38,6 +35,7 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 		((ServiceDefTarget) xsrf).setServiceEntryPoint(GWT.getModuleBaseURL() + "xsrf");
 		xsrf.getNewXsrfToken(new AsyncCallback<XsrfToken>() {
 			
+			@Override
 			public void onSuccess(XsrfToken token) {
 				// onRPCIn(); // RPC finished working
 				((HasRpcToken) service).setRpcToken(token);
@@ -73,6 +71,7 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 				
 			}
 			
+			@Override
 			public void onFailure(Throwable caught) {
 				onRPCIn(); // RPC finished working
 				try {
@@ -98,7 +97,8 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 	 * Fires an event indicating that the RPC request has finished.
 	 */
 	private void onRPCIn() {
-		TheSocialOS.get().getEventBus().fireEvent(new RPCInEvent());
+		TheSocialOS.get();
+		TheSocialOS.getEventBus().fireEvent(new RPCInEvent());
 	}
 	
 	/**
@@ -106,7 +106,8 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 	 * indicating that the system is working.
 	 */
 	private void onRPCOut() {
-		TheSocialOS.get().getEventBus().fireEvent(new RPCOutEvent());
+		TheSocialOS.get();
+		TheSocialOS.getEventBus().fireEvent(new RPCOutEvent());
 	}
 	
 	@Override

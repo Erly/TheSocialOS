@@ -4,15 +4,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 import net.thesocialos.client.TheSocialOS;

@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.gargoylesoftware.htmlunit.Cache;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -21,14 +16,11 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import net.thesocialos.client.AppController;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
-import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
-import net.thesocialos.client.presenter.SearchBoxPresenter.Display;
 import net.thesocialos.client.view.LabelText;
 import net.thesocialos.client.view.PopAsker;
 import net.thesocialos.client.view.PopUpInfoContact;
@@ -54,6 +46,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 		this.display = display;
 		
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
+			@Override
 			public Object getKey(User item) {
 				return item == null ? null : item.getEmail();
 			}

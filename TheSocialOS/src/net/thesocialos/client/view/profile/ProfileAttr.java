@@ -6,16 +6,13 @@ import net.thesocialos.client.event.AccountAddedEvent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Label;
 
@@ -55,7 +52,8 @@ public class ProfileAttr extends Composite {
 					
 					@Override
 					public void onClose(CloseEvent<PopupPanel> event) {
-						TheSocialOS.get().getEventBus().fireEvent(new AccountAddedEvent());
+						TheSocialOS.get();
+						TheSocialOS.getEventBus().fireEvent(new AccountAddedEvent());
 					}
 				});
 				Window.open(url, name, "status=0,toolbar=0,location=0,menubar=0,height=600,width=700");

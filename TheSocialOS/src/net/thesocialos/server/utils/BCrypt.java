@@ -255,8 +255,8 @@ public class BCrypt {
 	 * @return the decoded value of x
 	 */
 	private static byte char64(char x) {
-		if ((int) x < 0 || (int) x > index_64.length) return -1;
-		return index_64[(int) x];
+		if (x < 0 || x > index_64.length) return -1;
+		return index_64[x];
 	}
 	
 	/**
@@ -364,8 +364,8 @@ public class BCrypt {
 	 * Initialise the Blowfish key schedule
 	 */
 	private void init_key() {
-		P = (int[]) P_orig.clone();
-		S = (int[]) S_orig.clone();
+		P = P_orig.clone();
+		S = S_orig.clone();
 	}
 	
 	/**
@@ -444,7 +444,7 @@ public class BCrypt {
 	 */
 	private byte[] crypt_raw(byte password[], byte salt[], int log_rounds) {
 		int rounds, i, j;
-		int cdata[] = (int[]) bf_crypt_ciphertext.clone();
+		int cdata[] = bf_crypt_ciphertext.clone();
 		int clen = cdata.length;
 		byte ret[];
 		

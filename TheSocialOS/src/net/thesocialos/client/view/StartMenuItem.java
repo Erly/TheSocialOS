@@ -4,25 +4,18 @@ import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.desktop.window.Footer;
 import net.thesocialos.client.desktop.window.MyCaption;
-import net.thesocialos.shared.App;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.WindowPanelLayout;
 import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 public class StartMenuItem extends Composite {

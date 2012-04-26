@@ -3,8 +3,6 @@ package net.thesocialos.client.helper;
 import java.util.HashSet;
 
 import com.google.gwt.user.client.ui.WindowPanelLayout;
-import com.google.gwt.user.client.ui.WindowPanelLayout;
-
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;

@@ -7,31 +7,20 @@ import java.util.Map;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
-import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
 import net.thesocialos.client.view.PopUpInfoContact;
-import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.User;
 
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.event.dom.client.DomEvent;
-import com.google.gwt.event.dom.client.DomEvent.Type;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -86,6 +75,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
+			@Override
 			public Object getKey(User item) {
 				return item == null ? null : item.getEmail();
 			}
@@ -195,6 +185,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 			}
 		});
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				
 			}

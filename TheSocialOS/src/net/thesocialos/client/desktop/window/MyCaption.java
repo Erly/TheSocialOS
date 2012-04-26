@@ -1,15 +1,7 @@
 package net.thesocialos.client.desktop.window;
 
-import javax.swing.text.html.CSS;
-
-import org.w3c.dom.DOMException;
-import org.w3c.dom.css.CSSRule;
-import org.w3c.dom.css.CSSStyleDeclaration;
-import org.w3c.dom.css.CSSValue;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutHandler;
@@ -20,14 +12,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.WindowPanelLayout.Caption;
 
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -163,6 +151,7 @@ public class MyCaption extends SimplePanel implements Caption {
 	 * 
 	 * @param windowEventBus
 	 */
+	@Override
 	public void addWindowEventBus(SimpleEventBus windowEventBus) {
 		this.windowEventBus = windowEventBus;
 	}

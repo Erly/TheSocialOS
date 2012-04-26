@@ -2,7 +2,6 @@ package net.thesocialos.client.desktop.window;
 
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
@@ -103,6 +102,7 @@ public class Footer extends SimplePanel implements com.google.gwt.user.client.ui
 	 * @param html
 	 *            the object's new HTML
 	 */
+	@Override
 	public void setHTML(String html) {
 		// TODO Auto-generated method stub
 		
@@ -113,6 +113,7 @@ public class Footer extends SimplePanel implements com.google.gwt.user.client.ui
 	 * 
 	 * @return The String representation of the text
 	 */
+	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
 		return null;
@@ -124,6 +125,7 @@ public class Footer extends SimplePanel implements com.google.gwt.user.client.ui
 	 * @param The
 	 *            String representation of the text
 	 */
+	@Override
 	public void setText(String text) {
 		// TODO Auto-generated method stub
 		

@@ -129,6 +129,7 @@ public class YoutubeAPI {
 		/**
 		 * @return the numPhotos
 		 */
+		@Override
 		public int getElementCount() {
 			return numVideos;
 		}

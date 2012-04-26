@@ -24,6 +24,7 @@ public class OauthLogin extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) {
 		
 		String serviceType = request.getParameter("serviceType");

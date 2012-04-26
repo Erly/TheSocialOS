@@ -1,26 +1,15 @@
 package net.thesocialos.server.utils;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-
 import net.thesocialos.shared.messages.Message;
 import net.thesocialos.shared.model.User;
 
-import com.google.appengine.api.channel.ChannelMessage;
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
 import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.rebind.rpc.SerializationUtils;
 import com.google.gwt.user.server.rpc.RPC;
-import com.google.gwt.user.server.rpc.SerializationPolicy;
 
 public class ChannelServer {
 	private static Properties props = System.getProperties();

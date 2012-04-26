@@ -1,8 +1,6 @@
 package net.thesocialos.server;
 
 import java.util.Date;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import net.thesocialos.server.utils.ChannelServer;
@@ -11,7 +9,6 @@ import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -49,7 +46,7 @@ public class UserHelper extends RemoteServiceServlet {
 	 */
 	public static synchronized User getUserSession(HttpSession httpSession, Objectify ofy) throws NotFoundException {
 		String email = (String) httpSession.getAttribute(userN);
-		return (User) ofy.get(USER, email);
+		return ofy.get(USER, email);
 	}
 	
 	/**

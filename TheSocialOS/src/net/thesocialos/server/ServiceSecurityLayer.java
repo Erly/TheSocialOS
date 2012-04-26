@@ -1,12 +1,7 @@
 package net.thesocialos.server;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.allen_sauer.gwt.log.client.Log;
 
 import net.thesocialos.shared.model.User;
 

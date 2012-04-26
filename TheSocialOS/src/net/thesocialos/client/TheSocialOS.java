@@ -54,6 +54,7 @@ public class TheSocialOS implements EntryPoint {
 	/**
 	 * This is the entry point method.
 	 */
+	@Override
 	public void onModuleLoad() {
 		singleton = this;
 		

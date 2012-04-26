@@ -36,6 +36,7 @@ public class Oauth2Response extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) {
 		String authToken = request.getParameter("authToken");
 		String refreshToken = request.getParameter("refreshToken");

@@ -1,13 +1,9 @@
 package net.thesocialos.client.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
@@ -43,10 +39,12 @@ public class Icon extends Composite implements HasText {
 		this.text.setText(text);
 	}
 	
+	@Override
 	public void setText(String text) {
 		this.text.setText(text);
 	}
 	
+	@Override
 	public String getText() {
 		return text.getText();
 	}
@@ -60,6 +58,7 @@ public class Icon extends Composite implements HasText {
 	 *             <p>
 	 *             It overrides the DoubleClickHandler in case it was added with the addDoubleClickHandler method
 	 */
+	@Deprecated
 	public void addOpenFolderHandler() {
 		
 	}

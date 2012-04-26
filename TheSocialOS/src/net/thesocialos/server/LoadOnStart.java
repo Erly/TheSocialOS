@@ -22,6 +22,7 @@ import com.googlecode.objectify.ObjectifyService;
 @SuppressWarnings("serial")
 public class LoadOnStart extends HttpServlet {
 	
+	@Override
 	public void init() {
 		
 		// User

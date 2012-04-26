@@ -65,6 +65,7 @@ public class PicasaAPI {
 		/**
 		 * @return the numPhotos
 		 */
+		@Override
 		public int getElementCount() {
 			return numPhotos;
 		}

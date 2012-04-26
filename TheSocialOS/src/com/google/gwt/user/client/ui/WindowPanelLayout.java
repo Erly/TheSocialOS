@@ -10,7 +10,6 @@ package com.google.gwt.user.client.ui;
  */
 
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.desktop.window.WindowCloseEvent;
 import net.thesocialos.client.desktop.window.WindowDisplay;
 import net.thesocialos.client.desktop.window.WindowEndDragEvent;
 import net.thesocialos.client.desktop.window.WindowEvent;
@@ -23,8 +22,6 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -319,10 +316,12 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		return caption;
 	}
 	
+	@Override
 	public String getHTML() {
 		return caption.getHTML();
 	}
 	
+	@Override
 	public String getText() {
 		return caption.getText();
 	}
@@ -380,6 +379,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	 * @param html
 	 *            the object's new HTML
 	 */
+	@Override
 	public void setHTML(SafeHtml html) {
 		caption.setHTML(html);
 	}
@@ -393,6 +393,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	 * @param html
 	 *            the object's new HTML
 	 */
+	@Override
 	public void setHTML(String html) {
 		caption.setHTML(SafeHtmlUtils.fromTrustedString(html));
 	}
@@ -405,6 +406,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	 * @param text
 	 *            the object's new text
 	 */
+	@Override
 	public void setText(String text) {
 		caption.setText(text);
 	}
@@ -413,6 +415,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	public void show() {
 		if (resizeHandlerRegistration == null) {
 			resizeHandlerRegistration = Window.addResizeHandler(new ResizeHandler() {
+				@Override
 				public void onResize(ResizeEvent event) {
 					windowWidth = event.getWidth();
 				}
@@ -652,9 +655,9 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	private boolean isCaptionEvent(NativeEvent event) {
 		EventTarget target = event.getEventTarget();
-		if (Element.is(target)) {
+		if (com.google.gwt.dom.client.Element.is(target)) {
 		
-		return getCellElement(0, 1).getParentElement().isOrHasChild(Element.as(target)); }
+		return getCellElement(0, 1).getParentElement().isOrHasChild(com.google.gwt.dom.client.Element.as(target)); }
 		return false;
 	}
 	

@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.WindowPanelLayout;
-import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 public class DblClickHandlerHelper {
 	final Media media;

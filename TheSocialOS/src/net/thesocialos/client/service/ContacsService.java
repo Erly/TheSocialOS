@@ -8,7 +8,6 @@ import net.thesocialos.shared.exceptions.FriendNotFoundException;
 import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.User;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.google.gwt.user.client.rpc.RemoteService;

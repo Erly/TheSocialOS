@@ -20,7 +20,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ChatApp implements IApplication {

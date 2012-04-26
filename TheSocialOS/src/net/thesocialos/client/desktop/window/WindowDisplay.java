@@ -1,6 +1,5 @@
 package net.thesocialos.client.desktop.window;
 
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 public interface WindowDisplay {

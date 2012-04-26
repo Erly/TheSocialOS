@@ -1,11 +1,9 @@
 package net.thesocialos.client.helper;
 
 import net.thesocialos.client.channel.Channel;
-import net.thesocialos.client.channel.ChannelFactory;
 import net.thesocialos.client.channel.SocketListener;
 import net.thesocialos.client.event.MessageChatAvailableEvent;
 
-import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.messages.ChannelTextMessage;
 import net.thesocialos.shared.messages.Message;
 import net.thesocialos.shared.messages.Message.Type;

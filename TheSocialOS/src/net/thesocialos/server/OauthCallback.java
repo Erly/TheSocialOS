@@ -41,6 +41,7 @@ public class OauthCallback extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) {
 		String oauthToken = request.getParameter("oauth_token");
 		String oauthVerifier = request.getParameter("oauth_verifier");

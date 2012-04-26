@@ -1,7 +1,6 @@
 package net.thesocialos.client.presenter;
 
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;

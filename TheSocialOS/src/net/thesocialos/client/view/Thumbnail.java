@@ -124,10 +124,12 @@ public class Thumbnail extends Composite implements HasText {
 		this.setService(service);
 	}
 	
+	@Override
 	public void setText(String text) {
 		this.text.setText(text);
 	}
 	
+	@Override
 	public String getText() {
 		return text.getText();
 	}

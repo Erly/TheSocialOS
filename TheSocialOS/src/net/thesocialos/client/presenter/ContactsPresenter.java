@@ -104,6 +104,7 @@ public class ContactsPresenter extends DesktopUnit {
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		KEY_PROVIDER = new ProvidesKey<User>() {
+			@Override
 			public Object getKey(User item) {
 				return item == null ? null : item.getEmail();
 			}
@@ -160,6 +161,7 @@ public class ContactsPresenter extends DesktopUnit {
 	private void handlers() {
 		// Handler de la CellList de Contacts
 		contactSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				display.getContactName().setText(contactSelectionModel.getSelectedObject().getName());
 				display.getContactSurname().setText(contactSelectionModel.getSelectedObject().getLastName());

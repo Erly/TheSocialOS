@@ -22,6 +22,7 @@ public class TimelinePanel extends Composite implements Display {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
+	@Override
 	public HasWidgets getMainPanel() {
 		return mainPanel;
 	}

@@ -2,7 +2,6 @@ package net.thesocialos.client.view.profile;
 
 import net.thesocialos.client.CacheLayer;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;

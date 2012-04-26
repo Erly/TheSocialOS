@@ -81,6 +81,7 @@ public class LoginPresenter implements Presenter {
 						.getPassword().getValue().trim(), display.getKeepLoged(), cb);
 			}
 			
+			@Override
 			public void onSuccess(LoginResult result) {
 				if (result == null) { // The user or password is incorrect
 					Label incorrect = (Label) LoginPresenter.this.display.getIncorrectLabel();
@@ -99,6 +100,7 @@ public class LoginPresenter implements Presenter {
 				}
 			}
 			
+			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("Error: " + caught.getMessage());
 			}

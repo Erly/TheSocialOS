@@ -7,7 +7,6 @@ import javax.persistence.Id;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
-import com.googlecode.objectify.annotation.Parent;
 
 @Cached
 public class Session implements Serializable {

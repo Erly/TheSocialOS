@@ -6,7 +6,6 @@ import net.thesocialos.client.event.RPCOutEvent;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestTimeoutException;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
@@ -98,7 +97,8 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 	 * Fires an event indicating that the RPC request has finished.
 	 */
 	private void onRPCIn() {
-		TheSocialOS.get().getEventBus().fireEvent(new RPCInEvent());
+		TheSocialOS.get();
+		TheSocialOS.getEventBus().fireEvent(new RPCInEvent());
 	}
 	
 	/**
@@ -106,7 +106,8 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 	 * indicating that the system is working.
 	 */
 	private void onRPCOut() {
-		TheSocialOS.get().getEventBus().fireEvent(new RPCOutEvent());
+		TheSocialOS.get();
+		TheSocialOS.getEventBus().fireEvent(new RPCOutEvent());
 	}
 	
 	/**

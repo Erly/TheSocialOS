@@ -65,6 +65,7 @@ public class MergedSerializationPolicy extends SerializationPolicy {
 	public static SerializationPolicy createPushSerializationPolicy() {
 		
 		File[] files = new File("thesocialos").listFiles(new FilenameFilter() {
+			@Override
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".gwt.rpc");
 			}

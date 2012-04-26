@@ -3,7 +3,6 @@ package net.thesocialos.client.view;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.DesktopPresenter.Display;
-import net.thesocialos.shared.UserDTO;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
