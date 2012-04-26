@@ -35,8 +35,8 @@ import net.thesocialos.client.view.PopUpInfoContact;
 import net.thesocialos.client.view.PopUpMenu;
 import net.thesocialos.shared.model.User;
 
-public class NotificationsBoxPresenter extends DesktopUnit{
-
+public class NotificationsBoxPresenter extends DesktopUnit {
+	
 	Display display;
 	
 	SingleSelectionModel<User> selectionModel;
@@ -48,14 +48,14 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 	ProvidesKey<User> KEY_USERS_PROVIDER;
 	List<User> usersList = new ArrayList<User>();
 	
-	public NotificationsBoxPresenter(Display display){
+	public NotificationsBoxPresenter(Display display) {
 		programID = AppConstants.NOTIFICATIONS;
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
 			public Object getKey(User item) {
-				return item == null ? null :  item.getEmail();
+				return item == null ? null : item.getEmail();
 			}
 		};
 		/*
@@ -71,7 +71,7 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 		getContactPetitions(true);
 	}
 	
-	public interface Display{
+	public interface Display {
 		
 		Widget asWidget();
 		
@@ -84,18 +84,18 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 		StackLayoutPanel getStackLayoutPanel();
 	}
 	
-	private void getContactPetitions(Boolean cached){
+	private void getContactPetitions(Boolean cached) {
 		
 		usersList.clear();
 		dataProvider.flush();
 		dataProvider.refresh();
 		
-		CacheLayer.ContactCalls.getContactPetitions(cached, new AsyncCallback<Map<String,User>>() {
+		CacheLayer.ContactCalls.getContactPetitions(cached, new AsyncCallback<Map<String, User>>() {
 			
 			@Override
 			public void onSuccess(Map<String, User> result) {
 				// TODO Auto-generated method stub
-				display.getStackLayoutPanel().setHeaderText(0,"Contact:     " + result.size());
+				display.getStackLayoutPanel().setHeaderText(0, "Contact:     " + result.size());
 				display.getContactsLabelText().setText(Integer.toString(result.size()));
 				usersList.addAll(result.values());
 				dataProvider.flush();
@@ -111,34 +111,33 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 		});
 	}
 	
-	private void handlers(){
+	private void handlers() {
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				
-				
 			}
 		});
 		display.getContactsCellList().addCellPreviewHandler(new CellPreviewEvent.Handler<User>() {
-
+			
 			@Override
 			public void onCellPreview(CellPreviewEvent<User> event) {
 				System.out.println(event.getNativeEvent().getClientX());
-				if (event.getNativeEvent().getClientX() != 0){
-						UserPopUpMenu = new PopUpMenu();
-						popupHandlers(event.getValue());
-						UserPopUpMenu.show(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
-						selectionModel.setSelected(event.getValue(), true);
+				if (event.getNativeEvent().getClientX() != 0) {
+					UserPopUpMenu = new PopUpMenu();
+					popupHandlers(event.getValue());
+					UserPopUpMenu.show(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
+					selectionModel.setSelected(event.getValue(), true);
 				}
 				
 			}
 			
 		});
 		
-	
 	}
-	private void popupHandlers(final User user){
+	
+	private void popupHandlers(final User user) {
 		UserPopUpMenu.getMenuIAccept().setCommand(new Command() {
 			
 			@Override
@@ -150,7 +149,6 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 						// TODO Auto-generated method stub
 						getContactPetitions(false);
 						CacheLayer.ContactCalls.updateContacts(null);
-						
 						
 					}
 					
@@ -172,12 +170,11 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 					@Override
 					public void onSuccess(Boolean result) {
 						getContactPetitions(false);
-					
+						
 					}
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						
 						
 					}
 				});
@@ -185,7 +182,7 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 			}
 		});
 		UserPopUpMenu.getMenuISendPriv().setCommand(new Command() {
-	
+			
 			@Override
 			public void execute() {
 				new PopAsker("Not implemented yet");
@@ -194,10 +191,11 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 			}
 		});
 		UserPopUpMenu.getMenuIViewPerfil().setCommand(new Command() {
-
+			
 			@Override
 			public void execute() {
-				PopUpInfoContact contactInfoPopup  = new PopUpInfoContact(user.getEmail(), user.getName(), user.getLastName());
+				PopUpInfoContact contactInfoPopup = new PopUpInfoContact(user.getEmail(), user.getName(), user
+						.getLastName());
 				contactInfoPopup.setGlassEnabled(true);
 				contactInfoPopup.center();
 				contactInfoPopup.show();
@@ -206,79 +204,72 @@ public class NotificationsBoxPresenter extends DesktopUnit{
 		});
 	}
 	
-	
 	@Override
 	public void toFront() {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void toZPosition(int position) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public int getZposition() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 		
 	}
-
-
+	
 	@Override
 	public void close(AbsolutePanel absolutePanel) {
 		absolutePanel.remove(display.asWidget());
 		
 	}
-
+	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
-		absolutePanel.add(display.asWidget(),x,y);
+		absolutePanel.add(display.asWidget(), x, y);
 		display.asWidget().setVisible(true);
 		
 	}
-
 	
-	
-
-	
-
 	@Override
 	public int getWidth() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public int getHeight() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public void setSize(int height, int width) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public int getAbsoluteLeft() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public int getAbsoluteTop() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 }

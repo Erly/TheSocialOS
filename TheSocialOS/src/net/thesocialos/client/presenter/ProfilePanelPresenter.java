@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ProfilePanelPresenter implements Presenter {
-
+	
 	SimpleEventBus eventBus;
 	Display display;
 	public String value;
@@ -48,7 +48,7 @@ public class ProfilePanelPresenter implements Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				PopAsker asker = getNewValueAsker("Title"); 
+				PopAsker asker = getNewValueAsker("Title");
 			}
 		});
 		
@@ -93,5 +93,5 @@ public class ProfilePanelPresenter implements Presenter {
 		popup.center();
 		return asker;
 	}
-
+	
 }

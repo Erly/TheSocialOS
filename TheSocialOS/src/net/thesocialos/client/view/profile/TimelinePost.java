@@ -12,21 +12,20 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Label;
 
 public class TimelinePost extends Composite {
-
-	private static TimelinePostUiBinder uiBinder = GWT
-			.create(TimelinePostUiBinder.class);
+	
+	private static TimelinePostUiBinder uiBinder = GWT.create(TimelinePostUiBinder.class);
 	@UiField Image photo;
 	@UiField HTML post;
 	@UiField Label user;
 	@UiField Label time;
-
+	
 	interface TimelinePostUiBinder extends UiBinder<Widget, TimelinePost> {
 	}
-
+	
 	public TimelinePost() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
+	
 	public TimelinePost(Tweet tweet) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.photo.setUrl(tweet.getProfile_image_url());
@@ -34,47 +33,50 @@ public class TimelinePost extends Composite {
 		this.user.setText(tweet.getUser_name() + " @" + tweet.getScreen_name());
 		this.time.setText("");
 	}
-
+	
 	/**
 	 * @return the post
 	 */
 	public Label getPost() {
 		return post;
 	}
-
+	
 	/**
-	 * @param post the post to set
+	 * @param post
+	 *            the post to set
 	 */
 	public void setPost(String post) {
 		this.post.setHTML(post);
 	}
-
+	
 	/**
 	 * @return the user
 	 */
 	public Label getUser() {
 		return user;
 	}
-
+	
 	/**
-	 * @param user the user to set
+	 * @param user
+	 *            the user to set
 	 */
 	public void setUser(Label user) {
 		this.user = user;
 	}
-
+	
 	/**
 	 * @return the time
 	 */
 	public Label getTime() {
 		return time;
 	}
-
+	
 	/**
-	 * @param time the time to set
+	 * @param time
+	 *            the time to set
 	 */
 	public void setTime(Label time) {
 		this.time = time;
 	}
-
+	
 }

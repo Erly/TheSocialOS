@@ -45,17 +45,16 @@ public class DblClickHandlerHelper {
 			return youtubeAlbum;
 		} else if (media instanceof YoutubeAPI.Video) {
 			return youtubeVideo;
-		} else if (media instanceof YoutubeAPI.Folder) {
-			return youtubeFolder;
-		}
+		} else if (media instanceof YoutubeAPI.Folder) { return youtubeFolder; }
 		return null;
 	}
-
+	
 	private DoubleClickHandler picasaAlbum = new DoubleClickHandler() {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Piccasa",media.getName(),new WindowPanelLayout(false, false, new MyCaption(),new Footer()),AppConstants.IMAGEFOLDERS);
+			FolderWindow folder = new FolderWindow("Piccasa", media.getName(), new WindowPanelLayout(false, false,
+					new MyCaption(), new Footer()), AppConstants.IMAGEFOLDERS);
 			new PicasaAPI().loadPicturesInFolder((PicasaAPI.Album) media, folder);
 			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 			
@@ -74,7 +73,8 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Facebook",media.getName(),new WindowPanelLayout(false, false, new MyCaption(),new Footer()),AppConstants.IMAGEFOLDERS);
+			FolderWindow folder = new FolderWindow("Facebook", media.getName(), new WindowPanelLayout(false, false,
+					new MyCaption(), new Footer()), AppConstants.IMAGEFOLDERS);
 			new FacebookAPI().loadPicturesInFolder((FacebookAPI.Album) media, folder);
 			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 		}
@@ -92,7 +92,8 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Flickr",media.getName(),new WindowPanelLayout(false, false, new MyCaption(),new Footer()),AppConstants.IMAGEFOLDERS);
+			FolderWindow folder = new FolderWindow("Flickr", media.getName(), new WindowPanelLayout(false, false,
+					new MyCaption(), new Footer()), AppConstants.IMAGEFOLDERS);
 			new FlickrAPI().loadPicturesInFolder((FlickrAPI.Album) media, folder);
 			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 		}
@@ -110,7 +111,8 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Youtube",media.getName(),new WindowPanelLayout(false, false, new MyCaption(),new Footer()),AppConstants.VIDEOFOLDERS);
+			FolderWindow folder = new FolderWindow("Youtube", media.getName(), new WindowPanelLayout(false, false,
+					new MyCaption(), new Footer()), AppConstants.VIDEOFOLDERS);
 			new YoutubeAPI().loadPlaylistVideosInFolder((YoutubeAPI.Album) media, folder);
 			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 		}
@@ -128,8 +130,9 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Youtube",media.getName(),new WindowPanelLayout(false, false, new MyCaption(),new Footer()),AppConstants.VIDEOFOLDERS);
-			switch (((YoutubeAPI.Folder)media).getType()) {
+			FolderWindow folder = new FolderWindow("Youtube", media.getName(), new WindowPanelLayout(false, false,
+					new MyCaption(), new Footer()), AppConstants.VIDEOFOLDERS);
+			switch (((YoutubeAPI.Folder) media).getType()) {
 			case UPLOADS:
 				new YoutubeAPI().loadUploadsInFolder(folder);
 				break;
@@ -143,18 +146,18 @@ public class DblClickHandlerHelper {
 			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 		}
 	};
-
+	
 	protected void openImage() {
 		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
-		popup.add(new Image(((MediaPicture)media).getUrl()));
+		popup.add(new Image(((MediaPicture) media).getUrl()));
 		popup.setAnimationEnabled(true);
 		popup.setGlassEnabled(true);
 		popup.center();
 	}
-
+	
 	protected void openVideo() {
 		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
-		Frame frame = new Frame(((MediaPicture)media).getUrl());
+		Frame frame = new Frame(((MediaPicture) media).getUrl());
 		frame.setSize("560px", "315px");
 		popup.add(frame);
 		popup.setAnimationEnabled(true);

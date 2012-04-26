@@ -16,21 +16,21 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.FocusPanel;
 
 public class Icon extends Composite implements HasText {
-
+	
 	public static String FOLDER_ICON = "./images/Folder.png";
 	private static IconUiBinder uiBinder = GWT.create(IconUiBinder.class);
-
+	
 	interface IconUiBinder extends UiBinder<Widget, Icon> {
 	}
-
+	
 	public Icon() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
+	
 	@UiField Image image;
 	@UiField Label text;
 	@UiField FocusPanel panel;
-
+	
 	public Icon(Image image, String text) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.image = image;
@@ -42,11 +42,11 @@ public class Icon extends Composite implements HasText {
 		this.image.setUrl(imageURL);
 		this.text.setText(text);
 	}
-
+	
 	public void setText(String text) {
 		this.text.setText(text);
 	}
-
+	
 	public String getText() {
 		return text.getText();
 	}
@@ -56,11 +56,12 @@ public class Icon extends Composite implements HasText {
 	}
 	
 	/**
-	 * @deprecated Not implemented yet, use addDoubleClickHandler() <p>
-	 * It overrides the DoubleClickHandler in case it was added with the addDoubleClickHandler method
+	 * @deprecated Not implemented yet, use addDoubleClickHandler()
+	 *             <p>
+	 *             It overrides the DoubleClickHandler in case it was added with the addDoubleClickHandler method
 	 */
 	public void addOpenFolderHandler() {
 		
 	}
-
+	
 }

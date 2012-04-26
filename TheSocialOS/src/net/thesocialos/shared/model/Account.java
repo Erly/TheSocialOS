@@ -10,34 +10,35 @@ import com.googlecode.objectify.annotation.Entity;
 @Entity
 @Cached
 public abstract class Account implements Serializable {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id Long id;
 	
 	private String username;
 	
 	public abstract void refresh();
 	
-	public Account(){
+	public Account() {
 		
 	}
-
+	
 	/**
 	 * @return the username
 	 */
 	public String getUsername() {
 		return username;
 	}
-
+	
 	/**
-	 * @param username the username to set
+	 * @param username
+	 *            the username to set
 	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
+	
 }

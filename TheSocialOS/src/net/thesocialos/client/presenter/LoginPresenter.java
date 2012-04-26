@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class LoginPresenter implements Presenter {
-
+	
 	private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	public interface Display {
@@ -36,7 +36,7 @@ public class LoginPresenter implements Presenter {
 		HasText getIncorrectLabel();
 		
 		Widget asWidget();
-
+		
 		boolean getKeepLoged();
 	}
 	
@@ -67,8 +67,9 @@ public class LoginPresenter implements Presenter {
 	}
 	
 	/**
-	 * Make a request to the server to check if the user and password entered are correct and in case they are it checks if the checkbox to remember the user is checked,
-	 * creates the necessary cookies, logs the user in and loads the desktop. 
+	 * Make a request to the server to check if the user and password entered are correct and in case they are it checks
+	 * if the checkbox to remember the user is checked, creates the necessary cookies, logs the user in and loads the
+	 * desktop.
 	 */
 	private void doLogin() {
 		
@@ -76,19 +77,20 @@ public class LoginPresenter implements Presenter {
 			
 			@Override
 			protected void XSRFcallService(AsyncCallback<LoginResult> cb) {
-				userService.login(LoginPresenter.this.display.getEmail().getValue().trim(),	
-						LoginPresenter.this.display.getPassword().getValue().trim(), display.getKeepLoged(), cb);
+				userService.login(LoginPresenter.this.display.getEmail().getValue().trim(), LoginPresenter.this.display
+						.getPassword().getValue().trim(), display.getKeepLoged(), cb);
 			}
+			
 			public void onSuccess(LoginResult result) {
-				if(result == null) {	// The user or password is incorrect 
+				if (result == null) { // The user or password is incorrect
 					Label incorrect = (Label) LoginPresenter.this.display.getIncorrectLabel();
 					incorrect.setVisible(true);
 					
 				} else { // The user exists and the password is correct
 					CacheLayer.UserCalls.setUser(result.getUser());
-					if (result.getDuration() < 0){
+					if (result.getDuration() < 0) {
 						Cookies.setCookie("sid", result.getSessionID());
-					}else{
+					} else {
 						Date expires = new Date(System.currentTimeMillis() + result.getDuration());
 						Cookies.setCookie("sid", result.getSessionID(), expires);
 					}
@@ -96,10 +98,11 @@ public class LoginPresenter implements Presenter {
 					History.newItem("desktop");
 				}
 			}
+			
 			public void onFailure(Throwable caught) {
 				Window.alert("Error: " + caught.getMessage());
 			}
 		}.retry(3);
 	}
-
+	
 }

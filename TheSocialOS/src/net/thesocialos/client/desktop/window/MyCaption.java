@@ -1,6 +1,5 @@
 package net.thesocialos.client.desktop.window;
 
-
 import javax.swing.text.html.CSS;
 
 import org.w3c.dom.DOMException;
@@ -34,7 +33,7 @@ import com.google.gwt.user.client.ui.WindowPanelLayout.Caption;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class MyCaption extends SimplePanel implements Caption {
-
+	
 	HorizontalPanel panel = new HorizontalPanel();
 	
 	Label label = new Label();
@@ -52,21 +51,19 @@ public class MyCaption extends SimplePanel implements Caption {
 		
 		label.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		
-		//fPanel.setSize("100%", "100%");
+		// fPanel.setSize("100%", "100%");
 		
-		//fPanel.add(label);
+		// fPanel.add(label);
 		panel.add(label);
 		label.setSize("100%", "15px");
 		panel.setCellWidth(label, "100%");
 		panel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_MIDDLE);
-		//panel.setCellHorizontalAlignment(fPanel, HasHorizontalAlignment.ALIGN_CENTER);
-		//panel.setCellVerticalAlignment(fPanel, HasVerticalAlignment.ALIGN_MIDDLE);
+		// panel.setCellHorizontalAlignment(fPanel, HasHorizontalAlignment.ALIGN_CENTER);
+		// panel.setCellVerticalAlignment(fPanel, HasVerticalAlignment.ALIGN_MIDDLE);
 		
 		panel.add(menu);
 		menu.setWidth("1");
 		panel.setCellHorizontalAlignment(menu, HasHorizontalAlignment.ALIGN_RIGHT);
-		
-		
 		
 		menu.setWidth("1");
 		menu.getBtnMin().addClickHandler(new ClickHandler() {
@@ -94,81 +91,82 @@ public class MyCaption extends SimplePanel implements Caption {
 			}
 		});
 		
-		
 	}
-
+	
 	@Override
 	public String getHTML() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public void setHTML(String html) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public String getText() {
 		return label.getText();
 	}
-
+	
 	@Override
 	public void setText(String text) {
 		label.setText(text);
 	}
-
+	
 	@Override
 	public void setHTML(SafeHtml html) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		// TODO Auto-generated method stub
-		//return addMouseDownHandler(handler);//fPanel.addMouseDownHandler(handler);
+		// return addMouseDownHandler(handler);//fPanel.addMouseDownHandler(handler);
 		return label.addMouseDownHandler(handler);
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	/**
 	 * Add a window EventBus
+	 * 
 	 * @param windowEventBus
 	 */
-	public void addWindowEventBus(SimpleEventBus windowEventBus){
+	public void addWindowEventBus(SimpleEventBus windowEventBus) {
 		this.windowEventBus = windowEventBus;
 	}
-
+	
 	@Override
 	public int getHeight() {
 		// TODO Auto-generated method stub

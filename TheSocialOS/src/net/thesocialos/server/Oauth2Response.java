@@ -24,7 +24,7 @@ import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
 public class Oauth2Response extends HttpServlet {
-
+	
 	/**
 	 * 
 	 */
@@ -32,7 +32,6 @@ public class Oauth2Response extends HttpServlet {
 	private static final int GOOGLE = 0;
 	private static final int FACEBOOK = 1;
 	
-
 	public Oauth2Response() {
 		// TODO Auto-generated constructor stub
 	}
@@ -41,7 +40,7 @@ public class Oauth2Response extends HttpServlet {
 		String authToken = request.getParameter("authToken");
 		String refreshToken = request.getParameter("refreshToken");
 		String serviceName = request.getParameter("serviceName");
-		//String uid = request.getParameter("uid");
+		// String uid = request.getParameter("uid");
 		Objectify ofy = ObjectifyService.begin();
 		Session session = UserHelper.getSesssionHttpSession(request.getSession());
 		User user = UserHelper.getUserWithSession(session, ofy);
@@ -58,24 +57,23 @@ public class Oauth2Response extends HttpServlet {
 			Facebook facebookAccount = new Facebook();
 			facebookAccount.setExpireDate(new Date(System.currentTimeMillis() + 60 * 24 * 60 * 60 * 1000));
 			facebookAccount.setAuthToken(authToken);
-			//facebookAccount.setRefreshToken(refreshToken);
+			// facebookAccount.setRefreshToken(refreshToken);
 			facebookAccount.setUsername(getUsername(FACEBOOK, authToken));
 			user.addAccount(ofy.put(facebookAccount));
 		}
-		
 		
 		ofy.put(user);
 		
 		try {
 			PrintWriter writer = response.getWriter();
-			//TheSocialOS.get().getEventBus().fireEvent(new AccountAddedEvent());
+			// TheSocialOS.get().getEventBus().fireEvent(new AccountAddedEvent());
 			writer.write("<Button onClick=\"javascript:window.opener.location.hash='account-added';window.close();\">Close window</Button>");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
+	
 	private String getUsername(int type, String authToken) {
 		// TODO Auto-generated method stub
 		String urlString = "", params = "", jsonParameter = "", username = "";
@@ -97,13 +95,12 @@ public class Oauth2Response extends HttpServlet {
 			
 			// get the results
 			conn.connect();
-			int responseCode = conn.getResponseCode();  // 200, 404, etc
+			int responseCode = conn.getResponseCode(); // 200, 404, etc
 			String responseMsg = conn.getResponseMessage(); // OK, Forbidden, etc
-			BufferedReader br = new BufferedReader(
-			   new InputStreamReader(conn.getInputStream()));
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			StringBuffer results = new StringBuffer();
 			String oneline;
-			while ( (oneline = br.readLine()) != null) {
+			while ((oneline = br.readLine()) != null) {
 				results.append(oneline);
 			}
 			br.close();

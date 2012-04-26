@@ -5,7 +5,7 @@ import net.thesocialos.client.desktop.window.WindowDisplay;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public abstract class DesktopUnit {
-
+	
 	protected int programID;
 	protected int x;
 	protected int y;
@@ -23,14 +23,18 @@ public abstract class DesktopUnit {
 	private int beforeX = 0;
 	private int beforeY = 0;
 	
-	public enum TypeUnit  {APPLICATION,INFO,POPUP,STATIC}
-	protected  TypeUnit typeUnit;
+	public enum TypeUnit {
+		APPLICATION, INFO, POPUP, STATIC
+	}
+	
+	protected TypeUnit typeUnit;
 	protected WindowDisplay display;
-	public  void toFront(){
+	
+	public void toFront() {
 		display.toFront();
 	}
 	
-	public  void toBack(){
+	public void toBack() {
 		display.toback();
 	}
 	
@@ -38,47 +42,50 @@ public abstract class DesktopUnit {
 	
 	public abstract int getZposition();
 	
-	public  void setPosition(int x, int y){
+	public void setPosition(int x, int y) {
 		display.setPosition(x, y);
 	}
-	
 	
 	public int getAbsoluteLeft() {
 		
 		return display.getXposition();
 	}
-
-	public int getAbsoluteTop() {
 	
+	public int getAbsoluteTop() {
+		
 		return display.getYPosition();
 	}
 	
 	public abstract void close(AbsolutePanel absolutePanel);
 	
 	public abstract void open(AbsolutePanel absolutePanel);
+	
 	/**
-	 * Set the window minimized if the  minimized is true or restore if minimized is true
-	 * @param minimized 
+	 * Set the window minimized if the minimized is true or restore if minimized is true
+	 * 
+	 * @param minimized
 	 */
-	public  void setMinimized(Boolean minimized){
+	public void setMinimized(Boolean minimized) {
 		
 		this.minimized = minimized;
 		display.setMinimized(minimized);
 	}
+	
 	/**
 	 * Set Windows maximized. If maximized is false the window restore to normal view
+	 * 
 	 * @param maximized
 	 * @param height
 	 * @param width
 	 */
-	public  void setMaximized(Boolean maximized,int width, int height,int top, int left){
-		if (this.maximized){
-
+	public void setMaximized(Boolean maximized, int width, int height, int top, int left) {
+		if (this.maximized) {
+			
 			display.setPosition(beforeX, beforeY);
 			display.setSize(beforeWidth, beforeHeight);
 			this.maximized = false;
 			display.setMaximized(false);
-		}else{
+		} else {
 			this.maximized = maximized;
 			display.setMaximized(true);
 			beforeX = display.getXposition();
@@ -91,64 +98,79 @@ public abstract class DesktopUnit {
 		
 	}
 	
-	
 	/**
 	 * Return the identification of the application
-	 * @return 
+	 * 
+	 * @return
 	 */
-	public int getID(){
+	public int getID() {
 		return programID;
 	}
+	
 	/**
 	 * Return Width of the window in pixels
+	 * 
 	 * @return int
 	 */
 	public int getWidth() {
 		return display.getwidth();
 	}
-
+	
 	/**
 	 * Return Height of the window in pixels
+	 * 
 	 * @return int
 	 */
 	public int getHeight() {
-
+		
 		return display.getHeight();
 	}
+	
 	/**
 	 * Return if the window is Minimized
+	 * 
 	 * @return boolean
 	 */
-	public boolean isMinimizable(){
+	public boolean isMinimizable() {
 		return isMinimizable;
 	}
+	
 	/**
 	 * Return if the window is Maximized
+	 * 
 	 * @return boolean
 	 */
-	public boolean isMaximizable(){
+	public boolean isMaximizable() {
 		return isMaximizable;
 	}
+	
 	/**
 	 * Return if the window is now Minimized
+	 * 
 	 * @return boolean
 	 */
-	public boolean isMinimized(){
+	public boolean isMinimized() {
 		return minimized;
 	}
+	
 	/**
 	 * Return if the window is now Maximized
+	 * 
 	 * @return boolean
 	 */
-	public boolean isMaximized(){
+	public boolean isMaximized() {
 		return maximized;
 	}
+	
 	/**
 	 * Set size of the window
-	 * @param height in pixels
-	 * @param width in pixels
+	 * 
+	 * @param height
+	 *            in pixels
+	 * @param width
+	 *            in pixels
 	 */
-	public  void setSize(int width, int height){
+	public void setSize(int width, int height) {
 		
 		display.setSize(width, height);
 	}

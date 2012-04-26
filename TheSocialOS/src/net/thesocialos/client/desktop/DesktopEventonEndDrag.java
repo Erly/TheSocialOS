@@ -1,7 +1,7 @@
 package net.thesocialos.client.desktop;
 
-public class DesktopEventonEndDrag extends DesktopEvent{
-
+public class DesktopEventonEndDrag extends DesktopEvent {
+	
 	public DesktopEventonEndDrag(DesktopUnit desktopUnit) {
 		super(desktopUnit);
 		// TODO Auto-generated constructor stub
@@ -12,11 +12,11 @@ public class DesktopEventonEndDrag extends DesktopEvent{
 		// TODO Auto-generated method stub
 		return TYPE;
 	}
-
+	
 	@Override
 	protected void dispatch(DesktopEventHandler handler) {
 		handler.onEndDrag(this);
-
+		
 	}
-
+	
 }

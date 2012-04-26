@@ -12,7 +12,6 @@ import net.thesocialos.shared.messages.Message.Type;
 import net.thesocialos.shared.messages.MessageChat;
 import net.thesocialos.shared.model.User;
 
-
 import com.google.gwt.core.client.GWT;
 
 import com.google.gwt.user.client.Window;
@@ -21,21 +20,20 @@ import com.google.gwt.user.client.rpc.SerializationStreamFactory;
 import com.google.gwt.user.client.rpc.SerializationStreamReader;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
-
 public class Comet {
 	private Channel channel;
 	SerializationStreamFactory pushServiceStreamFactory;
-	 private SimpleEventBus eventBus;
-	 
-	 public Comet(SimpleEventBus eventBus) {
-		 this.eventBus = eventBus;
-		 
-	 }
+	private SimpleEventBus eventBus;
 	
-	public void listenToChannel(User user){
-		//channel = ChannelFactory.createChannel(user.getChannelID());
-		//pushServiceStreamFactory=  (SerializationStreamFactory) PushService.App.getInstance();
-		//channel = ChannelFactory.createChannel(user.getChannelID());
+	public Comet(SimpleEventBus eventBus) {
+		this.eventBus = eventBus;
+		
+	}
+	
+	public void listenToChannel(User user) {
+		// channel = ChannelFactory.createChannel(user.getChannelID());
+		// pushServiceStreamFactory= (SerializationStreamFactory) PushService.App.getInstance();
+		// channel = ChannelFactory.createChannel(user.getChannelID());
 		channel.open(new SocketListener() {
 			
 			@Override
@@ -52,10 +50,10 @@ public class Comet {
 					reader = pushServiceStreamFactory.createStreamReader(encodedData);
 					Message message = (Message) reader.readObject();
 					
-					if (message.getType() == Type.NEW_CHATMSG_AVAILABLE){
-						MessageChat messageChat =  (MessageChat) message;
+					if (message.getType() == Type.NEW_CHATMSG_AVAILABLE) {
+						MessageChat messageChat = (MessageChat) message;
 						System.out.println(messageChat.getTypeChat());
-						eventBus.fireEvent(new MessageChatAvailableEvent(messageChat)); //Fire a event to AppController
+						eventBus.fireEvent(new MessageChatAvailableEvent(messageChat)); // Fire a event to AppController
 					}
 					System.out.println(message.toString());
 				} catch (SerializationException e) {
@@ -63,9 +61,8 @@ public class Comet {
 					e.printStackTrace();
 				}
 				
-				
 			}
-
+			
 			@Override
 			public void onClose() {
 				// TODO Auto-generated method stub
@@ -74,27 +71,26 @@ public class Comet {
 		});
 	}
 	
-	 /**
-	   * Handle messages pushed from the server.
-	   */
-	  public void handleMessage(Message msg) {
-	    switch (msg.getType()) {
-
-	    case NEW_CHATMSG_AVAILABLE:
-	      GWT.log("Pushed msg received: NEW_CONTENT_AVAILABLE");
-	      
-	   //   eventBus.fireEvent(new MessageChatAvailableEvent(((MessageChatAvailableMessage) msg).getMessage()));
-	      break;
-
-	    case TEXT_MESSAGE:
-	      String ttext = ((ChannelTextMessage) msg).get();
-	      GWT.log("Pushed msg received: TEXT_MESSAGE: " + ttext);
-	      break;
-
-	    default:
-	      Window.alert("Unknown message type: " + msg.getType());
-	    }
-	  }
-	  
-	  
+	/**
+	 * Handle messages pushed from the server.
+	 */
+	public void handleMessage(Message msg) {
+		switch (msg.getType()) {
+		
+		case NEW_CHATMSG_AVAILABLE:
+			GWT.log("Pushed msg received: NEW_CONTENT_AVAILABLE");
+			
+			// eventBus.fireEvent(new MessageChatAvailableEvent(((MessageChatAvailableMessage) msg).getMessage()));
+			break;
+		
+		case TEXT_MESSAGE:
+			String ttext = ((ChannelTextMessage) msg).get();
+			GWT.log("Pushed msg received: TEXT_MESSAGE: " + ttext);
+			break;
+		
+		default:
+			Window.alert("Unknown message type: " + msg.getType());
+		}
+	}
+	
 }

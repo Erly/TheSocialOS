@@ -8,47 +8,44 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 public class PopUpInfoContact extends PopupPanel {
-
 	
-	interface Binder extends UiBinder<Widget, PopUpInfoContact> { } 
-	private static final Binder binder = GWT.create(Binder.class); 
+	interface Binder extends UiBinder<Widget, PopUpInfoContact> {
+	}
+	
+	private static final Binder binder = GWT.create(Binder.class);
 	@UiField Label lblEmail;
 	@UiField Label lblEmailText;
 	@UiField LabelText lblName;
 	@UiField LabelText lblSurname;
-
-
-	interface PopUpInfoContactUiBinder extends
-			UiBinder<Widget, PopUpInfoContact> {
+	
+	interface PopUpInfoContactUiBinder extends UiBinder<Widget, PopUpInfoContact> {
 	}
-
-	public PopUpInfoContact(String email,String name,String surname) {
+	
+	public PopUpInfoContact(String email, String name, String surname) {
 		super(true);
 		add(binder.createAndBindUi(this));
-		//initWidget(uiBinder.createAndBindUi(this));
+		// initWidget(uiBinder.createAndBindUi(this));
 		
 		lblEmailText.setText(email);
 		lblName.setText(name);
 		lblSurname.setText(surname);
 		
 	}
-
-
-	public Label getEmailLabel(){
+	
+	public Label getEmailLabel() {
 		return lblEmail;
 	}
-	public Label getLblEmailText(){
+	
+	public Label getLblEmailText() {
 		return lblEmailText;
 	}
-	public LabelText getLblTxtName(){
+	
+	public LabelText getLblTxtName() {
 		return lblName;
 	}
 	
-	public LabelText getLblTxtSurname(){
+	public LabelText getLblTxtSurname() {
 		return lblSurname;
 	}
-
 	
-
-
 }

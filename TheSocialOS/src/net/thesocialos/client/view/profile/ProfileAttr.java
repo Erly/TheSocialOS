@@ -20,16 +20,15 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Label;
 
 public class ProfileAttr extends Composite {
-
-	private static ProfileAttrUiBinder uiBinder = GWT
-			.create(ProfileAttrUiBinder.class);
+	
+	private static ProfileAttrUiBinder uiBinder = GWT.create(ProfileAttrUiBinder.class);
 	@UiField Label attrName;
 	@UiField Label attrValue;
 	@UiField FocusPanel focusPanel;
-
+	
 	interface ProfileAttrUiBinder extends UiBinder<FocusPanel, ProfileAttr> {
 	}
-
+	
 	public ProfileAttr() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -37,7 +36,7 @@ public class ProfileAttr extends Composite {
 	public FocusPanel getFocusPanel() {
 		return focusPanel;
 	}
-
+	
 	public void setAttrName(String name) {
 		attrName.setText(name);
 	}
@@ -53,7 +52,7 @@ public class ProfileAttr extends Composite {
 			public void onClick(ClickEvent event) {
 				PopupPanel popup = new PopupPanel(false, true);
 				popup.addCloseHandler(new CloseHandler<PopupPanel>() {
-
+					
 					@Override
 					public void onClose(CloseEvent<PopupPanel> event) {
 						TheSocialOS.get().getEventBus().fireEvent(new AccountAddedEvent());

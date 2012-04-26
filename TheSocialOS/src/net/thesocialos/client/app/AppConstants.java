@@ -1,7 +1,7 @@
 package net.thesocialos.client.app;
 
 public class AppConstants {
-
+	
 	public static final int NOTHING = 0;
 	public static final int CONTACTS = 1;
 	public static final int SEARCHBOX = 2;

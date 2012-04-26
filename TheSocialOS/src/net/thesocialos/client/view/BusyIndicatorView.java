@@ -25,6 +25,5 @@ public class BusyIndicatorView extends PopupPanel implements Display {
 	public Widget asWidget() {
 		return this;
 	}
-
+	
 }
- 

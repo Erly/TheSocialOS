@@ -26,14 +26,11 @@ public class UserProfilePresenter implements Presenter {
 	private final PopupPanel viewProfilePanel = new PopupPanel();
 	
 	public interface Display {
-		/*HasClickHandlers getProfileButton();
-		HasClickHandlers getTimelineButton();
-		HasClickHandlers getPhotosButton();
-		HasClickHandlers getMusicButton();
-		HasClickHandlers getVideosButton();
-		HasClickHandlers getLinksButton();
-		void setData(UserDTO user);
-		*/
+		/*
+		 * HasClickHandlers getProfileButton(); HasClickHandlers getTimelineButton(); HasClickHandlers
+		 * getPhotosButton(); HasClickHandlers getMusicButton(); HasClickHandlers getVideosButton(); HasClickHandlers
+		 * getLinksButton(); void setData(UserDTO user);
+		 */
 		HasClickHandlers getCloseButton();
 		
 		Image getAvatar();
@@ -42,7 +39,7 @@ public class UserProfilePresenter implements Presenter {
 		
 		Widget asWidget();
 	}
-
+	
 	private SimpleEventBus eventBus;
 	private final Display display;
 	
@@ -56,8 +53,8 @@ public class UserProfilePresenter implements Presenter {
 	 */
 	public void bind() {
 		String imageUrl = CacheLayer.UserCalls.getUser().getAvatar();
-		if (imageUrl.equals("data:image/png;base64,null"))
-			this.display.getAvatar().setUrl("./images/anonymous_avatar.png");
+		if (imageUrl.equals("data:image/png;base64,null")) this.display.getAvatar().setUrl(
+				"./images/anonymous_avatar.png");
 		else
 			this.display.getAvatar().setUrl(imageUrl);
 		this.display.getAvatar().addClickHandler(new ClickHandler() {
@@ -72,7 +69,7 @@ public class UserProfilePresenter implements Presenter {
 	@Override
 	public void go(final HasWidgets container) {
 		GWT.log("UserProfilePresenter.go");
-		//container.clear();	// Clear the screen
+		// container.clear(); // Clear the screen
 		viewProfilePanel.clear();
 		viewProfilePanel.setGlassEnabled(true);
 		viewProfilePanel.setModal(true);
@@ -92,16 +89,11 @@ public class UserProfilePresenter implements Presenter {
 		goProfile();
 		bind();
 	}
+	
 	/*
-	public void fetchUserDTO() {
-		new RPCXSRF<UserDTO>() {
-
-			@Override
-			protected void callService(AsyncCallback<UserDTO> cb) {
-			}
-			
-		};
-	}*/
+	 * public void fetchUserDTO() { new RPCXSRF<UserDTO>() {
+	 * @Override protected void callService(AsyncCallback<UserDTO> cb) { } }; }
+	 */
 	
 	/**
 	 * Loads the main profile screen

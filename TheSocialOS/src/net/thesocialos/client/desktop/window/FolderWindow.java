@@ -34,8 +34,8 @@ import net.thesocialos.client.view.Thumbnail;
 import net.thesocialos.client.view.Thumbnail.SERVICE;
 import net.thesocialos.client.view.Thumbnail.TYPE;
 
-public class FolderWindow extends DesktopUnit implements IApplication{
-
+public class FolderWindow extends DesktopUnit implements IApplication {
+	
 	public final static String PICTURES = TheSocialOS.getConstants().pictures();
 	public final static String VIDEOS = TheSocialOS.getConstants().videos();
 	public final static String MUSIC = TheSocialOS.getConstants().music();
@@ -49,82 +49,79 @@ public class FolderWindow extends DesktopUnit implements IApplication{
 	private boolean hasAlbums = false;
 	private String contentType = null;
 	
-	
-	
 	public FolderWindow(WindowPanelLayout display, int idProgram) {
 		this.programID = idProgram;
 		this.display = display;
 		this.title = "Prueba";
 		this.typeUnit = TypeUnit.APPLICATION;
-		this.x= 1;
+		this.x = 1;
 		this.y = 30;
 		display.addWindowEvents(new WindowEventHandler() {
 			
 			@Override
 			public void onEndDrag(WindowEndDragEvent event) {
 				TheSocialOS.getEventBus().fireEvent(new DesktopEventonEndDrag(FolderWindow.this));
-		
+				
 			}
 			
 			@Override
 			public void onClose(WindowCloseEvent event) {
-			
+				
 				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnClose(FolderWindow.this));
-			
+				
 			}
-
+			
 			@Override
 			public void onTop(WindowOnTopEvent event) {
 				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnTop(FolderWindow.this));
 				
 			}
-
+			
 			@Override
 			public void onMaximize(WindowMaximizeEvent windowMaximizeEvent) {
-				if (isMaximizable()){
+				if (isMaximizable()) {
 					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMaximize(FolderWindow.this));
 				}
 				
-				
 			}
-
+			
 			@Override
 			public void onMinimize(WindowMinimizeEvent windowMinimizeEvent) {
-				if (isMinimizable()){
+				if (isMinimizable()) {
 					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(FolderWindow.this));
 				}
-				
 				
 			}
 		});
 		
-			
 	}
 	
-	public FolderWindow(String title,WindowPanelLayout display, int idProgram) {
-		this(display,idProgram);
+	public FolderWindow(String title, WindowPanelLayout display, int idProgram) {
+		this(display, idProgram);
 		this.title = title;
 		
 	}
 	
-	public FolderWindow(String title, String contentType,WindowPanelLayout display,int idProgram) {
-		this(display,idProgram);
+	public FolderWindow(String title, String contentType, WindowPanelLayout display, int idProgram) {
+		this(display, idProgram);
 		this.title = title;
 		this.contentType = contentType;
 		
 	}
 	
-	public FolderWindow(String title, HashSet<? extends Media> mediaSet,WindowPanelLayout display,int idProgram) {
-		this(display,idProgram);
+	public FolderWindow(String title, HashSet<? extends Media> mediaSet, WindowPanelLayout display, int idProgram) {
+		this(display, idProgram);
 		this.title = title;
 		Iterator<? extends Media> iterator = mediaSet.iterator();
-		i = 0; j = 0;
+		i = 0;
+		j = 0;
 		while (iterator.hasNext()) {
 			Media media = iterator.next();
 			TypeAndService typeAndService = getTypeAndService(media);
-			Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type, typeAndService.service);
+			Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type,
+					typeAndService.service);
 			table.setWidget(j, i, thumb);
-			//table.getFlexCellFormatter().setWidth(j, i, "150px");
+			// table.getFlexCellFormatter().setWidth(j, i, "150px");
 			table.getFlexCellFormatter().setVerticalAlignment(j, i, HasVerticalAlignment.ALIGN_TOP);
 			i++;
 			if (i % 4 == 0) {
@@ -133,9 +130,6 @@ public class FolderWindow extends DesktopUnit implements IApplication{
 			}
 		}
 	}
-
-	
-	
 	
 	private void show() {
 		
@@ -144,7 +138,7 @@ public class FolderWindow extends DesktopUnit implements IApplication{
 		vPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		vPanel.setHeight("100%");
 		vPanel.setWidth("100%");
-		 display.getWindow().add(vPanel);
+		display.getWindow().add(vPanel);
 		if (!hasAlbums && null != contentType) {
 			infoPanel.setText(TheSocialOS.getMessages().folder_NoContent(contentType));
 			infoPanel.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -154,7 +148,7 @@ public class FolderWindow extends DesktopUnit implements IApplication{
 		panel.add(table);
 		vPanel.add(panel);
 		setSize(800, 480);
-		//panel.setSize("800px", "480px");
+		// panel.setSize("800px", "480px");
 	}
 	
 	public void addMedia(HashSet<? extends Media> mediaSet) {
@@ -167,9 +161,9 @@ public class FolderWindow extends DesktopUnit implements IApplication{
 			Media media = iterator.next();
 			TypeAndService typeAndService = getTypeAndService(media);
 			// If it a picture prefetch it, so the popup loads in the correct position (and the image loads faster ;) )
-			if (typeAndService.type == TYPE.PICTURE)
-				Image.prefetch(((MediaPicture)media).getUrl());
-			Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type, typeAndService.service);
+			if (typeAndService.type == TYPE.PICTURE) Image.prefetch(((MediaPicture) media).getUrl());
+			Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type,
+					typeAndService.service);
 			thumb.addDoubleClickHandler(new DblClickHandlerHelper(media).getDoubleClickHandler());
 			thumb.setTitle(media.getDescription());
 			table.setWidget(j, i, thumb);
@@ -189,9 +183,9 @@ public class FolderWindow extends DesktopUnit implements IApplication{
 		}
 		TypeAndService typeAndService = getTypeAndService(media);
 		// If it a picture prefetch it, so the popup loads in the correct position (and the image loads faster ;) )
-		if (typeAndService.type == TYPE.PICTURE)
-			Image.prefetch(((MediaPicture)media).getUrl());
-		Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type, typeAndService.service);
+		if (typeAndService.type == TYPE.PICTURE) Image.prefetch(((MediaPicture) media).getUrl());
+		Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type,
+				typeAndService.service);
 		thumb.addDoubleClickHandler(new DblClickHandlerHelper(media).getDoubleClickHandler());
 		thumb.setTitle(media.getDescription());
 		table.setWidget(j, i, thumb);
@@ -202,7 +196,7 @@ public class FolderWindow extends DesktopUnit implements IApplication{
 			i = 0;
 		}
 	}
-
+	
 	private TypeAndService getTypeAndService(Media media) {
 		TypeAndService typeAndService = null;
 		if (media instanceof PicasaAPI.Album) {
@@ -231,73 +225,61 @@ public class FolderWindow extends DesktopUnit implements IApplication{
 		
 		TYPE type;
 		SERVICE service;
+		
 		public TypeAndService(TYPE type, SERVICE service) {
 			this.type = type;
 			this.service = service;
 		}
 	}
-
+	
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public String getImage() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public void setName(String name) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void setImage(String image) {
 		// TODO Auto-generated method stub
 		
 	}
-
 	
-
 	@Override
 	public void toZPosition(int position) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public int getZposition() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-
-
-
 	
-
 	@Override
 	public void close(AbsolutePanel absolutePanel) {
 		absolutePanel.remove(display.getWindow());
 		
 	}
-
+	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
 		show();
-		absolutePanel.add(display.getWindow(),x,y);
+		absolutePanel.add(display.getWindow(), x, y);
 		display.getWindow().setVisible(true);
 		
 	}
-
-	
-
-	
-
-
 	
 }

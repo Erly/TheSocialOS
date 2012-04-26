@@ -10,7 +10,6 @@ import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
@@ -18,68 +17,70 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
 @SuppressWarnings("serial")
-public class UserHelper extends RemoteServiceServlet{
-final static Class<User> USER = net.thesocialos.shared.model.User.class;
-final static Class<Session> SESSION = net.thesocialos.shared.model.Session.class;
-
-
-//final names;
-final static String sessionN = "session";
-final static String userN = "user";
-final static String OBJECITIFY = "objetify";
-
+public class UserHelper extends RemoteServiceServlet {
+	final static Class<User> USER = net.thesocialos.shared.model.User.class;
+	final static Class<Session> SESSION = net.thesocialos.shared.model.Session.class;
+	
+	// final names;
+	final static String sessionN = "session";
+	final static String userN = "user";
+	final static String OBJECITIFY = "objetify";
+	
 	/**
 	 * Return the object user
+	 * 
 	 * @param email
-	 * @param ofy Objectify instance
+	 * @param ofy
+	 *            Objectify instance
 	 * @return User object
 	 * @throws NotFoundException
 	 */
-	public static synchronized User getUserWithEmail(String email,Objectify ofy) throws NotFoundException{
+	public static synchronized User getUserWithEmail(String email, Objectify ofy) throws NotFoundException {
 		return ofy.get(USER, email);
 	}
+	
 	/**
 	 * Get the loged User
+	 * 
 	 * @param httpSession
 	 * @param ofy
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public static synchronized User getUserSession(HttpSession httpSession, Objectify ofy) throws NotFoundException{
-		String email =  (String)httpSession.getAttribute(userN);
-		return (User) ofy.get(USER,email);
+	public static synchronized User getUserSession(HttpSession httpSession, Objectify ofy) throws NotFoundException {
+		String email = (String) httpSession.getAttribute(userN);
+		return (User) ofy.get(USER, email);
 	}
 	
 	/**
 	 * Set a User String of the session
-	 * @param session a user session
-	 * @param httpSession HttpSession
+	 * 
+	 * @param session
+	 *            a user session
+	 * @param httpSession
+	 *            HttpSession
 	 * @return
 	 */
-	public static synchronized boolean saveUsertohttpSession(Session session, String userEmail, HttpSession httpSession){
+	public static synchronized boolean saveUsertohttpSession(Session session, String userEmail, HttpSession httpSession) {
 		httpSession.setAttribute(userN, userEmail);
 		httpSession.setAttribute(sessionN, session);
 		return true;
 	}
+	
 	/**
 	 * Guarda cambios hechos en el usuario tanto en la BBDD como en la session
+	 * 
 	 * @param user
 	 * @param httpSession
 	 * @param ofy
 	 * @return
 	 */
-	public static synchronized boolean saveUser(User user,HttpSession httpSession, Objectify ofy){
-		if (((User) httpSession.getAttribute(userN)).getEmail().equalsIgnoreCase(user.getEmail())!= true){
-			return false;
-		}
+	public static synchronized boolean saveUser(User user, HttpSession httpSession, Objectify ofy) {
+		if (((User) httpSession.getAttribute(userN)).getEmail().equalsIgnoreCase(user.getEmail()) != true) { return false; }
 		httpSession.setAttribute(userN, user);
 		ofy.put(user);
 		return true;
 	}
-	
-	
-	
-
 	
 	/**
 	 * 
@@ -88,8 +89,8 @@ final static String OBJECITIFY = "objetify";
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public static synchronized Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException{
-		return ofy.get(SESSION, sid);	
+	public static synchronized Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException {
+		return ofy.get(SESSION, sid);
 	}
 	
 	/**
@@ -99,77 +100,80 @@ final static String OBJECITIFY = "objetify";
 	 * @return User model
 	 * @throws NotFoundException
 	 */
-	public static synchronized User getUserWithSession(Session session, Objectify ofy) throws NotFoundException{
-
-		return ofy.get(User.class,session.getUser().getName());
-
-
-
+	public static synchronized User getUserWithSession(Session session, Objectify ofy) throws NotFoundException {
+		
+		return ofy.get(User.class, session.getUser().getName());
+		
 	}
 	
 	/**
 	 * Get User of Httpsession
+	 * 
 	 * @param httpSession
 	 * @return User Object
 	 */
-	public static synchronized String getUserHttpSession(HttpSession httpSession){
+	public static synchronized String getUserHttpSession(HttpSession httpSession) {
 		return (String) httpSession.getAttribute(userN);
 	}
 	
 	/**
 	 * Get Session of HttpSession
+	 * 
 	 * @param httpSession
 	 * @return Session Object
 	 */
-	public static synchronized Session getSesssionHttpSession(HttpSession httpSession){
+	public static synchronized Session getSesssionHttpSession(HttpSession httpSession) {
 		return (Session) httpSession.getAttribute(sessionN);
 	}
 	
 	/**
 	 * Return a user
+	 * 
 	 * @param email
 	 * @param ofy
 	 * @return A user Class
-	 * @throws NotFoundException user has not found
+	 * @throws NotFoundException
+	 *             user has not found
 	 */
-	public static synchronized User authenticateUser (String email, Objectify ofy) throws NotFoundException{
+	public static synchronized User authenticateUser(String email, Objectify ofy) throws NotFoundException {
 		return ofy.get(User.class, email);
 	}
 	
 	/**
 	 * Create and add a new Session on one User
+	 * 
 	 * @param user
 	 * @param httpSession
 	 * @param duration
 	 * @param ofy
 	 * @return
 	 */
-	public static synchronized boolean addSessiontoUser (User user, Session session,
-			long duration,Objectify ofy){
+	public static synchronized boolean addSessiontoUser(User user, Session session, long duration, Objectify ofy) {
 		
 		user.getSessions().add(ofy.put(session));
 		return true;
 	}
 	
 	/**
-	 * @param session of one user
-	 * @param user to get keyID
+	 * @param session
+	 *            of one user
+	 * @param user
+	 *            to get keyID
 	 */
-	private static String loginStarts(HttpSession session,User user) {
+	private static String loginStarts(HttpSession session, User user) {
 		Objectify ofy = ObjectifyService.begin();
 		LineChat lineChat;
-		String token = 	ChannelServer.createChannel(user.getEmail());
+		String token = ChannelServer.createChannel(user.getEmail());
 		try {
-			lineChat = ofy.get(LineChat.class,user.getEmail());
+			lineChat = ofy.get(LineChat.class, user.getEmail());
 			lineChat.setChannel(token);
 			lineChat.setDate(new Date().getTime());
 		} catch (NotFoundException e) {
 			lineChat = new LineChat(user.getEmail(), token, new Date().getTime());
 		}
-		ofy.put(lineChat);		
-	    session.setAttribute("channelID", user.getEmail());
-	    return token;
+		ofy.put(lineChat);
+		session.setAttribute("channelID", user.getEmail());
+		return token;
 	}
-	
 	
 }

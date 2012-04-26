@@ -6,10 +6,10 @@ public interface SocialOSConstants extends Constants {
 	
 	@DefaultStringValue("Loading...")
 	String loading();
-
+	
 	@DefaultStringValue("Cancel")
 	String cancel();
-
+	
 	@DefaultStringValue("Upload")
 	String upload();
 	
@@ -24,16 +24,16 @@ public interface SocialOSConstants extends Constants {
 	
 	@DefaultStringValue("This is taking too long, try again")
 	String error_Timeout();
-
+	
 	@DefaultStringValue("The email you entered is not valid")
 	String error_Email();
-
+	
 	@DefaultStringValue("The password you entered is not valid. It must have at least 6 characters")
 	String error_Password();
-
+	
 	@DefaultStringValue("The 2 passwords you entered don't match. Please try again")
 	String error_Password2();
-
+	
 	@DefaultStringValue("You must fill all the textboxes")
 	String error_emptyTxt();
 	
@@ -81,22 +81,28 @@ public interface SocialOSConstants extends Constants {
 	
 	@DefaultStringValue("Logout")
 	String logout();
-
+	
 	/**
 	 * Profile Constants
 	 */
 	@DefaultStringValue("Title")
 	String title();
+	
 	@DefaultStringValue("Mobile")
 	String mobile();
+	
 	@DefaultStringValue("Address")
 	String address();
+	
 	@DefaultStringValue("Google Account")
 	String googleAccount();
+	
 	@DefaultStringValue("Facebook Account")
 	String facebookAccount();
+	
 	@DefaultStringValue("Twitter Account")
 	String twitterAccount();
+	
 	@DefaultStringValue("Flickr Account")
 	String flickrAccount();
 	
@@ -104,23 +110,29 @@ public interface SocialOSConstants extends Constants {
 	 * User Constantas
 	 */
 	@DefaultStringValue("Contact")
-	String  contact();
+	String contact();
+	
 	@DefaultStringValue("Contacts")
-	String  contacts();
+	String contacts();
+	
 	@DefaultStringValue("Group")
 	String group();
+	
 	@DefaultStringValue("Groups")
 	String groups();
-
+	
 	/**
 	 * Folder name Constants
 	 */
 	@DefaultStringValue("Pictures")
-	String  pictures();
+	String pictures();
+	
 	@DefaultStringValue("Videos")
-	String  videos();
+	String videos();
+	
 	@DefaultStringValue("Music")
 	String music();
+	
 	@DefaultStringValue("Other")
 	String other();
 }

@@ -19,9 +19,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 
 public class LoginView extends Composite implements Display {
-
-	private static LoginViewUiBinder uiBinder = GWT
-			.create(LoginViewUiBinder.class);
+	
+	private static LoginViewUiBinder uiBinder = GWT.create(LoginViewUiBinder.class);
 	@UiField Button loginButton;
 	@UiField Hyperlink register;
 	@UiField Hyperlink forgot;
@@ -31,10 +30,10 @@ public class LoginView extends Composite implements Display {
 	@UiField TextBox txtEmail;
 	@UiField PasswordTextBox txtPass;
 	@UiField Label lblIncorrect;
-
+	
 	interface LoginViewUiBinder extends UiBinder<Widget, LoginView> {
 	}
-
+	
 	public LoginView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		lblPass.setText(TheSocialOS.getConstants().password());
@@ -44,29 +43,30 @@ public class LoginView extends Composite implements Display {
 		loginButton.setText(TheSocialOS.getConstants().login());
 		lblIncorrect.setVisible(false);
 	}
-
+	
 	@Override
 	public HasClickHandlers getLoginButton() {
 		return loginButton;
 	}
-
+	
 	@Override
 	public HasValue<String> getEmail() {
 		return txtEmail;
 	}
-
+	
 	@Override
 	public HasValue<String> getPassword() {
 		return txtPass;
 	}
-
+	
 	@Override
 	public HasText getIncorrectLabel() {
 		return lblIncorrect;
 	}
+	
 	@Override
-	public boolean getKeepLoged(){
+	public boolean getKeepLoged() {
 		return keepLogged.getValue();
 	}
-
+	
 }

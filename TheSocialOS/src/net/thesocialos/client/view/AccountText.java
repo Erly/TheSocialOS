@@ -13,24 +13,24 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
 public class AccountText extends Composite {
-
-	private static AccountTextUiBinder uiBinder = GWT
-			.create(AccountTextUiBinder.class);
+	
+	private static AccountTextUiBinder uiBinder = GWT.create(AccountTextUiBinder.class);
 	@UiField Button btnAccount;
 	@UiField Label lblAccount;
-
+	
 	interface AccountTextUiBinder extends UiBinder<Widget, AccountText> {
 	}
-
+	
 	public AccountText() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	public void setAccountText(String labelText){
+	
+	public void setAccountText(String labelText) {
 		lblAccount.setText(labelText);
 	}
-	public void setAccounts(String text){
+	
+	public void setAccounts(String text) {
 		btnAccount.setText(text);
 	}
-
 	
 }

@@ -20,32 +20,32 @@ import com.googlecode.objectify.Key;
 public class FacebookAPI {
 	
 	public class Album implements MediaAlbum {
-
+		
 		private String id;
 		private String name;
 		private String thumbnailURL;
 		private int numPhotos;
-
+		
 		@Override
 		public String getID() {
 			return id;
 		}
-
+		
 		@Override
 		public String getName() {
 			return name;
 		}
-
+		
 		@Override
 		public String getThumbnailURL() {
 			return thumbnailURL;
 		}
-
+		
 		@Override
 		public int getElementCount() {
 			return numPhotos;
 		}
-
+		
 		@Override
 		public String getDescription() {
 			return "";
@@ -58,7 +58,7 @@ public class FacebookAPI {
 	}
 	
 	public class Picture implements MediaPicture {
-
+		
 		private String id;
 		private String title;
 		private String url;
@@ -68,12 +68,12 @@ public class FacebookAPI {
 		public String getID() {
 			return id;
 		}
-
+		
 		@Override
 		public String getName() {
 			return title;
 		}
-
+		
 		@Override
 		public String getThumbnailURL() {
 			return thumbnailURL;
@@ -83,7 +83,7 @@ public class FacebookAPI {
 		public String getUrl() {
 			return url;
 		}
-
+		
 		@Override
 		public String getDescription() {
 			return "";
@@ -95,24 +95,23 @@ public class FacebookAPI {
 		String facebookAPIurl = "https://graph.facebook.com/";
 		Facebook facebookAccount = getFacebookAccount();
 		
-		if (null == facebookAccount)
-			return;
+		if (null == facebookAccount) return;
 		String username = facebookAccount.getUsername();
 		facebookAPIurl += username + "/albums?access_token=" + facebookAccount.getAuthToken();
 		loadAlbumsInFolder(folder, facebookAPIurl, facebookAccount);
 	}
-
+	
 	private void loadAlbumsInFolder(final FolderWindow folder, String facebookUrl, final Facebook facebookAccount) {
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
 		jsonp.requestObject(facebookUrl, new AsyncCallback<JavaScriptObject>() {
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				System.out.println(caught.getMessage());
 				caught.printStackTrace();
 			}
-
+			
 			@Override
 			public void onSuccess(JavaScriptObject result) {
 				JSONObject object = new JSONObject(result);
@@ -135,34 +134,35 @@ public class FacebookAPI {
 		});
 	}
 	
-	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder, Facebook facebookAccount) {
-		String facebookAPIurl = "https://graph.facebook.com/" + cover_photo_id + "?access_token=" + facebookAccount.getAuthToken();
+	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder,
+			Facebook facebookAccount) {
+		String facebookAPIurl = "https://graph.facebook.com/" + cover_photo_id + "?access_token="
+				+ facebookAccount.getAuthToken();
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
 		jsonp.requestObject(facebookAPIurl, new AsyncCallback<JavaScriptObject>() {
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				System.out.println(caught.getMessage());
 				caught.printStackTrace();
 			}
-
+			
 			@Override
 			public void onSuccess(JavaScriptObject result) {
-				JSONObject object = new JSONObject(result);	
+				JSONObject object = new JSONObject(result);
 				album.setThumbnailUrl(object.get("picture").isString().stringValue());
 				folder.addMedia(album);
 			}
 		});
 		
 	}
-
+	
 	public void loadPicturesInFolder(Album album, final FolderWindow folder) {
 		String facebookAPIurl = "https://graph.facebook.com/";
 		Facebook facebookAccount = getFacebookAccount();
 		
-		if (null == facebookAccount)
-			return;
+		if (null == facebookAccount) return;
 		facebookAPIurl += album.getID() + "/photos?access_token=" + facebookAccount.getAuthToken();
 		loadPicturesInFolder(folder, facebookAPIurl);
 	}
@@ -170,14 +170,14 @@ public class FacebookAPI {
 	private void loadPicturesInFolder(final FolderWindow folder, String facebookUrl) {
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
 		jsonp.requestObject(facebookUrl, new AsyncCallback<JavaScriptObject>() {
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				System.out.println(caught.getMessage());
 				caught.printStackTrace();
 			}
-
+			
 			@Override
 			public void onSuccess(JavaScriptObject result) {
 				JSONObject object = new JSONObject(result);
@@ -187,18 +187,17 @@ public class FacebookAPI {
 					Picture picture = new Picture();
 					picture.id = array.get(i).isObject().get("id").isString().stringValue();
 					JSONValue s = null;
-					if ((s = array.get(i).isObject().get("name")) != null)
-						picture.title = s.isString().stringValue();
+					if ((s = array.get(i).isObject().get("name")) != null) picture.title = s.isString().stringValue();
 					else
 						picture.title = picture.getID();
 					picture.url = array.get(i).isObject().get("source").isString().stringValue();
 					picture.thumbnailURL = array.get(i).isObject().get("picture").isString().stringValue();
-					//album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
+					// album.thumbnailURL =
+					// array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
 					
 					pictures.add(picture);
 				}
-				if (pictures.size() > 0)
-					folder.addMedia(pictures);
+				if (pictures.size() > 0) folder.addMedia(pictures);
 				JSONValue js = object.get("paging");
 				if (null != js) {
 					JSONString nextPicturesUrl = js.isObject().get("next").isString();
@@ -214,9 +213,7 @@ public class FacebookAPI {
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {
 			Account account = it.next();
-			if (account instanceof Facebook) {
-				return (Facebook)account;
-			}
+			if (account instanceof Facebook) { return (Facebook) account; }
 		}
 		return null;
 	}

@@ -14,29 +14,31 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class StartMenu extends Composite {
-
-	private static StartMenuUiBinder uiBinder = GWT
-			.create(StartMenuUiBinder.class);
-
+	
+	private static StartMenuUiBinder uiBinder = GWT.create(StartMenuUiBinder.class);
+	
 	interface StartMenuUiBinder extends UiBinder<Widget, StartMenu> {
 	}
-
+	
 	public StartMenu() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
+	
 	@UiField FocusPanel startPanel;
 	@UiField VerticalPanel startVPanel;
 	
 	public FocusPanel getStartPanel() {
 		return startPanel;
 	}
+	
 	public void setStartPanel(FocusPanel startPanel) {
 		this.startPanel = startPanel;
 	}
+	
 	public VerticalPanel getStartVPanel() {
 		return startVPanel;
 	}
+	
 	public void setStartVPanel(VerticalPanel startVPanel) {
 		this.startVPanel = startVPanel;
 	}

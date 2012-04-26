@@ -3,16 +3,11 @@ package net.thesocialos.client.desktop.window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.WindowPanelLayout;
 
-
 public interface WindowDisplay {
-
+	
 	WindowPanelLayout getWindow();
 	
 	com.google.web.bindery.event.shared.HandlerRegistration addWindowEvents(WindowEventHandler handler);
-	
-	
-	
-
 	
 	void setWindowTitle(String text);
 	
@@ -26,7 +21,7 @@ public interface WindowDisplay {
 	
 	int getYPosition();
 	
-	void setSize(int width,int height);
+	void setSize(int width, int height);
 	
 	int getHeight();
 	

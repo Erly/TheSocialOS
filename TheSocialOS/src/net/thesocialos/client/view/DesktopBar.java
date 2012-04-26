@@ -15,29 +15,25 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
 
 public class DesktopBar extends Composite {
-
-	private static DesktopBarUiBinder uiBinder = GWT
-			.create(DesktopBarUiBinder.class);
-
+	
+	private static DesktopBarUiBinder uiBinder = GWT.create(DesktopBarUiBinder.class);
+	
 	interface DesktopBarUiBinder extends UiBinder<HorizontalPanel, DesktopBar> {
 	}
-
+	
 	public DesktopBar() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		TheSocialOS.getEventBus().addHandler(ContactsPetitionChangeEvent.TYPE, new ContactEventHandler() {
 			
-			
-
 			@Override
-			public void onContactsPetitionChange(
-					ContactsPetitionChangeEvent event) {
+			public void onContactsPetitionChange(ContactsPetitionChangeEvent event) {
 				lblPetitionsNumber.setText(Integer.toString(CacheLayer.ContactCalls.getCountPetitionsContanct()));
 				
 			}
 		});
 	}
-
+	
 	@UiField Label clock;
 	@UiField Label username;
 	@UiField FocusPanel userPanel;
@@ -54,31 +50,36 @@ public class DesktopBar extends Composite {
 	@UiField Image imgProgram;
 	@UiField Label labelProgram;
 	
-
-	public FocusPanel getFocusContact(){
+	public FocusPanel getFocusContact() {
 		return focusContacts;
 	}
-	public FocusPanel getSearchBox(){
+	
+	public FocusPanel getSearchBox() {
 		return searchButton;
 	}
 	
-	public FocusPanel getPetitionsButton(){
-		return  PetitionsButton;
+	public FocusPanel getPetitionsButton() {
+		return PetitionsButton;
 	}
-	public Label getPetitionsNumber(){
+	
+	public Label getPetitionsNumber() {
 		return lblPetitionsNumber;
 	}
-	public FocusPanel getProgramsButton(){
+	
+	public FocusPanel getProgramsButton() {
 		return ProgramsButton;
 	}
-	public Image getImgProgram(){
+	
+	public Image getImgProgram() {
 		return imgProgram;
 	}
-	public Label getLabelProgram(){
+	
+	public Label getLabelProgram() {
 		return labelProgram;
 	}
 	/**
 	 * Set in the widget a number of petitions is waiting
+	 * 
 	 * @param number
 	 */
 	

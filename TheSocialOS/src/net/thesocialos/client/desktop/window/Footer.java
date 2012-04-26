@@ -21,26 +21,25 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
-public class Footer extends SimplePanel implements
- com.google.gwt.user.client.ui.WindowPanelLayout.Footer {
-
+public class Footer extends SimplePanel implements com.google.gwt.user.client.ui.WindowPanelLayout.Footer {
+	
 	HorizontalPanel horizontalPanel = new HorizontalPanel();
 	FocusPanel fPanelResize = new FocusPanel();
-	SimpleEventBus windowEventBus; 
+	SimpleEventBus windowEventBus;
 	HandlerRegistration reg;
 	Label lblTitle = new Label();
 	Menu menu = new Menu();
-	public Footer(){
+	
+	public Footer() {
 		setStyleName("Footer");
 		this.add(horizontalPanel);
-		//this.windowEventBus = windowEventBus;
+		// this.windowEventBus = windowEventBus;
 		FocusPanel focusPanel = new FocusPanel();
 		horizontalPanel.setWidth("100%");
 		focusPanel.setWidth("100%");
 		focusPanel.add(lblTitle);
 		horizontalPanel.add(focusPanel);
 		fPanelResize.setStyleName("Footer-resize");
-		
 		
 		fPanelResize.setWidth("15px");
 		fPanelResize.setHeight("15px");
@@ -52,92 +51,94 @@ public class Footer extends SimplePanel implements
 		horizontalPanel.setCellHorizontalAlignment(fPanelResize, HasHorizontalAlignment.ALIGN_RIGHT);
 		horizontalPanel.setCellVerticalAlignment(fPanelResize, HasVerticalAlignment.ALIGN_BOTTOM);
 		
-		
-		
-		
 	}
+	
 	@Override
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		// TODO Auto-generated method stub
 		return fPanelResize.addMouseDownHandler(handler);
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
 		// TODO Auto-generated method stub
 		return addDomHandler(handler, MouseOverEvent.getType());
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public String getHTML() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	/**
 	 * Sets the html string inside this class
-	 *
-	 * Use {@link #setWidget(Widget)} to set the contents inside the
-	 * {@link DialogBox}.
-	 *
-	 * @param html the object's new HTML
+	 * 
+	 * Use {@link #setWidget(Widget)} to set the contents inside the {@link DialogBox}.
+	 * 
+	 * @param html
+	 *            the object's new HTML
 	 */
 	public void setHTML(String html) {
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 	/**
 	 * Get the title of the footer
+	 * 
 	 * @return The String representation of the text
 	 */
 	public String getText() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	/**
 	 * Set the title of the footer
-	 * @param The String representation of the text
+	 * 
+	 * @param The
+	 *            String representation of the text
 	 */
 	public void setText(String text) {
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 	@Override
 	public void setHTML(SafeHtml html) {
 		// TODO Auto-generated method stub
-
+		
 	}
+	
 	@Override
 	public int getHeight() {
 		// TODO Auto-generated method stub
 		return getOffsetHeight();
 	}
-
+	
 }

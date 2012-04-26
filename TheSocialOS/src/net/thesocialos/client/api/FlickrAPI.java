@@ -22,7 +22,7 @@ import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.FlickR;
 
 public class FlickrAPI {
-
+	
 	public FlickrAPI() {
 		// TODO Auto-generated constructor stub
 	}
@@ -75,6 +75,7 @@ public class FlickrAPI {
 		public int getElementCount() {
 			return numPhotos;
 		}
+		
 		/**
 		 * @return the commentingEnabled
 		 */
@@ -91,7 +92,7 @@ public class FlickrAPI {
 	}
 	
 	public class Picture implements MediaPicture {
-
+		
 		private String id;
 		private String title;
 		private String url;
@@ -103,12 +104,12 @@ public class FlickrAPI {
 		public String getID() {
 			return id;
 		}
-
+		
 		@Override
 		public String getName() {
 			return title;
 		}
-
+		
 		@Override
 		public String getThumbnailURL() {
 			return thumbnailURL;
@@ -118,36 +119,39 @@ public class FlickrAPI {
 		public String getUrl() {
 			return url;
 		}
-
+		
 		@Override
 		public String getDescription() {
 			return "";
 		}
 		
 	}
-
 	
 	public void loadAlbumsInFolder(final FolderWindow folder) {
 		String url = "http://api.flickr.com/services/rest/?method=flickr.photosets.getList&nojsoncallback=1&per_page=9999";
 		final FlickR flickrAccount = getFlickrAccount();
-		if (null == flickrAccount)
-			return;
+		if (null == flickrAccount) return;
 		
-		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(), flickrAccount.getTokenSecret(), url);
+		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(),
+				flickrAccount.getTokenSecret(), url);
 		send(url, new RequestCallback() {
 			
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				JSONObject object = JSONParser.parseStrict(response.getText()).isObject(); 
+				JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
 				JSONArray array = object.get("photosets").isObject().get("photoset").isArray();
 				for (int i = 0; i < array.size(); i++) {
 					Album album = new Album();
 					album.id = array.get(i).isObject().get("id").isString().stringValue();
-					album.title = array.get(i).isObject().get("title").isObject().get("_content").isString().stringValue();
-					album.description = array.get(i).isObject().get("description").isObject().get("_content").isString().stringValue();
+					album.title = array.get(i).isObject().get("title").isObject().get("_content").isString()
+							.stringValue();
+					album.description = array.get(i).isObject().get("description").isObject().get("_content")
+							.isString().stringValue();
 					album.numPhotos = Integer.parseInt(array.get(i).isObject().get("photos").isString().stringValue());
-					album.commentingEnabled = array.get(i).isObject().get("can_comment").isNumber().toString().equals('1') ? true : false;
-					album.commentCount = Integer.parseInt(array.get(i).isObject().get("count_comments").isString().stringValue());
+					album.commentingEnabled = array.get(i).isObject().get("can_comment").isNumber().toString()
+							.equals('1') ? true : false;
+					album.commentCount = Integer.parseInt(array.get(i).isObject().get("count_comments").isString()
+							.stringValue());
 					String cover_photo_id = array.get(i).isObject().get("primary").isString().stringValue();
 					loadAlbumInFolder(album, cover_photo_id, folder, flickrAccount);
 				}
@@ -160,11 +164,13 @@ public class FlickrAPI {
 		});
 	}
 	
-	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder, FlickR flickrAccount) {
+	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder,
+			FlickR flickrAccount) {
 		String url = "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&nojsoncallback=1&per_page=9999";
 		url += "&photo_id=" + cover_photo_id;
 		
-		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(), flickrAccount.getTokenSecret(), url);
+		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(),
+				flickrAccount.getTokenSecret(), url);
 		send(url, new RequestCallback() {
 			
 			@Override
@@ -186,10 +192,10 @@ public class FlickrAPI {
 		String url = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&nojsoncallback=1&per_page=9999";
 		url += "&photoset_id=" + album.getID();
 		final FlickR flickrAccount = getFlickrAccount();
-		if (null == flickrAccount)
-			return;
+		if (null == flickrAccount) return;
 		
-		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(), flickrAccount.getTokenSecret(), url);
+		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(),
+				flickrAccount.getTokenSecret(), url);
 		send(url, new RequestCallback() {
 			
 			@Override
@@ -215,13 +221,14 @@ public class FlickrAPI {
 		String url = "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&nojsoncallback=1&per_page=9999";
 		url += "&photo_id=" + picture.getID();
 		
-		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(), flickrAccount.getTokenSecret(), url);
+		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(),
+				flickrAccount.getTokenSecret(), url);
 		send(url, new RequestCallback() {
 			
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				JSONObject object = JSONParser.parseStrict(response.getText()).isObject(); 
-				//HashSet<Picture> pictures = new HashSet<Picture>();
+				JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
+				// HashSet<Picture> pictures = new HashSet<Picture>();
 				JSONArray array = object.get("sizes").isObject().get("size").isArray();
 				picture.url = array.get(array.size() - 1).isObject().get("source").isString().stringValue();
 				picture.thumbnailURL = array.get(1).isObject().get("source").isString().stringValue();
@@ -234,23 +241,21 @@ public class FlickrAPI {
 			}
 		});
 	}
-
+	
 	private FlickR getFlickrAccount() {
 		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {
 			Account account = it.next();
-			if (account instanceof FlickR) {
-				return (FlickR)account;
-			}
+			if (account instanceof FlickR) { return (FlickR) account; }
 		}
 		return null;
 	}
-
+	
 	protected void send(String Url, RequestCallback cb) {
-		/*JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-		jsonp.setTimeout(10000);
-		jsonp.requestObject(Url, cb);*/
+		/*
+		 * JsonpRequestBuilder jsonp = new JsonpRequestBuilder(); jsonp.setTimeout(10000); jsonp.requestObject(Url, cb);
+		 */
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, Url);
 		builder.setTimeoutMillis(10000);
 		builder.setCallback(cb);

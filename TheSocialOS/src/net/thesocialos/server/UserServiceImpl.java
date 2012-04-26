@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
-
 import net.thesocialos.client.service.UserService;
 
 import net.thesocialos.server.utils.BCrypt;
@@ -30,14 +29,14 @@ import com.googlecode.objectify.ObjectifyService;
 
 @SuppressWarnings("serial")
 public class UserServiceImpl extends XsrfProtectedServiceServlet implements UserService {
-
+	
 	@Override
-	public void destroy(){
+	public void destroy() {
 		
 	}
 	
 	@Override
-	public void init(){
+	public void init() {
 		try {
 			ObjectifyService.register(LineChat.class);
 			ObjectifyService.register(Chat.class);
@@ -55,29 +54,27 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 	@Override
 	public User getLoggedUser(String sid) {
 		ObjectifyOpts opts = new ObjectifyOpts().setSessionCache(true);
-	    Objectify ofy = ObjectifyService.begin(opts);
+		Objectify ofy = ObjectifyService.begin(opts);
 		
 		User user;
 		Session session;
 		HttpSession httpSession = perThreadRequest.get().getSession();
 		if ((session = UserHelper.getSesssionHttpSession(httpSession)) != null
-				&& (user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy)) != null){
+				&& (user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy)) != null) {
 			if (session.getSessionID().equalsIgnoreCase(sid)
-					&& session.getUser().getName().equalsIgnoreCase(user.getEmail())){
-				return User.toDTO(user);
-			}
+					&& session.getUser().getName().equalsIgnoreCase(user.getEmail())) { return User.toDTO(user); }
 		}
-		try{
+		try {
 			session = UserHelper.getSessionWithCookies(sid, ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
 			user.setLastTimeActive(new Date());
-
+			
 			UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 			ofy.put(user);
 			return User.toDTO(user);
-		}catch (NotFoundException e) {
+		} catch (NotFoundException e) {
 			return null;
-		}catch (Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -86,38 +83,39 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 	public void register(User user) throws UserExistsException {
 		Objectify ofy = ObjectifyService.begin();
 		
-		try{
+		try {
 			ofy.get(User.class, user.getEmail());
 			throw new UserExistsException("Email '" + user.getEmail() + "' already registered");
-		}catch (NotFoundException e) {
+		} catch (NotFoundException e) {
 			user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-			ofy.put(user);	// Save
+			ofy.put(user); // Save
 		}
-		//user = new User(email, BCrypt.hashpw(password, BCrypt.gensalt()), name, lastName); // Encrypt the password
+		// user = new User(email, BCrypt.hashpw(password, BCrypt.gensalt()), name, lastName); // Encrypt the password
 	}
-
+	
 	@Override
 	public void logout() {
 		getThreadLocalRequest().getSession().invalidate();
 		return;
 	}
 	
-	
 	@Override
 	public LoginResult login(String email, String password, boolean keeploged) {
-		long duration = 2592000000L;//1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this case.
+		long duration = 2592000000L;// 1000l * 60l * 60l * 24l * 30l; // Duration remembering login. 30 days in this
+									// case.
 		ObjectifyOpts opts = new ObjectifyOpts().setSessionCache(true);
-	    Objectify ofy = ObjectifyService.begin(opts);
+		Objectify ofy = ObjectifyService.begin(opts);
 		User user;
 		HttpSession httpSession = perThreadRequest.get().getSession();
 		
-		try{
+		try {
 			user = UserHelper.getUserWithEmail(email, ofy);
-		}catch (NotFoundException e){
+		} catch (NotFoundException e) {
 			return null;
 		}
 		
-		if (BCrypt.checkpw(password, user.getPassword()) == false) { // Compare the unencrypted password with the encrypted one
+		if (BCrypt.checkpw(password, user.getPassword()) == false) { // Compare the unencrypted password with the
+																		// encrypted one
 			return null;
 		}
 		
@@ -126,16 +124,16 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		
 		// El usuario quiere seguir estando conectado
 		if (keeploged) {
-			UserHelper.addSessiontoUser(user, session, duration, ofy); //Add new session to user
-		}else{
+			UserHelper.addSessiontoUser(user, session, duration, ofy); // Add new session to user
+		} else {
 			duration = -1;
 		}
 		
-		user.setLastTimeActive(new Date()); //Set last time to user is login
-
-		UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession); //Store user and session
-
-		ofy.put(user); //Save user
+		user.setLastTimeActive(new Date()); // Set last time to user is login
+		
+		UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession); // Store user and session
+		
+		ofy.put(user); // Save user
 		return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 	}
 	
@@ -144,20 +142,20 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public Map<Key<Account>, Account> getCloudAccounts() {
-
+		
 		removeDeletedAccounts();
 		Objectify ofy = ObjectifyService.begin();
-		User user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
+		User user = UserHelper
+				.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
 		List<Key<? extends Account>> accountsKeys = user.getAccounts();
 		Map<Key<Account>, Account> accounts = ofy.get(accountsKeys);
-		if (refreshAccountTokens(accounts, ofy))
-			return ofy.get(accountsKeys);
+		if (refreshAccountTokens(accounts, ofy)) return ofy.get(accountsKeys);
 		return accounts;
 	}
-
+	
 	private boolean refreshAccountTokens(Map<Key<Account>, Account> accounts, Objectify ofy) {
 		boolean changed = false;
 		Iterator<Account> it = accounts.values().iterator();
@@ -173,7 +171,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		}
 		return changed;
 	}
-
+	
 	@Override
 	public void removeDeletedAccounts() {
 		Objectify ofy = ObjectifyService.begin();
@@ -187,8 +185,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			Key<? extends Account> accountKey = it.next();
 			try {
 				Account ac = ofy.get(accountKey);
-				if (null != ac)
-					newAccountsKeys.add(accountKey);
+				if (null != ac) newAccountsKeys.add(accountKey);
 			} catch (NotFoundException ex) {
 				ex.printStackTrace();
 				System.out.println("Key not found proceeding to remove it from the user object");

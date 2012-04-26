@@ -17,14 +17,13 @@ public class RefreshTokens {
 	public static Google refreshGoogle(Google googleAccount) {
 		try {
 			String urlString = "https://accounts.google.com/o/oauth2/token";
-			String params = "client_id=398121744591.apps.googleusercontent.com&" +
-					"client_secret=WByUe_YHFd07JWEzMpWZ6cGf&" +
-					"grant_type=refresh_token&" +
-					"refresh_token=" + googleAccount.getRefreshToken();
+			String params = "client_id=398121744591.apps.googleusercontent.com&"
+					+ "client_secret=WByUe_YHFd07JWEzMpWZ6cGf&" + "grant_type=refresh_token&" + "refresh_token="
+					+ googleAccount.getRefreshToken();
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			
-			//post the parameters
+			// post the parameters
 			conn.setDoOutput(true);
 			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 			wr.write(params);
@@ -33,13 +32,12 @@ public class RefreshTokens {
 			
 			// get the results
 			conn.connect();
-			int responseCode = conn.getResponseCode();  // 200, 404, etc
+			int responseCode = conn.getResponseCode(); // 200, 404, etc
 			String responseMsg = conn.getResponseMessage(); // OK, Forbidden, etc
-			BufferedReader br = new BufferedReader(
-			   new InputStreamReader(conn.getInputStream()));
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			StringBuffer results = new StringBuffer();
 			String oneline;
-			while ( (oneline = br.readLine()) != null) {
+			while ((oneline = br.readLine()) != null) {
 				results.append(oneline);
 			}
 			br.close();

@@ -11,26 +11,26 @@ import com.googlecode.objectify.annotation.Parent;
 
 @Cached
 public class Session implements Serializable {
-
-	@Id String SessionID; //SessionID of the cookie
+	
+	@Id String SessionID; // SessionID of the cookie
 	Date expireDate;
 	private Key<User> user;
-
+	
 	public String getSessionID() {
 		return SessionID;
-	}	
+	}
 	
-	public Session(){
+	public Session() {
 		
 	}
 	
-	public Session(String SessionID, Date expireDate, Key<User> user){
+	public Session(String SessionID, Date expireDate, Key<User> user) {
 		this.SessionID = SessionID;
 		this.expireDate = expireDate;
 		this.user = user;
 	}
 	
-	public Key<User> getUser(){
+	public Key<User> getUser() {
 		return user;
 	}
 }

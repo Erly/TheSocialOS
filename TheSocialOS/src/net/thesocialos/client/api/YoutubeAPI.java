@@ -20,7 +20,7 @@ import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Google;
 
 public class YoutubeAPI {
-
+	
 	public YoutubeAPI() {
 		// TODO Auto-generated constructor stub
 	}
@@ -28,9 +28,7 @@ public class YoutubeAPI {
 	public static class Folder implements Media {
 		
 		public enum TYPE {
-			UPLOADS		("Uploads"),
-			PLAYLIST	("Playlists"),
-			FAVORITES	("Favorites");
+			UPLOADS("Uploads"), PLAYLIST("Playlists"), FAVORITES("Favorites");
 			
 			private String title;
 			
@@ -64,12 +62,12 @@ public class YoutubeAPI {
 		public String getID() {
 			return id;
 		}
-
+		
 		@Override
 		public String getName() {
 			return title;
 		}
-
+		
 		@Override
 		public String getThumbnailURL() {
 			return thumbnailURL;
@@ -78,7 +76,7 @@ public class YoutubeAPI {
 		public TYPE getType() {
 			return type;
 		}
-
+		
 		@Override
 		public String getDescription() {
 			return "";
@@ -87,7 +85,7 @@ public class YoutubeAPI {
 	}
 	
 	public class Album implements MediaAlbum {
-
+		
 		private String id;
 		private String title;
 		private String description;
@@ -134,6 +132,7 @@ public class YoutubeAPI {
 		public int getElementCount() {
 			return numVideos;
 		}
+		
 		/**
 		 * @return the commentingEnabled
 		 */
@@ -150,7 +149,7 @@ public class YoutubeAPI {
 	}
 	
 	public class Video implements MediaPicture {
-
+		
 		private String id;
 		private String title;
 		private String description;
@@ -163,12 +162,12 @@ public class YoutubeAPI {
 		public String getID() {
 			return id;
 		}
-
+		
 		@Override
 		public String getName() {
 			return title;
 		}
-
+		
 		@Override
 		public String getThumbnailURL() {
 			return thumbnailURL;
@@ -193,13 +192,12 @@ public class YoutubeAPI {
 		}
 	}
 	
-	/*			FOLDER LOADERS				*/
+	/* FOLDER LOADERS */
 	
 	public void loadPlaylistsInFolder(final FolderWindow folder) {
 		String youtubeAPIurl = "https://gdata.youtube.com/feeds/api/users/default/playlists";
 		Google googleAccount = getGoogleAccount();
-		if (null == googleAccount)
-			return;
+		if (null == googleAccount) return;
 		
 		youtubeAPIurl += "?alt=json&access_token=" + googleAccount.getAuthToken();
 		loadFoldersInFolder(youtubeAPIurl, folder);
@@ -208,13 +206,13 @@ public class YoutubeAPI {
 	private void loadFoldersInFolder(String requestUrl, final FolderWindow folder) {
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
 		jsonp.requestObject(requestUrl, new AsyncCallback<JavaScriptObject>() {
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				
 			}
-
+			
 			@Override
 			public void onSuccess(JavaScriptObject result) {
 				JSONObject object = new JSONObject(result);
@@ -222,11 +220,15 @@ public class YoutubeAPI {
 				JSONArray array = object.get("feed").isObject().get("entry").isArray();
 				for (int i = 0; i < array.size(); i++) {
 					Album playlist = new Album();
-					playlist.id = array.get(i).isObject().get("yt$playlistId").isObject().get("$t").isString().stringValue();
+					playlist.id = array.get(i).isObject().get("yt$playlistId").isObject().get("$t").isString()
+							.stringValue();
 					playlist.title = array.get(i).isObject().get("title").isObject().get("$t").isString().stringValue();
-					playlist.description = array.get(i).isObject().get("yt$description").isObject().get("$t").isString().stringValue();
-					playlist.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
-					playlist.numVideos = Integer.parseInt(array.get(i).isObject().get("gd$feedLink").isArray().get(0).isObject().get("countHint").isNumber().toString());
+					playlist.description = array.get(i).isObject().get("yt$description").isObject().get("$t")
+							.isString().stringValue();
+					playlist.thumbnailURL = array.get(i).isObject().get("media$group").isObject()
+							.get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
+					playlist.numVideos = Integer.parseInt(array.get(i).isObject().get("gd$feedLink").isArray().get(0)
+							.isObject().get("countHint").isNumber().toString());
 					playlists.add(playlist);
 				}
 				folder.addMedia(playlists);
@@ -234,13 +236,12 @@ public class YoutubeAPI {
 		});
 	}
 	
-	/*			VIDEO LOADERS				*/
+	/* VIDEO LOADERS */
 	
 	public void loadUploadsInFolder(final FolderWindow folder) {
 		String youtubeAPIurl = "https://gdata.youtube.com/feeds/api/users/default/uploads";
 		Google googleAccount = getGoogleAccount();
-		if (null == googleAccount)
-			return;
+		if (null == googleAccount) return;
 		
 		youtubeAPIurl += "?alt=json&access_token=" + googleAccount.getAuthToken();
 		loadVideosInFolder(youtubeAPIurl, folder);
@@ -249,8 +250,7 @@ public class YoutubeAPI {
 	public void loadPlaylistVideosInFolder(Album playlist, final FolderWindow folder) {
 		String youtubeAPIurl = "https://gdata.youtube.com/feeds/api/playlists/";
 		Google googleAccount = getGoogleAccount();
-		if (null == googleAccount)
-			return;
+		if (null == googleAccount) return;
 		
 		youtubeAPIurl += playlist.getID() + "?alt=json&access_token=" + googleAccount.getAuthToken();
 		loadVideosInFolder(youtubeAPIurl, folder);
@@ -259,8 +259,7 @@ public class YoutubeAPI {
 	public void loadFavoritesInFolder(final FolderWindow folder) {
 		String youtubeAPIurl = "https://gdata.youtube.com/feeds/api/users/default/favorites";
 		Google googleAccount = getGoogleAccount();
-		if (null == googleAccount)
-			return;
+		if (null == googleAccount) return;
 		
 		youtubeAPIurl += "?alt=json&access_token=" + googleAccount.getAuthToken();
 		loadVideosInFolder(youtubeAPIurl, folder);
@@ -269,38 +268,42 @@ public class YoutubeAPI {
 	private void loadVideosInFolder(String requestUrl, final FolderWindow folder) {
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
 		jsonp.requestObject(requestUrl, new AsyncCallback<JavaScriptObject>() {
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				
 			}
-
+			
 			@Override
 			public void onSuccess(JavaScriptObject result) {
 				JSONObject object = new JSONObject(result);
 				HashSet<Video> videos = new HashSet<Video>();
 				JSONArray array = object.get("feed").isObject().get("entry").isArray();
-				Window.alert(array.size()+"");
+				Window.alert(array.size() + "");
 				for (int i = 0; i < array.size(); i++) {
 					JSONValue v = null;
 					if ((v = array.get(i).isObject().get("app$control")) != null)
-						if (null != v.isObject().get("app$draft"))
-							continue;
+						if (null != v.isObject().get("app$draft")) continue;
 					Video video = new Video();
 					video.id = array.get(i).isObject().get("id").isObject().get("$t").isString().stringValue();
 					video.title = array.get(i).isObject().get("title").isObject().get("$t").isString().stringValue();
 					Window.alert(video.title);
-					video.url = array.get(i).isObject().get("link").isArray().get(0).isObject().get("href").isString().stringValue();
+					video.url = array.get(i).isObject().get("link").isArray().get(0).isObject().get("href").isString()
+							.stringValue();
 					video.url = video.url.replace("watch?v=", "embed/");
 					video.url = video.url.substring(0, video.url.indexOf('&'));
 					Window.alert(video.url);
-					video.description = array.get(i).isObject().get("media$group").isObject().get("media$description").isObject().get("$t").isString().stringValue();
+					video.description = array.get(i).isObject().get("media$group").isObject().get("media$description")
+							.isObject().get("$t").isString().stringValue();
 					Window.alert(video.description);
-					video.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(1).isObject().get("url").isString().stringValue();
-					//video.commentingEnabled = Boolean.parseBoolean(array.get(i).isObject().get("gphoto$commentingEnabled").isObject().get("$t").isString().stringValue());
-					video.commentCount = Integer.parseInt(array.get(i).isObject().get("gd$comments").isObject().get("gd$feedLink").isObject().get("countHint").isNumber().toString());
-					Window.alert(video.commentCount+"");
+					video.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail")
+							.isArray().get(1).isObject().get("url").isString().stringValue();
+					// video.commentingEnabled =
+					// Boolean.parseBoolean(array.get(i).isObject().get("gphoto$commentingEnabled").isObject().get("$t").isString().stringValue());
+					video.commentCount = Integer.parseInt(array.get(i).isObject().get("gd$comments").isObject()
+							.get("gd$feedLink").isObject().get("countHint").isNumber().toString());
+					Window.alert(video.commentCount + "");
 					videos.add(video);
 				}
 				Window.alert("" + videos.size());
@@ -322,9 +325,7 @@ public class YoutubeAPI {
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {
 			Account account = it.next();
-			if (account instanceof Google) {
-				return (Google)account;
-			}
+			if (account instanceof Google) { return (Google) account; }
 		}
 		return null;
 	}

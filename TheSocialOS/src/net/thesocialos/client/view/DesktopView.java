@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 
 public class DesktopView extends Composite implements Display {
-
+	
 	private static DesktopUiBinder uiBinder = GWT.create(DesktopUiBinder.class);
 	@UiField DesktopBar desktopBar;
 	@UiField StartMenu startMenu;
@@ -27,80 +27,80 @@ public class DesktopView extends Composite implements Display {
 	@UiField AbsolutePanel desktop;
 	@UiField Image background;
 	@UiField AbsolutePanel absoluteDesktop;
-
+	
 	interface DesktopUiBinder extends UiBinder<Widget, DesktopView> {
 	}
-
+	
 	public DesktopView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		userMenu.editProfile.setText(TheSocialOS.getConstants().editProfile());
 		userMenu.logout.setText(TheSocialOS.getConstants().logout());
 		User user = CacheLayer.UserCalls.getUser();
 		// desktop.getElement().getStyle().setBackgroundImage("url(/images/defaultBG.png) no-repeat");
-	//	if (!user.getBackground().equals("data:image/png;base64,null"))
-		//	background.setUrl(user.getBackground());
+		// if (!user.getBackground().equals("data:image/png;base64,null"))
+		// background.setUrl(user.getBackground());
 	}
-
+	
 	@Override
 	public HasClickHandlers getUserButton() {
 		return desktopBar.userPanel;
 	}
-
+	
 	@Override
 	public Widget getUserMenu() {
 		return userMenu.asWidget();
 	}
-
+	
 	@Override
 	public HasText getUserName() {
 		return desktopBar.username;
 	}
-
+	
 	@Override
 	public Image getAvatar() {
 		return userMenu.avatar;
 	}
-
+	
 	@Override
 	public HasText getNameLabel() {
 		return userMenu.name;
 	}
-
+	
 	@Override
 	public HasText getEmail() {
 		return userMenu.email;
 	}
-
+	
 	@Override
 	public HasText getEditProfile() {
 		return userMenu.editProfile;
 	}
-
+	
 	@Override
 	public HasText getLogout() {
 		return userMenu.logout;
 	}
-
+	
 	@Override
 	public HasText getTitleLabel() {
 		return userMenu.title;
 	}
-
+	
 	@Override
 	public HasText getClock() {
 		return desktopBar.clock;
 	}
-
+	
 	@Override
 	public HasClickHandlers getStartButton() {
 		return desktopBar.startButton;
 	}
-
+	
 	@Override
 	public AbsolutePanel getDesktop() {
 		return desktop;
 	}
-
+	
 	@Override
 	public FocusPanel getLogoutPanel() {
 		return userMenu.logoutPanel;
@@ -110,33 +110,33 @@ public class DesktopView extends Composite implements Display {
 	public HasClickHandlers getEditProfilePanel() {
 		return userMenu.editProfilePanel;
 	}
-
+	
 	@Override
 	public HasBlurHandlers getUserMenuPanel() {
 		return userMenu.mainFocusPanel;
 	}
-
+	
 	@Override
 	public Widget getStartMenu() {
 		return startMenu;
 	}
-
+	
 	@Override
 	public HasBlurHandlers getStartMenuPanel() {
 		return startMenu.getStartPanel();
 	}
-
+	
 	@Override
 	public HasClickHandlers getSocialOSButton() {
 		return desktopBar.socialOSButton;
 	}
-
+	
 	@Override
 	public DesktopBar getDesktopBar() {
 		// TODO Auto-generated method stub
 		return desktopBar;
 	}
-
+	
 	@Override
 	public AbsolutePanel getScreen() {
 		// TODO Auto-generated method stub

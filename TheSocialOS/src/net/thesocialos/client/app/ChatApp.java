@@ -24,17 +24,18 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ChatApp implements IApplication {
-
+	
 	private String name;
 	private String image;
 	Display panel;
-	String message= "hellow World";
+	String message = "hellow World";
 	SimpleEventBus chatEventBus;
 	private final ChatServiceAsync chatService = GWT.create(ChatService.class);
 	private String height;
 	private String width;
 	
-	public ChatApp(String appName, String appImageURL, SimpleEventBus chatEventBus, Display panel, String width, String height) {
+	public ChatApp(String appName, String appImageURL, SimpleEventBus chatEventBus, Display panel, String width,
+			String height) {
 		setName(appName);
 		setImage(appImageURL);
 		setHeight(height);
@@ -43,6 +44,7 @@ public class ChatApp implements IApplication {
 		this.panel = panel;
 		bind();
 	}
+	
 	public interface Display {
 		
 		Button getSendButton();
@@ -54,17 +56,13 @@ public class ChatApp implements IApplication {
 		ChatPanel getChatPanel();
 	}
 	
-	
-	
-	
-	
-	private void bind(){
-		chatEventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler(){
-
+	private void bind() {
+		chatEventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
+			
 			@Override
-			public void onContentAvailable(
-				MessageChatAvailableEvent contentAvailableEvent) {
-				//panel.getTextArea().setText("Push enviado correctamente " + contentAvailableEvent.getMessageChat().getType());
+			public void onContentAvailable(MessageChatAvailableEvent contentAvailableEvent) {
+				// panel.getTextArea().setText("Push enviado correctamente " +
+				// contentAvailableEvent.getMessageChat().getType());
 				getMessages();
 			}
 			
@@ -73,7 +71,7 @@ public class ChatApp implements IApplication {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if (!panel.getSendText().getText().isEmpty()){
+				if (!panel.getSendText().getText().isEmpty()) {
 					sendMessage(panel.getSendText().getText());
 				}
 				
@@ -84,8 +82,8 @@ public class ChatApp implements IApplication {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				// TODO Auto-generated method stub
-				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER){
-					if (!panel.getSendText().getText().isEmpty()){
+				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+					if (!panel.getSendText().getText().isEmpty()) {
 						sendMessage(panel.getSendText().getText());
 					}
 					
@@ -96,9 +94,9 @@ public class ChatApp implements IApplication {
 		
 	}
 	
-	private void sendMessage(String text){
-		new RPCXSRF<Void>(chatService){
-
+	private void sendMessage(String text) {
+		new RPCXSRF<Void>(chatService) {
+			
 			@Override
 			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				chatService.sendText(panel.getSendText().getText(), new AsyncCallback<Boolean>() {
@@ -114,17 +112,17 @@ public class ChatApp implements IApplication {
 					}
 				});
 			}
-				
-		}.retry(3);	
+			
+		}.retry(3);
 	}
 	
-	private void getMessages(){
+	private void getMessages() {
 		
 		new RPCXSRF<Void>(chatService) {
-
+			
 			@Override
 			protected void XSRFcallService(AsyncCallback<Void> cb) {
-
+				
 				chatService.getText(new AsyncCallback<List<Chat>>() {
 					
 					@Override
@@ -132,9 +130,10 @@ public class ChatApp implements IApplication {
 						String textToAdd = "";
 						for (int i = 0; i < result.size(); i++) {
 							textToAdd += result.get(i).getText() + "\n";
-						}		
-						panel.getTextArea().setText(panel.getTextArea().getText() + textToAdd);			
-						panel.getTextArea().getElement().setScrollTop(panel.getTextArea().getElement().getScrollHeight());
+						}
+						panel.getTextArea().setText(panel.getTextArea().getText() + textToAdd);
+						panel.getTextArea().getElement()
+								.setScrollTop(panel.getTextArea().getElement().getScrollHeight());
 						System.out.println(result.toArray());
 					}
 					
@@ -162,25 +161,25 @@ public class ChatApp implements IApplication {
 	public void setWidth(String width) {
 		this.width = width;
 	}
-
+	
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
 	}
-
+	
 	@Override
 	public String getImage() {
 		// TODO Auto-generated method stub
 		return image;
 	}
-
+	
 	@Override
 	public void setName(String name) {
 		this.name = name;
 		
 	}
-
+	
 	@Override
 	public void setImage(String image) {
 		this.image = image;

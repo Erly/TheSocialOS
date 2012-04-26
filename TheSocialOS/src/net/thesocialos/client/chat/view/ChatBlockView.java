@@ -1,6 +1,5 @@
 package net.thesocialos.client.chat.view;
 
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
@@ -17,29 +16,27 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 
-public class ChatBlockView extends Composite{
-
-	private static ChatBlockViewUiBinder uiBinder = GWT
-			.create(ChatBlockViewUiBinder.class);
+public class ChatBlockView extends Composite {
+	
+	private static ChatBlockViewUiBinder uiBinder = GWT.create(ChatBlockViewUiBinder.class);
 	@UiField AbsolutePanel background;
 	@UiField Image lblImage;
 	
-	String name= "example@example.com";
+	String name = "example@example.com";
 	
 	PopupPanel popupPanel = new PopupPanel(true);
 	
-	
-	 
-	private class ChangeColor implements RepeatingCommand{
+	private class ChangeColor implements RepeatingCommand {
 		Boolean isColored = false;
+		
 		@Override
 		public boolean execute() {
 			// TODO Auto-generated method stub
-			if (isColored){
+			if (isColored) {
 				background.setStyleName("chatBlock_background_red", false);
 				background.setStyleName("chatBlock_background_white", true);
 				isColored = false;
-			}else{
+			} else {
 				background.setStyleName("chatBlock_background_red", true);
 				background.setStyleName("chatBlock_background_white", false);
 				isColored = true;
@@ -48,45 +45,42 @@ public class ChatBlockView extends Composite{
 		}
 		
 	}
-
+	
 	interface ChatBlockViewUiBinder extends UiBinder<Widget, ChatBlockView> {
 	}
-
+	
 	public ChatBlockView() {
 		initWidget(uiBinder.createAndBindUi(this));
 		CreatePopUP();
 		Scheduler.get().scheduleFixedPeriod(new ChangeColor(), 3000);
 		
 	}
-	public ChatBlockView(String name){
+	
+	public ChatBlockView(String name) {
 		this();
 		this.name = name;
 	}
 	
-	public AbsolutePanel getBackground(){
+	public AbsolutePanel getBackground() {
 		return background;
 	}
-	public Image getimgAvatar(){
+	
+	public Image getimgAvatar() {
 		return lblImage;
 	}
-
 	
-	
-
-	
-
-	
-
 	@UiHandler("lblImage")
 	void onLblImageMouseOver(MouseOverEvent event) {
-		 
-		  popupPanel.setPopupPosition(event.getClientX(), event.getClientY());
-		  popupPanel.show();
+		
+		popupPanel.setPopupPosition(event.getClientX(), event.getClientY());
+		popupPanel.show();
 	}
+	
 	@UiHandler("lblImage")
 	void onLblImageMouseOut(MouseOutEvent event) {
 		popupPanel.hide();
 	}
+	
 	@UiHandler("lblImage")
 	void onLblImageMouseMove(MouseMoveEvent event) {
 		popupPanel.setPopupPosition(event.getClientX(), event.getClientY());
@@ -94,12 +88,10 @@ public class ChatBlockView extends Composite{
 	
 	private void CreatePopUP() {
 		
-		 
-		 
-		  popupPanel.setStyleName("chatBlock_Popup");
-		  Label lblname = new Label(name);
-		  
-		  popupPanel.add(lblname);
-		}
+		popupPanel.setStyleName("chatBlock_Popup");
+		Label lblname = new Label(name);
+		
+		popupPanel.add(lblname);
+	}
 	
 }

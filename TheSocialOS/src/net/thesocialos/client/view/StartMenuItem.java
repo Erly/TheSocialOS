@@ -26,22 +26,21 @@ import com.google.gwt.user.client.ui.WindowPanelLayout;
 import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 public class StartMenuItem extends Composite {
-
-	private static StartMenuItemUiBinder uiBinder = GWT
-			.create(StartMenuItemUiBinder.class);
-
+	
+	private static StartMenuItemUiBinder uiBinder = GWT.create(StartMenuItemUiBinder.class);
+	
 	interface StartMenuItemUiBinder extends UiBinder<Widget, StartMenuItem> {
 	}
-
+	
 	public StartMenuItem() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
+	
 	@UiField Label text;
 	@UiField Image image;
 	@UiField HorizontalPanel itemHPanel;
 	@UiField FocusPanel itemPanel;
-
+	
 	public StartMenuItem(String name, Image image) {
 		initWidget(uiBinder.createAndBindUi(this));
 		text.setText(name);
@@ -53,18 +52,18 @@ public class StartMenuItem extends Composite {
 		text.setText(app.getName());
 		image.setUrl(app.getImage());
 		final String url = ((FrameApp) app).getUrl();
-		//final Composite application = ((FrameApp) app).getApp();
+		// final Composite application = ((FrameApp) app).getApp();
 		itemPanel.addClickHandler(new ClickHandler() {
-
+			
 			@Override
 			public void onClick(ClickEvent event) {
-				WindowPanelLayout window = new WindowPanelLayout(false, false, new MyCaption(),new Footer());
+				WindowPanelLayout window = new WindowPanelLayout(false, false, new MyCaption(), new Footer());
 				window.setText(text.getText());
 				Frame frame = new Frame(url);
 				
 				window.add(((FrameApp) app).run());
-				//app.setSize("1024px", "600px");
-				//app.setSize(app.getWidth(),app.getHeight());
+				// app.setSize("1024px", "600px");
+				// app.setSize(app.getWidth(),app.getHeight());
 				window.show();
 				window.setPopupPosition(10, 30);
 			}

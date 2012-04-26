@@ -6,7 +6,6 @@ import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.User;
 
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
