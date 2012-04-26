@@ -9,18 +9,19 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.uibinder.client.UiField;
 
 public class DesktopView extends Composite implements Display {
 	
 	interface DesktopUiBinder extends UiBinder<Widget, DesktopView> {
 	}
+	
 	private static DesktopUiBinder uiBinder = GWT.create(DesktopUiBinder.class);
 	@UiField DesktopBar desktopBar;
 	@UiField StartMenu startMenu;

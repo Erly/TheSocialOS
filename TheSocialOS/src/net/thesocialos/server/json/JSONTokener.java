@@ -42,6 +42,7 @@ public class JSONTokener {
 		if (c >= 'a' && c <= 'f') { return c - ('a' - 10); }
 		return -1;
 	}
+	
 	private long character;
 	private boolean eof;
 	private long index;

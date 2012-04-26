@@ -8,10 +8,10 @@ public interface WindowEventHandler extends EventHandler {
 	
 	void onEndDrag(WindowEndDragEvent event);
 	
-	void onTop(WindowOnTopEvent event);
-	
 	void onMaximize(WindowMaximizeEvent windowMaximizeEvent);
 	
 	void onMinimize(WindowMinimizeEvent windowMinimizeEvent);
+	
+	void onTop(WindowOnTopEvent event);
 	
 }

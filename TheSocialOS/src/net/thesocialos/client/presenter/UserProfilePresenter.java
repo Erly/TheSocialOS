@@ -33,6 +33,7 @@ public class UserProfilePresenter implements Presenter {
 		
 		SimplePanel getMainPanel();
 	}
+	
 	private UserDTO user;
 	
 	private final PopupPanel viewProfilePanel = new PopupPanel();

@@ -15,7 +15,6 @@
 package net.thesocialos.server.utils;
 
 import java.io.UnsupportedEncodingException;
-
 import java.security.SecureRandom;
 
 /**
@@ -211,6 +210,7 @@ public class BCrypt {
 		if (x < 0 || x > index_64.length) return -1;
 		return index_64[x];
 	}
+	
 	/**
 	 * Check that a plaintext password matches a previously hashed one
 	 * 

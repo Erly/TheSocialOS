@@ -25,7 +25,6 @@ import net.thesocialos.client.view.NotificationsBoxView;
 import net.thesocialos.client.view.SearchBoxView;
 import net.thesocialos.client.view.StartMenu;
 import net.thesocialos.client.view.StartMenuItem;
-import net.thesocialos.client.view.chat.ChatPanel;
 import net.thesocialos.client.view.deck.SocialDeck;
 import net.thesocialos.shared.model.User;
 
@@ -49,13 +48,10 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -256,37 +252,22 @@ public class DesktopPresenter implements Presenter {
 	}
 	
 	private void bindProgramMenu() {
-		
-		display.getDesktopBar().getProgramsButton().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				MenuBar menuBar = new MenuBar(true);
-				
-				menuBar.addItem(createMenuItem("Program1", AbstractImagePrototype.create(imageResources.logo()), null));
-				menuBar.addItem(createMenuItem("Program2", AbstractImagePrototype.create(imageResources.logo()), null));
-				MenuItem menuItem; // createMenuItem("Program3", AbstractImagePrototype.create(imageResources.logo()));
-				
-				MenuBar menuBar1 = new MenuBar(true);
-				menuBar1.addItem(createMenuItem("Program3.1", AbstractImagePrototype.create(imageResources.logo()),
-						null));
-				menuBar1.addItem(createMenuItem("Program3.2", AbstractImagePrototype.create(imageResources.logo()),
-						null));
-				menuBar1.addItem(createMenuItem("Program3.3", AbstractImagePrototype.create(imageResources.logo()),
-						null));
-				
-				menuBar.addItem(getStringMenuparse("Program3", AbstractImagePrototype.create(imageResources.logo())),
-						true, menuBar1);
-				menuBar.addItem(createMenuItem("Program4", AbstractImagePrototype.create(imageResources.logo()), null));
-				menuBar.addItem(createMenuItem("Program5", AbstractImagePrototype.create(imageResources.logo()), null));
-				programPanel.setPopupPosition(event.getClientX(), event.getClientY());
-				programPanel.add(menuBar);
-				programPanel.show();
-				// MenuItem me
-				
-			}
-		});
+		/*
+		 * display.getDesktopBar().getProgramsButton().addClickHandler(new ClickHandler() {
+		 * @Override public void onClick(ClickEvent event) { MenuBar menuBar = new MenuBar(true);
+		 * menuBar.addItem(createMenuItem("Program1", AbstractImagePrototype.create(imageResources.logo()), null));
+		 * menuBar.addItem(createMenuItem("Program2", AbstractImagePrototype.create(imageResources.logo()), null));
+		 * MenuItem menuItem; // createMenuItem("Program3", AbstractImagePrototype.create(imageResources.logo()));
+		 * MenuBar menuBar1 = new MenuBar(true); menuBar1.addItem(createMenuItem("Program3.1",
+		 * AbstractImagePrototype.create(imageResources.logo()), null)); menuBar1.addItem(createMenuItem("Program3.2",
+		 * AbstractImagePrototype.create(imageResources.logo()), null)); menuBar1.addItem(createMenuItem("Program3.3",
+		 * AbstractImagePrototype.create(imageResources.logo()), null)); menuBar.addItem(getStringMenuparse("Program3",
+		 * AbstractImagePrototype.create(imageResources.logo())), true, menuBar1);
+		 * menuBar.addItem(createMenuItem("Program4", AbstractImagePrototype.create(imageResources.logo()), null));
+		 * menuBar.addItem(createMenuItem("Program5", AbstractImagePrototype.create(imageResources.logo()), null));
+		 * programPanel.setPopupPosition(event.getClientX(), event.getClientY()); programPanel.add(menuBar);
+		 * programPanel.show(); // MenuItem me } });
+		 */
 	}
 	
 	private void bindSearchBox() {

@@ -15,7 +15,6 @@
  */
 package net.thesocialos.shared.messages;
 
-import net.thesocialos.shared.messages.Message;
 
 @SuppressWarnings("serial")
 public class MessageChat extends Message {

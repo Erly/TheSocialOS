@@ -2,11 +2,11 @@ package net.thesocialos.client.app;
 
 public interface IApplication {
 	
-	public String getName();
-	
 	public String getImage();
 	
-	public void setName(String name);
+	public String getName();
 	
 	public void setImage(String image);
+	
+	public void setName(String name);
 }

@@ -7,6 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.thesocialos.server.json.JSONException;
+import net.thesocialos.server.json.JSONObject;
+import net.thesocialos.shared.model.FlickR;
+import net.thesocialos.shared.model.Session;
+import net.thesocialos.shared.model.Twitter;
+import net.thesocialos.shared.model.User;
+
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -16,13 +23,6 @@ import org.scribe.oauth.OAuthService;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-
-import net.thesocialos.server.json.JSONException;
-import net.thesocialos.server.json.JSONObject;
-import net.thesocialos.shared.model.FlickR;
-import net.thesocialos.shared.model.Session;
-import net.thesocialos.shared.model.Twitter;
-import net.thesocialos.shared.model.User;
 
 public class OauthCallback extends HttpServlet {
 	

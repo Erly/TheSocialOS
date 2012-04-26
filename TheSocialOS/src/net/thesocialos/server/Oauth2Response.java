@@ -13,15 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
-
 import net.thesocialos.server.json.JSONException;
 import net.thesocialos.server.json.JSONObject;
 import net.thesocialos.shared.model.Facebook;
 import net.thesocialos.shared.model.Google;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
+
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 public class Oauth2Response extends HttpServlet {
 	

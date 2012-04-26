@@ -4,27 +4,27 @@ import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 public interface WindowDisplay {
 	
-	WindowPanelLayout getWindow();
-	
 	com.google.web.bindery.event.shared.HandlerRegistration addWindowEvents(WindowEventHandler handler);
 	
-	void setWindowTitle(String text);
+	int getHeight();
 	
-	void setPosition(int x, int y);
+	int getwidth();
 	
-	void setMinimized(Boolean minimized);
-	
-	void setMaximized(Boolean maximized);
+	WindowPanelLayout getWindow();
 	
 	int getXposition();
 	
 	int getYPosition();
 	
+	void setMaximized(Boolean maximized);
+	
+	void setMinimized(Boolean minimized);
+	
+	void setPosition(int x, int y);
+	
 	void setSize(int width, int height);
 	
-	int getHeight();
-	
-	int getwidth();
+	void setWindowTitle(String text);
 	
 	void toback();
 	

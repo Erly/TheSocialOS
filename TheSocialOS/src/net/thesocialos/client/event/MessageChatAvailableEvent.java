@@ -24,12 +24,13 @@ public class MessageChatAvailableEvent extends GwtEvent<MessageChatAvailableEven
 	
 	private MessageChat messageChat;
 	
-	public MessageChat getMessageChat() {
-		return messageChat;
-	}
-	
 	public MessageChatAvailableEvent(MessageChat messageChat) {
 		this.messageChat = messageChat;
+	}
+	
+	@Override
+	protected void dispatch(MessageChatAvailableEventHandler handler) {
+		handler.onContentAvailable(this);
 	}
 	
 	@Override
@@ -37,8 +38,7 @@ public class MessageChatAvailableEvent extends GwtEvent<MessageChatAvailableEven
 		return TYPE;
 	}
 	
-	@Override
-	protected void dispatch(MessageChatAvailableEventHandler handler) {
-		handler.onContentAvailable(this);
+	public MessageChat getMessageChat() {
+		return messageChat;
 	}
 }

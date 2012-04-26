@@ -1,6 +1,7 @@
 package net.thesocialos.client;
 
 import java.util.Map;
+
 import net.thesocialos.client.event.AccountAddedEvent;
 import net.thesocialos.client.event.AccountAddedEventHandler;
 import net.thesocialos.client.event.LogoutEvent;
@@ -14,7 +15,6 @@ import net.thesocialos.client.presenter.RegisterPresenter;
 import net.thesocialos.client.presenter.UserProfilePresenter;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
-
 import net.thesocialos.client.view.DesktopView;
 import net.thesocialos.client.view.RegisterView;
 import net.thesocialos.client.view.profile.UserProfileView;
@@ -151,6 +151,10 @@ public class AppController implements ValueChangeHandler<String> {
 		History.newItem("login");
 	}
 	
+	public SimpleEventBus getChatEventBus() {
+		return chatEventBus;
+	}
+	
 	/**
 	 * Method called from the main class during loading to fire the current state of the history and do some minor fixes
 	 * to errors that can occur during the first load.
@@ -241,10 +245,6 @@ public class AppController implements ValueChangeHandler<String> {
 					History.newItem("login");
 			}
 		}
-	}
-	
-	public SimpleEventBus getChatEventBus() {
-		return chatEventBus;
 	}
 	
 	public void setChatEventBus(SimpleEventBus chatEventBus) {

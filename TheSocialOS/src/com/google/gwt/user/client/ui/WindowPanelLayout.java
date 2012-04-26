@@ -122,9 +122,9 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	 * 
 	 */
 	public interface Caption extends HasAllMouseHandlers, HasHTML, HasSafeHtml, IsWidget {
-		int getHeight();
-		
 		public void addWindowEventBus(SimpleEventBus windowEventBus);
+		
+		int getHeight();
 		
 	}
 	
@@ -139,15 +139,15 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		}
 		
 		@Override
-		public int getHeight() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-		
-		@Override
 		public void addWindowEventBus(SimpleEventBus windowEventBus) {
 			// TODO Auto-generated method stub
 			
+		}
+		
+		@Override
+		public int getHeight() {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 	}
 	
@@ -214,17 +214,6 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	 */
 	public WindowPanelLayout(boolean autoHide) {
 		this(autoHide, true);
-	}
-	
-	/**
-	 * Creates an empty dialog box specifying its {@link Caption}. It should not be shown until its child widget has
-	 * been added using {@link #add(Widget)}.
-	 * 
-	 * @param captionWidget
-	 *            the widget that is the DialogBox's header.
-	 */
-	public WindowPanelLayout(Caption captionWidget, Footer footerWidget) {
-		this(false, true, captionWidget, footerWidget);
 	}
 	
 	/**
@@ -308,49 +297,52 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	}
 	
 	/**
-	 * Provides access to the dialog's caption.
+	 * Creates an empty dialog box specifying its {@link Caption}. It should not be shown until its child widget has
+	 * been added using {@link #add(Widget)}.
 	 * 
-	 * @return the logical caption for this dialog box
+	 * @param captionWidget
+	 *            the widget that is the DialogBox's header.
 	 */
-	public Caption getCaption() {
-		return caption;
+	public WindowPanelLayout(Caption captionWidget, Footer footerWidget) {
+		this(false, true, captionWidget, footerWidget);
 	}
 	
 	@Override
-	public String getHTML() {
-		return caption.getHTML();
+	public com.google.web.bindery.event.shared.HandlerRegistration addWindowEvents(WindowEventHandler handler) {
+		// TODO Auto-generated method stub
+		return windowEventBus.addHandler(WindowEvent.TYPE, handler);
 	}
 	
-	@Override
-	public String getText() {
-		return caption.getText();
-	}
-	
-	@Override
-	public void hide() {
-		if (resizeHandlerRegistration != null) {
-			resizeHandlerRegistration.removeHandler();
-			resizeHandlerRegistration = null;
+	protected void beginDragging(MouseDownEvent event) {
+		TheSocialOS.get().getDesktop().add(panel);
+		if (DOM.getCaptureElement() == null) {
+			/*
+			 * Need to check to make sure that we aren't already capturing an element otherwise events will not fire as
+			 * expected. If this check isn't here, any class which extends custom button will not fire its click event
+			 * for example.
+			 */
+			dragging = true;
+			DOM.setCapture(getElement());
+			dragStartX = event.getX();
+			dragStartY = event.getY();
+			moveNativeHandler();
 		}
-		super.hide();
 	}
 	
-	@Override
-	public void onBrowserEvent(Event event) {
-		// If we're not yet dragging, only trigger mouse events if the event occurs
-		// in the caption wrapper
-		
-		switch (event.getTypeInt()) {
-		case Event.ONMOUSEDOWN:
-		case Event.ONMOUSEUP:
-		case Event.ONMOUSEMOVE:
-		case Event.ONMOUSEOVER:
-		case Event.ONMOUSEOUT:
-			
-			if (!dragging && !isCaptionEvent(event)) { return; }
+	protected void beginResizing(MouseDownEvent event) {
+		TheSocialOS.get().getDesktop().add(panel);
+		if (DOM.getCaptureElement() == null) {
+			/*
+			 * Need to check to make sure that we aren't already capturing an element otherwise events will not fire as
+			 * expected. If this check isn't here, any class which extends custom button will not fire its click event
+			 * for example.
+			 */
+			resizing = true;
+			DOM.setCapture(getElement());
+			dragStartX = event.getX();
+			dragStartY = event.getY();
+			moveNativeHandler();
 		}
-		
-		super.onBrowserEvent(event);
 	}
 	
 	/**
@@ -372,72 +364,27 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	}
 	
 	/**
-	 * Sets the html string inside the caption by calling its {@link #setHTML(SafeHtml)} method.
+	 * Called on mouse move in the caption area, continues dragging if it was started by {@link #beginDragging}.
 	 * 
-	 * Use {@link #setWidget(Widget)} to set the contents inside the {@link DialogBox}.
-	 * 
-	 * @param html
-	 *            the object's new HTML
+	 * @see #beginDragging
+	 * @see #endDragging
+	 * @param event
+	 *            the mouse move event that continues dragging
 	 */
-	@Override
-	public void setHTML(SafeHtml html) {
-		caption.setHTML(html);
-	}
-	
-	/**
-	 * Sets the html string inside the caption by calling its {@link #setHTML(SafeHtml)} method. Only known safe HTML
-	 * should be inserted in here.
-	 * 
-	 * Use {@link #setWidget(Widget)} to set the contents inside the {@link DialogBox}.
-	 * 
-	 * @param html
-	 *            the object's new HTML
-	 */
-	@Override
-	public void setHTML(String html) {
-		caption.setHTML(SafeHtmlUtils.fromTrustedString(html));
-	}
-	
-	/**
-	 * Sets the text inside the caption by calling its {@link #setText(String)} method.
-	 * 
-	 * Use {@link #setWidget(Widget)} to set the contents inside the {@link DialogBox}.
-	 * 
-	 * @param text
-	 *            the object's new text
-	 */
-	@Override
-	public void setText(String text) {
-		caption.setText(text);
-	}
-	
-	@Override
-	public void show() {
-		if (resizeHandlerRegistration == null) {
-			resizeHandlerRegistration = Window.addResizeHandler(new ResizeHandler() {
-				@Override
-				public void onResize(ResizeEvent event) {
-					windowWidth = event.getWidth();
-				}
-			});
-		}
-		
-		super.show();
-	}
-	
-	protected void beginResizing(MouseDownEvent event) {
-		TheSocialOS.get().getDesktop().add(panel);
-		if (DOM.getCaptureElement() == null) {
-			/*
-			 * Need to check to make sure that we aren't already capturing an element otherwise events will not fire as
-			 * expected. If this check isn't here, any class which extends custom button will not fire its click event
-			 * for example.
-			 */
-			resizing = true;
-			DOM.setCapture(getElement());
-			dragStartX = event.getX();
-			dragStartY = event.getY();
-			moveNativeHandler();
+	protected void continueDragging(int x, int y) {
+		// onMouseMove(caption.asWidget(), event.getX(), event.getY());
+		if (dragging) {
+			
+			int absX = x; // + getAbsoluteLeft();
+			
+			int absY = y;// + getAbsoluteTop();
+			
+			// if the mouse is off the screen to the left, right, or top, don't
+			// move the dialog box. This would let users lose dialog boxes, which
+			// would be bad for modal popups.
+			if (absX < clientLeft || absX >= windowWidth || absY < clientTop) { return; }
+			setPopupPosition(absX - dragStartX, absY - dragStartY);
+			checkSpace();
 		}
 	}
 	
@@ -480,111 +427,6 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		}
 	}
 	
-	protected void endResizing() {
-		TheSocialOS.get().getDesktop().remove(panel);
-		// windowEventBus.fireEvent(new WindowEndDragEvent());
-		resizing = false;
-		NativeEventHandlerRegistration.removeHandler();
-		
-		DOM.releaseCapture(getElement());
-	}
-	
-	/**
-	 * Called on mouse down in the caption area, begins the dragging loop by turning on event capture.
-	 * 
-	 * @see DOM#setCapture
-	 * @see #continueDragging
-	 * @param event
-	 *            the mouse down event that triggered dragging
-	 */
-	
-	private void moveNativeHandler() {
-		
-		NativeEventHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
-			
-			@Override
-			public void onPreviewNativeEvent(NativePreviewEvent event) {
-				// TODO Auto-generated method stub
-				if (Event.ONMOUSEMOVE == event.getTypeInt()) {
-					if (dragging == true) {
-						continueDragging(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
-					} else {
-						continueResizing(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
-					}
-					
-				} else if (Event.ONMOUSEUP == event.getTypeInt()) {
-					if (dragging == true) {
-						endDragging();
-					} else {
-						endResizing();
-					}
-					
-				}
-				event.cancel();
-			}
-		});
-	}
-	
-	protected void beginDragging(MouseDownEvent event) {
-		TheSocialOS.get().getDesktop().add(panel);
-		if (DOM.getCaptureElement() == null) {
-			/*
-			 * Need to check to make sure that we aren't already capturing an element otherwise events will not fire as
-			 * expected. If this check isn't here, any class which extends custom button will not fire its click event
-			 * for example.
-			 */
-			dragging = true;
-			DOM.setCapture(getElement());
-			dragStartX = event.getX();
-			dragStartY = event.getY();
-			moveNativeHandler();
-		}
-	}
-	
-	/**
-	 * Called on mouse move in the caption area, continues dragging if it was started by {@link #beginDragging}.
-	 * 
-	 * @see #beginDragging
-	 * @see #endDragging
-	 * @param event
-	 *            the mouse move event that continues dragging
-	 */
-	protected void continueDragging(int x, int y) {
-		// onMouseMove(caption.asWidget(), event.getX(), event.getY());
-		if (dragging) {
-			
-			int absX = x; // + getAbsoluteLeft();
-			
-			int absY = y;// + getAbsoluteTop();
-			
-			// if the mouse is off the screen to the left, right, or top, don't
-			// move the dialog box. This would let users lose dialog boxes, which
-			// would be bad for modal popups.
-			if (absX < clientLeft || absX >= windowWidth || absY < clientTop) { return; }
-			setPopupPosition(absX - dragStartX, absY - dragStartY);
-			checkSpace();
-		}
-	}
-	
-	/**
-	 * Called on mouse up in the caption area, ends dragging by ending event capture.
-	 * 
-	 * @param event
-	 *            the mouse up event that ended dragging
-	 * 
-	 * @see DOM#releaseCapture
-	 * @see #beginDragging
-	 * @see #endDragging
-	 */
-	protected void endDragging() {
-		TheSocialOS.get().getDesktop().remove(panel);
-		windowEventBus.fireEvent(new WindowEndDragEvent());
-		dragging = false;
-		NativeEventHandlerRegistration.removeHandler();
-		
-		DOM.releaseCapture(getElement());
-	}
-	
 	/**
 	 * Enables or disables text selection for the element. A circular reference will be created when disabling text
 	 * selection. Disabling should e cleared when the element is detached. See the <code>Component</code> source for an
@@ -623,6 +465,154 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	}
 	
 	/**
+	 * Called on mouse up in the caption area, ends dragging by ending event capture.
+	 * 
+	 * @param event
+	 *            the mouse up event that ended dragging
+	 * 
+	 * @see DOM#releaseCapture
+	 * @see #beginDragging
+	 * @see #endDragging
+	 */
+	protected void endDragging() {
+		TheSocialOS.get().getDesktop().remove(panel);
+		windowEventBus.fireEvent(new WindowEndDragEvent());
+		dragging = false;
+		NativeEventHandlerRegistration.removeHandler();
+		
+		DOM.releaseCapture(getElement());
+	}
+	
+	protected void endResizing() {
+		TheSocialOS.get().getDesktop().remove(panel);
+		// windowEventBus.fireEvent(new WindowEndDragEvent());
+		resizing = false;
+		NativeEventHandlerRegistration.removeHandler();
+		
+		DOM.releaseCapture(getElement());
+	}
+	
+	/**
+	 * Provides access to the dialog's caption.
+	 * 
+	 * @return the logical caption for this dialog box
+	 */
+	public Caption getCaption() {
+		return caption;
+	}
+	
+	@Override
+	public int getHeight() {
+		// TODO Auto-generated method stub
+		return getOffsetHeight();
+	}
+	
+	@Override
+	public String getHTML() {
+		return caption.getHTML();
+	}
+	
+	@Override
+	public String getText() {
+		return caption.getText();
+	}
+	
+	@Override
+	public int getwidth() {
+		// TODO Auto-generated method stub
+		return getOffsetWidth();
+	}
+	
+	@Override
+	public WindowPanelLayout getWindow() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+	
+	@Override
+	public int getXposition() {
+		// TODO Auto-generated method stub
+		return getAbsoluteLeft();
+	}
+	
+	@Override
+	public int getYPosition() {
+		// TODO Auto-generated method stub
+		return getAbsoluteTop();
+	}
+	
+	@Override
+	public void hide() {
+		if (resizeHandlerRegistration != null) {
+			resizeHandlerRegistration.removeHandler();
+			resizeHandlerRegistration = null;
+		}
+		super.hide();
+	}
+	
+	private boolean isCaptionEvent(NativeEvent event) {
+		EventTarget target = event.getEventTarget();
+		if (com.google.gwt.dom.client.Element.is(target)) {
+		
+		return getCellElement(0, 1).getParentElement().isOrHasChild(com.google.gwt.dom.client.Element.as(target)); }
+		return false;
+	}
+	
+	/**
+	 * Called on mouse down in the caption area, begins the dragging loop by turning on event capture.
+	 * 
+	 * @see DOM#setCapture
+	 * @see #continueDragging
+	 * @param event
+	 *            the mouse down event that triggered dragging
+	 */
+	
+	private void moveNativeHandler() {
+		
+		NativeEventHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
+			
+			@Override
+			public void onPreviewNativeEvent(NativePreviewEvent event) {
+				// TODO Auto-generated method stub
+				if (Event.ONMOUSEMOVE == event.getTypeInt()) {
+					if (dragging == true) {
+						continueDragging(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
+					} else {
+						continueResizing(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
+					}
+					
+				} else if (Event.ONMOUSEUP == event.getTypeInt()) {
+					if (dragging == true) {
+						endDragging();
+					} else {
+						endResizing();
+					}
+					
+				}
+				event.cancel();
+			}
+		});
+	}
+	
+	@Override
+	public void onBrowserEvent(Event event) {
+		// If we're not yet dragging, only trigger mouse events if the event occurs
+		// in the caption wrapper
+		
+		switch (event.getTypeInt()) {
+		case Event.ONMOUSEDOWN:
+		case Event.ONMOUSEUP:
+		case Event.ONMOUSEMOVE:
+		case Event.ONMOUSEOVER:
+		case Event.ONMOUSEOUT:
+			
+			if (!dragging && !isCaptionEvent(event)) { return; }
+		}
+		
+		super.onBrowserEvent(event);
+	}
+	
+	/**
 	 * <b>Affected Elements:</b>
 	 * <ul>
 	 * <li>-caption = text at the top of the {@link DialogBox}.</li>
@@ -653,73 +643,36 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		super.onPreviewNativeEvent(event);
 	}
 	
-	private boolean isCaptionEvent(NativeEvent event) {
-		EventTarget target = event.getEventTarget();
-		if (com.google.gwt.dom.client.Element.is(target)) {
-		
-		return getCellElement(0, 1).getParentElement().isOrHasChild(com.google.gwt.dom.client.Element.as(target)); }
-		return false;
+	/**
+	 * Sets the html string inside the caption by calling its {@link #setHTML(SafeHtml)} method.
+	 * 
+	 * Use {@link #setWidget(Widget)} to set the contents inside the {@link DialogBox}.
+	 * 
+	 * @param html
+	 *            the object's new HTML
+	 */
+	@Override
+	public void setHTML(SafeHtml html) {
+		caption.setHTML(html);
+	}
+	
+	/**
+	 * Sets the html string inside the caption by calling its {@link #setHTML(SafeHtml)} method. Only known safe HTML
+	 * should be inserted in here.
+	 * 
+	 * Use {@link #setWidget(Widget)} to set the contents inside the {@link DialogBox}.
+	 * 
+	 * @param html
+	 *            the object's new HTML
+	 */
+	@Override
+	public void setHTML(String html) {
+		caption.setHTML(SafeHtmlUtils.fromTrustedString(html));
 	}
 	
 	@Override
-	public WindowPanelLayout getWindow() {
-		// TODO Auto-generated method stub
-		return this;
-	}
-	
-	@Override
-	public com.google.web.bindery.event.shared.HandlerRegistration addWindowEvents(WindowEventHandler handler) {
-		// TODO Auto-generated method stub
-		return windowEventBus.addHandler(WindowEvent.TYPE, handler);
-	}
-	
-	@Override
-	public void setWindowTitle(String text) {
-		caption.setText(text);
-		
-	}
-	
-	@Override
-	public void setPosition(int x, int y) {
-		
-		this.setPopupPosition(x, y);
-		
-	}
-	
-	@Override
-	public int getXposition() {
-		// TODO Auto-generated method stub
-		return getAbsoluteLeft();
-	}
-	
-	@Override
-	public int getYPosition() {
-		// TODO Auto-generated method stub
-		return getAbsoluteTop();
-	}
-	
-	@Override
-	public int getHeight() {
-		// TODO Auto-generated method stub
-		return getOffsetHeight();
-	}
-	
-	@Override
-	public int getwidth() {
-		// TODO Auto-generated method stub
-		return getOffsetWidth();
-	}
-	
-	@Override
-	public void toback() {
-		System.out.println("to back");
-		getElement().getStyle().setZIndex(0);
-	}
-	
-	@Override
-	public void toFront() {
-		System.out.println("to front");
-		getElement().getStyle().setZIndex(100);
+	public void setMaximized(Boolean maximized) {
+		isMaximized = maximized;
 		
 	}
 	
@@ -734,6 +687,13 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	}
 	
 	@Override
+	public void setPosition(int x, int y) {
+		
+		this.setPopupPosition(x, y);
+		
+	}
+	
+	@Override
 	public void setSize(int width, int height) {
 		setWidth(width + "px");
 		getWidget().setWidth(width + "px");
@@ -743,9 +703,49 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		
 	}
 	
+	/**
+	 * Sets the text inside the caption by calling its {@link #setText(String)} method.
+	 * 
+	 * Use {@link #setWidget(Widget)} to set the contents inside the {@link DialogBox}.
+	 * 
+	 * @param text
+	 *            the object's new text
+	 */
 	@Override
-	public void setMaximized(Boolean maximized) {
-		isMaximized = maximized;
+	public void setText(String text) {
+		caption.setText(text);
+	}
+	
+	@Override
+	public void setWindowTitle(String text) {
+		caption.setText(text);
+		
+	}
+	
+	@Override
+	public void show() {
+		if (resizeHandlerRegistration == null) {
+			resizeHandlerRegistration = Window.addResizeHandler(new ResizeHandler() {
+				@Override
+				public void onResize(ResizeEvent event) {
+					windowWidth = event.getWidth();
+				}
+			});
+		}
+		
+		super.show();
+	}
+	
+	@Override
+	public void toback() {
+		System.out.println("to back");
+		getElement().getStyle().setZIndex(0);
+	}
+	
+	@Override
+	public void toFront() {
+		System.out.println("to front");
+		getElement().getStyle().setZIndex(100);
 		
 	}
 	

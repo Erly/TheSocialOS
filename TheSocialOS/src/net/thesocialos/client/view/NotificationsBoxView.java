@@ -4,18 +4,20 @@ import net.thesocialos.client.presenter.NotificationsBoxPresenter.Display;
 import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.User;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class NotificationsBoxView extends Composite implements Display {
 	
+	interface NotificationsBoxUiBinder extends UiBinder<Widget, NotificationsBoxView> {
+	}
 	private static NotificationsBoxUiBinder uiBinder = GWT.create(NotificationsBoxUiBinder.class);
 	@UiField(provided = true) CellList<User> cellListFriends = new CellList<User>(new AbstractCell<User>() {
 		@Override
@@ -45,13 +47,17 @@ public class NotificationsBoxView extends Composite implements Display {
 			// TODO
 		}
 	});
-	@UiField StackLayoutPanel stackLayoutPanel;
 	
-	interface NotificationsBoxUiBinder extends UiBinder<Widget, NotificationsBoxView> {
-	}
+	@UiField StackLayoutPanel stackLayoutPanel;
 	
 	public NotificationsBoxView() {
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	@Override
+	public CellList<User> getContactsCellList() {
+		// TODO Auto-generated method stub
+		return cellListFriends;
 	}
 	
 	@Override
@@ -64,12 +70,6 @@ public class NotificationsBoxView extends Composite implements Display {
 	public LabelText getGroupsLabelText() {
 		// TODO Auto-generated method stub
 		return labelTextGroups;
-	}
-	
-	@Override
-	public CellList<User> getContactsCellList() {
-		// TODO Auto-generated method stub
-		return cellListFriends;
 	}
 	
 	@Override

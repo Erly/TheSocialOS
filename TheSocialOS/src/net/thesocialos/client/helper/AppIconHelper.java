@@ -2,6 +2,7 @@ package net.thesocialos.client.helper;
 
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.view.Icon;
+
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;

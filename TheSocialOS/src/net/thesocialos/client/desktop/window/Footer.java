@@ -59,7 +59,7 @@ public class Footer extends SimplePanel implements com.google.gwt.user.client.ui
 	}
 	
 	@Override
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -77,7 +77,7 @@ public class Footer extends SimplePanel implements com.google.gwt.user.client.ui
 	}
 	
 	@Override
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -89,9 +89,32 @@ public class Footer extends SimplePanel implements com.google.gwt.user.client.ui
 	}
 	
 	@Override
+	public int getHeight() {
+		// TODO Auto-generated method stub
+		return getOffsetHeight();
+	}
+	
+	@Override
 	public String getHTML() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * Get the title of the footer
+	 * 
+	 * @return The String representation of the text
+	 */
+	@Override
+	public String getText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void setHTML(SafeHtml html) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**
@@ -109,17 +132,6 @@ public class Footer extends SimplePanel implements com.google.gwt.user.client.ui
 	}
 	
 	/**
-	 * Get the title of the footer
-	 * 
-	 * @return The String representation of the text
-	 */
-	@Override
-	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/**
 	 * Set the title of the footer
 	 * 
 	 * @param The
@@ -129,18 +141,6 @@ public class Footer extends SimplePanel implements com.google.gwt.user.client.ui
 	public void setText(String text) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	@Override
-	public void setHTML(SafeHtml html) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public int getHeight() {
-		// TODO Auto-generated method stub
-		return getOffsetHeight();
 	}
 	
 }

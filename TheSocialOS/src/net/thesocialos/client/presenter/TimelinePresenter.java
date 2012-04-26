@@ -13,6 +13,7 @@ public class TimelinePresenter implements Presenter {
 		
 		HasWidgets getMainPanel();
 	}
+	
 	SimpleEventBus eventBus;
 	
 	Display display;

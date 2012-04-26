@@ -14,11 +14,7 @@ import net.thesocialos.client.view.BusyIndicatorView;
 import net.thesocialos.client.view.LoginView;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.User;
-<<<<<<< HEAD
 
-=======
-// import com.allen_sauer.gwt.log.client.Log;
->>>>>>> c3a2f59af0c481814bc40bcb16e13f31fbc04947
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Cookies;
@@ -73,10 +69,6 @@ public class TheSocialOS implements EntryPoint {
 	BusyIndicatorPresenter busyIndicator = new BusyIndicatorPresenter(eventBus, new BusyIndicatorView());
 	
 	static UserProfilePresenter profilePresenter = null;
-<<<<<<< HEAD
-=======
-	// private Comet comet;
->>>>>>> c3a2f59af0c481814bc40bcb16e13f31fbc04947
 	
 	// i18n initialization
 	private static SocialOSConstants constants = GWT.create(SocialOSConstants.class);
@@ -92,21 +84,13 @@ public class TheSocialOS implements EntryPoint {
 	 * This method is called when the user is logged on and calls the app controller so it can create the UI that
 	 * corresponds to the current token.
 	 */
-<<<<<<< HEAD
 	protected void createUI() {
 		// User can't go to login register page because he is already logged in.
 		if (History.getToken().equals("login") || History.getToken().equals("register")) History.newItem("desktop");
 		appControler.go();
-=======
-	@Override
-	public void onModuleLoad() {
-		singleton = this;
->>>>>>> c3a2f59af0c481814bc40bcb16e13f31fbc04947
-		
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * @return The main DesktopView.
 	 */
 	public AbsolutePanel getDesktop() {
@@ -121,8 +105,6 @@ public class TheSocialOS implements EntryPoint {
 	}
 	
 	/**
-=======
->>>>>>> c3a2f59af0c481814bc40bcb16e13f31fbc04947
 	 * Verifies if the user has a valid SessionID in a cookie. If not it checks if the token is 'login' or 'register',
 	 * else it changes the token to 'login'. Finally it loads the view that corresponds with the token whether the user
 	 * is logged or not.
@@ -162,12 +144,7 @@ public class TheSocialOS implements EntryPoint {
 				} else {
 					// User is loged in
 					CacheLayer.UserCalls.setUser(result);
-<<<<<<< HEAD
 					CacheLayer.UserCalls.refreshColumns();
-=======
-					// Window.alert("Cargando cuentas");
-					// refreshCloudAccounts();
->>>>>>> c3a2f59af0c481814bc40bcb16e13f31fbc04947
 					new RPCXSRF<Map<Key<Account>, Account>>(userService) {
 						
 						@Override
@@ -197,77 +174,12 @@ public class TheSocialOS implements EntryPoint {
 			}
 			
 			@Override
-<<<<<<< HEAD
 			protected void XSRFcallService(AsyncCallback<User> cb) {
 				userService.getLoggedUser(sessionID, cb);
-=======
-			public void onFailure(Throwable caught) {
-				GWT.log(caught.getMessage());
-				Window.alert(caught.getMessage());
->>>>>>> c3a2f59af0c481814bc40bcb16e13f31fbc04947
 			}
 		}.retry(3);
 		
 	}
-<<<<<<< HEAD
-=======
-	
-	/**
-	 * This method is called when the user is logged on and calls the app controller so it can create the UI that
-	 * corresponds to the current token.
-	 */
-	protected void createUI() {
-		if (History.getToken().equals("login") || History.getToken().equals("register")) // User can't go to login
-																							// register page because he
-																							// is already logged in.
-			History.newItem("desktop");
-		appControler.go();
-		
-	}
-	
-	/**
-	 * Loads the login view.
-	 */
-	protected void showLoginView() {
-		LoginPresenter loginPresenter = new LoginPresenter(eventBus, new LoginView());
-		loginPresenter.go(root);
-	}
-	
-	/**
-	 * @return An instance of the main class.
-	 */
-	public static TheSocialOS get() {
-		return singleton;
-	}
-	
-	/**
-	 * @return The class instance containing constant messages in different languages.
-	 */
-	public static SocialOSConstants getConstants() {
-		return constants;
-	}
-	
-	/**
-	 * @return The class instance containing dynamic messages in different languages.
-	 */
-	public static SocialOSMessages getMessages() {
-		return messages;
-	}
-	
-	/**
-	 * @return The main eventBus instance.
-	 */
-	public static SimpleEventBus getEventBus() {
-		return eventBus;
-	}
-	
-	/**
-	 * @return the jSessionID
-	 */
-	public String getJSessionID() {
-		return jSessionID;
-	}
->>>>>>> c3a2f59af0c481814bc40bcb16e13f31fbc04947
 	
 	/**
 	 * @return the sessionID
@@ -304,7 +216,6 @@ public class TheSocialOS implements EntryPoint {
 		this.desktop = desktop;
 	}
 	
-<<<<<<< HEAD
 	/**
 	 * Loads the login view.
 	 */
@@ -312,7 +223,4 @@ public class TheSocialOS implements EntryPoint {
 		LoginPresenter loginPresenter = new LoginPresenter(eventBus, new LoginView());
 		loginPresenter.go(root);
 	}
-	
-=======
->>>>>>> c3a2f59af0c481814bc40bcb16e13f31fbc04947
 }

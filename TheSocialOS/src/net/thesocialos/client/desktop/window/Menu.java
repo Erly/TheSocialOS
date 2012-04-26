@@ -1,25 +1,14 @@
 package net.thesocialos.client.desktop.window;
 
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class Menu extends HorizontalPanel {
 	
 	private button btnMin = new button();
 	
-	public button getBtnMin() {
-		return btnMin;
-	}
-	
-	public button getBtnMax() {
-		return btnMax;
-	}
-	
-	public button getBtnClose() {
-		return btnClose;
-	}
-	
 	private button btnMax = new button();
+	
 	private button btnClose = new button();
 	
 	public Menu() {
@@ -49,6 +38,17 @@ public class Menu extends HorizontalPanel {
 		add(btnClose);
 		btnClose.setSize("24px", "26px");
 		setStyleName("window-menu");
+	}
+	
+	public button getBtnClose() {
+		return btnClose;
+	}
+	public button getBtnMax() {
+		return btnMax;
+	}
+	
+	public button getBtnMin() {
+		return btnMin;
 	}
 	
 }

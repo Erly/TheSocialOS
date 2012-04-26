@@ -8,6 +8,7 @@ import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.desktop.window.FolderWindow;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Facebook;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

@@ -22,15 +22,15 @@ public class Node {
 		this.childs = childs;
 	}
 	
+	public Command getCommand() {
+		return command;
+	}
+	
 	public String getName() {
 		return nodeName;
 	}
 	
 	public Iterator<Node> getNodeIterator() {
 		return childs.iterator();
-	}
-	
-	public Command getCommand() {
-		return command;
 	}
 }

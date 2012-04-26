@@ -3,21 +3,23 @@ package net.thesocialos.client.chat.view;
 import net.thesocialos.client.chat.view.ChatMenuPresenter.Display;
 import net.thesocialos.shared.model.User;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ChatMenuView extends Composite implements Display {
 	
-	private static ChatMenuViewUiBinder uiBinder = GWT.create(ChatMenuViewUiBinder.class);
+	interface ChatMenuViewUiBinder extends UiBinder<Widget, ChatMenuView> {
+	}
 	
+	private static ChatMenuViewUiBinder uiBinder = GWT.create(ChatMenuViewUiBinder.class);
 	@UiField Label lblEmail;
 	@UiField(provided = true) CellList<User> cellList = new CellList<User>(new AbstractCell<User>() {
 		@Override
@@ -26,10 +28,8 @@ public class ChatMenuView extends Composite implements Display {
 		}
 	});
 	@UiField HorizontalPanel ConversationsPanel;
-	@UiField Label lblState;
 	
-	interface ChatMenuViewUiBinder extends UiBinder<Widget, ChatMenuView> {
-	}
+	@UiField Label lblState;
 	
 	public ChatMenuView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -46,9 +46,10 @@ public class ChatMenuView extends Composite implements Display {
 	}
 	
 	@Override
-	public Label getState() {
+	public HorizontalPanel getConversationsPanel() {
 		// TODO Auto-generated method stub
-		return lblState;
+		return ConversationsPanel;
+		
 	}
 	
 	@Override
@@ -58,10 +59,9 @@ public class ChatMenuView extends Composite implements Display {
 	}
 	
 	@Override
-	public HorizontalPanel getConversationsPanel() {
+	public Label getState() {
 		// TODO Auto-generated method stub
-		return ConversationsPanel;
-		
+		return lblState;
 	}
 	
 }

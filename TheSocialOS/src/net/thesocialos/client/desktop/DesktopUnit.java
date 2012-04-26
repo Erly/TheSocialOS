@@ -6,45 +6,31 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public abstract class DesktopUnit {
 	
-	protected int programID;
-	protected int x;
-	protected int y;
-	protected int zPosition;
-	
-	private boolean minimized = false;
-	private boolean maximized = false;
-	
-	private boolean isMaximizable = true;
-	private boolean isMinimizable = true;
-	
-	private int beforeWidth = 0;
-	private int beforeHeight = 0;
-	
-	private int beforeX = 0;
-	private int beforeY = 0;
-	
 	public enum TypeUnit {
 		APPLICATION, INFO, POPUP, STATIC
 	}
+	protected int programID;
+	protected int x;
+	protected int y;
+	
+	protected int zPosition;
+	private boolean minimized = false;
+	
+	private boolean maximized = false;
+	private boolean isMaximizable = true;
+	
+	private boolean isMinimizable = true;
+	private int beforeWidth = 0;
+	
+	private int beforeHeight = 0;
+	private int beforeX = 0;
+	
+	private int beforeY = 0;
 	
 	protected TypeUnit typeUnit;
 	protected WindowDisplay display;
 	
-	public void toFront() {
-		display.toFront();
-	}
-	
-	public void toBack() {
-		display.toback();
-	}
-	
-	public abstract void toZPosition(int position);
-	
-	public abstract int getZposition();
-	
-	public void setPosition(int x, int y) {
-		display.setPosition(x, y);
-	}
+	public abstract void close(AbsolutePanel absolutePanel);
 	
 	public int getAbsoluteLeft() {
 		
@@ -56,20 +42,73 @@ public abstract class DesktopUnit {
 		return display.getYPosition();
 	}
 	
-	public abstract void close(AbsolutePanel absolutePanel);
-	
-	public abstract void open(AbsolutePanel absolutePanel);
+	/**
+	 * Return Height of the window in pixels
+	 * 
+	 * @return int
+	 */
+	public int getHeight() {
+		
+		return display.getHeight();
+	}
 	
 	/**
-	 * Set the window minimized if the minimized is true or restore if minimized is true
+	 * Return the identification of the application
 	 * 
-	 * @param minimized
+	 * @return
 	 */
-	public void setMinimized(Boolean minimized) {
-		
-		this.minimized = minimized;
-		display.setMinimized(minimized);
+	public int getID() {
+		return programID;
 	}
+	
+	/**
+	 * Return Width of the window in pixels
+	 * 
+	 * @return int
+	 */
+	public int getWidth() {
+		return display.getwidth();
+	}
+	
+	public abstract int getZposition();
+	
+	/**
+	 * Return if the window is Maximized
+	 * 
+	 * @return boolean
+	 */
+	public boolean isMaximizable() {
+		return isMaximizable;
+	}
+	
+	/**
+	 * Return if the window is now Maximized
+	 * 
+	 * @return boolean
+	 */
+	public boolean isMaximized() {
+		return maximized;
+	}
+	
+	/**
+	 * Return if the window is Minimized
+	 * 
+	 * @return boolean
+	 */
+	public boolean isMinimizable() {
+		return isMinimizable;
+	}
+	
+	/**
+	 * Return if the window is now Minimized
+	 * 
+	 * @return boolean
+	 */
+	public boolean isMinimized() {
+		return minimized;
+	}
+	
+	public abstract void open(AbsolutePanel absolutePanel);
 	
 	/**
 	 * Set Windows maximized. If maximized is false the window restore to normal view
@@ -99,67 +138,18 @@ public abstract class DesktopUnit {
 	}
 	
 	/**
-	 * Return the identification of the application
+	 * Set the window minimized if the minimized is true or restore if minimized is true
 	 * 
-	 * @return
+	 * @param minimized
 	 */
-	public int getID() {
-		return programID;
-	}
-	
-	/**
-	 * Return Width of the window in pixels
-	 * 
-	 * @return int
-	 */
-	public int getWidth() {
-		return display.getwidth();
-	}
-	
-	/**
-	 * Return Height of the window in pixels
-	 * 
-	 * @return int
-	 */
-	public int getHeight() {
+	public void setMinimized(Boolean minimized) {
 		
-		return display.getHeight();
+		this.minimized = minimized;
+		display.setMinimized(minimized);
 	}
 	
-	/**
-	 * Return if the window is Minimized
-	 * 
-	 * @return boolean
-	 */
-	public boolean isMinimizable() {
-		return isMinimizable;
-	}
-	
-	/**
-	 * Return if the window is Maximized
-	 * 
-	 * @return boolean
-	 */
-	public boolean isMaximizable() {
-		return isMaximizable;
-	}
-	
-	/**
-	 * Return if the window is now Minimized
-	 * 
-	 * @return boolean
-	 */
-	public boolean isMinimized() {
-		return minimized;
-	}
-	
-	/**
-	 * Return if the window is now Maximized
-	 * 
-	 * @return boolean
-	 */
-	public boolean isMaximized() {
-		return maximized;
+	public void setPosition(int x, int y) {
+		display.setPosition(x, y);
 	}
 	
 	/**
@@ -174,5 +164,15 @@ public abstract class DesktopUnit {
 		
 		display.setSize(width, height);
 	}
+	
+	public void toBack() {
+		display.toback();
+	}
+	
+	public void toFront() {
+		display.toFront();
+	}
+	
+	public abstract void toZPosition(int position);
 	
 }

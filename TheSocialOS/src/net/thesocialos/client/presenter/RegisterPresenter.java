@@ -4,7 +4,6 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
-
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.User;
 

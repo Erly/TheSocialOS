@@ -31,25 +31,13 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 public class SearchBoxPresenter extends DesktopUnit {
 	
-	SingleSelectionModel<User> selectionModel;
-	ListDataProvider<User> dataProvider;
-	/*
-	 * Los modelos de la cajas de seleccion de los usuarios
-	 */
-	ProvidesKey<User> KEY_USERS_PROVIDER;
-	List<User> usersList = new ArrayList<User>();
-	
-	/*
-	 * Los modelos de la cajas de seleccion de los grupos
-	 */
-	ProvidesKey<Object> KEY_GROUPS_PROVIDER;
-	List<Object> groupsList = new ArrayList<Object>();
-	
-	Display display;
-	
 	public interface Display {
 		
 		Widget asWidget();
+		
+		Image getAvatarIMG();
+		
+		CellList<User> getComponentsList();
 		
 		Label getLabelFriends();
 		
@@ -59,16 +47,28 @@ public class SearchBoxPresenter extends DesktopUnit {
 		
 		Label getLabelInvite();
 		
-		Image getAvatarIMG();
-		
-		CellList<User> getComponentsList();
-		
 		VerticalPanel getSearchBoxPanel();
 		
 		StackLayoutPanel getStackLayout();
 		
 		void setComponentsList(CellList<User> cellList);
 	}
+	SingleSelectionModel<User> selectionModel;
+	ListDataProvider<User> dataProvider;
+	/*
+	 * Los modelos de la cajas de seleccion de los usuarios
+	 */
+	ProvidesKey<User> KEY_USERS_PROVIDER;
+	
+	List<User> usersList = new ArrayList<User>();
+	/*
+	 * Los modelos de la cajas de seleccion de los grupos
+	 */
+	ProvidesKey<Object> KEY_GROUPS_PROVIDER;
+	
+	List<Object> groupsList = new ArrayList<Object>();
+	
+	Display display;
 	
 	public SearchBoxPresenter(Display display) {
 		programID = AppConstants.SEARCHBOX;
@@ -88,6 +88,115 @@ public class SearchBoxPresenter extends DesktopUnit {
 		dataProvider = new ListDataProvider<User>(usersList);
 		dataProvider.addDataDisplay(display.getComponentsList());
 		handlers();
+	}
+	
+	private void addPetitionContact(User contactUser) {
+		CacheLayer.ContactCalls.addPetitionContact(contactUser, new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println(caught.getMessage());
+				
+			}
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				System.out.println(result);
+				
+			}
+		});
+	}
+	
+	@Override
+	public void close(AbsolutePanel absolutePanel) {
+		absolutePanel.remove(display.asWidget());
+		
+	}
+	
+	@Override
+	public int getAbsoluteLeft() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int getAbsoluteTop() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/**
+	 * Obtiene todos los grupos del servidor
+	 */
+	private void getGroups() {
+		
+	}
+	
+	@Override
+	public int getHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	/**
+	 * Obtiene todos los usuarios del servidor
+	 */
+	private void getUsers() {
+		
+		usersList.clear();
+		dataProvider.flush();
+		dataProvider.refresh();
+		CacheLayer.ContactCalls.getUsers(true, new AsyncCallback<Map<String, User>>() {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onSuccess(Map<String, User> result) {
+				
+				// display.setComponentsList(new CellList<User>(usersCell()));
+				
+				usersList.addAll(result.values());
+				dataProvider.flush();
+				dataProvider.refresh();
+				
+			}
+		});
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				
+			}
+		});
+		display.getComponentsList().addDomHandler(new ContextMenuHandler() {
+			
+			@Override
+			public void onContextMenu(ContextMenuEvent event) {
+				
+				DomEvent.fireNativeEvent(
+						Document.get().createClickEvent(0, event.getNativeEvent().getScreenX(),
+								event.getNativeEvent().getScreenY(), event.getNativeEvent().getClientX(),
+								event.getNativeEvent().getClientY(), false, false, false, false),
+						display.getComponentsList());
+				
+			}
+		}, ContextMenuEvent.getType());
+		
+	}
+	
+	@Override
+	public int getWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int getZposition() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	/*
@@ -140,96 +249,24 @@ public class SearchBoxPresenter extends DesktopUnit {
 		});
 	}
 	
-	private void addPetitionContact(User contactUser) {
-		CacheLayer.ContactCalls.addPetitionContact(contactUser, new AsyncCallback<Boolean>() {
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				System.out.println(caught.getMessage());
-				
-			}
-			
-			@Override
-			public void onSuccess(Boolean result) {
-				System.out.println(result);
-				
-			}
-		});
-	}
-	
-	/**
-	 * Obtiene todos los usuarios del servidor
-	 */
-	private void getUsers() {
-		
-		usersList.clear();
-		dataProvider.flush();
-		dataProvider.refresh();
-		CacheLayer.ContactCalls.getUsers(true, new AsyncCallback<Map<String, User>>() {
-			
-			@Override
-			public void onSuccess(Map<String, User> result) {
-				
-				// display.setComponentsList(new CellList<User>(usersCell()));
-				
-				usersList.addAll(result.values());
-				dataProvider.flush();
-				dataProvider.refresh();
-				
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			@Override
-			public void onSelectionChange(SelectionChangeEvent event) {
-				
-			}
-		});
-		display.getComponentsList().addDomHandler(new ContextMenuHandler() {
-			
-			@Override
-			public void onContextMenu(ContextMenuEvent event) {
-				
-				DomEvent.fireNativeEvent(
-						Document.get().createClickEvent(0, event.getNativeEvent().getScreenX(),
-								event.getNativeEvent().getScreenY(), event.getNativeEvent().getClientX(),
-								event.getNativeEvent().getClientY(), false, false, false, false),
-						display.getComponentsList());
-				
-			}
-		}, ContextMenuEvent.getType());
-		
-	}
-	
-	/**
-	 * Obtiene todos los grupos del servidor
-	 */
-	private void getGroups() {
-		
-	}
-	
-	@Override
-	public int getZposition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public void close(AbsolutePanel absolutePanel) {
-		absolutePanel.remove(display.asWidget());
-		
-	}
-	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
 		absolutePanel.add(display.asWidget(), x, y);
 		display.asWidget().setVisible(true);
 		getUsers();
+		
+	}
+	
+	@Override
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+		
+	}
+	
+	@Override
+	public void setSize(int height, int width) {
+		// TODO Auto-generated method stub
 		
 	}
 	
@@ -243,43 +280,6 @@ public class SearchBoxPresenter extends DesktopUnit {
 	public void toZPosition(int position) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	@Override
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
-		
-	}
-	
-	@Override
-	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public void setSize(int height, int width) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public int getAbsoluteLeft() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getAbsoluteTop() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 }

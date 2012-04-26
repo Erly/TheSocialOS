@@ -9,17 +9,18 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 
 public class ProfileAttr extends Composite {
 	
 	interface ProfileAttrUiBinder extends UiBinder<FocusPanel, ProfileAttr> {
 	}
+	
 	private static ProfileAttrUiBinder uiBinder = GWT.create(ProfileAttrUiBinder.class);
 	@UiField Label attrName;
 	@UiField Label attrValue;

@@ -3,6 +3,8 @@ package net.thesocialos.client.desktop;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -11,8 +13,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.web.bindery.event.shared.EventBus;
-
-import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
 
 public class DesktopManager {
 	EventBus eventBus;
@@ -91,12 +91,6 @@ public class DesktopManager {
 		return true;
 	}
 	
-	public boolean maximize(DesktopUnit desktopUnit) {
-		
-		return null != null;
-		
-	}
-	
 	/**
 	 * Check if window position is correct
 	 * 
@@ -124,6 +118,64 @@ public class DesktopManager {
 		}
 	}
 	
+	private void handlers() {
+		eventBus.addHandler(DesktopEvent.TYPE, new DesktopEventHandler() {
+			
+			@Override
+			public void onClose(DesktopEventOnClose event) {
+				removeUnit(event.getDesktopUnit());
+				
+			}
+			
+			@Override
+			public void onEndDrag(DesktopEventonEndDrag event) {
+				
+			}
+			
+			@Override
+			public void onMaximize(DesktopEventOnMaximize event) {
+				MaximizeWindow(event.getDesktopUnit());
+				
+			}
+			
+			@Override
+			public void onMinimize(DesktopEventOnMinimize event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onOpen(DesktopEventOnOpen event) {
+				addUnit(event.getDesktopUnit());
+				
+			}
+			
+			@Override
+			public void onTop(DesktopEventOnTop event) {
+				setWindowsZPositions(event.getDesktopUnit());
+				
+			}
+		});
+	}
+	
+	public boolean maximize(DesktopUnit desktopUnit) {
+		
+		return null != null;
+		
+	}
+	
+	private void MaximizeWindow(DesktopUnit desktopUnit) {
+		
+		if (desktopUnit.isMaximized()) {
+			desktopUnit.setMaximized(false, 0, 0, 0, 0);
+		} else {
+			desktopUnit.setMaximized(true, absolutePanelDesktop.getOffsetWidth() - 7,
+					absolutePanelDesktop.getOffsetHeight() - 7, absolutePanelDesktop.getAbsoluteTop(),
+					absolutePanelDesktop.getAbsoluteLeft());
+		}
+		
+	}
+	
 	/**
 	 * Delete a windows of the desktop
 	 * 
@@ -146,58 +198,6 @@ public class DesktopManager {
 			iterator.next().toBack();
 		}
 		desktopUnit.toFront();
-	}
-	
-	private void MaximizeWindow(DesktopUnit desktopUnit) {
-		
-		if (desktopUnit.isMaximized()) {
-			desktopUnit.setMaximized(false, 0, 0, 0, 0);
-		} else {
-			desktopUnit.setMaximized(true, absolutePanelDesktop.getOffsetWidth() - 7,
-					absolutePanelDesktop.getOffsetHeight() - 7, absolutePanelDesktop.getAbsoluteTop(),
-					absolutePanelDesktop.getAbsoluteLeft());
-		}
-		
-	}
-	
-	private void handlers() {
-		eventBus.addHandler(DesktopEvent.TYPE, new DesktopEventHandler() {
-			
-			@Override
-			public void onOpen(DesktopEventOnOpen event) {
-				addUnit(event.getDesktopUnit());
-				
-			}
-			
-			@Override
-			public void onMinimize(DesktopEventOnMinimize event) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onMaximize(DesktopEventOnMaximize event) {
-				MaximizeWindow(event.getDesktopUnit());
-				
-			}
-			
-			@Override
-			public void onClose(DesktopEventOnClose event) {
-				removeUnit(event.getDesktopUnit());
-				
-			}
-			
-			@Override
-			public void onEndDrag(DesktopEventonEndDrag event) {
-				
-			}
-			
-			@Override
-			public void onTop(DesktopEventOnTop event) {
-				setWindowsZPositions(event.getDesktopUnit());
-				
-			}
-		});
 	}
 	
 }

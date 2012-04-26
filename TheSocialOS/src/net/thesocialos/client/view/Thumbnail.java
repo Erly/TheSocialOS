@@ -48,6 +48,7 @@ public class Thumbnail extends Composite implements HasText {
 	@UiField FocusPanel panel;
 	private TYPE type;
 	private SERVICE service;
+	
 	public Thumbnail() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}

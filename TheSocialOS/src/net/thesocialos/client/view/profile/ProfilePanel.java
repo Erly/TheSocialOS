@@ -1,8 +1,9 @@
 package net.thesocialos.client.view.profile;
 
-import net.thesocialos.client.CacheLayer;
 import java.util.Iterator;
 import java.util.Map;
+
+import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
 import net.thesocialos.shared.model.Account;
@@ -14,9 +15,9 @@ import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.uibinder.client.UiField;
 import com.googlecode.objectify.Key;
 
 public class ProfilePanel extends Composite implements Display {

@@ -4,26 +4,28 @@ import net.thesocialos.client.presenter.ContactsPresenter.Display;
 import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.User;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DecoratedTabPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ContactsView extends Composite implements Display {
 	
+	interface ContactsUiBinder extends UiBinder<Widget, ContactsView> {
+	}
 	private static ContactsUiBinder uiBinder = GWT.create(ContactsUiBinder.class);
 	@UiField LabelText lblName;
 	@UiField LabelText lblSurname;
@@ -75,6 +77,7 @@ public class ContactsView extends Composite implements Display {
 	@UiField DecoratedTabPanel dTPUserGroups;
 	@UiField HorizontalPanel ContactsMenu;
 	@UiField TextBox txtSearch;
+	
 	@UiField(provided = true) CellList<User> listContacts = new CellList<User>(new AbstractCell<User>() {
 		@Override
 		public void render(Context context, User value, SafeHtmlBuilder sb) {
@@ -96,9 +99,6 @@ public class ContactsView extends Composite implements Display {
 			sb.appendHtmlConstant("</td></tr></table>");
 		}
 	});
-	
-	interface ContactsUiBinder extends UiBinder<Widget, ContactsView> {
-	}
 	
 	public ContactsView() {
 		
@@ -124,43 +124,13 @@ public class ContactsView extends Composite implements Display {
 	}
 	
 	@Override
-	public DecoratedTabPanel getGroupUsersPanel() {
-		
-		return dTPUserGroups;
-	}
-	
-	@Override
-	public CellList getUserListBox() {
-		
-		return listContacts;
-	}
-	
-	@Override
-	public CellList<Group> getGroupListBox() {
-		// TODO Auto-generated method stub
-		return ListGroups;
-	}
-	
-	@Override
-	public Image getImageFriend() {
+	public Button GetBtnUserPrivateMessage() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public Image getImageGroup() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Image getImageSearchContact() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Image getImageSearchGroup() {
+	public Button GetBtnUserSearchPrivateMessage() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -169,12 +139,6 @@ public class ContactsView extends Composite implements Display {
 	public LabelText getContactName() {
 		// TODO Auto-generated method stub
 		return lblName;
-	}
-	
-	@Override
-	public LabelText getContactSurname() {
-		// TODO Auto-generated method stub
-		return lblSurname;
 	}
 	
 	@Override
@@ -187,6 +151,24 @@ public class ContactsView extends Composite implements Display {
 	public LabelText getContactSearchSurname() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public LabelText getContactSurname() {
+		// TODO Auto-generated method stub
+		return lblSurname;
+	}
+	
+	@Override
+	public HorizontalPanel getContatcsMenu() {
+		// TODO Auto-generated method stub
+		return ContactsMenu;
+	}
+	
+	@Override
+	public CellList<Group> getGroupListBox() {
+		// TODO Auto-generated method stub
+		return ListGroups;
 	}
 	
 	@Override
@@ -214,39 +196,57 @@ public class ContactsView extends Composite implements Display {
 	}
 	
 	@Override
-	public Label GetGroupSizeSearch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public Label GetGroupSizeCountSearch() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public Button GetBtnUserPrivateMessage() {
+	public Label GetGroupSizeSearch() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public Button GetBtnUserSearchPrivateMessage() {
+	public DecoratedTabPanel getGroupUsersPanel() {
+		
+		return dTPUserGroups;
+	}
+	
+	@Override
+	public Image getImageFriend() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public HorizontalPanel getContatcsMenu() {
+	public Image getImageGroup() {
 		// TODO Auto-generated method stub
-		return ContactsMenu;
+		return null;
+	}
+	
+	@Override
+	public Image getImageSearchContact() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Image getImageSearchGroup() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
 	public TextBox getSearchBox() {
 		// TODO Auto-generated method stub
 		return txtSearch;
+	}
+	
+	@Override
+	public CellList getUserListBox() {
+		
+		return listContacts;
 	}
 	
 }

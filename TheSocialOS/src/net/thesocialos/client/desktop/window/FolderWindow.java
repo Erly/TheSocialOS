@@ -3,15 +3,6 @@ package net.thesocialos.client.desktop.window;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.WindowPanelLayout;
-
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
@@ -31,80 +22,40 @@ import net.thesocialos.client.view.Thumbnail;
 import net.thesocialos.client.view.Thumbnail.SERVICE;
 import net.thesocialos.client.view.Thumbnail.TYPE;
 
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.WindowPanelLayout;
+
 public class FolderWindow extends DesktopUnit implements IApplication {
 	
+	private class TypeAndService {
+		
+		TYPE type;
+		SERVICE service;
+		
+		public TypeAndService(TYPE type, SERVICE service) {
+			this.type = type;
+			this.service = service;
+		}
+	}
 	public final static String PICTURES = TheSocialOS.getConstants().pictures();
 	public final static String VIDEOS = TheSocialOS.getConstants().videos();
 	public final static String MUSIC = TheSocialOS.getConstants().music();
-	public final static String OTHER = TheSocialOS.getConstants().other();
 	
+	public final static String OTHER = TheSocialOS.getConstants().other();
 	InfoPanel infoPanel = new InfoPanel();
 	FlexTable table = new FlexTable();
 	public String title = "";
 	private int i = 0;
 	private int j = 0;
 	private boolean hasAlbums = false;
+	
 	private String contentType = null;
-	
-	public FolderWindow(WindowPanelLayout display, int idProgram) {
-		this.programID = idProgram;
-		this.display = display;
-		this.title = "Prueba";
-		this.typeUnit = TypeUnit.APPLICATION;
-		this.x = 1;
-		this.y = 30;
-		display.addWindowEvents(new WindowEventHandler() {
-			
-			@Override
-			public void onEndDrag(WindowEndDragEvent event) {
-				TheSocialOS.getEventBus().fireEvent(new DesktopEventonEndDrag(FolderWindow.this));
-				
-			}
-			
-			@Override
-			public void onClose(WindowCloseEvent event) {
-				
-				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnClose(FolderWindow.this));
-				
-			}
-			
-			@Override
-			public void onTop(WindowOnTopEvent event) {
-				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnTop(FolderWindow.this));
-				
-			}
-			
-			@Override
-			public void onMaximize(WindowMaximizeEvent windowMaximizeEvent) {
-				if (isMaximizable()) {
-					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMaximize(FolderWindow.this));
-				}
-				
-			}
-			
-			@Override
-			public void onMinimize(WindowMinimizeEvent windowMinimizeEvent) {
-				if (isMinimizable()) {
-					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(FolderWindow.this));
-				}
-				
-			}
-		});
-		
-	}
-	
-	public FolderWindow(String title, WindowPanelLayout display, int idProgram) {
-		this(display, idProgram);
-		this.title = title;
-		
-	}
-	
-	public FolderWindow(String title, String contentType, WindowPanelLayout display, int idProgram) {
-		this(display, idProgram);
-		this.title = title;
-		this.contentType = contentType;
-		
-	}
 	
 	public FolderWindow(String title, HashSet<? extends Media> mediaSet, WindowPanelLayout display, int idProgram) {
 		this(display, idProgram);
@@ -128,24 +79,64 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		}
 	}
 	
-	private void show() {
+	public FolderWindow(String title, String contentType, WindowPanelLayout display, int idProgram) {
+		this(display, idProgram);
+		this.title = title;
+		this.contentType = contentType;
 		
-		display.setWindowTitle(title);
-		VerticalPanel vPanel = new VerticalPanel();
-		vPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		vPanel.setHeight("100%");
-		vPanel.setWidth("100%");
-		display.getWindow().add(vPanel);
-		if (!hasAlbums && null != contentType) {
-			infoPanel.setText(TheSocialOS.getMessages().folder_NoContent(contentType));
-			infoPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-			vPanel.add(infoPanel);
-		}
-		ScrollPanel panel = new ScrollPanel();
-		panel.add(table);
-		vPanel.add(panel);
-		setSize(800, 480);
-		// panel.setSize("800px", "480px");
+	}
+	
+	public FolderWindow(String title, WindowPanelLayout display, int idProgram) {
+		this(display, idProgram);
+		this.title = title;
+		
+	}
+	
+	public FolderWindow(WindowPanelLayout display, int idProgram) {
+		this.programID = idProgram;
+		this.display = display;
+		this.title = "Prueba";
+		this.typeUnit = TypeUnit.APPLICATION;
+		this.x = 1;
+		this.y = 30;
+		display.addWindowEvents(new WindowEventHandler() {
+			
+			@Override
+			public void onClose(WindowCloseEvent event) {
+				
+				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnClose(FolderWindow.this));
+				
+			}
+			
+			@Override
+			public void onEndDrag(WindowEndDragEvent event) {
+				TheSocialOS.getEventBus().fireEvent(new DesktopEventonEndDrag(FolderWindow.this));
+				
+			}
+			
+			@Override
+			public void onMaximize(WindowMaximizeEvent windowMaximizeEvent) {
+				if (isMaximizable()) {
+					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMaximize(FolderWindow.this));
+				}
+				
+			}
+			
+			@Override
+			public void onMinimize(WindowMinimizeEvent windowMinimizeEvent) {
+				if (isMinimizable()) {
+					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(FolderWindow.this));
+				}
+				
+			}
+			
+			@Override
+			public void onTop(WindowOnTopEvent event) {
+				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnTop(FolderWindow.this));
+				
+			}
+		});
+		
 	}
 	
 	public void addMedia(HashSet<? extends Media> mediaSet) {
@@ -194,6 +185,24 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		}
 	}
 	
+	@Override
+	public void close(AbsolutePanel absolutePanel) {
+		absolutePanel.remove(display.getWindow());
+		
+	}
+	
+	@Override
+	public String getImage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	private TypeAndService getTypeAndService(Media media) {
 		TypeAndService typeAndService = null;
 		if (media instanceof PicasaAPI.Album) {
@@ -218,32 +227,17 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		return typeAndService;
 	}
 	
-	private class TypeAndService {
-		
-		TYPE type;
-		SERVICE service;
-		
-		public TypeAndService(TYPE type, SERVICE service) {
-			this.type = type;
-			this.service = service;
-		}
+	@Override
+	public int getZposition() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public String getImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public void setName(String name) {
-		// TODO Auto-generated method stub
+	public void open(AbsolutePanel absolutePanel) {
+		show();
+		absolutePanel.add(display.getWindow(), x, y);
+		display.getWindow().setVisible(true);
 		
 	}
 	
@@ -254,28 +248,34 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	}
 	
 	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void show() {
+		
+		display.setWindowTitle(title);
+		VerticalPanel vPanel = new VerticalPanel();
+		vPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+		vPanel.setHeight("100%");
+		vPanel.setWidth("100%");
+		display.getWindow().add(vPanel);
+		if (!hasAlbums && null != contentType) {
+			infoPanel.setText(TheSocialOS.getMessages().folder_NoContent(contentType));
+			infoPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+			vPanel.add(infoPanel);
+		}
+		ScrollPanel panel = new ScrollPanel();
+		panel.add(table);
+		vPanel.add(panel);
+		setSize(800, 480);
+		// panel.setSize("800px", "480px");
+	}
+	
+	@Override
 	public void toZPosition(int position) {
 		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public int getZposition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public void close(AbsolutePanel absolutePanel) {
-		absolutePanel.remove(display.getWindow());
-		
-	}
-	
-	@Override
-	public void open(AbsolutePanel absolutePanel) {
-		show();
-		absolutePanel.add(display.getWindow(), x, y);
-		display.getWindow().setVisible(true);
 		
 	}
 	

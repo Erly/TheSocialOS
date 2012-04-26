@@ -2,7 +2,6 @@ package net.thesocialos.client.helper;
 
 import java.util.HashSet;
 
-import com.google.gwt.user.client.ui.WindowPanelLayout;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
@@ -15,7 +14,39 @@ import net.thesocialos.client.desktop.window.FolderWindow;
 import net.thesocialos.client.desktop.window.Footer;
 import net.thesocialos.client.desktop.window.MyCaption;
 
+import com.google.gwt.user.client.ui.WindowPanelLayout;
+
 public class MediaHelper {
+	
+	/**
+	 * Loads the Facebook albums (if there is any) in the passed FolderWindow
+	 * 
+	 * @param folder
+	 *            The FolderWindow in which the albums are gonna be loaded
+	 */
+	private static void loadFacebookAlbums(final FolderWindow folder) {
+		new FacebookAPI().loadAlbumsInFolder(folder);
+	}
+	
+	/**
+	 * Loads the Flickr albums (if there is any) in the passed FolderWindow
+	 * 
+	 * @param folder
+	 *            The FolderWindow in which the albums are gonna be loaded
+	 */
+	private static void loadFlickrAlbums(final FolderWindow folder) {
+		new FlickrAPI().loadAlbumsInFolder(folder);
+	}
+	
+	/**
+	 * Loads the Picasa albums (if there is any) in the passed FolderWindow
+	 * 
+	 * @param folder
+	 *            The FolderWindow in which the albums are gonna be loaded
+	 */
+	private static void loadPicasaAlbums(final FolderWindow folder) {
+		new PicasaAPI().loadAlbumsInFolder(folder);
+	}
 	
 	/**
 	 * Loads the photo albums in a new FolderWindow
@@ -44,35 +75,5 @@ public class MediaHelper {
 		folder.addMedia(mediaSet);
 		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 		// folder.show();
-	}
-	
-	/**
-	 * Loads the Picasa albums (if there is any) in the passed FolderWindow
-	 * 
-	 * @param folder
-	 *            The FolderWindow in which the albums are gonna be loaded
-	 */
-	private static void loadPicasaAlbums(final FolderWindow folder) {
-		new PicasaAPI().loadAlbumsInFolder(folder);
-	}
-	
-	/**
-	 * Loads the Facebook albums (if there is any) in the passed FolderWindow
-	 * 
-	 * @param folder
-	 *            The FolderWindow in which the albums are gonna be loaded
-	 */
-	private static void loadFacebookAlbums(final FolderWindow folder) {
-		new FacebookAPI().loadAlbumsInFolder(folder);
-	}
-	
-	/**
-	 * Loads the Flickr albums (if there is any) in the passed FolderWindow
-	 * 
-	 * @param folder
-	 *            The FolderWindow in which the albums are gonna be loaded
-	 */
-	private static void loadFlickrAlbums(final FolderWindow folder) {
-		new FlickrAPI().loadAlbumsInFolder(folder);
 	}
 }

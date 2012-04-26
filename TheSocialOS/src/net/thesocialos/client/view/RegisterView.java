@@ -13,13 +13,14 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.TextBox;
 
 public class RegisterView extends Composite implements Display {
 	
 	interface RegisterViewUiBinder extends UiBinder<DockLayoutPanel, RegisterView> {
 	}
+	
 	private static RegisterViewUiBinder uiBinder = GWT.create(RegisterViewUiBinder.class);
 	@UiField Label lblIncorrect;
 	@UiField Label lblEmail;

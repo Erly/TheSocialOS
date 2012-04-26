@@ -3,6 +3,12 @@ package net.thesocialos.client.api;
 import java.util.Iterator;
 import java.util.Map;
 
+import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.desktop.window.FolderWindow;
+import net.thesocialos.client.oauth.OAuth;
+import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.model.FlickR;
+
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -13,12 +19,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
 import com.googlecode.objectify.Key;
-
-import net.thesocialos.client.CacheLayer;
-import net.thesocialos.client.desktop.window.FolderWindow;
-import net.thesocialos.client.oauth.OAuth;
-import net.thesocialos.shared.model.Account;
-import net.thesocialos.shared.model.FlickR;
 
 public class FlickrAPI {
 	

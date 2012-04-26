@@ -11,13 +11,11 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.WindowPanelLayout.Caption;
-
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class MyCaption extends SimplePanel implements Caption {
@@ -82,34 +80,6 @@ public class MyCaption extends SimplePanel implements Caption {
 	}
 	
 	@Override
-	public String getHTML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public void setHTML(String html) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public String getText() {
-		return label.getText();
-	}
-	
-	@Override
-	public void setText(String text) {
-		label.setText(text);
-	}
-	
-	@Override
-	public void setHTML(SafeHtml html) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		// TODO Auto-generated method stub
 		// return addMouseDownHandler(handler);//fPanel.addMouseDownHandler(handler);
@@ -117,7 +87,7 @@ public class MyCaption extends SimplePanel implements Caption {
 	}
 	
 	@Override
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -135,7 +105,7 @@ public class MyCaption extends SimplePanel implements Caption {
 	}
 	
 	@Override
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -160,5 +130,33 @@ public class MyCaption extends SimplePanel implements Caption {
 	public int getHeight() {
 		// TODO Auto-generated method stub
 		return this.getOffsetHeight();
+	}
+	
+	@Override
+	public String getHTML() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getText() {
+		return label.getText();
+	}
+	
+	@Override
+	public void setHTML(SafeHtml html) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setHTML(String html) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setText(String text) {
+		label.setText(text);
 	}
 }

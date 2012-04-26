@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import net.thesocialos.server.utils.ChannelServer;
 
+import net.thesocialos.server.utils.ChannelServer;
 import net.thesocialos.shared.Chat;
 import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.messages.MessageChat;
@@ -23,15 +23,6 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 	 */
 	
 	private static final long serialVersionUID = 1L;
-	
-	@Override
-	public void init() throws ServletException {
-		
-		// ObjectifyService.register(LineChat.class);
-		// TODO Auto-generated method stub
-		super.init();
-		
-	}
 	
 	@Override
 	public List<Chat> examplePush(String text) {
@@ -72,6 +63,15 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 		 * Chat(text,user.getEmail()); ofy.put(chat); sendEvent(ofy); return true;
 		 */
 		return null;
+	}
+	
+	@Override
+	public void init() throws ServletException {
+		
+		// ObjectifyService.register(LineChat.class);
+		// TODO Auto-generated method stub
+		super.init();
+		
 	}
 	
 	private void sendEvent(Objectify ofy) {

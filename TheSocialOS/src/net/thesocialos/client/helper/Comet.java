@@ -3,7 +3,6 @@ package net.thesocialos.client.helper;
 import net.thesocialos.client.channel.Channel;
 import net.thesocialos.client.channel.SocketListener;
 import net.thesocialos.client.event.MessageChatAvailableEvent;
-
 import net.thesocialos.shared.messages.ChannelTextMessage;
 import net.thesocialos.shared.messages.Message;
 import net.thesocialos.shared.messages.Message.Type;
@@ -11,7 +10,6 @@ import net.thesocialos.shared.messages.MessageChat;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.rpc.SerializationStreamFactory;
@@ -28,6 +26,28 @@ public class Comet {
 		
 	}
 	
+	/**
+	 * Handle messages pushed from the server.
+	 */
+	public void handleMessage(Message msg) {
+		switch (msg.getType()) {
+		
+		case NEW_CHATMSG_AVAILABLE:
+			GWT.log("Pushed msg received: NEW_CONTENT_AVAILABLE");
+			
+			// eventBus.fireEvent(new MessageChatAvailableEvent(((MessageChatAvailableMessage) msg).getMessage()));
+			break;
+		
+		case TEXT_MESSAGE:
+			String ttext = ((ChannelTextMessage) msg).get();
+			GWT.log("Pushed msg received: TEXT_MESSAGE: " + ttext);
+			break;
+		
+		default:
+			Window.alert("Unknown message type: " + msg.getType());
+		}
+	}
+	
 	public void listenToChannel(User user) {
 		// channel = ChannelFactory.createChannel(user.getChannelID());
 		// pushServiceStreamFactory= (SerializationStreamFactory) PushService.App.getInstance();
@@ -35,8 +55,8 @@ public class Comet {
 		channel.open(new SocketListener() {
 			
 			@Override
-			public void onOpen() {
-				System.out.println("Conectado");
+			public void onClose() {
+				// TODO Auto-generated method stub
 				
 			}
 			
@@ -62,33 +82,11 @@ public class Comet {
 			}
 			
 			@Override
-			public void onClose() {
-				// TODO Auto-generated method stub
+			public void onOpen() {
+				System.out.println("Conectado");
 				
 			}
 		});
-	}
-	
-	/**
-	 * Handle messages pushed from the server.
-	 */
-	public void handleMessage(Message msg) {
-		switch (msg.getType()) {
-		
-		case NEW_CHATMSG_AVAILABLE:
-			GWT.log("Pushed msg received: NEW_CONTENT_AVAILABLE");
-			
-			// eventBus.fireEvent(new MessageChatAvailableEvent(((MessageChatAvailableMessage) msg).getMessage()));
-			break;
-		
-		case TEXT_MESSAGE:
-			String ttext = ((ChannelTextMessage) msg).get();
-			GWT.log("Pushed msg received: TEXT_MESSAGE: " + ttext);
-			break;
-		
-		default:
-			Window.alert("Unknown message type: " + msg.getType());
-		}
 	}
 	
 }

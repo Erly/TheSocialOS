@@ -16,15 +16,15 @@ public class WindowEndDragEvent extends WindowEvent {
 	}
 	
 	@Override
-	public com.google.gwt.event.shared.GwtEvent.Type<WindowEventHandler> getAssociatedType() {
-		// TODO Auto-generated method stub
-		return TYPE;
-	}
-	
-	@Override
 	protected void dispatch(WindowEventHandler handler) {
 		handler.onEndDrag(this);
 		
+	}
+	
+	@Override
+	public com.google.gwt.event.shared.GwtEvent.Type<WindowEventHandler> getAssociatedType() {
+		// TODO Auto-generated method stub
+		return TYPE;
 	}
 	
 	public int getxPosition() {

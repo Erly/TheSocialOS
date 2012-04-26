@@ -10,10 +10,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class InfoPanel extends Composite implements HasText {
 	
-	private static InfoPanelUiBinder uiBinder = GWT.create(InfoPanelUiBinder.class);
-	
 	interface InfoPanelUiBinder extends UiBinder<Widget, InfoPanel> {
 	}
+	
+	private static InfoPanelUiBinder uiBinder = GWT.create(InfoPanelUiBinder.class);
 	
 	@UiField Label label;
 	
