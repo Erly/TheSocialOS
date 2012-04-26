@@ -7,7 +7,6 @@ import javax.persistence.Id;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
-import com.googlecode.objectify.annotation.Parent;
 
 @Cached
 public class Session implements Serializable {
@@ -15,10 +14,6 @@ public class Session implements Serializable {
 	@Id String SessionID; // SessionID of the cookie
 	Date expireDate;
 	private Key<User> user;
-	
-	public String getSessionID() {
-		return SessionID;
-	}
 	
 	public Session() {
 		
@@ -28,6 +23,10 @@ public class Session implements Serializable {
 		this.SessionID = SessionID;
 		this.expireDate = expireDate;
 		this.user = user;
+	}
+	
+	public String getSessionID() {
+		return SessionID;
 	}
 	
 	public Key<User> getUser() {

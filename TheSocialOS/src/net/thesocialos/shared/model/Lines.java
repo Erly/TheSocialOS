@@ -18,39 +18,39 @@ public class Lines {
 		
 	}
 	
+	public Key<Conversation> getConverOwner() {
+		return converOwner;
+	}
+	
 	public int getDate() {
 		return date;
 	}
 	
-	public void setDate(int date) {
-		this.date = date;
+	public Long getId() {
+		return id;
 	}
 	
 	public String getText() {
 		return text;
 	}
 	
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-	public Key<Conversation> getConverOwner() {
-		return converOwner;
+	public Key<User> getUserOwner() {
+		return userOwner;
 	}
 	
 	public void setConverOwner(Key<Conversation> converOwner) {
 		this.converOwner = converOwner;
 	}
 	
-	public Key<User> getUserOwner() {
-		return userOwner;
+	public void setDate(int date) {
+		this.date = date;
+	}
+	
+	public void setText(String text) {
+		this.text = text;
 	}
 	
 	public void setUserOwner(Key<User> userOwner) {
 		this.userOwner = userOwner;
-	}
-	
-	public Long getId() {
-		return id;
 	}
 }

@@ -11,12 +11,12 @@ import com.google.gwt.user.client.ui.Button;
 
 public class ImageUpload extends Composite {
 	
-	private static ImageUploadUiBinder uiBinder = GWT.create(ImageUploadUiBinder.class);
-	@UiField Button cancelButton;
-	@UiField Button uploadButton;
-	
 	interface ImageUploadUiBinder extends UiBinder<Widget, ImageUpload> {
 	}
+	private static ImageUploadUiBinder uiBinder = GWT.create(ImageUploadUiBinder.class);
+	@UiField Button cancelButton;
+	
+	@UiField Button uploadButton;
 	
 	public ImageUpload() {
 		initWidget(uiBinder.createAndBindUi(this));

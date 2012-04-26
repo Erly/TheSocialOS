@@ -1,7 +1,5 @@
 package net.thesocialos.client.view.window;
 
-import net.thesocialos.client.TheSocialOS;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -12,10 +10,8 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -94,41 +90,13 @@ public class MyCaption extends SimplePanel implements Caption {
 	}
 	
 	@Override
-	public String getHTML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public void setHTML(String html) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public String getText() {
-		return label.getText();
-	}
-	
-	@Override
-	public void setText(String text) {
-		label.setText(text);
-	}
-	
-	@Override
-	public void setHTML(SafeHtml html) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -146,7 +114,7 @@ public class MyCaption extends SimplePanel implements Caption {
 	}
 	
 	@Override
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -155,5 +123,33 @@ public class MyCaption extends SimplePanel implements Caption {
 	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public String getHTML() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getText() {
+		return label.getText();
+	}
+	
+	@Override
+	public void setHTML(SafeHtml html) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setHTML(String html) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setText(String text) {
+		label.setText(text);
 	}
 }

@@ -14,10 +14,6 @@ import com.googlecode.objectify.Key;
 
 public class Plus {
 	
-	public class People {
-		
-	}
-	
 	public class Activities {
 		public class List {
 			String userid = null;
@@ -28,8 +24,17 @@ public class Plus {
 			public List() {
 			}
 			
-			public void setUserId(String userid) {
-				this.userid = userid;
+			public void execute(AsyncCallback<JavaScriptObject> cb) {
+				Google googleAccount = getGoogleAccount();
+				if (null == getGoogleAccount()) return;
+				
+				String url = "https://www.googleapis.com/plus/v1/people/" + userid + "/activities/" + collection
+						+ "?access_token=" + googleAccount.getAuthToken();
+				if (0 != maxResults) url += "&maxResults=" + maxResults;
+				if (null != pageToken) url += "&pageToken=" + pageToken;
+				
+				JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+				jsonp.requestObject(url, cb);
 			}
 			
 			public void setCollection(String collection) {
@@ -44,17 +49,8 @@ public class Plus {
 				this.pageToken = pageToken;
 			}
 			
-			public void execute(AsyncCallback<JavaScriptObject> cb) {
-				Google googleAccount = getGoogleAccount();
-				if (null == getGoogleAccount()) return;
-				
-				String url = "https://www.googleapis.com/plus/v1/people/" + userid + "/activities/" + collection
-						+ "?access_token=" + googleAccount.getAuthToken();
-				if (0 != maxResults) url += "&maxResults=" + maxResults;
-				if (null != pageToken) url += "&pageToken=" + pageToken;
-				
-				JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-				jsonp.requestObject(url, cb);
+			public void setUserId(String userid) {
+				this.userid = userid;
 			}
 		}
 		
@@ -76,20 +72,24 @@ public class Plus {
 			return list;
 		}
 		
-		public List list(String userid, String collection, String pageToken) {
-			List list = list(userid, collection);
+		public List list(String userid, String collection, int maxresults, String pageToken) {
+			List list = list(userid, collection, maxresults);
 			list.setPageToken(pageToken);
 			return list;
 		}
 		
-		public List list(String userid, String collection, int maxresults, String pageToken) {
-			List list = list(userid, collection, maxresults);
+		public List list(String userid, String collection, String pageToken) {
+			List list = list(userid, collection);
 			list.setPageToken(pageToken);
 			return list;
 		}
 	}
 	
 	public class Comments {
+		
+	}
+	
+	public class People {
 		
 	}
 	

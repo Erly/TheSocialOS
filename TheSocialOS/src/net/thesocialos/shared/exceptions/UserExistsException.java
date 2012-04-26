@@ -12,11 +12,6 @@ public class UserExistsException extends Exception {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public UserExistsException(Throwable cause) {
-		super(cause);
-		// TODO Auto-generated constructor stub
-	}
-	
 	public UserExistsException(String message, Throwable cause) {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
@@ -24,6 +19,11 @@ public class UserExistsException extends Exception {
 	
 	public UserExistsException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		// super(message, cause, enableSuppression, writableStackTrace);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public UserExistsException(Throwable cause) {
+		super(cause);
 		// TODO Auto-generated constructor stub
 	}
 	

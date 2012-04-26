@@ -27,6 +27,16 @@ public class FacebookAPI {
 		private int numPhotos;
 		
 		@Override
+		public String getDescription() {
+			return "";
+		}
+		
+		@Override
+		public int getElementCount() {
+			return numPhotos;
+		}
+		
+		@Override
 		public String getID() {
 			return id;
 		}
@@ -41,16 +51,6 @@ public class FacebookAPI {
 			return thumbnailURL;
 		}
 		
-		@Override
-		public int getElementCount() {
-			return numPhotos;
-		}
-		
-		@Override
-		public String getDescription() {
-			return "";
-		}
-		
 		public void setThumbnailUrl(String url) {
 			this.thumbnailURL = url;
 		}
@@ -63,6 +63,11 @@ public class FacebookAPI {
 		private String title;
 		private String url;
 		private String thumbnailURL;
+		
+		@Override
+		public String getDescription() {
+			return "";
+		}
 		
 		@Override
 		public String getID() {
@@ -84,10 +89,39 @@ public class FacebookAPI {
 			return url;
 		}
 		
-		@Override
-		public String getDescription() {
-			return "";
+	}
+	
+	private Facebook getFacebookAccount() {
+		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
+		Iterator<Account> it = accounts.values().iterator();
+		while (it.hasNext()) {
+			Account account = it.next();
+			if (account instanceof Facebook) { return (Facebook) account; }
 		}
+		return null;
+	}
+	
+	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder,
+			Facebook facebookAccount) {
+		String facebookAPIurl = "https://graph.facebook.com/" + cover_photo_id + "?access_token="
+				+ facebookAccount.getAuthToken();
+		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+		jsonp.requestObject(facebookAPIurl, new AsyncCallback<JavaScriptObject>() {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				System.out.println(caught.getMessage());
+				caught.printStackTrace();
+			}
+			
+			@Override
+			public void onSuccess(JavaScriptObject result) {
+				JSONObject object = new JSONObject(result);
+				album.setThumbnailUrl(object.get("picture").isString().stringValue());
+				folder.addMedia(album);
+			}
+		});
 		
 	}
 	
@@ -132,30 +166,6 @@ public class FacebookAPI {
 				}
 			}
 		});
-	}
-	
-	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder,
-			Facebook facebookAccount) {
-		String facebookAPIurl = "https://graph.facebook.com/" + cover_photo_id + "?access_token="
-				+ facebookAccount.getAuthToken();
-		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-		jsonp.requestObject(facebookAPIurl, new AsyncCallback<JavaScriptObject>() {
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				System.out.println(caught.getMessage());
-				caught.printStackTrace();
-			}
-			
-			@Override
-			public void onSuccess(JavaScriptObject result) {
-				JSONObject object = new JSONObject(result);
-				album.setThumbnailUrl(object.get("picture").isString().stringValue());
-				folder.addMedia(album);
-			}
-		});
-		
 	}
 	
 	public void loadPicturesInFolder(Album album, final FolderWindow folder) {
@@ -206,15 +216,5 @@ public class FacebookAPI {
 				}
 			}
 		});
-	}
-	
-	private Facebook getFacebookAccount() {
-		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
-		Iterator<Account> it = accounts.values().iterator();
-		while (it.hasNext()) {
-			Account account = it.next();
-			if (account instanceof Facebook) { return (Facebook) account; }
-		}
-		return null;
 	}
 }

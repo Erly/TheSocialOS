@@ -34,48 +34,27 @@ import com.googlecode.objectify.Key;
 
 public class ContactsPresenter extends DesktopUnit {
 	
-	private final UserServiceAsync userService = GWT.create(UserService.class);
-	
-	Display display;
-	
-	List<String> ListContacts;
-	List<String> ListGroups;
-	
-	/*
-	 * Los modelos de la cajas de seleccion de los contactos
-	 */
-	ProvidesKey<User> KEY_PROVIDER;
-	SingleSelectionModel<User> contactSelectionModel;
-	ListDataProvider<User> contactDataProvider;
-	List<User> contactList;
-	
 	public interface Display {
 		
-		DecoratedTabPanel getGroupUsersPanel();
+		Widget asWidget();
 		
-		CellList<User> getUserListBox();
+		Button GetBtnUserPrivateMessage();
 		
-		CellList<Group> getGroupListBox();
-		
-		TextBox getSearchBox();
-		
-		// Users
-		
-		Image getImageFriend();
-		
-		Image getImageGroup();
-		
-		Image getImageSearchContact();
-		
-		Image getImageSearchGroup();
+		Button GetBtnUserSearchPrivateMessage();
 		
 		LabelText getContactName();
 		
-		LabelText getContactSurname();
+		// Users
 		
 		LabelText getContactSearchName();
 		
 		LabelText getContactSearchSurname();
+		
+		LabelText getContactSurname();
+		
+		HorizontalPanel getContatcsMenu();
+		
+		CellList<Group> getGroupListBox();
 		
 		Label getGroupName();
 		
@@ -85,18 +64,39 @@ public class ContactsPresenter extends DesktopUnit {
 		
 		Label GetGroupSizeCount();
 		
-		Label GetGroupSizeSearch();
-		
 		Label GetGroupSizeCountSearch();
 		
-		Button GetBtnUserPrivateMessage();
+		Label GetGroupSizeSearch();
 		
-		Button GetBtnUserSearchPrivateMessage();
+		DecoratedTabPanel getGroupUsersPanel();
 		
-		HorizontalPanel getContatcsMenu();
+		Image getImageFriend();
 		
-		Widget asWidget();
+		Image getImageGroup();
+		
+		Image getImageSearchContact();
+		
+		Image getImageSearchGroup();
+		
+		TextBox getSearchBox();
+		
+		CellList<User> getUserListBox();
 	}
+	
+	private final UserServiceAsync userService = GWT.create(UserService.class);
+	
+	Display display;
+	List<String> ListContacts;
+	
+	List<String> ListGroups;
+	/*
+	 * Los modelos de la cajas de seleccion de los contactos
+	 */
+	ProvidesKey<User> KEY_PROVIDER;
+	SingleSelectionModel<User> contactSelectionModel;
+	ListDataProvider<User> contactDataProvider;
+	
+	List<User> contactList;
 	
 	public ContactsPresenter(Display display) {
 		programID = "001";
@@ -104,6 +104,7 @@ public class ContactsPresenter extends DesktopUnit {
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		KEY_PROVIDER = new ProvidesKey<User>() {
+			@Override
 			public Object getKey(User item) {
 				return item == null ? null : item.getEmail();
 			}
@@ -115,6 +116,16 @@ public class ContactsPresenter extends DesktopUnit {
 	/*
 	 * Rpc Secction
 	 */
+	
+	@Override
+	public void close(AbsolutePanel absolutepanel) {
+		absolutepanel.remove(display.asWidget());
+		
+	}
+	
+	public HorizontalPanel getContactsPresenter() {
+		return display.getContatcsMenu();
+	}
 	
 	private void getFriends() {
 		
@@ -130,6 +141,11 @@ public class ContactsPresenter extends DesktopUnit {
 		CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>, User>>() {
 			
 			@Override
+			public void onFailure(Throwable caught) {
+				// TODO
+			}
+			
+			@Override
 			public void onSuccess(Map<Key<User>, User> result) {
 				// TODO Auto-generated method stub
 				Iterator<User> iterator = result.values().iterator();
@@ -142,20 +158,38 @@ public class ContactsPresenter extends DesktopUnit {
 				contactDataProvider.addDataDisplay(display.getUserListBox());
 				
 			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO
-			}
 		});
 		
 		handlers();
 		
 	}
 	
+	@Override
+	public void getID() {
+		
+	}
+	
+	@Override
+	public int getXPosition() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int getYPosition() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int getZposition() {
+		return 0;
+	}
+	
 	private void handlers() {
 		// Handler de la CellList de Contacts
 		contactSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				display.getContactName().setText(contactSelectionModel.getSelectedObject().getName());
 				display.getContactSurname().setText(contactSelectionModel.getSelectedObject().getLastName());
@@ -177,6 +211,12 @@ public class ContactsPresenter extends DesktopUnit {
 				CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>, User>>() {
 					
 					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
 					public void onSuccess(Map<Key<User>, User> result) {
 						
 						String text[] = display.getSearchBox().getText().split(" ");
@@ -196,40 +236,24 @@ public class ContactsPresenter extends DesktopUnit {
 						}
 						
 					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
-					}
 				});
 			}
 		});
 		
 	}
 	
-	public HorizontalPanel getContactsPresenter() {
-		return display.getContatcsMenu();
-	}
-	
 	@Override
-	public void toFront() {
+	public void isMinimized() {
 		
 	}
 	
 	@Override
-	public void toZPosition(int position) {
+	public void maximize() {
 		
 	}
 	
 	@Override
-	public int getZposition() {
-		return 0;
-	}
-	
-	@Override
-	public void close(AbsolutePanel absolutepanel) {
-		absolutepanel.remove(display.asWidget());
+	public void minimize() {
 		
 	}
 	
@@ -242,26 +266,6 @@ public class ContactsPresenter extends DesktopUnit {
 	}
 	
 	@Override
-	public void minimize() {
-		
-	}
-	
-	@Override
-	public void maximize() {
-		
-	}
-	
-	@Override
-	public void isMinimized() {
-		
-	}
-	
-	@Override
-	public void getID() {
-		
-	}
-	
-	@Override
 	public void setPosition(int x, int y) {
 		// TODO Auto-generated method stub
 		this.x = x;
@@ -270,14 +274,12 @@ public class ContactsPresenter extends DesktopUnit {
 	}
 	
 	@Override
-	public int getXPosition() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void toFront() {
+		
 	}
 	
 	@Override
-	public int getYPosition() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void toZPosition(int position) {
+		
 	}
 }

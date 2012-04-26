@@ -47,6 +47,160 @@ public class AppController implements ValueChangeHandler<String> {
 		bind(); // Bind the appController to History to control its changes
 	}
 	
+	private void accountAdded() {
+		new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log(caught.getMessage());
+				Window.alert(caught.getMessage());
+			}
+			
+			@Override
+			public void onSuccess(Map<Key<Account>, Account> accounts) {
+				CacheLayer.UserCalls.setAccounts(accounts);
+				// Window.alert("Cuenta añadida");
+				// Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
+				History.newItem("profile");
+			}
+			
+			@Override
+			protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
+				userService.getCloudAccounts(cb);
+			}
+			
+		}.retry(3);
+	}
+	
+	/**
+	 * Binds the History class to this ValueChangeHandler. And adds the eventHandlers to the eventBus.
+	 */
+	private void bind() {
+		History.addValueChangeHandler(this);
+		eventBus.addHandler(LogoutEvent.TYPE, new LogoutEventHandler() {
+			
+			@Override
+			public void onLogout(LogoutEvent event) {
+				doLogout();
+			}
+		});
+		
+		eventBus.addHandler(AccountAddedEvent.TYPE, new AccountAddedEventHandler() {
+			
+			@Override
+			public void onAcountAdd(AccountAddedEvent event) {
+				new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						GWT.log(caught.getMessage());
+						Window.alert(caught.getMessage());
+					}
+					
+					@Override
+					public void onSuccess(Map<Key<Account>, Account> accounts) {
+						CacheLayer.UserCalls.setAccounts(accounts);
+						TheSocialOS.profilePresenter.goProfile();
+					}
+					
+					@Override
+					protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
+						userService.getCloudAccounts(cb);
+					}
+					
+				}.retry(3);
+			}
+		});
+		
+		eventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
+			
+			@Override
+			public void onContentAvailable(MessageChatAvailableEvent contentAvailableEvent) {
+				chatEventBus.fireEvent(new MessageChatAvailableEvent(contentAvailableEvent.getMessageChat()));
+			}
+		});
+	}
+	
+	private void checkProfile(Presenter presenter) {
+		if (previousToken.equals("desktop")) { // If on the desktop, create the profile window.
+			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
+			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
+		} else if (!previousToken.contains("profile")) { // If not on desktop or another profile part, create the
+															// desktop and the profile window.
+			presenter = new DesktopPresenter(new SimpleEventBus[] { eventBus, chatEventBus }, new DesktopView());
+			presenter.go(TheSocialOS.get().root);
+			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
+			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
+		}
+	}
+	
+	/**
+	 * Deletes the cookies, the session and calls the method to delete the user
+	 */
+	protected void doLogout() {
+		Cookies.removeCookie("sid");
+		Cookies.removeCookie("uid");
+		CacheLayer.UserCalls.deleteUser();
+		new RPCXSRF<Void>(userService) {
+			
+			@Override
+			protected void XSRFcallService(AsyncCallback<Void> cb) {
+				userService.logout(cb);
+			}
+		};
+		History.newItem("login");
+	}
+	
+	public SimpleEventBus getChatEventBus() {
+		return chatEventBus;
+	}
+	
+	/**
+	 * Method called from the main class during loading to fire the current state of the history and do some minor fixes
+	 * to errors that can occur during the first load.
+	 */
+	public void go() {
+		if (History.getToken().contains("profile")) // This method can only be called when the web is loaded so
+													// lastToken is replaced by "" so the profile window is correctly
+													// loaded. Just in case there is some garbage in it.
+			lastToken = "";
+		if (History.getToken().equals("")) { // If there is no History token, then go to the desktop
+			History.newItem("desktop");
+		} else {
+			History.fireCurrentHistoryState();
+		}
+	}
+	
+	private void loadProfile(Presenter presenter) {
+		checkProfile(presenter);
+		TheSocialOS.profilePresenter.goProfile(); // Load the main profile screen in the profile window.
+	}
+	
+	private void loadProfileLinks(Presenter presenter) {
+		checkProfile(presenter);
+		TheSocialOS.profilePresenter.goProfileLinks(); // Finally load the links screen on the profile window.
+	}
+	
+	private void loadProfileMusic(Presenter presenter) {
+		checkProfile(presenter);
+		TheSocialOS.profilePresenter.goProfileMusic();
+	}
+	
+	private void loadProfilePhotos(Presenter presenter) {
+		checkProfile(presenter);
+		TheSocialOS.profilePresenter.goProfilePhotos();
+	}
+	
+	private void loadProfileTimeline(Presenter presenter) {
+		checkProfile(presenter);
+		TheSocialOS.profilePresenter.goProfileTimeline();
+	}
+	
+	private void loadProfileVideos(Presenter presenter) {
+		checkProfile(presenter);
+		TheSocialOS.profilePresenter.goProfileVideos();
+	}
+	
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
@@ -91,160 +245,6 @@ public class AppController implements ValueChangeHandler<String> {
 					History.newItem("login");
 			}
 		}
-	}
-	
-	private void loadProfileLinks(Presenter presenter) {
-		checkProfile(presenter);
-		TheSocialOS.profilePresenter.goProfileLinks(); // Finally load the links screen on the profile window.
-	}
-	
-	private void loadProfileVideos(Presenter presenter) {
-		checkProfile(presenter);
-		TheSocialOS.profilePresenter.goProfileVideos();
-	}
-	
-	private void loadProfileMusic(Presenter presenter) {
-		checkProfile(presenter);
-		TheSocialOS.profilePresenter.goProfileMusic();
-	}
-	
-	private void loadProfilePhotos(Presenter presenter) {
-		checkProfile(presenter);
-		TheSocialOS.profilePresenter.goProfilePhotos();
-	}
-	
-	private void loadProfileTimeline(Presenter presenter) {
-		checkProfile(presenter);
-		TheSocialOS.profilePresenter.goProfileTimeline();
-	}
-	
-	private void loadProfile(Presenter presenter) {
-		checkProfile(presenter);
-		TheSocialOS.profilePresenter.goProfile(); // Load the main profile screen in the profile window.
-	}
-	
-	private void checkProfile(Presenter presenter) {
-		if (previousToken.equals("desktop")) { // If on the desktop, create the profile window.
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		} else if (!previousToken.contains("profile")) { // If not on desktop or another profile part, create the
-															// desktop and the profile window.
-			presenter = new DesktopPresenter(new SimpleEventBus[] { eventBus, chatEventBus }, new DesktopView());
-			presenter.go(TheSocialOS.get().root);
-			TheSocialOS.profilePresenter = new UserProfilePresenter(eventBus, new UserProfileView());
-			TheSocialOS.profilePresenter.go(TheSocialOS.get().getDesktop());
-		}
-	}
-	
-	/**
-	 * Binds the History class to this ValueChangeHandler. And adds the eventHandlers to the eventBus.
-	 */
-	private void bind() {
-		History.addValueChangeHandler(this);
-		eventBus.addHandler(LogoutEvent.TYPE, new LogoutEventHandler() {
-			
-			@Override
-			public void onLogout(LogoutEvent event) {
-				doLogout();
-			}
-		});
-		
-		eventBus.addHandler(AccountAddedEvent.TYPE, new AccountAddedEventHandler() {
-			
-			@Override
-			public void onAcountAdd(AccountAddedEvent event) {
-				new RPCXSRF<Map<Key<Account>, Account>>(userService) {
-					
-					@Override
-					protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
-						userService.getCloudAccounts(cb);
-					}
-					
-					@Override
-					public void onSuccess(Map<Key<Account>, Account> accounts) {
-						CacheLayer.UserCalls.setAccounts(accounts);
-						TheSocialOS.profilePresenter.goProfile();
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						GWT.log(caught.getMessage());
-						Window.alert(caught.getMessage());
-					}
-					
-				}.retry(3);
-			}
-		});
-		
-		eventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
-			
-			@Override
-			public void onContentAvailable(MessageChatAvailableEvent contentAvailableEvent) {
-				chatEventBus.fireEvent(new MessageChatAvailableEvent(contentAvailableEvent.getMessageChat()));
-			}
-		});
-	}
-	
-	/**
-	 * Deletes the cookies, the session and calls the method to delete the user
-	 */
-	protected void doLogout() {
-		Cookies.removeCookie("sid");
-		Cookies.removeCookie("uid");
-		CacheLayer.UserCalls.deleteUser();
-		new RPCXSRF<Void>(userService) {
-			
-			@Override
-			protected void XSRFcallService(AsyncCallback<Void> cb) {
-				userService.logout(cb);
-			}
-		};
-		History.newItem("login");
-	}
-	
-	/**
-	 * Method called from the main class during loading to fire the current state of the history and do some minor fixes
-	 * to errors that can occur during the first load.
-	 */
-	public void go() {
-		if (History.getToken().contains("profile")) // This method can only be called when the web is loaded so
-													// lastToken is replaced by "" so the profile window is correctly
-													// loaded. Just in case there is some garbage in it.
-			lastToken = "";
-		if (History.getToken().equals("")) { // If there is no History token, then go to the desktop
-			History.newItem("desktop");
-		} else {
-			History.fireCurrentHistoryState();
-		}
-	}
-	
-	private void accountAdded() {
-		new RPCXSRF<Map<Key<Account>, Account>>(userService) {
-			
-			@Override
-			protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
-				userService.getCloudAccounts(cb);
-			}
-			
-			@Override
-			public void onSuccess(Map<Key<Account>, Account> accounts) {
-				CacheLayer.UserCalls.setAccounts(accounts);
-				// Window.alert("Cuenta añadida");
-				// Window.alert("" + TheSocialOS.get().getCurrentUserAccounts().size());
-				History.newItem("profile");
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log(caught.getMessage());
-				Window.alert(caught.getMessage());
-			}
-			
-		}.retry(3);
-	}
-	
-	public SimpleEventBus getChatEventBus() {
-		return chatEventBus;
 	}
 	
 	public void setChatEventBus(SimpleEventBus chatEventBus) {

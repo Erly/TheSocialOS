@@ -10,10 +10,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ProfileLeftView extends Composite {
 	
-	private static ProfileLeftViewUiBinder uiBinder = GWT.create(ProfileLeftViewUiBinder.class);
-	
 	interface ProfileLeftViewUiBinder extends UiBinder<VerticalPanel, ProfileLeftView> {
 	}
+	
+	private static ProfileLeftViewUiBinder uiBinder = GWT.create(ProfileLeftViewUiBinder.class);
 	
 	@UiField Image photo;
 	@UiField Label name, friends;

@@ -27,18 +27,18 @@ public abstract class Oauth1 extends Account {
 	}
 	
 	/**
+	 * @return the tokenSecret
+	 */
+	public String getTokenSecret() {
+		return tokenSecret;
+	}
+	
+	/**
 	 * @param token
 	 *            the token to set
 	 */
 	public void setToken(String token) {
 		this.token = token;
-	}
-	
-	/**
-	 * @return the tokenSecret
-	 */
-	public String getTokenSecret() {
-		return tokenSecret;
 	}
 	
 	/**

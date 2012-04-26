@@ -16,12 +16,6 @@ public class FrameApp implements IApplication {
 		
 	}
 	
-	@Override
-	public Widget run() {
-		// TODO Auto-generated method stub
-		return frame = new Frame(url);
-	}
-	
 	public FrameApp(String appName, String appImageURL, String appURL, String width, String height) {
 		setName(appName);
 		setImage(appImageURL);
@@ -31,39 +25,9 @@ public class FrameApp implements IApplication {
 		url = appURL;
 	}
 	
-	public String getUrl() {
-		return url;
-	}
-	
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
 	@Override
-	public void setSize(String width, String height) {
-		frame.setSize(width, height);
-	}
-	
 	public String getHeight() {
 		return height;
-	}
-	
-	public void setHeight(String height) {
-		this.height = height;
-	}
-	
-	public String getWidth() {
-		return width;
-	}
-	
-	public void setWidth(String width) {
-		this.width = width;
-	}
-	
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return name;
 	}
 	
 	@Override
@@ -73,14 +37,52 @@ public class FrameApp implements IApplication {
 	}
 	
 	@Override
-	public void setName(String name) {
+	public String getName() {
 		// TODO Auto-generated method stub
-		this.name = name;
+		return name;
+	}
+	
+	public String getUrl() {
+		return url;
+	}
+	
+	@Override
+	public String getWidth() {
+		return width;
+	}
+	
+	@Override
+	public Widget run() {
+		// TODO Auto-generated method stub
+		return frame = new Frame(url);
+	}
+	
+	public void setHeight(String height) {
+		this.height = height;
 	}
 	
 	@Override
 	public void setImage(String image) {
 		// TODO Auto-generated method stub
 		this.image = image;
+	}
+	
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		this.name = name;
+	}
+	
+	@Override
+	public void setSize(String width, String height) {
+		frame.setSize(width, height);
+	}
+	
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	public void setWidth(String width) {
+		this.width = width;
 	}
 }

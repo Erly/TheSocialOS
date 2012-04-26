@@ -41,6 +41,51 @@ public class OauthCallback extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 	
+	private String getFlickrUsername(Token accessToken) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.flickr.com/services/rest");
+		request.addQuerystringParameter("method", "flickr.test.login");
+		request.addQuerystringParameter("format", "json");
+		request.addQuerystringParameter("nojsoncallback", "1");
+		service.signRequest(accessToken, request);
+		Response resp = request.send();
+		String body = resp.getBody();
+		try {
+			JSONObject js = new JSONObject(body);
+			JSONObject userjs = js.getJSONObject("user");
+			return userjs.getJSONObject("username").getString("_content");
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String getUsername(int type, Token accessToken) {
+		OAuthRequest request = null;
+		String params = null;
+		switch (type) {
+		case TWITTER:
+			request = new OAuthRequest(Verb.GET, "http://api.twitter.com/1/account/verify_credentials.json");
+			params = "screen_name";
+			break;
+		default:
+			return "";
+		}
+		service.signRequest(accessToken, request);
+		Response resp = request.send();
+		String body = resp.getBody();
+		try {
+			JSONObject js = new JSONObject(body);
+			return js.getString(params);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) {
 		String oauthToken = request.getParameter("oauth_token");
 		String oauthVerifier = request.getParameter("oauth_verifier");
@@ -83,50 +128,6 @@ public class OauthCallback extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	private String getUsername(int type, Token accessToken) {
-		OAuthRequest request = null;
-		String params = null;
-		switch (type) {
-		case TWITTER:
-			request = new OAuthRequest(Verb.GET, "http://api.twitter.com/1/account/verify_credentials.json");
-			params = "screen_name";
-			break;
-		default:
-			return "";
-		}
-		service.signRequest(accessToken, request);
-		Response resp = request.send();
-		String body = resp.getBody();
-		try {
-			JSONObject js = new JSONObject(body);
-			return js.getString(params);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	private String getFlickrUsername(Token accessToken) {
-		OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.flickr.com/services/rest");
-		request.addQuerystringParameter("method", "flickr.test.login");
-		request.addQuerystringParameter("format", "json");
-		request.addQuerystringParameter("nojsoncallback", "1");
-		service.signRequest(accessToken, request);
-		Response resp = request.send();
-		String body = resp.getBody();
-		try {
-			JSONObject js = new JSONObject(body);
-			JSONObject userjs = js.getJSONObject("user");
-			return userjs.getJSONObject("username").getString("_content");
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 }

@@ -19,31 +19,31 @@ public class Conversation {
 		
 	}
 	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public int getDate() {
-		return date;
-	}
-	
-	public void setDate(int date) {
-		this.date = date;
+	public boolean addConversationAdmin(Key<User> userToAdmin) {
+		return ConversationAdmins.add(userToAdmin);
 	}
 	
 	public List<Key<User>> getConversationAdmins() {
 		return ConversationAdmins;
 	}
 	
+	public int getDate() {
+		return date;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
 	public boolean removeConversationAdmin(Key<User> userAdmin) {
 		return ConversationAdmins.remove(userAdmin);
 	}
 	
-	public boolean addConversationAdmin(Key<User> userToAdmin) {
-		return ConversationAdmins.add(userToAdmin);
+	public void setDate(int date) {
+		this.date = date;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

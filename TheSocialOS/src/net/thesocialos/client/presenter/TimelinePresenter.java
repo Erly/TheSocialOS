@@ -8,18 +8,18 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class TimelinePresenter implements Presenter {
 	
+	public interface Display {
+		Widget asWidget();
+		
+		HasWidgets getMainPanel();
+	}
 	SimpleEventBus eventBus;
+	
 	Display display;
 	
 	public TimelinePresenter(SimpleEventBus eventBus, Display display) {
 		this.eventBus = eventBus;
 		this.display = display;
-	}
-	
-	public interface Display {
-		HasWidgets getMainPanel();
-		
-		Widget asWidget();
 	}
 	
 	public void bind() {

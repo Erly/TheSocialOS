@@ -19,10 +19,6 @@ import com.googlecode.objectify.Key;
 
 public class PicasaAPI {
 	
-	public PicasaAPI() {
-		
-	}
-	
 	public class Album implements MediaAlbum {
 		
 		private String id;
@@ -32,6 +28,26 @@ public class PicasaAPI {
 		private int numPhotos;
 		private boolean commentingEnabled;
 		private int commentCount;
+		
+		/**
+		 * @return the commentCount
+		 */
+		public int getCommentCount() {
+			return commentCount;
+		}
+		
+		@Override
+		public String getDescription() {
+			return summary;
+		}
+		
+		/**
+		 * @return the numPhotos
+		 */
+		@Override
+		public int getElementCount() {
+			return numPhotos;
+		}
 		
 		/**
 		 * @return the id
@@ -57,30 +73,11 @@ public class PicasaAPI {
 			return thumbnailURL;
 		}
 		
-		@Override
-		public String getDescription() {
-			return summary;
-		}
-		
-		/**
-		 * @return the numPhotos
-		 */
-		public int getElementCount() {
-			return numPhotos;
-		}
-		
 		/**
 		 * @return the commentingEnabled
 		 */
 		public boolean isCommentingEnabled() {
 			return commentingEnabled;
-		}
-		
-		/**
-		 * @return the commentCount
-		 */
-		public int getCommentCount() {
-			return commentCount;
 		}
 	}
 	
@@ -92,6 +89,15 @@ public class PicasaAPI {
 		private String thumbnailURL;
 		private boolean commentingEnabled;
 		private int commentCount;
+		
+		public int getCommentCount() {
+			return commentCount;
+		}
+		
+		@Override
+		public String getDescription() {
+			return "";
+		}
 		
 		@Override
 		public String getID() {
@@ -117,27 +123,10 @@ public class PicasaAPI {
 			return commentingEnabled;
 		}
 		
-		public int getCommentCount() {
-			return commentCount;
-		}
-		
-		@Override
-		public String getDescription() {
-			return "";
-		}
-		
 	}
 	
-	public void getAlbumsRequest(AsyncCallback<JavaScriptObject> cb) throws RequestException {
-		String picasaAPIurl = "http://picasaweb.google.com/data/feed/api/user/";
-		Google googleAccount = getGoogleAccount();
-		if (null == googleAccount) return;
+	public PicasaAPI() {
 		
-		String email = googleAccount.getUsername();
-		String username = email.substring(0, email.indexOf('@'));
-		
-		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-		jsonp.requestObject(picasaAPIurl + username + "?alt=json&access_token=" + googleAccount.getAuthToken(), cb);
 	}
 	
 	public HashSet<Album> getAlbums(JSONObject object) {
@@ -159,6 +148,28 @@ public class PicasaAPI {
 			albums.add(album);
 		}
 		return albums;
+	}
+	
+	public void getAlbumsRequest(AsyncCallback<JavaScriptObject> cb) throws RequestException {
+		String picasaAPIurl = "http://picasaweb.google.com/data/feed/api/user/";
+		Google googleAccount = getGoogleAccount();
+		if (null == googleAccount) return;
+		
+		String email = googleAccount.getUsername();
+		String username = email.substring(0, email.indexOf('@'));
+		
+		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+		jsonp.requestObject(picasaAPIurl + username + "?alt=json&access_token=" + googleAccount.getAuthToken(), cb);
+	}
+	
+	private Google getGoogleAccount() {
+		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
+		Iterator<Account> it = accounts.values().iterator();
+		while (it.hasNext()) {
+			Account account = it.next();
+			if (account instanceof Google) { return (Google) account; }
+		}
+		return null;
 	}
 	
 	public void loadAlbumsInFolder(final FolderWindow folder) {
@@ -252,15 +263,5 @@ public class PicasaAPI {
 						folder.addMedia(pictures);
 					}
 				});
-	}
-	
-	private Google getGoogleAccount() {
-		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
-		Iterator<Account> it = accounts.values().iterator();
-		while (it.hasNext()) {
-			Account account = it.next();
-			if (account instanceof Google) { return (Google) account; }
-		}
-		return null;
 	}
 }

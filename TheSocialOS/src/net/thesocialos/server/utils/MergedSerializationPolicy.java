@@ -12,6 +12,29 @@ import com.google.gwt.user.server.rpc.SerializationPolicy;
 import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
 
 public class MergedSerializationPolicy extends SerializationPolicy {
+	public static SerializationPolicy createPushSerializationPolicy() {
+		
+		File[] files = new File("thesocialos").listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".gwt.rpc");
+			}
+		});
+		
+		List<SerializationPolicy> policies = new ArrayList<SerializationPolicy>();
+		
+		for (File f : files) {
+			try {
+				BufferedInputStream input = new BufferedInputStream(new FileInputStream(f));
+				policies.add(SerializationPolicyLoader.loadFromStream(input, null));
+			} catch (Exception e) {
+				throw new RuntimeException("Unable to load a policy file: " + f.getAbsolutePath());
+			}
+		}
+		
+		return new MergedSerializationPolicy(policies);
+	}
+	
 	List<SerializationPolicy> policies;
 	
 	MergedSerializationPolicy(List<SerializationPolicy> policies) {
@@ -60,27 +83,5 @@ public class MergedSerializationPolicy extends SerializationPolicy {
 			}
 		}
 		throw se;
-	}
-	
-	public static SerializationPolicy createPushSerializationPolicy() {
-		
-		File[] files = new File("thesocialos").listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".gwt.rpc");
-			}
-		});
-		
-		List<SerializationPolicy> policies = new ArrayList<SerializationPolicy>();
-		
-		for (File f : files) {
-			try {
-				BufferedInputStream input = new BufferedInputStream(new FileInputStream(f));
-				policies.add(SerializationPolicyLoader.loadFromStream(input, null));
-			} catch (Exception e) {
-				throw new RuntimeException("Unable to load a policy file: " + f.getAbsolutePath());
-			}
-		}
-		
-		return new MergedSerializationPolicy(policies);
 	}
 }

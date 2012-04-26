@@ -8,15 +8,15 @@ public class DesktopEventOnMinimize extends DesktopEvent {
 	}
 	
 	@Override
-	public com.google.gwt.event.shared.GwtEvent.Type<DesktopEventHandler> getAssociatedType() {
-		// TODO Auto-generated method stub
-		return TYPE;
-	}
-	
-	@Override
 	protected void dispatch(DesktopEventHandler handler) {
 		handler.onMinimize(this);
 		
+	}
+	
+	@Override
+	public com.google.gwt.event.shared.GwtEvent.Type<DesktopEventHandler> getAssociatedType() {
+		// TODO Auto-generated method stub
+		return TYPE;
 	}
 	
 }

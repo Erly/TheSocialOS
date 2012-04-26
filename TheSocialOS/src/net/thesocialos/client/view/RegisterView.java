@@ -18,6 +18,8 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 
 public class RegisterView extends Composite implements Display {
 	
+	interface RegisterViewUiBinder extends UiBinder<DockLayoutPanel, RegisterView> {
+	}
 	private static RegisterViewUiBinder uiBinder = GWT.create(RegisterViewUiBinder.class);
 	@UiField Label lblIncorrect;
 	@UiField Label lblEmail;
@@ -30,10 +32,8 @@ public class RegisterView extends Composite implements Display {
 	@UiField PasswordTextBox txtPass2;
 	@UiField TextBox txtName;
 	@UiField TextBox txtLastName;
-	@UiField Button registerButton;
 	
-	interface RegisterViewUiBinder extends UiBinder<DockLayoutPanel, RegisterView> {
-	}
+	@UiField Button registerButton;
 	
 	public RegisterView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -46,13 +46,23 @@ public class RegisterView extends Composite implements Display {
 	}
 	
 	@Override
-	public HasClickHandlers getRegisterButton() {
-		return registerButton;
+	public HasValue<String> getEmail() {
+		return txtEmail;
 	}
 	
 	@Override
-	public HasValue<String> getEmail() {
-		return txtEmail;
+	public HasText getIncorrect() {
+		return lblIncorrect;
+	}
+	
+	@Override
+	public HasValue<String> getLastName() {
+		return txtLastName;
+	}
+	
+	@Override
+	public HasValue<String> getName() {
+		return txtName;
 	}
 	
 	@Override
@@ -66,18 +76,8 @@ public class RegisterView extends Composite implements Display {
 	}
 	
 	@Override
-	public HasText getIncorrect() {
-		return lblIncorrect;
-	}
-	
-	@Override
-	public HasValue<String> getName() {
-		return txtName;
-	}
-	
-	@Override
-	public HasValue<String> getLastName() {
-		return txtLastName;
+	public HasClickHandlers getRegisterButton() {
+		return registerButton;
 	}
 	
 }

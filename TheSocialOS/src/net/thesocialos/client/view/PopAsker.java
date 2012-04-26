@@ -11,31 +11,31 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class PopAsker extends Composite {
 	
-	private static PopAskerUiBinder uiBinder = GWT.create(PopAskerUiBinder.class);
-	
 	interface PopAskerUiBinder extends UiBinder<Widget, PopAsker> {
 	}
 	
-	public PopAsker() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+	private static PopAskerUiBinder uiBinder = GWT.create(PopAskerUiBinder.class);
 	
 	@UiField Label valueName;
+	
 	@UiField TextBox value;
 	@UiField Button saveBtn;
 	@UiField Button cancelBtn;
+	public PopAsker() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
 	
 	public PopAsker(String valueName) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.valueName.setText(valueName);
 	}
 	
-	public Button getSaveButton() {
-		return saveBtn;
-	}
-	
 	public Button getCancelButton() {
 		return cancelBtn;
+	}
+	
+	public Button getSaveButton() {
+		return saveBtn;
 	}
 	
 	public String getValue() {

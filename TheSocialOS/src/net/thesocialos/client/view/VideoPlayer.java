@@ -8,10 +8,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class VideoPlayer extends Composite {
 	
-	private static VideoPlayerUiBinder uiBinder = GWT.create(VideoPlayerUiBinder.class);
-	
 	interface VideoPlayerUiBinder extends UiBinder<Widget, VideoPlayer> {
 	}
+	
+	private static VideoPlayerUiBinder uiBinder = GWT.create(VideoPlayerUiBinder.class);
 	
 	public VideoPlayer(String src) {
 		initWidget(uiBinder.createAndBindUi(this));

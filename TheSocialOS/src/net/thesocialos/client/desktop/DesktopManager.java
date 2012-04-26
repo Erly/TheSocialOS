@@ -4,12 +4,6 @@ import java.util.LinkedHashMap;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.EventPreview;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -71,6 +65,35 @@ public class DesktopManager {
 		return true;
 	}
 	
+	private void handlers() {
+		eventBus.addHandler(DesktopEvent.TYPE, new DesktopEventHandler() {
+			
+			@Override
+			public void onClose(DesktopEventOnClose event) {
+				removeUnit(event.getDesktopUnit());
+				
+			}
+			
+			@Override
+			public void onMaximize(DesktopEventOnMaximize event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onMinimize(DesktopEventOnMinimize event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onOpen(DesktopEventOnOpen event) {
+				addUnit(event.getDesktopUnit());
+				
+			}
+		});
+	}
+	
 	/**
 	 * Borra una unidad dada del escritorio
 	 * 
@@ -85,35 +108,6 @@ public class DesktopManager {
 			return true;
 		}
 		return false;
-	}
-	
-	private void handlers() {
-		eventBus.addHandler(DesktopEvent.TYPE, new DesktopEventHandler() {
-			
-			@Override
-			public void onOpen(DesktopEventOnOpen event) {
-				addUnit(event.getDesktopUnit());
-				
-			}
-			
-			@Override
-			public void onMinimize(DesktopEventOnMinimize event) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onMaximize(DesktopEventOnMaximize event) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onClose(DesktopEventOnClose event) {
-				removeUnit(event.getDesktopUnit());
-				
-			}
-		});
 	}
 	
 }

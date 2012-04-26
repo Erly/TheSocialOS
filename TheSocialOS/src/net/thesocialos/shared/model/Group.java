@@ -16,6 +16,10 @@ public class Group {
 		
 	}
 	
+	public Long getId() {
+		return id;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -26,10 +30,6 @@ public class Group {
 	
 	public void setOwner(Key<User> owner) {
 		this.owner = owner;
-	}
-	
-	public Long getId() {
-		return id;
 	}
 	
 }

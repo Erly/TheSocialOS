@@ -4,11 +4,8 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.event.RPCInEvent;
 import net.thesocialos.client.event.RPCOutEvent;
 import net.thesocialos.client.service.ServiceAsync;
-import net.thesocialos.client.service.UserServiceAsync;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestTimeoutException;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.HasRpcToken;
@@ -23,8 +20,6 @@ import com.google.gwt.user.client.rpc.XsrfTokenServiceAsync;
 
 public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 	
-	protected abstract void XSRFcallService(AsyncCallback<T> cb);
-	
 	private final XsrfTokenServiceAsync xsrf = (XsrfTokenServiceAsync) GWT.create(XsrfTokenService.class);
 	
 	private final ServiceAsync service;
@@ -33,11 +28,63 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 		this.service = service;
 	}
 	
+	@Override
+	public void onFailure(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * Fires an event indicating that the RPC request has finished.
+	 */
+	private void onRPCIn() {
+		TheSocialOS.get();
+		TheSocialOS.getEventBus().fireEvent(new RPCInEvent());
+	}
+	
+	/**
+	 * Fires an event indicating that the RPC request has started. A loading indicator will appear on the screen
+	 * indicating that the system is working.
+	 */
+	private void onRPCOut() {
+		TheSocialOS.get();
+		TheSocialOS.getEventBus().fireEvent(new RPCOutEvent());
+	}
+	
+	@Override
+	public void onSuccess(T result) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void retry(int retry) {
+		XSRFService(retry);
+	}
+	
+	protected abstract void XSRFcallService(AsyncCallback<T> cb);
+	
 	private void XSRFService(int retry) {
 		onRPCOut(); // RPC Working
 		((ServiceDefTarget) xsrf).setServiceEntryPoint(GWT.getModuleBaseURL() + "xsrf");
 		xsrf.getNewXsrfToken(new AsyncCallback<XsrfToken>() {
 			
+			@Override
+			public void onFailure(Throwable caught) {
+				onRPCIn(); // RPC finished working
+				try {
+					throw caught;
+				} catch (RpcTokenException e) {
+					// Can be thrown for several reasons:
+					// - duplicate session cookie, which may be a sign of a cookie
+					// overwrite attack
+					// - XSRF token cannot be generated because session cookie isn't
+					// present
+				} catch (Throwable e) {
+					// unexpected
+				}
+			}
+			
+			@Override
 			public void onSuccess(XsrfToken token) {
 				// onRPCIn(); // RPC finished working
 				((HasRpcToken) service).setRpcToken(token);
@@ -72,53 +119,7 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 				});
 				
 			}
-			
-			public void onFailure(Throwable caught) {
-				onRPCIn(); // RPC finished working
-				try {
-					throw caught;
-				} catch (RpcTokenException e) {
-					// Can be thrown for several reasons:
-					// - duplicate session cookie, which may be a sign of a cookie
-					// overwrite attack
-					// - XSRF token cannot be generated because session cookie isn't
-					// present
-				} catch (Throwable e) {
-					// unexpected
-				}
-			}
 		});
-	}
-	
-	public void retry(int retry) {
-		XSRFService(retry);
-	}
-	
-	/**
-	 * Fires an event indicating that the RPC request has finished.
-	 */
-	private void onRPCIn() {
-		TheSocialOS.get().getEventBus().fireEvent(new RPCInEvent());
-	}
-	
-	/**
-	 * Fires an event indicating that the RPC request has started. A loading indicator will appear on the screen
-	 * indicating that the system is working.
-	 */
-	private void onRPCOut() {
-		TheSocialOS.get().getEventBus().fireEvent(new RPCOutEvent());
-	}
-	
-	@Override
-	public void onFailure(Throwable caught) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void onSuccess(T result) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

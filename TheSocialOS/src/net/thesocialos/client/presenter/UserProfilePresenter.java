@@ -1,8 +1,6 @@
 package net.thesocialos.client.presenter;
 
 import net.thesocialos.client.CacheLayer;
-import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.view.profile.ProfilePanel;
 import net.thesocialos.client.view.profile.TimelinePanel;
 import net.thesocialos.shared.UserDTO;
@@ -12,7 +10,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -22,10 +19,11 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class UserProfilePresenter implements Presenter {
 	
-	private UserDTO user;
-	private final PopupPanel viewProfilePanel = new PopupPanel();
-	
 	public interface Display {
+		Widget asWidget();
+		
+		Image getAvatar();
+		
 		/*
 		 * HasClickHandlers getProfileButton(); HasClickHandlers getTimelineButton(); HasClickHandlers
 		 * getPhotosButton(); HasClickHandlers getMusicButton(); HasClickHandlers getVideosButton(); HasClickHandlers
@@ -33,12 +31,11 @@ public class UserProfilePresenter implements Presenter {
 		 */
 		HasClickHandlers getCloseButton();
 		
-		Image getAvatar();
-		
 		SimplePanel getMainPanel();
-		
-		Widget asWidget();
 	}
+	private UserDTO user;
+	
+	private final PopupPanel viewProfilePanel = new PopupPanel();
 	
 	private SimpleEventBus eventBus;
 	private final Display display;
@@ -104,11 +101,11 @@ public class UserProfilePresenter implements Presenter {
 	}
 	
 	/**
-	 * Loads the Timeline screen.
+	 * Loads the Links screen.
 	 */
-	public void goProfileTimeline() {
-		TimelinePresenter presenter = new TimelinePresenter(eventBus, new TimelinePanel());
-		presenter.go(this.display.getMainPanel());
+	public void goProfileLinks() {
+		this.display.getMainPanel().clear();
+		this.display.getMainPanel().add(new ProfilePanel());
 	}
 	
 	/**
@@ -128,17 +125,17 @@ public class UserProfilePresenter implements Presenter {
 	}
 	
 	/**
-	 * Loads the Videos screen.
+	 * Loads the Timeline screen.
 	 */
-	public void goProfileVideos() {
-		this.display.getMainPanel().clear();
-		this.display.getMainPanel().add(new ProfilePanel());
+	public void goProfileTimeline() {
+		TimelinePresenter presenter = new TimelinePresenter(eventBus, new TimelinePanel());
+		presenter.go(this.display.getMainPanel());
 	}
 	
 	/**
-	 * Loads the Links screen.
+	 * Loads the Videos screen.
 	 */
-	public void goProfileLinks() {
+	public void goProfileVideos() {
 		this.display.getMainPanel().clear();
 		this.display.getMainPanel().add(new ProfilePanel());
 	}

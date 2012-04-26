@@ -13,7 +13,6 @@ import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.view.BusyIndicatorView;
 import net.thesocialos.client.view.LoginView;
 import net.thesocialos.shared.model.Account;
-import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.EntryPoint;

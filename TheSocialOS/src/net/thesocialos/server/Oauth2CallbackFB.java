@@ -18,9 +18,10 @@ public class Oauth2CallbackFB extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			String authCode = (String) request.getParameter("code");
+			String authCode = request.getParameter("code");
 			String urlString = "";
 			String params = "";
 			String serviceName = "";

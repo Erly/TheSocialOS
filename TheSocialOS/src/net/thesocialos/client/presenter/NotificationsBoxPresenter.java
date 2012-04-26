@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.gargoylesoftware.htmlunit.Cache;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -21,13 +16,10 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import net.thesocialos.client.AppController;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.desktop.DesktopUnit;
-import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
-import net.thesocialos.client.presenter.SearchBoxPresenter.Display;
 import net.thesocialos.client.view.LabelText;
 import net.thesocialos.client.view.PopAsker;
 import net.thesocialos.client.view.PopUpInfoContact;
@@ -36,8 +28,20 @@ import net.thesocialos.shared.model.User;
 
 public class NotificationsBoxPresenter extends DesktopUnit {
 	
-	Display display;
+	public interface Display {
+		
+		Widget asWidget();
+		
+		CellList<User> getContactsCellList();
+		
+		LabelText getContactsLabelText();
+		
+		LabelText getGroupsLabelText();
+		
+		StackLayoutPanel getStackLayoutPanel();
+	}
 	
+	Display display;
 	SingleSelectionModel<User> selectionModel;
 	ListDataProvider<User> dataProvider;
 	PopUpMenu UserPopUpMenu;
@@ -45,6 +49,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	 * Los modelos de la cajas de seleccion de los usuarios
 	 */
 	ProvidesKey<User> KEY_USERS_PROVIDER;
+	
 	List<User> usersList = new ArrayList<User>();
 	
 	public NotificationsBoxPresenter(Display display) {
@@ -53,6 +58,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 		this.display = display;
 		
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
+			@Override
 			public Object getKey(User item) {
 				return item == null ? null : item.getEmail();
 			}
@@ -70,17 +76,10 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 		getContactPetitions(true);
 	}
 	
-	public interface Display {
+	@Override
+	public void close(AbsolutePanel absolutePanel) {
+		absolutePanel.remove(display.asWidget());
 		
-		Widget asWidget();
-		
-		LabelText getContactsLabelText();
-		
-		LabelText getGroupsLabelText();
-		
-		CellList<User> getContactsCellList();
-		
-		StackLayoutPanel getStackLayoutPanel();
 	}
 	
 	private void getContactPetitions(Boolean cached) {
@@ -92,6 +91,12 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 		CacheLayer.ContactCalls.getContactPetitions(cached, new AsyncCallback<Map<String, User>>() {
 			
 			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
 			public void onSuccess(Map<String, User> result) {
 				// TODO Auto-generated method stub
 				display.getStackLayoutPanel().setHeaderText(0, "Contact:     " + result.size());
@@ -101,13 +106,31 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 				dataProvider.refresh();
 				TheSocialOS.getEventBus().fireEvent(new ContactsPetitionChangeEvent());
 			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
+	}
+	
+	@Override
+	public void getID() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public int getXPosition() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int getYPosition() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int getZposition() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	private void handlers() {
@@ -136,6 +159,31 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 		
 	}
 	
+	@Override
+	public void isMinimized() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void maximize() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void minimize() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void open(AbsolutePanel absolutePanel) {
+		absolutePanel.add(display.asWidget(), x, y);
+		display.asWidget().setVisible(true);
+		
+	}
+	
 	private void popupHandlers(final User user) {
 		UserPopUpMenu.getMenuIAccept().setCommand(new Command() {
 			
@@ -144,16 +192,16 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 				CacheLayer.ContactCalls.acceptAContact(user, new AsyncCallback<Boolean>() {
 					
 					@Override
-					public void onSuccess(Boolean result) {
+					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						getContactPetitions(false);
-						CacheLayer.ContactCalls.updateContacts(null);
 						
 					}
 					
 					@Override
-					public void onFailure(Throwable caught) {
+					public void onSuccess(Boolean result) {
 						// TODO Auto-generated method stub
+						getContactPetitions(false);
+						CacheLayer.ContactCalls.updateContacts(null);
 						
 					}
 				});
@@ -167,13 +215,13 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 				CacheLayer.ContactCalls.denyAContact(user, new AsyncCallback<Boolean>() {
 					
 					@Override
-					public void onSuccess(Boolean result) {
-						getContactPetitions(false);
+					public void onFailure(Throwable caught) {
 						
 					}
 					
 					@Override
-					public void onFailure(Throwable caught) {
+					public void onSuccess(Boolean result) {
+						getContactPetitions(false);
 						
 					}
 				});
@@ -204,24 +252,6 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	}
 	
 	@Override
-	public void toFront() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void toZPosition(int position) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public int getZposition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -229,50 +259,13 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	}
 	
 	@Override
-	public int getXPosition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getYPosition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public void close(AbsolutePanel absolutePanel) {
-		absolutePanel.remove(display.asWidget());
-		
-	}
-	
-	@Override
-	public void open(AbsolutePanel absolutePanel) {
-		absolutePanel.add(display.asWidget(), x, y);
-		display.asWidget().setVisible(true);
-		
-	}
-	
-	@Override
-	public void minimize() {
+	public void toFront() {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void maximize() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void isMinimized() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void getID() {
+	public void toZPosition(int position) {
 		// TODO Auto-generated method stub
 		
 	}

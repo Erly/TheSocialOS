@@ -12,24 +12,24 @@ public class App {
 		url = appURL;
 	}
 	
+	public String getImage() {
+		return image;
+	}
+	
 	public String getName() {
 		return name;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getImage() {
-		return image;
+	public String getUrl() {
+		return url;
 	}
 	
 	public void setImage(String image) {
 		this.image = image;
 	}
 	
-	public String getUrl() {
-		return url;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public void setUrl(String url) {

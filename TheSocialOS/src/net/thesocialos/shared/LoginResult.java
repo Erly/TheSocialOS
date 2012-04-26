@@ -20,11 +20,8 @@ public class LoginResult implements Serializable {
 		this.duration = duration;
 	}
 	
-	/**
-	 * @return the user
-	 */
-	public User getUser() {
-		return user;
+	public Long getDuration() {
+		return duration;
 	}
 	
 	/**
@@ -34,7 +31,10 @@ public class LoginResult implements Serializable {
 		return sessionID;
 	}
 	
-	public Long getDuration() {
-		return duration;
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
 	}
 }

@@ -3,19 +3,12 @@ package net.thesocialos.client.view;
 import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.view.window.DialogBoxExt;
 import net.thesocialos.client.view.window.MyCaption;
-import net.thesocialos.shared.App;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Image;
@@ -24,24 +17,18 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 public class StartMenuItem extends Composite {
 	
-	private static StartMenuItemUiBinder uiBinder = GWT.create(StartMenuItemUiBinder.class);
-	
 	interface StartMenuItemUiBinder extends UiBinder<Widget, StartMenuItem> {
 	}
 	
-	public StartMenuItem() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+	private static StartMenuItemUiBinder uiBinder = GWT.create(StartMenuItemUiBinder.class);
 	
 	@UiField Label text;
+	
 	@UiField Image image;
 	@UiField HorizontalPanel itemHPanel;
 	@UiField FocusPanel itemPanel;
-	
-	public StartMenuItem(String name, Image image) {
+	public StartMenuItem() {
 		initWidget(uiBinder.createAndBindUi(this));
-		text.setText(name);
-		this.image.setUrl(image.getUrl());
 	}
 	
 	public StartMenuItem(final IApplication app) {
@@ -65,6 +52,12 @@ public class StartMenuItem extends Composite {
 				window.setPopupPosition(10, 30);
 			}
 		});
+	}
+	
+	public StartMenuItem(String name, Image image) {
+		initWidget(uiBinder.createAndBindUi(this));
+		text.setText(name);
+		this.image.setUrl(image.getUrl());
 	}
 	
 	public FocusPanel getFocusPanel() {

@@ -4,107 +4,11 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface SocialOSConstants extends Constants {
 	
-	@DefaultStringValue("Loading...")
-	String loading();
-	
-	@DefaultStringValue("Cancel")
-	String cancel();
-	
-	@DefaultStringValue("Upload")
-	String upload();
-	
-	/**
-	 * Error messages Constants
-	 */
-	@DefaultStringValue("The app may be out of date. Reload this page in your browser.")
-	String error_AppOutOfDate();
-	
-	@DefaultStringValue("A serialization error ocurred. Try again.")
-	String error_Serialization();
-	
-	@DefaultStringValue("This is taking too long, try again")
-	String error_Timeout();
-	
-	@DefaultStringValue("The email you entered is not valid")
-	String error_Email();
-	
-	@DefaultStringValue("The password you entered is not valid. It must have at least 6 characters")
-	String error_Password();
-	
-	@DefaultStringValue("The 2 passwords you entered don't match. Please try again")
-	String error_Password2();
-	
-	@DefaultStringValue("You must fill all the textboxes")
-	String error_emptyTxt();
-	
-	/**
-	 * LoginView Constants
-	 */
-	@DefaultStringValue("Password")
-	String password();
-	
-	@DefaultStringValue("Keep me logged in")
-	String keepLogged();
-	
-	@DefaultStringValue("Forgot your password?")
-	String forgotPassword();
-	
-	@DefaultStringValue("Don't have an account? Register now")
-	String registerNow();
-	
-	@DefaultStringValue("Log in")
-	String login();
-	
-	/**
-	 * Register Constants
-	 */
-	@DefaultStringValue("Repeat your password")
-	String password2();
-	
-	@DefaultStringValue("Name")
-	String name();
-	
-	@DefaultStringValue("Last Name")
-	String lastName();
-	
-	@DefaultStringValue("Register")
-	String register();
-	
-	@DefaultStringValue("User registered correctly")
-	String registerSuccesful();
-	
-	/**
-	 * UserMenu Constants
-	 */
-	@DefaultStringValue("Edit profile")
-	String editProfile();
-	
-	@DefaultStringValue("Logout")
-	String logout();
-	
-	/**
-	 * Profile Constants
-	 */
-	@DefaultStringValue("Title")
-	String title();
-	
-	@DefaultStringValue("Mobile")
-	String mobile();
-	
 	@DefaultStringValue("Address")
 	String address();
 	
-	@DefaultStringValue("Google Account")
-	String googleAccount();
-	
-	@DefaultStringValue("Facebook Account")
-	String facebookAccount();
-	
-	@DefaultStringValue("Twitter Account")
-	String twitterAccount();
-	
-	@DefaultStringValue("Flickr Account")
-	String flickrAccount();
+	@DefaultStringValue("Cancel")
+	String cancel();
 	
 	/**
 	 * User Constantas
@@ -115,11 +19,92 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("Contacts")
 	String contacts();
 	
+	/**
+	 * UserMenu Constants
+	 */
+	@DefaultStringValue("Edit profile")
+	String editProfile();
+	
+	/**
+	 * Error messages Constants
+	 */
+	@DefaultStringValue("The app may be out of date. Reload this page in your browser.")
+	String error_AppOutOfDate();
+	
+	@DefaultStringValue("The email you entered is not valid")
+	String error_Email();
+	
+	@DefaultStringValue("You must fill all the textboxes")
+	String error_emptyTxt();
+	
+	@DefaultStringValue("The password you entered is not valid. It must have at least 6 characters")
+	String error_Password();
+	
+	@DefaultStringValue("The 2 passwords you entered don't match. Please try again")
+	String error_Password2();
+	
+	@DefaultStringValue("A serialization error ocurred. Try again.")
+	String error_Serialization();
+	
+	@DefaultStringValue("This is taking too long, try again")
+	String error_Timeout();
+	
+	@DefaultStringValue("Facebook Account")
+	String facebookAccount();
+	
+	@DefaultStringValue("Flickr Account")
+	String flickrAccount();
+	
+	@DefaultStringValue("Forgot your password?")
+	String forgotPassword();
+	
+	@DefaultStringValue("Google Account")
+	String googleAccount();
+	
 	@DefaultStringValue("Group")
 	String group();
 	
 	@DefaultStringValue("Groups")
 	String groups();
+	
+	@DefaultStringValue("Keep me logged in")
+	String keepLogged();
+	
+	@DefaultStringValue("Last Name")
+	String lastName();
+	
+	@DefaultStringValue("Loading...")
+	String loading();
+	
+	@DefaultStringValue("Log in")
+	String login();
+	
+	@DefaultStringValue("Logout")
+	String logout();
+	
+	@DefaultStringValue("Mobile")
+	String mobile();
+	
+	@DefaultStringValue("Music")
+	String music();
+	
+	@DefaultStringValue("Name")
+	String name();
+	
+	@DefaultStringValue("Other")
+	String other();
+	
+	/**
+	 * LoginView Constants
+	 */
+	@DefaultStringValue("Password")
+	String password();
+	
+	/**
+	 * Register Constants
+	 */
+	@DefaultStringValue("Repeat your password")
+	String password2();
 	
 	/**
 	 * Folder name Constants
@@ -127,12 +112,27 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("Pictures")
 	String pictures();
 	
+	@DefaultStringValue("Register")
+	String register();
+	
+	@DefaultStringValue("Don't have an account? Register now")
+	String registerNow();
+	
+	@DefaultStringValue("User registered correctly")
+	String registerSuccesful();
+	
+	/**
+	 * Profile Constants
+	 */
+	@DefaultStringValue("Title")
+	String title();
+	
+	@DefaultStringValue("Twitter Account")
+	String twitterAccount();
+	
+	@DefaultStringValue("Upload")
+	String upload();
+	
 	@DefaultStringValue("Videos")
 	String videos();
-	
-	@DefaultStringValue("Music")
-	String music();
-	
-	@DefaultStringValue("Other")
-	String other();
 }

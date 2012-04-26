@@ -12,6 +12,36 @@ import net.thesocialos.client.view.window.FolderWindow;
 public class MediaHelper {
 	
 	/**
+	 * Loads the Facebook albums (if there is any) in the passed FolderWindow
+	 * 
+	 * @param folder
+	 *            The FolderWindow in which the albums are gonna be loaded
+	 */
+	private static void loadFacebookAlbums(final FolderWindow folder) {
+		new FacebookAPI().loadAlbumsInFolder(folder);
+	}
+	
+	/**
+	 * Loads the Flickr albums (if there is any) in the passed FolderWindow
+	 * 
+	 * @param folder
+	 *            The FolderWindow in which the albums are gonna be loaded
+	 */
+	private static void loadFlickrAlbums(final FolderWindow folder) {
+		new FlickrAPI().loadAlbumsInFolder(folder);
+	}
+	
+	/**
+	 * Loads the Picasa albums (if there is any) in the passed FolderWindow
+	 * 
+	 * @param folder
+	 *            The FolderWindow in which the albums are gonna be loaded
+	 */
+	private static void loadPicasaAlbums(final FolderWindow folder) {
+		new PicasaAPI().loadAlbumsInFolder(folder);
+	}
+	
+	/**
 	 * Loads the photo albums in a new FolderWindow
 	 */
 	protected static void loadPictureAlbums() {
@@ -34,35 +64,5 @@ public class MediaHelper {
 		
 		folder.addMedia(mediaSet);
 		folder.show();
-	}
-	
-	/**
-	 * Loads the Picasa albums (if there is any) in the passed FolderWindow
-	 * 
-	 * @param folder
-	 *            The FolderWindow in which the albums are gonna be loaded
-	 */
-	private static void loadPicasaAlbums(final FolderWindow folder) {
-		new PicasaAPI().loadAlbumsInFolder(folder);
-	}
-	
-	/**
-	 * Loads the Facebook albums (if there is any) in the passed FolderWindow
-	 * 
-	 * @param folder
-	 *            The FolderWindow in which the albums are gonna be loaded
-	 */
-	private static void loadFacebookAlbums(final FolderWindow folder) {
-		new FacebookAPI().loadAlbumsInFolder(folder);
-	}
-	
-	/**
-	 * Loads the Flickr albums (if there is any) in the passed FolderWindow
-	 * 
-	 * @param folder
-	 *            The FolderWindow in which the albums are gonna be loaded
-	 */
-	private static void loadFlickrAlbums(final FolderWindow folder) {
-		new FlickrAPI().loadAlbumsInFolder(folder);
 	}
 }

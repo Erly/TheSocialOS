@@ -2,7 +2,6 @@ package net.thesocialos.client.view.profile;
 
 import net.thesocialos.client.CacheLayer;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
@@ -21,6 +20,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.googlecode.objectify.Key;
 
 public class ProfilePanel extends Composite implements Display {
+	
+	interface ProfilePanelUiBinder extends UiBinder<Widget, ProfilePanel> {
+	}
 	
 	private String googleURL = "https://accounts.google.com/o/oauth2/auth?"
 			+ "redirect_uri=http%3A%2F%2Fwww.thesocialos.net%2Foauth2callback&"
@@ -57,7 +59,6 @@ public class ProfilePanel extends Composite implements Display {
 																							 */
 	
 	private String flickrURL = "http://www.thesocialos.net/oauthlogin?serviceType=flickr";
-	
 	private static ProfilePanelUiBinder uiBinder = GWT.create(ProfilePanelUiBinder.class);
 	@UiField ProfileAttr name;
 	@UiField ProfileAttr title;
@@ -72,10 +73,8 @@ public class ProfilePanel extends Composite implements Display {
 	Google googleAccount;
 	Facebook facebookAccount;
 	Twitter twitterAccount;
-	FlickR flickrAccount;
 	
-	interface ProfilePanelUiBinder extends UiBinder<Widget, ProfilePanel> {
-	}
+	FlickR flickrAccount;
 	
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -127,6 +126,31 @@ public class ProfilePanel extends Composite implements Display {
 		}
 	}
 	
+	@Override
+	public ProfileAttr getAddress() {
+		return address;
+	}
+	
+	@Override
+	public ProfileAttr getEmail() {
+		return email;
+	}
+	
+	@Override
+	public ProfileAttr getMobile() {
+		return mobile;
+	}
+	
+	@Override
+	public ProfileAttr getName() {
+		return name;
+	}
+	
+	@Override
+	public ProfileAttr getUserTitle() {
+		return title;
+	}
+	
 	private void populateAccountsMap() {
 		accounts = CacheLayer.UserCalls.getAccounts();
 		Iterator<Account> it = accounts.values().iterator();
@@ -142,30 +166,5 @@ public class ProfilePanel extends Composite implements Display {
 				flickrAccount = (FlickR) account;
 			}
 		}
-	}
-	
-	@Override
-	public ProfileAttr getName() {
-		return name;
-	}
-	
-	@Override
-	public ProfileAttr getUserTitle() {
-		return title;
-	}
-	
-	@Override
-	public ProfileAttr getEmail() {
-		return email;
-	}
-	
-	@Override
-	public ProfileAttr getMobile() {
-		return mobile;
-	}
-	
-	@Override
-	public ProfileAttr getAddress() {
-		return address;
 	}
 }

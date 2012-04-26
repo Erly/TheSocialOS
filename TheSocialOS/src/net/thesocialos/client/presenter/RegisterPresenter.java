@@ -1,7 +1,6 @@
 package net.thesocialos.client.presenter;
 
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.helper.RPCCall;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
@@ -25,25 +24,25 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class RegisterPresenter implements Presenter {
 	
-	private final UserServiceAsync userService = GWT.create(UserService.class);
-	
 	public interface Display {
-		HasClickHandlers getRegisterButton();
+		Widget asWidget();
 		
 		HasValue<String> getEmail();
+		
+		HasText getIncorrect();
+		
+		HasValue<String> getLastName();
+		
+		HasValue<String> getName();
 		
 		HasValue<String> getPassword();
 		
 		HasValue<String> getPassword2();
 		
-		HasValue<String> getName();
-		
-		HasValue<String> getLastName();
-		
-		HasText getIncorrect();
-		
-		Widget asWidget();
+		HasClickHandlers getRegisterButton();
 	}
+	
+	private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	private Display display;
 	
@@ -59,13 +58,6 @@ public class RegisterPresenter implements Presenter {
 				doRegister();
 			}
 		});
-	}
-	
-	@Override
-	public void go(HasWidgets container) {
-		container.clear(); // Clear the screen
-		container.add(display.asWidget()); // Print the register page in the screen
-		bind();
 	}
 	
 	private void doRegister() {
@@ -101,11 +93,13 @@ public class RegisterPresenter implements Presenter {
 		new RPCXSRF<Void>(userService) {
 			
 			@Override
-			protected void XSRFcallService(AsyncCallback<Void> cb) {
+			public void onFailure(Throwable caught) {
+				GWT.log(caught.getMessage(), caught);
+				if (caught.getClass() == UserExistsException.class) Window.alert(TheSocialOS.getMessages()
+						.error_UserExists(display.getEmail().getValue().trim()));
+				else
+					Window.alert("Error: " + caught.getMessage());
 				
-				userService.register(new User(display.getEmail().getValue().trim(), display.getPassword().getValue()
-						.trim(), null, null, display.getName().getValue().trim(), display.getLastName().getValue()
-						.trim(), "User"), cb);
 			}
 			
 			@Override
@@ -115,14 +109,19 @@ public class RegisterPresenter implements Presenter {
 			}
 			
 			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log(caught.getMessage(), caught);
-				if (caught.getClass() == UserExistsException.class) Window.alert(TheSocialOS.getMessages()
-						.error_UserExists(display.getEmail().getValue().trim()));
-				else
-					Window.alert("Error: " + caught.getMessage());
+			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				
+				userService.register(new User(display.getEmail().getValue().trim(), display.getPassword().getValue()
+						.trim(), null, null, display.getName().getValue().trim(), display.getLastName().getValue()
+						.trim(), "User"), cb);
 			}
 		}.retry(3);
+	}
+	
+	@Override
+	public void go(HasWidgets container) {
+		container.clear(); // Clear the screen
+		container.add(display.asWidget()); // Print the register page in the screen
+		bind();
 	}
 }

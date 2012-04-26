@@ -2,8 +2,6 @@ package net.thesocialos.server;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import net.thesocialos.client.service.GroupsService;
 import net.thesocialos.shared.exceptions.GroupNotFoundException;
 import net.thesocialos.shared.model.Group;

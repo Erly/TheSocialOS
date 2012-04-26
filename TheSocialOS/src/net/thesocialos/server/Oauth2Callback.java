@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.servlet.ServletException;
@@ -21,9 +20,10 @@ public class Oauth2Callback extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			String authCode = (String) request.getParameter("code");
+			String authCode = request.getParameter("code");
 			String urlString = "https://accounts.google.com/o/oauth2/token";
 			String params = "code=" + authCode + "&" + "client_id=398121744591.apps.googleusercontent.com&"
 					+ "client_secret=WByUe_YHFd07JWEzMpWZ6cGf&"

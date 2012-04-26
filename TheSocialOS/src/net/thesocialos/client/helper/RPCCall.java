@@ -6,7 +6,6 @@ import net.thesocialos.client.event.RPCOutEvent;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestTimeoutException;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
@@ -22,12 +21,10 @@ import com.google.gwt.user.client.rpc.SerializationException;
 @Deprecated
 public abstract class RPCCall<T> implements AsyncCallback<T> {
 	
-	protected abstract void callService(AsyncCallback<T> cb);
-	
-	// private final UserServiceAsync userService = GWT.create(UserService.class);
-	
 	public RPCCall() {
 	}
+	
+	// private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	/**
 	 * Makes a request to check that the user sessionID and userID are correct and if they are correct it makes the call
@@ -50,6 +47,8 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 		 * History.newItem("login"); } } });
 		 */
 	}
+	
+	protected abstract void callService(AsyncCallback<T> cb);
 	
 	/**
 	 * It makes the main request to the server and controls some generic exceptions. In case of failure it calls itself
@@ -94,11 +93,18 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 		});
 	}
 	
+	@Override
+	public void onFailure(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/**
 	 * Fires an event indicating that the RPC request has finished.
 	 */
 	private void onRPCIn() {
-		TheSocialOS.get().getEventBus().fireEvent(new RPCInEvent());
+		TheSocialOS.get();
+		TheSocialOS.getEventBus().fireEvent(new RPCInEvent());
 	}
 	
 	/**
@@ -106,7 +112,14 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 	 * indicating that the system is working.
 	 */
 	private void onRPCOut() {
-		TheSocialOS.get().getEventBus().fireEvent(new RPCOutEvent());
+		TheSocialOS.get();
+		TheSocialOS.getEventBus().fireEvent(new RPCOutEvent());
+	}
+	
+	@Override
+	public void onSuccess(T result) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**
@@ -117,18 +130,6 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 	 */
 	public void retry(int retryCount) { // Public method to call the RPCCall
 		call(retryCount);
-	}
-	
-	@Override
-	public void onFailure(Throwable caught) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void onSuccess(T result) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

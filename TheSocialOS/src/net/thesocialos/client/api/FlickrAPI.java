@@ -1,6 +1,5 @@
 package net.thesocialos.client.api;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -23,10 +22,6 @@ import net.thesocialos.shared.model.FlickR;
 
 public class FlickrAPI {
 	
-	public FlickrAPI() {
-		// TODO Auto-generated constructor stub
-	}
-	
 	public class Album implements MediaAlbum {
 		private String id;
 		private String title;
@@ -35,6 +30,29 @@ public class FlickrAPI {
 		private int numPhotos;
 		private boolean commentingEnabled;
 		private int commentCount;
+		
+		/**
+		 * @return the commentCount
+		 */
+		public int getCommentCount() {
+			return commentCount;
+		}
+		
+		/**
+		 * @return the description
+		 */
+		@Override
+		public String getDescription() {
+			return description;
+		}
+		
+		/**
+		 * @return the numPhotos
+		 */
+		@Override
+		public int getElementCount() {
+			return numPhotos;
+		}
 		
 		/**
 		 * @return the id
@@ -53,14 +71,6 @@ public class FlickrAPI {
 		}
 		
 		/**
-		 * @return the description
-		 */
-		@Override
-		public String getDescription() {
-			return description;
-		}
-		
-		/**
 		 * @return the thumbnailURL
 		 */
 		@Override
@@ -69,25 +79,10 @@ public class FlickrAPI {
 		}
 		
 		/**
-		 * @return the numPhotos
-		 */
-		@Override
-		public int getElementCount() {
-			return numPhotos;
-		}
-		
-		/**
 		 * @return the commentingEnabled
 		 */
 		public boolean isCommentingEnabled() {
 			return commentingEnabled;
-		}
-		
-		/**
-		 * @return the commentCount
-		 */
-		public int getCommentCount() {
-			return commentCount;
 		}
 	}
 	
@@ -99,6 +94,11 @@ public class FlickrAPI {
 		private String thumbnailURL;
 		private boolean commentingEnabled;
 		private int commentCount;
+		
+		@Override
+		public String getDescription() {
+			return "";
+		}
 		
 		@Override
 		public String getID() {
@@ -120,11 +120,44 @@ public class FlickrAPI {
 			return url;
 		}
 		
-		@Override
-		public String getDescription() {
-			return "";
+	}
+	
+	public FlickrAPI() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	private FlickR getFlickrAccount() {
+		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
+		Iterator<Account> it = accounts.values().iterator();
+		while (it.hasNext()) {
+			Account account = it.next();
+			if (account instanceof FlickR) { return (FlickR) account; }
 		}
+		return null;
+	}
+	
+	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder,
+			FlickR flickrAccount) {
+		String url = "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&nojsoncallback=1&per_page=9999";
+		url += "&photo_id=" + cover_photo_id;
 		
+		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(),
+				flickrAccount.getTokenSecret(), url);
+		send(url, new RequestCallback() {
+			
+			@Override
+			public void onError(Request request, Throwable exception) {
+				Window.alert(exception.getMessage());
+			}
+			
+			@Override
+			public void onResponseReceived(Request request, Response response) {
+				JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
+				JSONArray array = object.get("sizes").isObject().get("size").isArray();
+				album.thumbnailURL = array.get(1).isObject().get("source").isString().stringValue();
+				folder.addMedia(album);
+			}
+		});
 	}
 	
 	public void loadAlbumsInFolder(final FolderWindow folder) {
@@ -135,6 +168,11 @@ public class FlickrAPI {
 		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(),
 				flickrAccount.getTokenSecret(), url);
 		send(url, new RequestCallback() {
+			
+			@Override
+			public void onError(Request request, Throwable exception) {
+				Window.alert(exception.getMessage());
+			}
 			
 			@Override
 			public void onResponseReceived(Request request, Response response) {
@@ -156,34 +194,30 @@ public class FlickrAPI {
 					loadAlbumInFolder(album, cover_photo_id, folder, flickrAccount);
 				}
 			}
-			
-			@Override
-			public void onError(Request request, Throwable exception) {
-				Window.alert(exception.getMessage());
-			}
 		});
 	}
 	
-	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder,
-			FlickR flickrAccount) {
+	private void loadPictureInFolder(final Picture picture, final FolderWindow folder, FlickR flickrAccount) {
 		String url = "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&nojsoncallback=1&per_page=9999";
-		url += "&photo_id=" + cover_photo_id;
+		url += "&photo_id=" + picture.getID();
 		
 		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(),
 				flickrAccount.getTokenSecret(), url);
 		send(url, new RequestCallback() {
 			
 			@Override
-			public void onResponseReceived(Request request, Response response) {
-				JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
-				JSONArray array = object.get("sizes").isObject().get("size").isArray();
-				album.thumbnailURL = array.get(1).isObject().get("source").isString().stringValue();
-				folder.addMedia(album);
+			public void onError(Request request, Throwable exception) {
+				Window.alert(exception.getMessage());
 			}
 			
 			@Override
-			public void onError(Request request, Throwable exception) {
-				Window.alert(exception.getMessage());
+			public void onResponseReceived(Request request, Response response) {
+				JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
+				// HashSet<Picture> pictures = new HashSet<Picture>();
+				JSONArray array = object.get("sizes").isObject().get("size").isArray();
+				picture.url = array.get(array.size() - 1).isObject().get("source").isString().stringValue();
+				picture.thumbnailURL = array.get(1).isObject().get("source").isString().stringValue();
+				folder.addMedia(picture);
 			}
 		});
 	}
@@ -199,6 +233,11 @@ public class FlickrAPI {
 		send(url, new RequestCallback() {
 			
 			@Override
+			public void onError(Request request, Throwable exception) {
+				Window.alert(exception.getMessage());
+			}
+			
+			@Override
 			public void onResponseReceived(Request request, Response response) {
 				JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
 				JSONArray array = object.get("photoset").isObject().get("photo").isArray();
@@ -209,47 +248,7 @@ public class FlickrAPI {
 					loadPictureInFolder(picture, folder, flickrAccount);
 				}
 			}
-			
-			@Override
-			public void onError(Request request, Throwable exception) {
-				Window.alert(exception.getMessage());
-			}
 		});
-	}
-	
-	private void loadPictureInFolder(final Picture picture, final FolderWindow folder, FlickR flickrAccount) {
-		String url = "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&nojsoncallback=1&per_page=9999";
-		url += "&photo_id=" + picture.getID();
-		
-		url = OAuth.signRequest(FlickR.CONSUMER_KEY, FlickR.CONSUMER_SECRET, flickrAccount.getToken(),
-				flickrAccount.getTokenSecret(), url);
-		send(url, new RequestCallback() {
-			
-			@Override
-			public void onResponseReceived(Request request, Response response) {
-				JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
-				// HashSet<Picture> pictures = new HashSet<Picture>();
-				JSONArray array = object.get("sizes").isObject().get("size").isArray();
-				picture.url = array.get(array.size() - 1).isObject().get("source").isString().stringValue();
-				picture.thumbnailURL = array.get(1).isObject().get("source").isString().stringValue();
-				folder.addMedia(picture);
-			}
-			
-			@Override
-			public void onError(Request request, Throwable exception) {
-				Window.alert(exception.getMessage());
-			}
-		});
-	}
-	
-	private FlickR getFlickrAccount() {
-		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
-		Iterator<Account> it = accounts.values().iterator();
-		while (it.hasNext()) {
-			Account account = it.next();
-			if (account instanceof FlickR) { return (FlickR) account; }
-		}
-		return null;
 	}
 	
 	protected void send(String Url, RequestCallback cb) {

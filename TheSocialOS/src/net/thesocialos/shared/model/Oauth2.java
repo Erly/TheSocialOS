@@ -35,11 +35,10 @@ public abstract class Oauth2 extends Account {
 	}
 	
 	/**
-	 * @param authToken
-	 *            the authToken to set
+	 * @return the expireDate
 	 */
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
+	public Date getExpireDate() {
+		return expireDate;
 	}
 	
 	/**
@@ -50,18 +49,11 @@ public abstract class Oauth2 extends Account {
 	}
 	
 	/**
-	 * @param refreshToken
-	 *            the refreshToken to set
+	 * @param authToken
+	 *            the authToken to set
 	 */
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
-	
-	/**
-	 * @return the expireDate
-	 */
-	public Date getExpireDate() {
-		return expireDate;
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
 	}
 	
 	/**
@@ -70,5 +62,13 @@ public abstract class Oauth2 extends Account {
 	 */
 	public void setExpireDate(Date expireDate) {
 		this.expireDate = expireDate;
+	}
+	
+	/**
+	 * @param refreshToken
+	 *            the refreshToken to set
+	 */
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 }

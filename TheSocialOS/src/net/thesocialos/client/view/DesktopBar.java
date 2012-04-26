@@ -15,23 +15,13 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 public class DesktopBar extends Composite {
 	
-	private static DesktopBarUiBinder uiBinder = GWT.create(DesktopBarUiBinder.class);
-	
 	interface DesktopBarUiBinder extends UiBinder<HorizontalPanel, DesktopBar> {
 	}
 	
-	public DesktopBar() {
-		initWidget(uiBinder.createAndBindUi(this));
-		TheSocialOS.getEventBus().addHandler(ContactsPetitionChangeEvent.TYPE, new ContactEventHandler() {
-			
-			@Override
-			public void onContactsPetitionChange(ContactsPetitionChangeEvent event) {
-				lblPetitionsNumber.setText(Integer.toString(CacheLayer.ContactCalls.getCountPetitionsContanct()));
-			}
-		});
-	}
+	private static DesktopBarUiBinder uiBinder = GWT.create(DesktopBarUiBinder.class);
 	
 	@UiField Label clock;
+	
 	@UiField Label username;
 	@UiField FocusPanel userPanel;
 	@UiField FocusPanel startButton;
@@ -43,13 +33,19 @@ public class DesktopBar extends Composite {
 	@UiField Label lblPetitions;
 	@UiField Label lblPetitionsNumber;
 	@UiField FocusPanel PetitionsButton;
+	public DesktopBar() {
+		initWidget(uiBinder.createAndBindUi(this));
+		TheSocialOS.getEventBus().addHandler(ContactsPetitionChangeEvent.TYPE, new ContactEventHandler() {
+			
+			@Override
+			public void onContactsPetitionChange(ContactsPetitionChangeEvent event) {
+				lblPetitionsNumber.setText(Integer.toString(CacheLayer.ContactCalls.getCountPetitionsContanct()));
+			}
+		});
+	}
 	
 	public FocusPanel getFocusContact() {
 		return focusContacts;
-	}
-	
-	public FocusPanel getSearchBox() {
-		return searchButton;
 	}
 	
 	public FocusPanel getPetitionsButton() {
@@ -64,5 +60,9 @@ public class DesktopBar extends Composite {
 	 * 
 	 * @param number
 	 */
+	
+	public FocusPanel getSearchBox() {
+		return searchButton;
+	}
 	
 }

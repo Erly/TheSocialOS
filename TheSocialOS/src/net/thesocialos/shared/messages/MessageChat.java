@@ -20,16 +20,16 @@ import net.thesocialos.shared.messages.Message;
 @SuppressWarnings("serial")
 public class MessageChat extends Message {
 	
-	public MessageChat() {
-		super(Type.NEW_CHATMSG_AVAILABLE);
-		setTypeChat(TypeChat.IS_WRITEN);
-	}
-	
 	public static enum TypeChat {
 		IS_WRITEN, IS_CONNECTED, IS_DISCONNECTED, HAS_TEXT
 	}
 	
 	public TypeChat typeChat;
+	
+	public MessageChat() {
+		super(Type.NEW_CHATMSG_AVAILABLE);
+		setTypeChat(TypeChat.IS_WRITEN);
+	}
 	
 	public TypeChat getTypeChat() {
 		return typeChat;

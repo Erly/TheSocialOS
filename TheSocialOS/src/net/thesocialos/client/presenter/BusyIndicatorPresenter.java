@@ -12,11 +12,11 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 public class BusyIndicatorPresenter implements Presenter {
 	
 	public interface Display {
-		void show();
+		Widget asWidget();
 		
 		void hide();
 		
-		Widget asWidget();
+		void show();
 	}
 	
 	int outCount = 0; // # of RPC calls sent by the app. If > 0 we'll show a 'loading' indicator.

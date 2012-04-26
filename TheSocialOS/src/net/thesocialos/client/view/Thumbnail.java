@@ -13,10 +13,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class Thumbnail extends Composite implements HasText {
 	
-	public enum TYPE {
-		ALBUM, PICTURE, VIDEO, MUSIC, FOLDER;
-	}
-	
 	public enum SERVICE {
 		PICASA("images/badges/picasa.png"), YOUTUBE("images/badges/youtube.png"), FACEBOOK("images/badges/facebook.png"), FLICKR(
 				"images/badges/flickr.png"), TWITTER("images/badges/twitter.png");
@@ -35,38 +31,25 @@ public class Thumbnail extends Composite implements HasText {
 		}
 	}
 	
-	private static ThumbnailUiBinder uiBinder = GWT.create(ThumbnailUiBinder.class);
-	
 	interface ThumbnailUiBinder extends UiBinder<Widget, Thumbnail> {
 	}
 	
-	public Thumbnail() {
-		initWidget(uiBinder.createAndBindUi(this));
+	public enum TYPE {
+		ALBUM, PICTURE, VIDEO, MUSIC, FOLDER;
 	}
 	
+	private static ThumbnailUiBinder uiBinder = GWT.create(ThumbnailUiBinder.class);
+	
 	@UiField Image image;
+	
 	@UiField Image badge;
 	@UiField Label text;
 	@UiField Label subText;
 	@UiField FocusPanel panel;
 	private TYPE type;
 	private SERVICE service;
-	
-	/**
-	 * 
-	 * @param image
-	 * @param text
-	 * @param type
-	 *            a constant from Thumbnail.TYPE
-	 * @param service
-	 *            a constant from Thumbnail.SERVICE
-	 */
-	public Thumbnail(Image image, String text, TYPE type, SERVICE service) {
+	public Thumbnail() {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.image = image;
-		this.text.setText(text);
-		this.setType(type);
-		this.setService(service);
 	}
 	
 	/**
@@ -90,16 +73,16 @@ public class Thumbnail extends Composite implements HasText {
 	
 	/**
 	 * 
-	 * @param imageURL
+	 * @param image
 	 * @param text
 	 * @param type
 	 *            a constant from Thumbnail.TYPE
 	 * @param service
 	 *            a constant from Thumbnail.SERVICE
 	 */
-	public Thumbnail(String imageURL, String text, TYPE type, SERVICE service) {
+	public Thumbnail(Image image, String text, TYPE type, SERVICE service) {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.image.setUrl(imageURL);
+		this.image = image;
 		this.text.setText(text);
 		this.setType(type);
 		this.setService(service);
@@ -124,12 +107,32 @@ public class Thumbnail extends Composite implements HasText {
 		this.setService(service);
 	}
 	
-	public void setText(String text) {
+	/**
+	 * 
+	 * @param imageURL
+	 * @param text
+	 * @param type
+	 *            a constant from Thumbnail.TYPE
+	 * @param service
+	 *            a constant from Thumbnail.SERVICE
+	 */
+	public Thumbnail(String imageURL, String text, TYPE type, SERVICE service) {
+		initWidget(uiBinder.createAndBindUi(this));
+		this.image.setUrl(imageURL);
 		this.text.setText(text);
+		this.setType(type);
+		this.setService(service);
 	}
 	
-	public String getText() {
-		return text.getText();
+	public void addDoubleClickHandler(DoubleClickHandler handler) {
+		panel.addDoubleClickHandler(handler);
+	}
+	
+	/**
+	 * @return the service
+	 */
+	public SERVICE getService() {
+		return service;
 	}
 	
 	/**
@@ -139,16 +142,9 @@ public class Thumbnail extends Composite implements HasText {
 		return subText;
 	}
 	
-	/**
-	 * @param subText
-	 *            the subText to set
-	 */
-	public void setSubText(Label subText) {
-		this.subText = subText;
-	}
-	
-	public void addDoubleClickHandler(DoubleClickHandler handler) {
-		panel.addDoubleClickHandler(handler);
+	@Override
+	public String getText() {
+		return text.getText();
 	}
 	
 	/**
@@ -158,19 +154,8 @@ public class Thumbnail extends Composite implements HasText {
 		return type;
 	}
 	
-	/**
-	 * @param type
-	 *            the type to set
-	 */
-	public void setType(TYPE type) {
-		this.type = type;
-	}
-	
-	/**
-	 * @return the service
-	 */
-	public SERVICE getService() {
-		return service;
+	private void setBadge(SERVICE service) {
+		badge.setUrl(service.getIconUrl());
 	}
 	
 	/**
@@ -182,7 +167,24 @@ public class Thumbnail extends Composite implements HasText {
 		setBadge(service);
 	}
 	
-	private void setBadge(SERVICE service) {
-		badge.setUrl(service.getIconUrl());
+	/**
+	 * @param subText
+	 *            the subText to set
+	 */
+	public void setSubText(Label subText) {
+		this.subText = subText;
+	}
+	
+	@Override
+	public void setText(String text) {
+		this.text.setText(text);
+	}
+	
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	public void setType(TYPE type) {
+		this.type = type;
 	}
 }

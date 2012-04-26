@@ -17,31 +17,6 @@ import com.google.gwt.user.client.ui.Image;
 public class DblClickHandlerHelper {
 	final Media media;
 	
-	public DblClickHandlerHelper(Media media) {
-		this.media = media;
-	}
-	
-	public DoubleClickHandler getDoubleClickHandler() {
-		if (media instanceof PicasaAPI.Album) {
-			return picasaAlbum;
-		} else if (media instanceof PicasaAPI.Picture) {
-			return picasaPicture;
-		} else if (media instanceof FacebookAPI.Album) {
-			return facebookAlbum;
-		} else if (media instanceof FacebookAPI.Picture) {
-			return facebookPicture;
-		} else if (media instanceof FlickrAPI.Album) {
-			return flickrAlbum;
-		} else if (media instanceof FlickrAPI.Picture) {
-			return flickrPicture;
-		} else if (media instanceof YoutubeAPI.Album) {
-			return youtubeAlbum;
-		} else if (media instanceof YoutubeAPI.Video) {
-			return youtubeVideo;
-		} else if (media instanceof YoutubeAPI.Folder) { return youtubeFolder; }
-		return null;
-	}
-	
 	private DoubleClickHandler picasaAlbum = new DoubleClickHandler() {
 		
 		@Override
@@ -133,6 +108,31 @@ public class DblClickHandlerHelper {
 			folder.show();
 		}
 	};
+	
+	public DblClickHandlerHelper(Media media) {
+		this.media = media;
+	}
+	
+	public DoubleClickHandler getDoubleClickHandler() {
+		if (media instanceof PicasaAPI.Album) {
+			return picasaAlbum;
+		} else if (media instanceof PicasaAPI.Picture) {
+			return picasaPicture;
+		} else if (media instanceof FacebookAPI.Album) {
+			return facebookAlbum;
+		} else if (media instanceof FacebookAPI.Picture) {
+			return facebookPicture;
+		} else if (media instanceof FlickrAPI.Album) {
+			return flickrAlbum;
+		} else if (media instanceof FlickrAPI.Picture) {
+			return flickrPicture;
+		} else if (media instanceof YoutubeAPI.Album) {
+			return youtubeAlbum;
+		} else if (media instanceof YoutubeAPI.Video) {
+			return youtubeVideo;
+		} else if (media instanceof YoutubeAPI.Folder) { return youtubeFolder; }
+		return null;
+	}
 	
 	protected void openImage() {
 		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);

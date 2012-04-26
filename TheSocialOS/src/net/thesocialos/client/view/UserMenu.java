@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class UserMenu extends Composite {
 	
+	interface UserMenuUiBinder extends UiBinder<Widget, UserMenu> {
+	}
 	private static UserMenuUiBinder uiBinder = GWT.create(UserMenuUiBinder.class);
 	@UiField Image avatar;
 	@UiField Label name;
@@ -22,10 +24,8 @@ public class UserMenu extends Composite {
 	@UiField FocusPanel editProfilePanel;
 	@UiField FocusPanel logoutPanel;
 	@UiField FocusPanel mainFocusPanel;
-	@UiField VerticalPanel mainVerticalPanel;
 	
-	interface UserMenuUiBinder extends UiBinder<Widget, UserMenu> {
-	}
+	@UiField VerticalPanel mainVerticalPanel;
 	
 	public UserMenu() {
 		initWidget(uiBinder.createAndBindUi(this));

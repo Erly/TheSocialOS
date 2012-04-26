@@ -12,27 +12,27 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ProfilePanelPresenter implements Presenter {
 	
-	SimpleEventBus eventBus;
-	Display display;
-	public String value;
-	
-	public ProfilePanelPresenter(SimpleEventBus eventBus, Display display) {
-		this.eventBus = eventBus;
-		this.display = display;
-	}
-	
 	public interface Display {
-		ProfileAttr getName();
+		Widget asWidget();
 		
-		ProfileAttr getUserTitle();
+		ProfileAttr getAddress();
 		
 		ProfileAttr getEmail();
 		
 		ProfileAttr getMobile();
 		
-		ProfileAttr getAddress();
+		ProfileAttr getName();
 		
-		Widget asWidget();
+		ProfileAttr getUserTitle();
+	}
+	SimpleEventBus eventBus;
+	Display display;
+	
+	public String value;
+	
+	public ProfilePanelPresenter(SimpleEventBus eventBus, Display display) {
+		this.eventBus = eventBus;
+		this.display = display;
 	}
 	
 	public void bind() {
@@ -69,13 +69,6 @@ public class ProfilePanelPresenter implements Presenter {
 		});
 	}
 	
-	@Override
-	public void go(HasWidgets container) {
-		container.clear();
-		container.add(this.display.asWidget());
-		bind();
-	}
-	
 	public PopAsker getNewValueAsker(String valueName) {
 		value = null;
 		final PopupPanel popup = new PopupPanel(true);
@@ -92,6 +85,13 @@ public class ProfilePanelPresenter implements Presenter {
 		});
 		popup.center();
 		return asker;
+	}
+	
+	@Override
+	public void go(HasWidgets container) {
+		container.clear();
+		container.add(this.display.asWidget());
+		bind();
 	}
 	
 }

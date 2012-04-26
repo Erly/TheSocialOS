@@ -25,6 +25,16 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ChatApp implements IApplication {
 	
+	public interface Display {
+		
+		ChatPanel getChatPanel();
+		
+		Button getSendButton();
+		
+		TextBox getSendText();
+		
+		TextArea getTextArea();
+	}
 	private String name;
 	private String image;
 	Display panel;
@@ -32,6 +42,7 @@ public class ChatApp implements IApplication {
 	SimpleEventBus chatEventBus;
 	private final ChatServiceAsync chatService = GWT.create(ChatService.class);
 	private String height;
+	
 	private String width;
 	
 	public ChatApp(String appName, String appImageURL, SimpleEventBus chatEventBus, Display panel, String width,
@@ -43,27 +54,6 @@ public class ChatApp implements IApplication {
 		this.chatEventBus = chatEventBus;
 		this.panel = panel;
 		bind();
-	}
-	
-	public interface Display {
-		
-		Button getSendButton();
-		
-		TextBox getSendText();
-		
-		TextArea getTextArea();
-		
-		ChatPanel getChatPanel();
-	}
-	
-	@Override
-	public Widget run() {
-		return panel.getChatPanel();
-	}
-	
-	@Override
-	public void setSize(String width, String height) {
-		panel.getChatPanel().setSize(width, height);
 	}
 	
 	private void bind() {
@@ -104,26 +94,15 @@ public class ChatApp implements IApplication {
 		
 	}
 	
-	private void sendMessage(String text) {
-		new RPCXSRF<Void>(chatService) {
-			
-			@Override
-			protected void XSRFcallService(AsyncCallback<Void> cb) {
-				chatService.sendText(panel.getSendText().getText(), new AsyncCallback<Boolean>() {
-					
-					@Override
-					public void onSuccess(Boolean result) {
-						panel.getSendText().setText("");
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-					}
-				});
-			}
-			
-		}.retry(3);
+	@Override
+	public String getHeight() {
+		return height;
+	}
+	
+	@Override
+	public String getImage() {
+		// TODO Auto-generated method stub
+		return image;
 	}
 	
 	private void getMessages() {
@@ -136,6 +115,11 @@ public class ChatApp implements IApplication {
 				chatService.getText(new AsyncCallback<List<Chat>>() {
 					
 					@Override
+					public void onFailure(Throwable caught) {
+						
+					}
+					
+					@Override
 					public void onSuccess(List<Chat> result) {
 						String textToAdd = "";
 						for (int i = 0; i < result.size(); i++) {
@@ -146,30 +130,9 @@ public class ChatApp implements IApplication {
 								.setScrollTop(panel.getTextArea().getElement().getScrollHeight());
 						System.out.println(result.toArray());
 					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						
-					}
 				});
 			}
 		}.retry(3);
-	}
-	
-	public String getHeight() {
-		return height;
-	}
-	
-	public void setHeight(String height) {
-		this.height = height;
-	}
-	
-	public String getWidth() {
-		return width;
-	}
-	
-	public void setWidth(String width) {
-		this.width = width;
 	}
 	
 	@Override
@@ -179,9 +142,45 @@ public class ChatApp implements IApplication {
 	}
 	
 	@Override
-	public String getImage() {
-		// TODO Auto-generated method stub
-		return image;
+	public String getWidth() {
+		return width;
+	}
+	
+	@Override
+	public Widget run() {
+		return panel.getChatPanel();
+	}
+	
+	private void sendMessage(String text) {
+		new RPCXSRF<Void>(chatService) {
+			
+			@Override
+			protected void XSRFcallService(AsyncCallback<Void> cb) {
+				chatService.sendText(panel.getSendText().getText(), new AsyncCallback<Boolean>() {
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+					}
+					
+					@Override
+					public void onSuccess(Boolean result) {
+						panel.getSendText().setText("");
+					}
+				});
+			}
+			
+		}.retry(3);
+	}
+	
+	public void setHeight(String height) {
+		this.height = height;
+	}
+	
+	@Override
+	public void setImage(String image) {
+		this.image = image;
+		
 	}
 	
 	@Override
@@ -191,8 +190,11 @@ public class ChatApp implements IApplication {
 	}
 	
 	@Override
-	public void setImage(String image) {
-		this.image = image;
-		
+	public void setSize(String width, String height) {
+		panel.getChatPanel().setSize(width, height);
+	}
+	
+	public void setWidth(String width) {
+		this.width = width;
 	}
 }

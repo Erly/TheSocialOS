@@ -1,13 +1,9 @@
 package net.thesocialos.client.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,19 +13,19 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 public class Icon extends Composite implements HasText {
 	
-	public static String FOLDER_ICON = "./images/Folder.png";
-	private static IconUiBinder uiBinder = GWT.create(IconUiBinder.class);
-	
 	interface IconUiBinder extends UiBinder<Widget, Icon> {
 	}
+	public static String FOLDER_ICON = "./images/Folder.png";
 	
+	private static IconUiBinder uiBinder = GWT.create(IconUiBinder.class);
+	
+	@UiField Image image;
+	
+	@UiField Label text;
+	@UiField FocusPanel panel;
 	public Icon() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
-	@UiField Image image;
-	@UiField Label text;
-	@UiField FocusPanel panel;
 	
 	public Icon(Image image, String text) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -43,14 +39,6 @@ public class Icon extends Composite implements HasText {
 		this.text.setText(text);
 	}
 	
-	public void setText(String text) {
-		this.text.setText(text);
-	}
-	
-	public String getText() {
-		return text.getText();
-	}
-	
 	public void addDoubleClickHandler(DoubleClickHandler handler) {
 		panel.addDoubleClickHandler(handler);
 	}
@@ -60,8 +48,19 @@ public class Icon extends Composite implements HasText {
 	 *             <p>
 	 *             It overrides the DoubleClickHandler in case it was added with the addDoubleClickHandler method
 	 */
+	@Deprecated
 	public void addOpenFolderHandler() {
 		
+	}
+	
+	@Override
+	public String getText() {
+		return text.getText();
+	}
+	
+	@Override
+	public void setText(String text) {
+		this.text.setText(text);
 	}
 	
 }

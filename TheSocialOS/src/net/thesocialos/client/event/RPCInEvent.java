@@ -7,13 +7,13 @@ public class RPCInEvent extends GwtEvent<RPCInEventHandler> {
 	public static Type<RPCInEventHandler> TYPE = new Type<RPCInEventHandler>();
 	
 	@Override
-	public Type<RPCInEventHandler> getAssociatedType() {
-		return TYPE;
+	protected void dispatch(RPCInEventHandler handler) {
+		handler.onRPCIn(this);
 	}
 	
 	@Override
-	protected void dispatch(RPCInEventHandler handler) {
-		handler.onRPCIn(this);
+	public Type<RPCInEventHandler> getAssociatedType() {
+		return TYPE;
 	}
 	
 }

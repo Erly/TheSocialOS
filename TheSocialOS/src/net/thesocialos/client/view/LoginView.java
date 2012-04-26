@@ -20,6 +20,8 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 
 public class LoginView extends Composite implements Display {
 	
+	interface LoginViewUiBinder extends UiBinder<Widget, LoginView> {
+	}
 	private static LoginViewUiBinder uiBinder = GWT.create(LoginViewUiBinder.class);
 	@UiField Button loginButton;
 	@UiField Hyperlink register;
@@ -29,10 +31,8 @@ public class LoginView extends Composite implements Display {
 	@UiField Label lblPass;
 	@UiField TextBox txtEmail;
 	@UiField PasswordTextBox txtPass;
-	@UiField Label lblIncorrect;
 	
-	interface LoginViewUiBinder extends UiBinder<Widget, LoginView> {
-	}
+	@UiField Label lblIncorrect;
 	
 	public LoginView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -45,18 +45,8 @@ public class LoginView extends Composite implements Display {
 	}
 	
 	@Override
-	public HasClickHandlers getLoginButton() {
-		return loginButton;
-	}
-	
-	@Override
 	public HasValue<String> getEmail() {
 		return txtEmail;
-	}
-	
-	@Override
-	public HasValue<String> getPassword() {
-		return txtPass;
 	}
 	
 	@Override
@@ -67,6 +57,16 @@ public class LoginView extends Composite implements Display {
 	@Override
 	public boolean getKeepLoged() {
 		return keepLogged.getValue();
+	}
+	
+	@Override
+	public HasClickHandlers getLoginButton() {
+		return loginButton;
+	}
+	
+	@Override
+	public HasValue<String> getPassword() {
+		return txtPass;
 	}
 	
 }

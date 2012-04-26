@@ -20,8 +20,6 @@ public abstract class Account implements Serializable {
 	
 	private String username;
 	
-	public abstract void refresh();
-	
 	public Account() {
 		
 	}
@@ -32,6 +30,8 @@ public abstract class Account implements Serializable {
 	public String getUsername() {
 		return username;
 	}
+	
+	public abstract void refresh();
 	
 	/**
 	 * @param username

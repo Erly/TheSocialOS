@@ -48,44 +48,35 @@ public class UserDTO implements Serializable {
 		setChannelID(channelID);
 	}
 	
-	public Long getId() {
-		return id;
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
 	}
 	
-	public void setId(Long id) {
-		this.id = id;
+	public String getAvatar() {
+		return avatar;
 	}
 	
-	public String getName() {
-		return name;
+	public String getBackground() {
+		return background;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getLastName() {
-		return lastName;
-	}
-	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public String getChannelID() {
+		return channelID;
 	}
 	
 	public String getEmail() {
 		return email;
 	}
 	
-	public void setEmail(String email) {
-		this.email = email;
+	public Long getId() {
+		return id;
 	}
 	
-	public String getTitle() {
-		return title;
-	}
-	
-	public void setTitle(String title) {
-		this.title = title;
+	public String getLastName() {
+		return lastName;
 	}
 	
 	/**
@@ -95,19 +86,12 @@ public class UserDTO implements Serializable {
 		return mobile;
 	}
 	
-	/**
-	 * @param mobile
-	 *            the mobile to set
-	 */
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public String getName() {
+		return name;
 	}
 	
-	/**
-	 * @return the address
-	 */
-	public String getAddress() {
-		return address;
+	public String getTitle() {
+		return title;
 	}
 	
 	/**
@@ -118,28 +102,44 @@ public class UserDTO implements Serializable {
 		this.address = address;
 	}
 	
-	public String getAvatar() {
-		return avatar;
-	}
-	
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
-	}
-	
-	public String getBackground() {
-		return background;
 	}
 	
 	public void setBackground(String background) {
 		this.background = background;
 	}
 	
-	public String getChannelID() {
-		return channelID;
-	}
-	
 	public void setChannelID(String channelID) {
 		this.channelID = channelID;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	/**
+	 * @param mobile
+	 *            the mobile to set
+	 */
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }

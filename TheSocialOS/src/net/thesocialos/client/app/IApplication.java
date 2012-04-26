@@ -4,19 +4,19 @@ import com.google.gwt.user.client.ui.Widget;
 
 public interface IApplication {
 	
-	public Widget run();
-	
-	public void setSize(String width, String height);
-	
-	public String getName();
+	public String getHeight();
 	
 	public String getImage();
 	
+	public String getName();
+	
 	public String getWidth();
 	
-	public String getHeight();
+	public Widget run();
+	
+	public void setImage(String image);
 	
 	public void setName(String name);
 	
-	public void setImage(String image);
+	public void setSize(String width, String height);
 }

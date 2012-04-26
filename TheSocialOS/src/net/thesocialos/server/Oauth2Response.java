@@ -36,44 +36,6 @@ public class Oauth2Response extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void service(HttpServletRequest request, HttpServletResponse response) {
-		String authToken = request.getParameter("authToken");
-		String refreshToken = request.getParameter("refreshToken");
-		String serviceName = request.getParameter("serviceName");
-		// String uid = request.getParameter("uid");
-		Objectify ofy = ObjectifyService.begin();
-		Session session = UserHelper.getSesssionHttpSession(request.getSession());
-		User user = UserHelper.getUserWithSession(session, ofy);
-		if ("google".equalsIgnoreCase(serviceName)) {
-			int expires_in = Integer.parseInt(request.getParameter("expires_in"));
-			Google googleAccount = new Google();
-			// We use expires_in - 10 to compensate the delay
-			googleAccount.setExpireDate(new Date(System.currentTimeMillis() + (expires_in - 10) * 1000));
-			googleAccount.setAuthToken(authToken);
-			googleAccount.setRefreshToken(refreshToken);
-			googleAccount.setUsername(getUsername(GOOGLE, authToken));
-			user.addAccount(ofy.put(googleAccount));
-		} else if ("facebook".equalsIgnoreCase(serviceName)) {
-			Facebook facebookAccount = new Facebook();
-			facebookAccount.setExpireDate(new Date(System.currentTimeMillis() + 60 * 24 * 60 * 60 * 1000));
-			facebookAccount.setAuthToken(authToken);
-			// facebookAccount.setRefreshToken(refreshToken);
-			facebookAccount.setUsername(getUsername(FACEBOOK, authToken));
-			user.addAccount(ofy.put(facebookAccount));
-		}
-		
-		ofy.put(user);
-		
-		try {
-			PrintWriter writer = response.getWriter();
-			// TheSocialOS.get().getEventBus().fireEvent(new AccountAddedEvent());
-			writer.write("<Button onClick=\"javascript:window.opener.location.hash='account-added';window.close();\">Close window</Button>");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	private String getUsername(int type, String authToken) {
 		// TODO Auto-generated method stub
 		String urlString = "", params = "", jsonParameter = "", username = "";
@@ -117,5 +79,44 @@ public class Oauth2Response extends HttpServlet {
 			e.printStackTrace();
 		}
 		return username;
+	}
+	
+	@Override
+	public void service(HttpServletRequest request, HttpServletResponse response) {
+		String authToken = request.getParameter("authToken");
+		String refreshToken = request.getParameter("refreshToken");
+		String serviceName = request.getParameter("serviceName");
+		// String uid = request.getParameter("uid");
+		Objectify ofy = ObjectifyService.begin();
+		Session session = UserHelper.getSesssionHttpSession(request.getSession());
+		User user = UserHelper.getUserWithSession(session, ofy);
+		if ("google".equalsIgnoreCase(serviceName)) {
+			int expires_in = Integer.parseInt(request.getParameter("expires_in"));
+			Google googleAccount = new Google();
+			// We use expires_in - 10 to compensate the delay
+			googleAccount.setExpireDate(new Date(System.currentTimeMillis() + (expires_in - 10) * 1000));
+			googleAccount.setAuthToken(authToken);
+			googleAccount.setRefreshToken(refreshToken);
+			googleAccount.setUsername(getUsername(GOOGLE, authToken));
+			user.addAccount(ofy.put(googleAccount));
+		} else if ("facebook".equalsIgnoreCase(serviceName)) {
+			Facebook facebookAccount = new Facebook();
+			facebookAccount.setExpireDate(new Date(System.currentTimeMillis() + 60 * 24 * 60 * 60 * 1000));
+			facebookAccount.setAuthToken(authToken);
+			// facebookAccount.setRefreshToken(refreshToken);
+			facebookAccount.setUsername(getUsername(FACEBOOK, authToken));
+			user.addAccount(ofy.put(facebookAccount));
+		}
+		
+		ofy.put(user);
+		
+		try {
+			PrintWriter writer = response.getWriter();
+			// TheSocialOS.get().getEventBus().fireEvent(new AccountAddedEvent());
+			writer.write("<Button onClick=\"javascript:window.opener.location.hash='account-added';window.close();\">Close window</Button>");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
