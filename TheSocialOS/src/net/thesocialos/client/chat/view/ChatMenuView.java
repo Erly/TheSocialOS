@@ -11,19 +11,15 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ChatMenuView extends Composite{
+public class ChatMenuView extends Composite {
 	
-
-
-	private static ChatMenuViewUiBinder uiBinder = GWT
-			.create(ChatMenuViewUiBinder.class);
-
+	private static ChatMenuViewUiBinder uiBinder = GWT.create(ChatMenuViewUiBinder.class);
+	
 	interface ChatMenuViewUiBinder extends UiBinder<Widget, ChatMenuView> {
 	}
-
+	
 	public ChatMenuView() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
-
+	
 }

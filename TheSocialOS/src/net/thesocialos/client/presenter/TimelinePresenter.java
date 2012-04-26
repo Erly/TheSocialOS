@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class TimelinePresenter implements Presenter {
-
+	
 	SimpleEventBus eventBus;
 	Display display;
 	
@@ -32,5 +32,5 @@ public class TimelinePresenter implements Presenter {
 		container.add(this.display.asWidget());
 		bind();
 	}
-
+	
 }

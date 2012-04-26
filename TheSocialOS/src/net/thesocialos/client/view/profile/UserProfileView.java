@@ -12,16 +12,16 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-public class UserProfileView extends Composite implements Display{
-
+public class UserProfileView extends Composite implements Display {
+	
 	private static UserProfileViewUiBinder uiBinder = GWT.create(UserProfileViewUiBinder.class);
 	@UiField Button closeButton;
 	@UiField ProfileLeftView leftCol;
 	@UiField SimplePanel mainPanel;
-
+	
 	interface UserProfileViewUiBinder extends UiBinder<Widget, UserProfileView> {
 	}
-
+	
 	public UserProfileView() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -29,12 +29,12 @@ public class UserProfileView extends Composite implements Display{
 	public Button getCloseButton() {
 		return closeButton;
 	}
-
+	
 	@Override
 	public Image getAvatar() {
 		return leftCol.photo;
 	}
-
+	
 	@Override
 	public SimplePanel getMainPanel() {
 		return mainPanel;

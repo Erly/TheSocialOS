@@ -39,7 +39,6 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-
 public class SearchBoxPresenter extends DesktopUnit {
 	
 	SingleSelectionModel<User> selectionModel;
@@ -58,7 +57,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 	
 	Display display;
 	
-	public interface Display{
+	public interface Display {
 		
 		Widget asWidget();
 		
@@ -81,13 +80,13 @@ public class SearchBoxPresenter extends DesktopUnit {
 		void setComponentsList(CellList<User> cellList);
 	}
 	
-	public SearchBoxPresenter(Display display){
+	public SearchBoxPresenter(Display display) {
 		programID = "002";
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
 			public Object getKey(User item) {
-				return item == null ? null :  item.getEmail();
+				return item == null ? null : item.getEmail();
 			}
 		};
 		/*
@@ -99,10 +98,11 @@ public class SearchBoxPresenter extends DesktopUnit {
 		dataProvider.addDataDisplay(display.getComponentsList());
 		handlers();
 	}
+	
 	/*
 	 * Eventos de la interfaz
 	 */
-	private void handlers(){
+	private void handlers() {
 		
 		display.getLabelFriends().addClickHandler(new ClickHandler() {
 			
@@ -126,7 +126,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 			@Override
 			public void onClick(ClickEvent event) {
 				User contactUser;
-				if ((contactUser= selectionModel.getSelectedObject())!=null){
+				if ((contactUser = selectionModel.getSelectedObject()) != null) {
 					addPetitionContact(contactUser);
 				}
 				
@@ -137,26 +137,27 @@ public class SearchBoxPresenter extends DesktopUnit {
 			@Override
 			public void onClick(ClickEvent event) {
 				User contactUser;
-				if ((contactUser= selectionModel.getSelectedObject())!=null){
-					PopUpInfoContact contactInfoPopup  = new PopUpInfoContact(contactUser.getEmail(), contactUser.getName(), contactUser.getLastName());
+				if ((contactUser = selectionModel.getSelectedObject()) != null) {
+					PopUpInfoContact contactInfoPopup = new PopUpInfoContact(contactUser.getEmail(), contactUser
+							.getName(), contactUser.getLastName());
 					contactInfoPopup.setGlassEnabled(true);
 					contactInfoPopup.center();
 					contactInfoPopup.show();
 				}
 				
-				
 			}
 		});
 	}
-	private void addPetitionContact(User contactUser){
+	
+	private void addPetitionContact(User contactUser) {
 		CacheLayer.ContactCalls.addPetitionContact(contactUser, new AsyncCallback<Boolean>() {
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
 				System.out.println(caught.getMessage());
 				
 			}
-
+			
 			@Override
 			public void onSuccess(Boolean result) {
 				System.out.println(result);
@@ -164,27 +165,25 @@ public class SearchBoxPresenter extends DesktopUnit {
 			}
 		});
 	}
+	
 	/**
 	 * Obtiene todos los usuarios del servidor
 	 */
-	private void getUsers(){
-		
+	private void getUsers() {
 		
 		usersList.clear();
 		dataProvider.flush();
 		dataProvider.refresh();
-		CacheLayer.ContactCalls.getUsers(true, new AsyncCallback<Map<String,User>>() {
+		CacheLayer.ContactCalls.getUsers(true, new AsyncCallback<Map<String, User>>() {
 			
 			@Override
 			public void onSuccess(Map<String, User> result) {
 				
-				//display.setComponentsList(new CellList<User>(usersCell()));
+				// display.setComponentsList(new CellList<User>(usersCell()));
 				
 				usersList.addAll(result.values());
 				dataProvider.flush();
 				dataProvider.refresh();
-				
-				
 				
 			}
 			
@@ -196,94 +195,105 @@ public class SearchBoxPresenter extends DesktopUnit {
 		});
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-
+				
 			}
 		});
 		display.getComponentsList().addDomHandler(new ContextMenuHandler() {
 			
 			@Override
 			public void onContextMenu(ContextMenuEvent event) {
-	
 				
-				DomEvent.fireNativeEvent(Document.get().createClickEvent(0, event.getNativeEvent().getScreenX(),
-						event.getNativeEvent().getScreenY(), event.getNativeEvent().getClientX(), 
-						event.getNativeEvent().getClientY(), false, false, false, false), display.getComponentsList());
+				DomEvent.fireNativeEvent(
+						Document.get().createClickEvent(0, event.getNativeEvent().getScreenX(),
+								event.getNativeEvent().getScreenY(), event.getNativeEvent().getClientX(),
+								event.getNativeEvent().getClientY(), false, false, false, false),
+						display.getComponentsList());
 				
 			}
 		}, ContextMenuEvent.getType());
 		
 	}
+	
 	/**
 	 * Obtiene todos los grupos del servidor
 	 */
-	private void getGroups(){
+	private void getGroups() {
 		
 	}
-
-
+	
 	@Override
 	public int getZposition() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
 	@Override
 	public void close(AbsolutePanel absolutePanel) {
 		absolutePanel.remove(display.asWidget());
 		
 	}
+	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
-		absolutePanel.add(display.asWidget(),x,y);
+		absolutePanel.add(display.asWidget(), x, y);
 		display.asWidget().setVisible(true);
 		getUsers();
 		
-		
 	}
+	
 	@Override
 	public void minimize() {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public void maximize() {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public void isMinimized() {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public void getID() {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public void toFront() {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public void toZPosition(int position) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 		
 	}
+	
 	@Override
 	public int getXPosition() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
 	@Override
 	public int getYPosition() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 }

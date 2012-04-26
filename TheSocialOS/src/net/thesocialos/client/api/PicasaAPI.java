@@ -24,7 +24,7 @@ public class PicasaAPI {
 	}
 	
 	public class Album implements MediaAlbum {
-
+		
 		private String id;
 		private String title;
 		private String summary;
@@ -61,12 +61,14 @@ public class PicasaAPI {
 		public String getDescription() {
 			return summary;
 		}
+		
 		/**
 		 * @return the numPhotos
 		 */
 		public int getElementCount() {
 			return numPhotos;
 		}
+		
 		/**
 		 * @return the commentingEnabled
 		 */
@@ -79,11 +81,11 @@ public class PicasaAPI {
 		 */
 		public int getCommentCount() {
 			return commentCount;
-		}		
+		}
 	}
 	
 	public class Picture implements MediaPicture {
-
+		
 		private String id;
 		private String title;
 		private String url;
@@ -95,12 +97,12 @@ public class PicasaAPI {
 		public String getID() {
 			return id;
 		}
-
+		
 		@Override
 		public String getName() {
 			return title;
 		}
-
+		
 		@Override
 		public String getThumbnailURL() {
 			return thumbnailURL;
@@ -118,7 +120,7 @@ public class PicasaAPI {
 		public int getCommentCount() {
 			return commentCount;
 		}
-
+		
 		@Override
 		public String getDescription() {
 			return "";
@@ -129,8 +131,7 @@ public class PicasaAPI {
 	public void getAlbumsRequest(AsyncCallback<JavaScriptObject> cb) throws RequestException {
 		String picasaAPIurl = "http://picasaweb.google.com/data/feed/api/user/";
 		Google googleAccount = getGoogleAccount();
-		if (null == googleAccount)
-			return;
+		if (null == googleAccount) return;
 		
 		String email = googleAccount.getUsername();
 		String username = email.substring(0, email.indexOf('@'));
@@ -147,10 +148,14 @@ public class PicasaAPI {
 			album.id = array.get(i).isObject().get("id").isObject().get("$t").isString().stringValue();
 			album.title = array.get(i).isObject().get("title").isObject().get("$t").isString().stringValue();
 			album.summary = array.get(i).isObject().get("summary").isObject().get("$t").isString().stringValue();
-			album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
-			album.numPhotos = Integer.parseInt(array.get(i).isObject().get("gphoto$numphotos").isObject().get("$t").isNumber().toString());
-			album.commentingEnabled = Boolean.parseBoolean(array.get(i).isObject().get("gphoto$commentingEnabled").isObject().get("$t").isString().stringValue());
-			album.commentCount = Integer.parseInt(array.get(i).isObject().get("gphoto$commentCount").isObject().get("$t").isNumber().toString());
+			album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray()
+					.get(0).isObject().get("url").isString().stringValue();
+			album.numPhotos = Integer.parseInt(array.get(i).isObject().get("gphoto$numphotos").isObject().get("$t")
+					.isNumber().toString());
+			album.commentingEnabled = Boolean.parseBoolean(array.get(i).isObject().get("gphoto$commentingEnabled")
+					.isObject().get("$t").isString().stringValue());
+			album.commentCount = Integer.parseInt(array.get(i).isObject().get("gphoto$commentCount").isObject()
+					.get("$t").isNumber().toString());
 			albums.add(album);
 		}
 		return albums;
@@ -159,88 +164,102 @@ public class PicasaAPI {
 	public void loadAlbumsInFolder(final FolderWindow folder) {
 		String picasaAPIurl = "https://picasaweb.google.com/data/feed/api/user/default/";
 		Google googleAccount = getGoogleAccount();
-		if (null == googleAccount)
-			return;
+		if (null == googleAccount) return;
 		
-		//String email = googleAccount.getUsername();
-		//String username = email.substring(0, email.indexOf('@'));
+		// String email = googleAccount.getUsername();
+		// String username = email.substring(0, email.indexOf('@'));
 		
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-		jsonp.requestObject(picasaAPIurl + "?alt=json&access_token=" + googleAccount.getAuthToken(), new AsyncCallback<JavaScriptObject>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onSuccess(JavaScriptObject result) {
-				JSONObject object = new JSONObject(result);
-				HashSet<Album> albums = new HashSet<Album>();
-				JSONArray array = object.get("feed").isObject().get("entry").isArray();
-				for (int i = 0; i < array.size(); i++) {
-					Album album = new Album();
-					album.id = array.get(i).isObject().get("gphoto$id").isObject().get("$t").isString().stringValue();
-					album.title = array.get(i).isObject().get("title").isObject().get("$t").isString().stringValue();
-					album.summary = array.get(i).isObject().get("summary").isObject().get("$t").isString().stringValue();
-					album.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
-					album.numPhotos = Integer.parseInt(array.get(i).isObject().get("gphoto$numphotos").isObject().get("$t").isNumber().toString());
-					album.commentingEnabled = Boolean.parseBoolean(array.get(i).isObject().get("gphoto$commentingEnabled").isObject().get("$t").isString().stringValue());
-					album.commentCount = Integer.parseInt(array.get(i).isObject().get("gphoto$commentCount").isObject().get("$t").isNumber().toString());
-					albums.add(album);
-				}
-				folder.addMedia(albums);
-			}
-		});
+		jsonp.requestObject(picasaAPIurl + "?alt=json&access_token=" + googleAccount.getAuthToken(),
+				new AsyncCallback<JavaScriptObject>() {
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onSuccess(JavaScriptObject result) {
+						JSONObject object = new JSONObject(result);
+						HashSet<Album> albums = new HashSet<Album>();
+						JSONArray array = object.get("feed").isObject().get("entry").isArray();
+						for (int i = 0; i < array.size(); i++) {
+							Album album = new Album();
+							album.id = array.get(i).isObject().get("gphoto$id").isObject().get("$t").isString()
+									.stringValue();
+							album.title = array.get(i).isObject().get("title").isObject().get("$t").isString()
+									.stringValue();
+							album.summary = array.get(i).isObject().get("summary").isObject().get("$t").isString()
+									.stringValue();
+							album.thumbnailURL = array.get(i).isObject().get("media$group").isObject()
+									.get("media$thumbnail").isArray().get(0).isObject().get("url").isString()
+									.stringValue();
+							album.numPhotos = Integer.parseInt(array.get(i).isObject().get("gphoto$numphotos")
+									.isObject().get("$t").isNumber().toString());
+							album.commentingEnabled = Boolean.parseBoolean(array.get(i).isObject()
+									.get("gphoto$commentingEnabled").isObject().get("$t").isString().stringValue());
+							album.commentCount = Integer.parseInt(array.get(i).isObject().get("gphoto$commentCount")
+									.isObject().get("$t").isNumber().toString());
+							albums.add(album);
+						}
+						folder.addMedia(albums);
+					}
+				});
 	}
 	
 	public void loadPicturesInFolder(Album album, final FolderWindow folder) {
 		String picasaAPIurl = "https://picasaweb.google.com/data/feed/api/user/default/";
 		Google googleAccount = getGoogleAccount();
-		if (null == googleAccount)
-			return;
+		if (null == googleAccount) return;
 		
-		//String email = googleAccount.getUsername();
-		//String username = email.substring(0, email.indexOf('@'));
+		// String email = googleAccount.getUsername();
+		// String username = email.substring(0, email.indexOf('@'));
 		
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-		jsonp.requestObject(picasaAPIurl + "albumid/" + album.getID() + "?alt=json&access_token=" + googleAccount.getAuthToken(), new AsyncCallback<JavaScriptObject>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onSuccess(JavaScriptObject result) {
-				JSONObject object = new JSONObject(result);
-				HashSet<Picture> pictures = new HashSet<Picture>();
-				JSONArray array = object.get("feed").isObject().get("entry").isArray();
-				for (int i = 0; i < array.size(); i++) {
-					Picture picture = new Picture();
-					picture.id = array.get(i).isObject().get("gphoto$id").isObject().get("$t").isString().stringValue();
-					picture.title = array.get(i).isObject().get("title").isObject().get("$t").isString().stringValue();
-					picture.url = array.get(i).isObject().get("content").isObject().get("src").isString().stringValue();
-					picture.thumbnailURL = array.get(i).isObject().get("media$group").isObject().get("media$thumbnail").isArray().get(2).isObject().get("url").isString().stringValue();
-					picture.commentingEnabled = Boolean.parseBoolean(array.get(i).isObject().get("gphoto$commentingEnabled").isObject().get("$t").isString().stringValue());
-					picture.commentCount = Integer.parseInt(array.get(i).isObject().get("gphoto$commentCount").isObject().get("$t").isNumber().toString());
-					pictures.add(picture);
-				}
-				folder.addMedia(pictures);
-			}
-		});
+		jsonp.requestObject(
+				picasaAPIurl + "albumid/" + album.getID() + "?alt=json&access_token=" + googleAccount.getAuthToken(),
+				new AsyncCallback<JavaScriptObject>() {
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onSuccess(JavaScriptObject result) {
+						JSONObject object = new JSONObject(result);
+						HashSet<Picture> pictures = new HashSet<Picture>();
+						JSONArray array = object.get("feed").isObject().get("entry").isArray();
+						for (int i = 0; i < array.size(); i++) {
+							Picture picture = new Picture();
+							picture.id = array.get(i).isObject().get("gphoto$id").isObject().get("$t").isString()
+									.stringValue();
+							picture.title = array.get(i).isObject().get("title").isObject().get("$t").isString()
+									.stringValue();
+							picture.url = array.get(i).isObject().get("content").isObject().get("src").isString()
+									.stringValue();
+							picture.thumbnailURL = array.get(i).isObject().get("media$group").isObject()
+									.get("media$thumbnail").isArray().get(2).isObject().get("url").isString()
+									.stringValue();
+							picture.commentingEnabled = Boolean.parseBoolean(array.get(i).isObject()
+									.get("gphoto$commentingEnabled").isObject().get("$t").isString().stringValue());
+							picture.commentCount = Integer.parseInt(array.get(i).isObject().get("gphoto$commentCount")
+									.isObject().get("$t").isNumber().toString());
+							pictures.add(picture);
+						}
+						folder.addMedia(pictures);
+					}
+				});
 	}
-
+	
 	private Google getGoogleAccount() {
 		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {
 			Account account = it.next();
-			if (account instanceof Google) {
-				return (Google)account;
-			}
+			if (account instanceof Google) { return (Google) account; }
 		}
 		return null;
 	}

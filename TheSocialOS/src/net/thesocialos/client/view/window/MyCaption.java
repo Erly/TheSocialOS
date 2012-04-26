@@ -26,12 +26,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.DialogBox.Caption;
 
 public class MyCaption extends SimplePanel implements Caption {
-
+	
 	HorizontalPanel panel = new HorizontalPanel();
 	FocusPanel fPanel = new FocusPanel();
 	Label label = new Label();
 	Menu menu = new Menu();
-	
 	
 	HandlerRegistration reg;
 	
@@ -62,7 +61,7 @@ public class MyCaption extends SimplePanel implements Caption {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				((PopupPanel)closeButton.getParent().getParent()).hide();
+				((PopupPanel) closeButton.getParent().getParent()).hide();
 			}
 		});
 		errorWindow.add(vPanel);
@@ -87,72 +86,71 @@ public class MyCaption extends SimplePanel implements Caption {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				((DialogBoxExt)MyCaption.this.getParent()).hide();
+				((DialogBoxExt) MyCaption.this.getParent()).hide();
 				
 			}
 		});
 		
-		
 	}
-
+	
 	@Override
 	public String getHTML() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public void setHTML(String html) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public String getText() {
 		return label.getText();
 	}
-
+	
 	@Override
 	public void setText(String text) {
 		label.setText(text);
 	}
-
+	
 	@Override
 	public void setHTML(SafeHtml html) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
 		// TODO Auto-generated method stub

@@ -35,10 +35,9 @@ import com.googlecode.objectify.Key;
 public class ContactsPresenter extends DesktopUnit {
 	
 	private final UserServiceAsync userService = GWT.create(UserService.class);
-
 	
 	Display display;
-
+	
 	List<String> ListContacts;
 	List<String> ListGroups;
 	
@@ -50,49 +49,61 @@ public class ContactsPresenter extends DesktopUnit {
 	ListDataProvider<User> contactDataProvider;
 	List<User> contactList;
 	
-	public interface Display{
+	public interface Display {
 		
-	DecoratedTabPanel getGroupUsersPanel();
-	
-	CellList<User> getUserListBox();
-	CellList<Group> getGroupListBox();
-	
-	TextBox getSearchBox();
-	//Users
-	
-	Image getImageFriend();
-	Image getImageGroup();
-	Image getImageSearchContact();
-	Image getImageSearchGroup();
-	
-	LabelText getContactName();
-	LabelText getContactSurname();
-	LabelText getContactSearchName();
-	LabelText getContactSearchSurname();
-	
-	Label getGroupName();
-	Label getGroupSearchName();
-	
-	Label getGroupSize();
-	Label GetGroupSizeCount();
-	Label GetGroupSizeSearch();
-	Label GetGroupSizeCountSearch();
-	
-	Button GetBtnUserPrivateMessage();
-	Button GetBtnUserSearchPrivateMessage();
-	
-	HorizontalPanel getContatcsMenu();
-	
-	Widget asWidget();
+		DecoratedTabPanel getGroupUsersPanel();
+		
+		CellList<User> getUserListBox();
+		
+		CellList<Group> getGroupListBox();
+		
+		TextBox getSearchBox();
+		
+		// Users
+		
+		Image getImageFriend();
+		
+		Image getImageGroup();
+		
+		Image getImageSearchContact();
+		
+		Image getImageSearchGroup();
+		
+		LabelText getContactName();
+		
+		LabelText getContactSurname();
+		
+		LabelText getContactSearchName();
+		
+		LabelText getContactSearchSurname();
+		
+		Label getGroupName();
+		
+		Label getGroupSearchName();
+		
+		Label getGroupSize();
+		
+		Label GetGroupSizeCount();
+		
+		Label GetGroupSizeSearch();
+		
+		Label GetGroupSizeCountSearch();
+		
+		Button GetBtnUserPrivateMessage();
+		
+		Button GetBtnUserSearchPrivateMessage();
+		
+		HorizontalPanel getContatcsMenu();
+		
+		Widget asWidget();
 	}
 	
-	public ContactsPresenter(Display display){
+	public ContactsPresenter(Display display) {
 		programID = "001";
-		
 		
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
-		 KEY_PROVIDER = new ProvidesKey<User>() {
+		KEY_PROVIDER = new ProvidesKey<User>() {
 			public Object getKey(User item) {
 				return item == null ? null : item.getEmail();
 			}
@@ -105,29 +116,25 @@ public class ContactsPresenter extends DesktopUnit {
 	 * Rpc Secction
 	 */
 	
-	private void getFriends(){
+	private void getFriends() {
 		
-		//Indica la variable que ser� seleccionada como key
+		// Indica la variable que ser� seleccionada como key
 		
-		//Crea una clase SingleSelectionModel y la inicializas con la key anterior
+		// Crea una clase SingleSelectionModel y la inicializas con la key anterior
 		
-		//Le indicas a la cellList el tipo de seleccion que vas a usar
+		// Le indicas a la cellList el tipo de seleccion que vas a usar
 		display.getUserListBox().setSelectionModel(contactSelectionModel);
 		contactList = new ArrayList<User>();
 		contactDataProvider = new ListDataProvider<User>(contactList);
 		
-		
-		
-		
-		CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>,User>>() {
+		CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>, User>>() {
 			
 			@Override
 			public void onSuccess(Map<Key<User>, User> result) {
 				// TODO Auto-generated method stub
-				Iterator<User> iterator= result.values().iterator();
+				Iterator<User> iterator = result.values().iterator();
 				
-				
-				while (iterator.hasNext()){
+				while (iterator.hasNext()) {
 					
 					contactList.add(iterator.next());
 					System.out.println(contactList.get(0).getName());
@@ -138,27 +145,20 @@ public class ContactsPresenter extends DesktopUnit {
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				contactList.add(new User("vssnake@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
-				contactList.add(new User("vssnake1@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
-				contactList.add(new User("vssnake2@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
-				contactDataProvider.addDataDisplay(display.getUserListBox());
-				
+				// TODO
 			}
 		});
 		
-		
 		handlers();
-
-			
+		
 	}
-
 	
-	private void handlers(){
-		//Handler de la CellList de Contacts
+	private void handlers() {
+		// Handler de la CellList de Contacts
 		contactSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-			    display.getContactName().setText(contactSelectionModel.getSelectedObject().getName());
-			    display.getContactSurname().setText(contactSelectionModel.getSelectedObject().getLastName());
+				display.getContactName().setText(contactSelectionModel.getSelectedObject().getName());
+				display.getContactSurname().setText(contactSelectionModel.getSelectedObject().getLastName());
 			}
 		});
 		display.getSearchBox().addKeyUpHandler(new KeyUpHandler() {
@@ -168,39 +168,26 @@ public class ContactsPresenter extends DesktopUnit {
 				// TODO Auto-generated method stub
 				System.out.println(display.getSearchBox().getText());
 				/*
-				new RPCXSRF<List<User>>(userService) {
-
-					@Override
-					protected void XSRFcallService(AsyncCallback<List<User>> cb) {
-						userService.getFriendsSuggestionList(display.getSearchBox().getText(), cb);
-						
-					}
-					
-					public void onSuccess(List<User> returnUsers){
-						System.out.println(returnUsers.size());
-					}
-					
-					public void onFailure(Throwable caught){
-						
-					}
-				}.retry(3);*/
-				CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>,User>>() {
+				 * new RPCXSRF<List<User>>(userService) {
+				 * @Override protected void XSRFcallService(AsyncCallback<List<User>> cb) {
+				 * userService.getFriendsSuggestionList(display.getSearchBox().getText(), cb); } public void
+				 * onSuccess(List<User> returnUsers){ System.out.println(returnUsers.size()); } public void
+				 * onFailure(Throwable caught){ } }.retry(3);
+				 */
+				CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>, User>>() {
 					
 					@Override
 					public void onSuccess(Map<Key<User>, User> result) {
 						
-						
 						String text[] = display.getSearchBox().getText().split(" ");
-					
 						
-						
-						if (text != null && text.length > 0){
-							//display.getUserListBox().
+						if (text != null && text.length > 0) {
+							// display.getUserListBox().
 							contactList.clear();
 							Iterator<User> iterator = result.values().iterator();
-							while (iterator.hasNext()){
+							while (iterator.hasNext()) {
 								User contact = iterator.next();
-								if (contact.getName().contains(text[0])){
+								if (contact.getName().contains(text[0])) {
 									contactList.add(contact);
 								}
 							}
@@ -220,32 +207,32 @@ public class ContactsPresenter extends DesktopUnit {
 		});
 		
 	}
-
+	
 	public HorizontalPanel getContactsPresenter() {
 		return display.getContatcsMenu();
 	}
-
+	
 	@Override
 	public void toFront() {
 		
 	}
-
+	
 	@Override
 	public void toZPosition(int position) {
 		
 	}
-
+	
 	@Override
 	public int getZposition() {
 		return 0;
 	}
-
+	
 	@Override
 	public void close(AbsolutePanel absolutepanel) {
 		absolutepanel.remove(display.asWidget());
 		
 	}
-
+	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
 		
@@ -253,27 +240,27 @@ public class ContactsPresenter extends DesktopUnit {
 		display.asWidget().setVisible(true);
 		getFriends();
 	}
-
+	
 	@Override
 	public void minimize() {
 		
 	}
-
+	
 	@Override
 	public void maximize() {
 		
 	}
-
+	
 	@Override
 	public void isMinimized() {
 		
 	}
-
+	
 	@Override
 	public void getID() {
 		
 	}
-
+	
 	@Override
 	public void setPosition(int x, int y) {
 		// TODO Auto-generated method stub
@@ -281,13 +268,13 @@ public class ContactsPresenter extends DesktopUnit {
 		this.y = y;
 		
 	}
-
+	
 	@Override
 	public int getXPosition() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public int getYPosition() {
 		// TODO Auto-generated method stub

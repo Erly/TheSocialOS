@@ -1,10 +1,8 @@
 package net.thesocialos.client.app;
 
-
 import com.google.gwt.user.client.ui.Widget;
 
 public interface IApplication {
-	
 	
 	public Widget run();
 	

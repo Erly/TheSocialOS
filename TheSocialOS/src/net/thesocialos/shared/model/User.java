@@ -14,23 +14,26 @@ import com.googlecode.objectify.annotation.Unindexed;
 @SuppressWarnings("serial")
 @Cached
 public class User implements Serializable {
-
-
-	@Id private String email; //Email of the user
 	
-	@Unindexed private  String password; //Password of the user
+	public static User toDTO(User user) {
+		return new User(user.email, user.avatar, user.background, user.firstName, user.lastName, user.role);
+	}
 	
-	@Unindexed private String avatar; //Avatar of the user
+	@Id private String email; // Email of the user
 	
-	@Unindexed private String background; //Background of the user
+	@Unindexed private String password; // Password of the user
 	
-	private String firstName; //firstname
+	@Unindexed private String avatar; // Avatar of the user
 	
-	@Unindexed private String role; //The role of the user
+	@Unindexed private String background; // Background of the user
+	
+	private String firstName; // firstname
+	
+	@Unindexed private String role; // The role of the user
 	
 	private String address; // address of user
-
-	@Unindexed String lastName; //lastnameString address;
+	
+	@Unindexed String lastName; // lastnameString address;
 	
 	@Unindexed String mobilePhone;
 	
@@ -42,204 +45,231 @@ public class User implements Serializable {
 	
 	private List<Key<Conversation>> conversations;
 	
-	private List<Key<OutStandingLines>> linesOffline; //Messages send offline mode
-	
-	
+	private List<Key<OutStandingLines>> linesOffline; // Messages send offline
 	
 	List<Key<Session>> sessions = new ArrayList<Key<Session>>();
-	
 	List<Key<User>> contacts = new ArrayList<Key<User>>();
-	/*
-	 * Las peticiones de amistad de los contactos
-	 */
+	
+	// Las peticiones de amistad de los contactos
 	private List<Key<User>> petitionsContacts = new ArrayList<Key<User>>();
 	
 	List<Key<? extends Account>> accounts = new ArrayList<Key<? extends Account>>();
-
-	public User(String email, String password, String picture, String background,String firstName,String lastName,String role){
+	
+	List<Key<Columns>> columns = new ArrayList<Key<Columns>>();
+	
+	public User() {
+		
+	}
+	
+	private User(String email, String picture, String background, String firstName, String lastName, String role) {
+		this.email = email;
+		avatar = picture;
+		this.background = background;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.role = role;
+	}
+	
+	public User(String email, String password, String picture, String background, String firstName, String lastName,
+			String role) {
 		this.email = email;
 		this.password = password;
-		this.avatar = picture;
+		avatar = picture;
 		this.background = background;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.role = role;
-		
 	}
 	
-	public User(String email,String picture,String background,String firstName,String lastName,String role){
-		this.email = email;
-		this.avatar = picture;
-		this.background = background;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.role = role;
-		
+	public void addAccount(Key<? extends Account> account) {
+		accounts.add(account);
 	}
 	
-	public User(){
-		
+	public void addColumn(Key<Columns> column) {
+		columns.add(column);
 	}
 	
-	public Key<Group>[] getGroups() {
-		
-		return groups;
-	}
-
-	public void setGroups(Key<Group>[] groups) {
-		this.groups = groups;
-	}
-
-	
-	public List<Key<User>> getContacts(){
-		return contacts;
-	}
 	/**
-	 * Añade un contacto al usuario
-	 * @param contact El contacto a añadir
-	 * @return true si se a podido añadir. False si ya estaba añadido
+	 * Aï¿½ade un contacto al usuario
+	 * 
+	 * @param contact
+	 *            El contacto a aï¿½adir
+	 * @return true si se a podido aï¿½adir. False si ya estaba aï¿½adido
 	 */
-	public boolean addContact(Key<User> contact){
-		if (contacts.contains(contact))
-			return false;
+	public boolean addContact(Key<User> contact) {
+		if (contacts.contains(contact)) return false;
 		contacts.add(contact);
 		return true;
 		
 	}
-	public List<Key<User>> getpetitionsContacts(){
-		return petitionsContacts;
-	}
+	
 	/**
-	 * Añade una invitación de contacto al usuario
-	 * @param contact El contacto a añadir
-	 * @return true si se a podido añadir. False si ya estaba añadido
+	 * Aï¿½ade una conversacion
+	 * 
+	 * @param conversation
+	 *            la key a aï¿½adir
+	 * @return true si correcto | false si no
 	 */
-	public boolean addPetitionContacts(Key<User> contact){
-		if (petitionsContacts.contains(contact) || contacts.contains(contact)){
-			return false;
-		}
+	public boolean addKeyConversation(Key<Conversation> conversation) {
+		return conversations.add(conversation);
+	}
+	
+	/**
+	 * Aï¿½ade un mesaje en modo desconectado
+	 * 
+	 * @param offlineMessage
+	 *            la key a guardar
+	 * @return true si correcto | false si no
+	 */
+	public boolean addKeyOfflineMessage(Key<OutStandingLines> offlineMessage) {
+		return linesOffline.add(offlineMessage);
+	}
+	
+	/**
+	 * Aï¿½ade una invitaciï¿½n de contacto al usuario
+	 * 
+	 * @param contact
+	 *            El contacto a aï¿½adir
+	 * @return true si se a podido aï¿½adir. False si ya estaba aï¿½adido
+	 */
+	public boolean addPetitionContacts(Key<User> contact) {
+		if (petitionsContacts.contains(contact) || contacts.contains(contact)) return false;
 		petitionsContacts.add(contact);
 		return true;
 	}
+	
 	/**
-	 * Añade un contacto desde la lista de invitaciones
-	 * @param contact El contacto a añadir
-	 * @return true si se a podido añadir. False si ya estaba añadido
+	 * Aï¿½ade un contacto desde la lista de invitaciones
+	 * 
+	 * @param contact
+	 *            El contacto a aï¿½adir
+	 * @return true si se a podido aï¿½adir. False si ya estaba aï¿½adido
 	 */
-	public boolean addPetitionContactTOContact(Key<User> contact){
-		if (petitionsContacts.contains(contact) && (contacts.contains(contact) == false)){
+	public boolean addPetitionContactTOContact(Key<User> contact) {
+		if (petitionsContacts.contains(contact) && (contacts.contains(contact) == false)) {
 			contacts.add(contact);
 			petitionsContacts.remove(contact);
 			return true;
 		}
 		return false;
 	}
-
-
 	
-
-
-
-	public List<Key<Session>> getSessions() {
-		return sessions;
-	}
-
 	public void addSessions(Key<Session> session) {
-		this.sessions.add(session);
+		sessions.add(session);
 	}
-
+	
 	public List<Key<? extends Account>> getAccounts() {
 		return accounts;
 	}
-
-	public void setAccounts(ArrayList<Key<? extends Account>> accounts) {
-		this.accounts = accounts;
+	
+	public String getAddress() {
+		return address;
 	}
-
-	public void addAccount(Key<? extends Account> account) {
-		accounts.add(account);
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
+	
 	public String getAvatar() {
 		return avatar;
 	}
-
+	
 	public String getBackground() {
 		return background;
 	}
-	public String getName() {
-		return firstName;
+	
+	/**
+	 * @return the columns
+	 */
+	public List<Key<Columns>> getColumns() {
+		return columns;
 	}
-
+	
+	public List<Key<User>> getContacts() {
+		return contacts;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public Key<Group>[] getGroups() {
+		
+		return groups;
+	}
+	
 	public String getLastName() {
 		return lastName;
+	}
+	
+	public Date getLastTimeActive() {
+		return lastTimeActive;
+	}
+	
+	public List<Key<Conversation>> getListKeyConversations() {
+		return conversations;
+	}
+	
+	/**
+	 * Obtiene todos los mensajes en modo desconectado
+	 * 
+	 * @return
+	 */
+	public List<Key<OutStandingLines>> getListKeyOfflineMessages() {
+		return linesOffline;
 	}
 	
 	public String getMobilePhone() {
 		return mobilePhone;
 	}
-
+	
+	public String getName() {
+		return firstName;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public List<Key<User>> getpetitionsContacts() {
+		return petitionsContacts;
+	}
+	
 	public String getRole() {
 		return role;
 	}
 	
-	public static User toDTO(User user) {
-		return new User(user.email, user.avatar, user.background, user.firstName, user.lastName, user.role);
+	public List<Key<Session>> getSessions() {
+		return sessions;
 	}
 	
-
-	public String getAddress() {
-		return address;
+	public void overwriteAccountsList(List<Key<? extends Account>> newAccountsKeys) {
+		accounts.clear();
+		accounts.addAll(newAccountsKeys);
 	}
-
-	public Date getLastTimeActive() {
-		return lastTimeActive;
+	
+	public void overwriteColumnsList(List<Key<Columns>> newColumnsKeys) {
+		columns.clear();
+		columns.addAll(newColumnsKeys);
 	}
-
+	
+	public void setAccounts(ArrayList<Key<? extends Account>> accounts) {
+		this.accounts = accounts;
+	}
+	
+	/**
+	 * @param columns
+	 *            the columns to set
+	 */
+	public void setColumns(List<Key<Columns>> columns) {
+		this.columns = columns;
+	}
+	
+	public void setGroups(Key<Group>[] groups) {
+		this.groups = groups;
+	}
+	
 	public void setLastTimeActive(Date lastTimeActive) {
 		this.lastTimeActive = lastTimeActive;
 	}
 	
-	public void overwriteAccountsList(List<Key<? extends Account>> newAccountsKeys) {
-		this.accounts.clear();
-		this.accounts.addAll(newAccountsKeys);
-	}
-	
-	public List<Key<Conversation>> getListKeyConversations(){
-		return conversations;
-	}
-	/**
-	 * Añade una conversacion
-	 * @param conversation la key a añadir
-	 * @return true si correcto | false si no
-	 */
-	public boolean addKeyConversation(Key<Conversation> conversation){
-		return conversations.add(conversation);
-	}
-	/**
-	 * Obtiene todos los mensajes en modo desconectado
-	 * @return
-	 */
-	public List<Key<OutStandingLines>> getListKeyOfflineMessages(){
-		return linesOffline;
-	}
-	/**
-	 * Añade un mesaje en modo desconectado
-	 * @param offlineMessage la key a guardar
-	 * @return true si correcto | false si no
-	 */
-	public boolean addKeyOfflineMessage(Key<OutStandingLines> offlineMessage){
-		return linesOffline.add(offlineMessage);
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

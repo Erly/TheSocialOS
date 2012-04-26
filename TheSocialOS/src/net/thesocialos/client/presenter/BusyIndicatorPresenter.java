@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class BusyIndicatorPresenter implements Presenter {
-
+	
 	public interface Display {
 		void show();
 		
@@ -29,10 +29,10 @@ public class BusyIndicatorPresenter implements Presenter {
 		
 		bind();
 	}
-
+	
 	public void bind() {
 		eventBus.addHandler(RPCInEvent.TYPE, new RPCInEventHandler() {
-
+			
 			@Override
 			public void onRPCIn(RPCInEvent event) {
 				outCount = outCount > 0 ? --outCount : 0; // if outCount > 0 reduce 1 else put it to 0.
@@ -43,7 +43,7 @@ public class BusyIndicatorPresenter implements Presenter {
 			
 		});
 		eventBus.addHandler(RPCOutEvent.TYPE, new RPCOutEventHandler() {
-
+			
 			@Override
 			public void onRPCOut(RPCOutEvent event) {
 				outCount++;
@@ -52,10 +52,10 @@ public class BusyIndicatorPresenter implements Presenter {
 			
 		});
 	}
-
+	
 	@Override
 	public void go(HasWidgets container) {
 		// nothing to do
 	}
-
+	
 }

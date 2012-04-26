@@ -12,61 +12,51 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.InvocationException;
 import com.google.gwt.user.client.rpc.SerializationException;
+
 /**
  * 
  * @author vssnake
  * @deprecated use RPCXSRF instead
  * @param <T>
  */
-@Deprecated 
+@Deprecated
 public abstract class RPCCall<T> implements AsyncCallback<T> {
-
+	
 	protected abstract void callService(AsyncCallback<T> cb);
 	
-	//private final UserServiceAsync userService = GWT.create(UserService.class);
+	// private final UserServiceAsync userService = GWT.create(UserService.class);
 	
-	public RPCCall() {}
-
+	public RPCCall() {
+	}
+	
 	/**
-	 * Makes a request to check that the user sessionID and userID are correct and if they are correct it makes the call to onCall to method passing the number of retries.
-	 * @param retriesLeft Number of attempts left to try before throwing an error. 
+	 * Makes a request to check that the user sessionID and userID are correct and if they are correct it makes the call
+	 * to onCall to method passing the number of retries.
+	 * 
+	 * @param retriesLeft
+	 *            Number of attempts left to try before throwing an error.
 	 */
 	private void call(final int retriesLeft) {
 		onRPCOut(); // RPC Working
 		boolean isLoginOrRegister = false;
 		onCall(retriesLeft);
 		/*
-		if (History.getToken().equals("login") || History.getToken().equals("register")) {
-			isLoginOrRegister = true;
-			onCall(retriesLeft);
-		}
-		
-		if(!isLoginOrRegister)
-			userService.checkIds(TheSocialOS.get().getJSessionID(), TheSocialOS.get().getSessionID(), TheSocialOS.get().getUserID(), new AsyncCallback<Boolean>() {
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					GWT.log(caught.getMessage(), caught);
-				}
-
-				@Override
-				public void onSuccess(Boolean result) {
-					if (result)
-						onCall(retriesLeft);
-					else {
-						onRPCIn();
-						History.newItem("login");
-					}
-					
-				}
-			});
-		*/
+		 * if (History.getToken().equals("login") || History.getToken().equals("register")) { isLoginOrRegister = true;
+		 * onCall(retriesLeft); } if(!isLoginOrRegister) userService.checkIds(TheSocialOS.get().getJSessionID(),
+		 * TheSocialOS.get().getSessionID(), TheSocialOS.get().getUserID(), new AsyncCallback<Boolean>() {
+		 * @Override public void onFailure(Throwable caught) { // TODO Auto-generated method stub
+		 * GWT.log(caught.getMessage(), caught); }
+		 * @Override public void onSuccess(Boolean result) { if (result) onCall(retriesLeft); else { onRPCIn();
+		 * History.newItem("login"); } } });
+		 */
 	}
 	
 	/**
-	 * It makes the main request to the server and controls some generic exceptions. In case of failure it calls itself again with retriesLeft-1 until retriesLeft is 0.
-	 * @param retriesLeft Number of attempts left to try before throwing an error.
+	 * It makes the main request to the server and controls some generic exceptions. In case of failure it calls itself
+	 * again with retriesLeft-1 until retriesLeft is 0.
+	 * 
+	 * @param retriesLeft
+	 *            Number of attempts left to try before throwing an error.
 	 */
 	private void onCall(final int retriesLeft) {
 		callService(new AsyncCallback<T>() {
@@ -77,12 +67,12 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 				GWT.log(caught.getMessage(), caught);
 				try {
 					throw caught;
-				} catch (IncompatibleRemoteServiceException irsException) {	// The app is out of date
+				} catch (IncompatibleRemoteServiceException irsException) { // The app is out of date
 					Window.alert(TheSocialOS.getConstants().error_AppOutOfDate());
-				} catch (SerializationException serializationException) {	// 
+				} catch (SerializationException serializationException) { //
 					Window.alert(TheSocialOS.getConstants().error_Serialization());
-				//} catch (NotLoggedInException nliException) {
-					// 		User not loged in redirect to login page.
+					// } catch (NotLoggedInException nliException) {
+					// User not loged in redirect to login page.
 				} catch (RequestTimeoutException timeoutException) {
 					Window.alert(TheSocialOS.getConstants().error_Timeout());
 				} catch (InvocationException invocationException) {
@@ -95,12 +85,13 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 					RPCCall.this.onFailure(e);
 				}
 			}
-
+			
 			@Override
 			public void onSuccess(T result) {
 				onRPCIn(); // RPC finished working
 				RPCCall.this.onSuccess(result);
-			}});
+			}
+		});
 	}
 	
 	/**
@@ -111,7 +102,8 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 	}
 	
 	/**
-	 * Fires an event indicating that the RPC request has started. A loading indicator will appear on the screen indicating that the system is working.
+	 * Fires an event indicating that the RPC request has started. A loading indicator will appear on the screen
+	 * indicating that the system is working.
 	 */
 	private void onRPCOut() {
 		TheSocialOS.get().getEventBus().fireEvent(new RPCOutEvent());
@@ -119,7 +111,9 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 	
 	/**
 	 * The main method to make the request.
-	 * @param retryCount Number of attempts to try a request before returning an error. 
+	 * 
+	 * @param retryCount
+	 *            Number of attempts to try a request before returning an error.
 	 */
 	public void retry(int retryCount) { // Public method to call the RPCCall
 		call(retryCount);
@@ -130,11 +124,11 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void onSuccess(T result) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 }

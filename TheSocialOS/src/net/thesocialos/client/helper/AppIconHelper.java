@@ -18,7 +18,7 @@ public class AppIconHelper {
 		Icon other = new Icon(Icon.FOLDER_ICON, TheSocialOS.getConstants().other());
 		other.setTitle(TheSocialOS.getConstants().other());
 		
-		Icon[] folders = {pictures, videos, music, other};
+		Icon[] folders = { pictures, videos, music, other };
 		for (int i = 0; i < folders.length; i++) {
 			desktop.add(folders[i], 10, 10 + i * 90);
 		}

@@ -12,17 +12,16 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PhotosPanel extends Composite {
-
-	private static PhotosPanelUiBinder uiBinder = GWT
-			.create(PhotosPanelUiBinder.class);
-
+	
+	private static PhotosPanelUiBinder uiBinder = GWT.create(PhotosPanelUiBinder.class);
+	
 	interface PhotosPanelUiBinder extends UiBinder<Widget, PhotosPanel> {
 	}
-
+	
 	public PhotosPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
+	
 	public PhotosPanel(String firstName) {
 		initWidget(uiBinder.createAndBindUi(this));
 	}

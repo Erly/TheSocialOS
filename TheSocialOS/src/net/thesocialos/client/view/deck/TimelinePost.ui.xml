@@ -3,7 +3,8 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
 		.post {
-			border: 1px solid black;
+			border: 1px solid lightgrey;
+			padding: 3px;
 		}
 		.black {
 			font-weight: bold;

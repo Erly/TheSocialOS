@@ -7,7 +7,12 @@
 				<g:FocusPanel width="30px" height="30px" addStyleNames="startbutton" ui:field="startButton">
 				<g:Image url="./images/SocialOS-StartButton.png" addStyleNames="{style.logo}" />
 			</g:FocusPanel>
+		</g:HorizontalPanel>
+		<g:FocusPanel height="30px" styleName="{style.searchBox}" ui:field="searchButton">
+			<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" width="100%" height="100%">
+				<g:Label text="SEARCH" ui:field="lblSearchBox"/>
 			</g:HorizontalPanel>
+		</g:FocusPanel>
 		<g:Cell horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" >
 			<g:FocusPanel height="30px" styleName="{style.socialos}" ui:field="socialOSButton">
 				<g:HorizontalPanel width="100%" height="100%">
@@ -45,10 +50,5 @@
 				</g:FocusPanel>
 			</g:HorizontalPanel>
 		</g:Cell>
-		<g:FocusPanel height="30px" styleName="{style.searchBox}" ui:field="searchButton">
-			<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" width="100%" height="100%">
-				<g:Label text="SEARCH" ui:field="lblSearchBox"/>
-			</g:HorizontalPanel>
-		</g:FocusPanel>
 	</g:HorizontalPanel>
 </ui:UiBinder> 

@@ -1,11 +1,13 @@
 package net.thesocialos.client.service;
 
+import java.util.ArrayList;
 import java.util.Map;
+
 import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.User;
-
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -16,17 +18,19 @@ import com.googlecode.objectify.Key;
 @XsrfProtect
 public interface UserService extends RemoteService {
 	
-	LoginResult login(String email, String password, boolean keeploged);
-	
-	void register(User user) throws UserExistsException;
-	
-	void logout();
-	
 	void createServerSession();
-	
-	User getLoggedUser(String sid);
 	
 	Map<Key<Account>, Account> getCloudAccounts();
 	
-	void removeDeletedAccounts();
+	Map<Key<Columns>, Columns> getDeckColumns();
+	
+	User getLoggedUser(String sid);
+	
+	LoginResult login(String email, String password, boolean keeploged);
+	
+	void logout();
+	
+	void register(User user) throws UserExistsException;
+	
+	void setDeckColumns(ArrayList<Columns> columns);
 }

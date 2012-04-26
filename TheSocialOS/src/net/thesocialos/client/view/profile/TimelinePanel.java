@@ -11,14 +11,13 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TimelinePanel extends Composite implements Display {
-
-	private static TimelinePanelUiBinder uiBinder = GWT
-			.create(TimelinePanelUiBinder.class);
+	
+	private static TimelinePanelUiBinder uiBinder = GWT.create(TimelinePanelUiBinder.class);
 	@UiField VerticalPanel mainPanel;
-
+	
 	interface TimelinePanelUiBinder extends UiBinder<Widget, TimelinePanel> {
 	}
-
+	
 	public TimelinePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -26,5 +25,5 @@ public class TimelinePanel extends Composite implements Display {
 	public HasWidgets getMainPanel() {
 		return mainPanel;
 	}
-
+	
 }

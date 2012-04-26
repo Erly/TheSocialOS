@@ -25,7 +25,7 @@ import net.thesocialos.shared.model.Twitter;
 import net.thesocialos.shared.model.User;
 
 public class OauthCallback extends HttpServlet {
-
+	
 	/**
 	 * 
 	 */
@@ -36,7 +36,7 @@ public class OauthCallback extends HttpServlet {
 	OAuthService service = null;
 	Twitter twitterAccount = null;
 	FlickR flickrAccount = null;
-
+	
 	public OauthCallback() {
 		// TODO Auto-generated constructor stub
 	}
@@ -74,7 +74,6 @@ public class OauthCallback extends HttpServlet {
 			return;
 		}
 		
-		
 		ofy.put(user);
 		
 		try {
@@ -85,7 +84,7 @@ public class OauthCallback extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private String getUsername(int type, Token accessToken) {
 		OAuthRequest request = null;
 		String params = null;
@@ -129,5 +128,5 @@ public class OauthCallback extends HttpServlet {
 		}
 		return null;
 	}
-
+	
 }

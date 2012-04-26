@@ -8,7 +8,7 @@ import net.thesocialos.shared.model.Group;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.googlecode.objectify.Key;
 
-public interface GroupsService extends RemoteService{
+public interface GroupsService extends RemoteService {
 	
 	Map<Key<Group>, Group> getUserGroups() throws GroupNotFoundException;
 }

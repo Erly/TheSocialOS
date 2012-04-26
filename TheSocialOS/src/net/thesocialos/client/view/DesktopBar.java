@@ -14,29 +14,23 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.FocusPanel;
 
 public class DesktopBar extends Composite {
-
-	private static DesktopBarUiBinder uiBinder = GWT
-			.create(DesktopBarUiBinder.class);
-
+	
+	private static DesktopBarUiBinder uiBinder = GWT.create(DesktopBarUiBinder.class);
+	
 	interface DesktopBarUiBinder extends UiBinder<HorizontalPanel, DesktopBar> {
 	}
-
+	
 	public DesktopBar() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
 		TheSocialOS.getEventBus().addHandler(ContactsPetitionChangeEvent.TYPE, new ContactEventHandler() {
 			
-			
-
 			@Override
-			public void onContactsPetitionChange(
-					ContactsPetitionChangeEvent event) {
+			public void onContactsPetitionChange(ContactsPetitionChangeEvent event) {
 				lblPetitionsNumber.setText(Integer.toString(CacheLayer.ContactCalls.getCountPetitionsContanct()));
-				
 			}
 		});
 	}
-
+	
 	@UiField Label clock;
 	@UiField Label username;
 	@UiField FocusPanel userPanel;
@@ -49,22 +43,25 @@ public class DesktopBar extends Composite {
 	@UiField Label lblPetitions;
 	@UiField Label lblPetitionsNumber;
 	@UiField FocusPanel PetitionsButton;
-
-	public FocusPanel getFocusContact(){
+	
+	public FocusPanel getFocusContact() {
 		return focusContacts;
 	}
-	public FocusPanel getSearchBox(){
+	
+	public FocusPanel getSearchBox() {
 		return searchButton;
 	}
 	
-	public FocusPanel getPetitionsButton(){
-		return  PetitionsButton;
+	public FocusPanel getPetitionsButton() {
+		return PetitionsButton;
 	}
-	public Label getPetitionsNumber(){
+	
+	public Label getPetitionsNumber() {
 		return lblPetitionsNumber;
 	}
 	/**
 	 * Set in the widget a number of petitions is waiting
+	 * 
 	 * @param number
 	 */
 	

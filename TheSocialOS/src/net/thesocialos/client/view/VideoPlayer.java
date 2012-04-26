@@ -7,16 +7,15 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 public class VideoPlayer extends Composite {
-
-	private static VideoPlayerUiBinder uiBinder = GWT
-			.create(VideoPlayerUiBinder.class);
-
+	
+	private static VideoPlayerUiBinder uiBinder = GWT.create(VideoPlayerUiBinder.class);
+	
 	interface VideoPlayerUiBinder extends UiBinder<Widget, VideoPlayer> {
 	}
-
+	
 	public VideoPlayer(String src) {
 		initWidget(uiBinder.createAndBindUi(this));
 		Document.get().getElementById("video").setPropertyString("src", src);
 	}
-
+	
 }

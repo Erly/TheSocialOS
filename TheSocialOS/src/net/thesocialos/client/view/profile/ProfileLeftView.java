@@ -9,13 +9,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ProfileLeftView extends Composite {
-
-	private static ProfileLeftViewUiBinder uiBinder = GWT
-			.create(ProfileLeftViewUiBinder.class);
-
+	
+	private static ProfileLeftViewUiBinder uiBinder = GWT.create(ProfileLeftViewUiBinder.class);
+	
 	interface ProfileLeftViewUiBinder extends UiBinder<VerticalPanel, ProfileLeftView> {
 	}
-
+	
 	@UiField Image photo;
 	@UiField Label name, friends;
 	@UiField VerticalPanel friendsCol;
@@ -23,5 +22,5 @@ public class ProfileLeftView extends Composite {
 	public ProfileLeftView() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
+	
 }

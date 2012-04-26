@@ -38,12 +38,10 @@ public class DblClickHandlerHelper {
 			return youtubeAlbum;
 		} else if (media instanceof YoutubeAPI.Video) {
 			return youtubeVideo;
-		} else if (media instanceof YoutubeAPI.Folder) {
-			return youtubeFolder;
-		}
+		} else if (media instanceof YoutubeAPI.Folder) { return youtubeFolder; }
 		return null;
 	}
-
+	
 	private DoubleClickHandler picasaAlbum = new DoubleClickHandler() {
 		
 		@Override
@@ -121,7 +119,7 @@ public class DblClickHandlerHelper {
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
 			FolderWindow folder = new FolderWindow(media.getName());
-			switch (((YoutubeAPI.Folder)media).getType()) {
+			switch (((YoutubeAPI.Folder) media).getType()) {
 			case UPLOADS:
 				new YoutubeAPI().loadUploadsInFolder(folder);
 				break;
@@ -135,18 +133,18 @@ public class DblClickHandlerHelper {
 			folder.show();
 		}
 	};
-
+	
 	protected void openImage() {
 		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
-		popup.add(new Image(((MediaPicture)media).getUrl()));
+		popup.add(new Image(((MediaPicture) media).getUrl()));
 		popup.setAnimationEnabled(true);
 		popup.setGlassEnabled(true);
 		popup.center();
 	}
-
+	
 	protected void openVideo() {
 		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
-		Frame frame = new Frame(((MediaPicture)media).getUrl());
+		Frame frame = new Frame(((MediaPicture) media).getUrl());
 		frame.setSize("560px", "315px");
 		popup.add(frame);
 		popup.setAnimationEnabled(true);
