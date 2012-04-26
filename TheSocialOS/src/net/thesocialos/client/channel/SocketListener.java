@@ -21,4 +21,5 @@ package net.thesocialos.client.channel;
 public interface SocketListener {
     void onOpen();
     void onMessage(String message);
+    void onClose();
 }

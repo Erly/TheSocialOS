@@ -65,6 +65,12 @@ public class Comet {
 				
 				
 			}
+
+			@Override
+			public void onClose() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 	}
 	
