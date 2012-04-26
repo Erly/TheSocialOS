@@ -24,81 +24,6 @@ import com.googlecode.objectify.Query;
 public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements ContacsService {
 	
 	@Override
-	public Boolean acceptContact(String email) throws ContactException {
-		// TODO Auto-generated method stub
-		Objectify ofy = ObjectifyService.begin();
-		User contactToAccept;
-		User userLoged = null;
-		try {
-			contactToAccept = ofy.get(User.class, email);
-			userLoged = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
-		} catch (NotFoundException e) {
-			throw new ContactException("User or contact not found");
-		}
-		
-		Key<User> contactKey = ObjectifyService.factory().getKey(contactToAccept);
-		if (userLoged.getpetitionsContacts().contains(ObjectifyService.factory().getKey(contactKey))) {
-			Key<User> userKey = ObjectifyService.factory().getKey(userLoged);
-			userLoged.addPetitionContactTOContact(contactKey);
-			
-			contactToAccept.addContact(userKey);
-			ofy.put(userLoged);
-			ofy.put(contactToAccept);
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * A�ade una peticion nueva al contacto
-	 */
-	@Override
-	public Boolean addPetitionContact(User contactUser) throws ContactException {
-		Objectify ofy = ObjectifyService.begin();
-		User userPetition;
-		Key<User> contactKey;
-		try {
-			userPetition = ofy.get(User.class, contactUser.getEmail());
-			contactKey = ObjectifyService.factory().getKey(
-					UserHelper.getUserHttpSession(perThreadRequest.get().getSession()));
-			
-		} catch (Exception e) {
-			throw new ContactException("Fail to parse the key");
-		}
-		
-		if (userPetition.addPetitionContacts(contactKey)) {
-			ofy.put(userPetition);
-			// UserHelper.saveUser(user, perThreadRequest.get().getSession(), ofy);
-			return true;
-		}
-		throw new ContactException("key duplicated");
-	}
-	
-	@Override
-	public Boolean denyContact(String email) throws ContactException {
-		Objectify ofy = ObjectifyService.begin();
-		User contactToAccept;
-		User userLoged = null;
-		try {
-			contactToAccept = ofy.get(User.class, email);
-			userLoged = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
-		} catch (NotFoundException e) {
-			throw new ContactException("User or contact not found");
-		}
-		Key<User> contactKey = ObjectifyService.factory().getKey(contactToAccept);
-		Boolean erase = userLoged.getpetitionsContacts().remove(contactKey);
-		userLoged.getContacts().add(contactKey);
-		ofy.put(userLoged);
-		return erase;
-	}
-	
-	@Override
-	public User getFriend(String email) throws FriendNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public Map<Key<User>, User> getFriendsList() throws FriendNotFoundException {
 		Objectify ofy = ObjectifyService.begin();
 		
@@ -151,6 +76,51 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	}
 	
 	@Override
+	public User getFriend(String email) throws FriendNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Map<String, User> getUsers() throws UsersNotFoundException {
+		// TODO Auto-generated method stub
+		Objectify ofy = ObjectifyService.begin();
+		Query<User> queryusers = ofy.query(User.class);
+		Map<String, User> users = new LinkedHashMap<String, User>();
+		if (queryusers.count() == 0) { throw new UsersNotFoundException("No users in the database"); }
+		for (User user : queryusers) {
+			users.put(user.getEmail(), User.toDTO(user));
+		}
+		
+		return users;
+	}
+	
+	/**
+	 * A�ade una peticion nueva al contacto
+	 */
+	@Override
+	public Boolean addPetitionContact(User contactUser) throws ContactException {
+		Objectify ofy = ObjectifyService.begin();
+		User userPetition;
+		Key<User> contactKey;
+		try {
+			userPetition = ofy.get(User.class, contactUser.getEmail());
+			contactKey = ObjectifyService.factory().getKey(
+					UserHelper.getUserHttpSession(perThreadRequest.get().getSession()));
+			
+		} catch (Exception e) {
+			throw new ContactException("Fail to parse the key");
+		}
+		
+		if (userPetition.addPetitionContacts(contactKey)) {
+			ofy.put(userPetition);
+			// UserHelper.saveUser(user, perThreadRequest.get().getSession(), ofy);
+			return true;
+		}
+		throw new ContactException("key duplicated");
+	}
+	
+	@Override
 	public Map<String, User> getPetitionContact() throws ContactException {
 		Objectify ofy = ObjectifyService.begin();
 		
@@ -176,17 +146,47 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	}
 	
 	@Override
-	public Map<String, User> getUsers() throws UsersNotFoundException {
+	public Boolean acceptContact(String email) throws ContactException {
 		// TODO Auto-generated method stub
 		Objectify ofy = ObjectifyService.begin();
-		Query<User> queryusers = ofy.query(User.class);
-		Map<String, User> users = new LinkedHashMap<String, User>();
-		if (queryusers.count() == 0) { throw new UsersNotFoundException("No users in the database"); }
-		for (User user : queryusers) {
-			users.put(user.getEmail(), User.toDTO(user));
+		User contactToAccept;
+		User userLoged = null;
+		try {
+			contactToAccept = ofy.get(User.class, email);
+			userLoged = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
+		} catch (NotFoundException e) {
+			throw new ContactException("User or contact not found");
 		}
 		
-		return users;
+		Key<User> contactKey = ObjectifyService.factory().getKey(contactToAccept);
+		if (userLoged.getpetitionsContacts().contains(ObjectifyService.factory().getKey(contactKey))) {
+			Key<User> userKey = ObjectifyService.factory().getKey(userLoged);
+			userLoged.addPetitionContactTOContact(contactKey);
+			
+			contactToAccept.addContact(userKey);
+			ofy.put(userLoged);
+			ofy.put(contactToAccept);
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public Boolean denyContact(String email) throws ContactException {
+		Objectify ofy = ObjectifyService.begin();
+		User contactToAccept;
+		User userLoged = null;
+		try {
+			contactToAccept = ofy.get(User.class, email);
+			userLoged = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
+		} catch (NotFoundException e) {
+			throw new ContactException("User or contact not found");
+		}
+		Key<User> contactKey = ObjectifyService.factory().getKey(contactToAccept);
+		Boolean erase = userLoged.getpetitionsContacts().remove(contactKey);
+		userLoged.getContacts().add(contactKey);
+		ofy.put(userLoged);
+		return erase;
 	}
 	
 }

@@ -2,18 +2,23 @@ package net.thesocialos.client.presenter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.app.ChatApp;
 import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.app.IApplication;
+import net.thesocialos.client.chat.view.ChatMenuPresenter;
+import net.thesocialos.client.chat.view.ChatMenuView;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.helper.AppIconHelper;
+import net.thesocialos.client.helper.Node;
+import net.thesocialos.client.resources.Resources;
 import net.thesocialos.client.view.ContactsView;
 import net.thesocialos.client.view.DesktopBar;
 import net.thesocialos.client.view.NotificationsBoxView;
@@ -24,6 +29,7 @@ import net.thesocialos.client.view.chat.ChatPanel;
 import net.thesocialos.client.view.deck.SocialDeck;
 import net.thesocialos.shared.model.User;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -37,14 +43,22 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -109,6 +123,9 @@ public class DesktopPresenter implements Presenter {
 	private boolean userMenuFocused = false;
 	
 	DesktopManager desktopManager;
+	Resources imageResources = GWT.create(Resources.class);
+	
+	PopupPanel programPanel = new PopupPanel(true, true); // List of run programs
 	
 	private final Display display;
 	protected boolean initialized = false;
@@ -138,6 +155,7 @@ public class DesktopPresenter implements Presenter {
 		bindSearchBox();
 		bindPetitionsBox();
 		bindSocialOS();
+		bindProgramMenu();
 		refreshData();
 		
 		// Populate the Star Menu
@@ -150,8 +168,9 @@ public class DesktopPresenter implements Presenter {
 		appsData.add(new FrameApp("Sketchpad",
 				"http://profile.ak.fbcdn.net/hprofile-ak-snc4/23295_128946130463344_2641_n.jpg",
 				"http://mugtug.com/sketchpad", "1024px", "600px"));
-		appsData.add(new ChatApp("Xmpp", "http://www.bitrix.es/upload/iblock/e03/xmpp.gif", chatEventBus,
-				new ChatPanel(), "450px", "300px"));
+		// appsData.add(new ChatApp("Xmpp","http://www.bitrix.es/upload/iblock/e03/xmpp.gif",chatEventBus, new
+		// ChatPanel(),
+		// "450px", "300px"));
 		bindStartMenu(appsData);
 		
 		AppIconHelper.populateDesktopWithIcons(desktop);
@@ -222,6 +241,49 @@ public class DesktopPresenter implements Presenter {
 				int y = display.getDesktopBar().getPetitionsButton().getOffsetHeight();
 				notificationBoxPresenter.setPosition(x, y);
 				eventBus.fireEvent(new DesktopEventOnOpen(notificationBoxPresenter));
+				
+			}
+		});
+		// WindowPanelexmp test = new WindowPanelexmp(false, false);
+		// display.getDesktop().add(test, 50, 50);
+		// test.show();
+		// FolderWindow prueba = new FolderWindow(new WindowPanelLayout(false, false,new MyCaption(),new
+		// Footer()),AppConstants.NOTHING);
+		// prueba.setPosition(20, 20);
+		// eventBus.fireEvent(new DesktopEventOnOpen(prueba));
+		ChatMenuPresenter chatMenu = new ChatMenuPresenter(new ChatMenuView());
+		eventBus.fireEvent(new DesktopEventOnOpen(chatMenu));
+	}
+	
+	private void bindProgramMenu() {
+		
+		display.getDesktopBar().getProgramsButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				MenuBar menuBar = new MenuBar(true);
+				
+				menuBar.addItem(createMenuItem("Program1", AbstractImagePrototype.create(imageResources.logo()), null));
+				menuBar.addItem(createMenuItem("Program2", AbstractImagePrototype.create(imageResources.logo()), null));
+				MenuItem menuItem; // createMenuItem("Program3", AbstractImagePrototype.create(imageResources.logo()));
+				
+				MenuBar menuBar1 = new MenuBar(true);
+				menuBar1.addItem(createMenuItem("Program3.1", AbstractImagePrototype.create(imageResources.logo()),
+						null));
+				menuBar1.addItem(createMenuItem("Program3.2", AbstractImagePrototype.create(imageResources.logo()),
+						null));
+				menuBar1.addItem(createMenuItem("Program3.3", AbstractImagePrototype.create(imageResources.logo()),
+						null));
+				
+				menuBar.addItem(getStringMenuparse("Program3", AbstractImagePrototype.create(imageResources.logo())),
+						true, menuBar1);
+				menuBar.addItem(createMenuItem("Program4", AbstractImagePrototype.create(imageResources.logo()), null));
+				menuBar.addItem(createMenuItem("Program5", AbstractImagePrototype.create(imageResources.logo()), null));
+				programPanel.setPopupPosition(event.getClientX(), event.getClientY());
+				programPanel.add(menuBar);
+				programPanel.show();
+				// MenuItem me
 				
 			}
 		});
@@ -397,6 +459,16 @@ public class DesktopPresenter implements Presenter {
 		
 	}
 	
+	private MenuItem createMenuItem(String menuLabel, AbstractImagePrototype menuImage, Command command) {
+		
+		MenuItem menuItem = new MenuItem(menuImage.getHTML() + "&nbsp;" + menuLabel, true, command);
+		return menuItem;
+	}
+	
+	private String getStringMenuparse(String name, AbstractImagePrototype menuImage) {
+		return menuImage.getHTML() + "&nbsp;" + name;
+	}
+	
 	@Override
 	public void go(final HasWidgets container) {
 		container.clear(); // Clear the screen
@@ -420,6 +492,33 @@ public class DesktopPresenter implements Presenter {
 		display.getUserMenu().setVisible(false);
 		((FocusPanel) display.getUserButton()).addStyleName("userbar");
 		((FocusPanel) display.getUserButton()).removeStyleName("userbar-focused");
+	}
+	
+	/**
+	 * Makes the run programs visible in the bar
+	 * 
+	 * @param nodes
+	 */
+	public void makeProgramsPanel(List<Node> nodes) {
+		MenuBar menuBar = new MenuBar(true);
+		Iterator<Node> nodesIterator = nodes.iterator();
+		while (nodesIterator.hasNext()) {
+			Node node = nodesIterator.next();
+			Iterator<Node> nodeIterator = node.getNodeIterator();
+			MenuBar subMenuBar = new MenuBar(true);
+			if (nodeIterator.hasNext()) {
+				while (nodeIterator.hasNext()) {
+					Node subnode = nodeIterator.next();
+					subMenuBar.addItem(createMenuItem(subnode.getName(),
+							AbstractImagePrototype.create(imageResources.logo()), subnode.getCommand()));
+				}
+				menuBar.addItem(
+						getStringMenuparse(node.getName(), AbstractImagePrototype.create(imageResources.logo())), true,
+						subMenuBar);
+			} else
+				menuBar.addItem(createMenuItem(node.getName(), AbstractImagePrototype.create(imageResources.logo()),
+						node.getCommand()));
+		}
 	}
 	
 	/**

@@ -19,8 +19,6 @@ import com.google.gwt.user.client.ui.StackLayoutPanel;
 
 public class SearchBoxView extends Composite implements Display {
 	
-	interface SearchBoxUiBinder extends UiBinder<Widget, SearchBoxView> {
-	}
 	private static SearchBoxUiBinder uiBinder = GWT.create(SearchBoxUiBinder.class);
 	@UiField(provided = true) CellList<User> cellList = new CellList<User>(new AbstractCell<User>() {
 		@Override
@@ -55,23 +53,13 @@ public class SearchBoxView extends Composite implements Display {
 	@UiField Label lblInvite;
 	@UiField Label lblInfo;
 	@UiField Image imgAvatar;
-	
 	@UiField StackLayoutPanel stackLayout;
+	
+	interface SearchBoxUiBinder extends UiBinder<Widget, SearchBoxView> {
+	}
 	
 	public SearchBoxView() {
 		initWidget(uiBinder.createAndBindUi(this));
-	}
-	
-	@Override
-	public Image getAvatarIMG() {
-		// TODO Auto-generated method stub
-		return imgAvatar;
-	}
-	
-	@Override
-	public CellList<User> getComponentsList() {
-		// TODO Auto-generated method stub
-		return cellList;
 	}
 	
 	@Override
@@ -87,6 +75,24 @@ public class SearchBoxView extends Composite implements Display {
 	}
 	
 	@Override
+	public CellList<User> getComponentsList() {
+		// TODO Auto-generated method stub
+		return cellList;
+	}
+	
+	@Override
+	public void setComponentsList(CellList<User> cellList) {
+		// TODO Auto-generated method stub
+		this.cellList = cellList;
+	}
+	
+	@Override
+	public VerticalPanel getSearchBoxPanel() {
+		// TODO Auto-generated method stub
+		return searchPanel;
+	}
+	
+	@Override
 	public Label getLabelInfo() {
 		// TODO Auto-generated method stub
 		return lblInfo;
@@ -99,21 +105,15 @@ public class SearchBoxView extends Composite implements Display {
 	}
 	
 	@Override
-	public VerticalPanel getSearchBoxPanel() {
+	public Image getAvatarIMG() {
 		// TODO Auto-generated method stub
-		return searchPanel;
+		return imgAvatar;
 	}
 	
 	@Override
 	public StackLayoutPanel getStackLayout() {
 		// TODO Auto-generated method stub
 		return stackLayout;
-	}
-	
-	@Override
-	public void setComponentsList(CellList<User> cellList) {
-		// TODO Auto-generated method stub
-		this.cellList = cellList;
 	}
 	
 }

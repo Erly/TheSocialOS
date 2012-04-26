@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
@@ -34,41 +35,32 @@ import com.googlecode.objectify.Key;
 
 public class ContactsPresenter extends DesktopUnit {
 	
+	private final UserServiceAsync userService = GWT.create(UserService.class);
+	
+	Display display;
+	
+	List<String> ListContacts;
+	List<String> ListGroups;
+	
+	/*
+	 * Los modelos de la cajas de seleccion de los contactos
+	 */
+	ProvidesKey<User> KEY_PROVIDER;
+	SingleSelectionModel<User> contactSelectionModel;
+	ListDataProvider<User> contactDataProvider;
+	List<User> contactList;
+	
 	public interface Display {
 		
-		Widget asWidget();
+		DecoratedTabPanel getGroupUsersPanel();
 		
-		Button GetBtnUserPrivateMessage();
-		
-		Button GetBtnUserSearchPrivateMessage();
-		
-		LabelText getContactName();
-		
-		// Users
-		
-		LabelText getContactSearchName();
-		
-		LabelText getContactSearchSurname();
-		
-		LabelText getContactSurname();
-		
-		HorizontalPanel getContatcsMenu();
+		CellList<User> getUserListBox();
 		
 		CellList<Group> getGroupListBox();
 		
-		Label getGroupName();
+		TextBox getSearchBox();
 		
-		Label getGroupSearchName();
-		
-		Label getGroupSize();
-		
-		Label GetGroupSizeCount();
-		
-		Label GetGroupSizeCountSearch();
-		
-		Label GetGroupSizeSearch();
-		
-		DecoratedTabPanel getGroupUsersPanel();
+		// Users
 		
 		Image getImageFriend();
 		
@@ -78,29 +70,37 @@ public class ContactsPresenter extends DesktopUnit {
 		
 		Image getImageSearchGroup();
 		
-		TextBox getSearchBox();
+		LabelText getContactName();
 		
-		CellList<User> getUserListBox();
+		LabelText getContactSurname();
+		
+		LabelText getContactSearchName();
+		
+		LabelText getContactSearchSurname();
+		
+		Label getGroupName();
+		
+		Label getGroupSearchName();
+		
+		Label getGroupSize();
+		
+		Label GetGroupSizeCount();
+		
+		Label GetGroupSizeSearch();
+		
+		Label GetGroupSizeCountSearch();
+		
+		Button GetBtnUserPrivateMessage();
+		
+		Button GetBtnUserSearchPrivateMessage();
+		
+		HorizontalPanel getContatcsMenu();
+		
+		Widget asWidget();
 	}
 	
-	private final UserServiceAsync userService = GWT.create(UserService.class);
-	
-	Display display;
-	List<String> ListContacts;
-	
-	List<String> ListGroups;
-	/*
-	 * Los modelos de la cajas de seleccion de los contactos
-	 */
-	ProvidesKey<User> KEY_PROVIDER;
-	SingleSelectionModel<User> contactSelectionModel;
-	ListDataProvider<User> contactDataProvider;
-	
-	List<User> contactList;
-	
 	public ContactsPresenter(Display display) {
-		programID = "001";
-		
+		programID = AppConstants.CONTACTS;
 		typeUnit = TypeUnit.INFO;
 		this.display = display;
 		KEY_PROVIDER = new ProvidesKey<User>() {
@@ -117,16 +117,6 @@ public class ContactsPresenter extends DesktopUnit {
 	 * Rpc Secction
 	 */
 	
-	@Override
-	public void close(AbsolutePanel absolutepanel) {
-		absolutepanel.remove(display.asWidget());
-		
-	}
-	
-	public HorizontalPanel getContactsPresenter() {
-		return display.getContatcsMenu();
-	}
-	
 	private void getFriends() {
 		
 		// Indica la variable que ser� seleccionada como key
@@ -141,11 +131,6 @@ public class ContactsPresenter extends DesktopUnit {
 		CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>, User>>() {
 			
 			@Override
-			public void onFailure(Throwable caught) {
-				// TODO
-			}
-			
-			@Override
 			public void onSuccess(Map<Key<User>, User> result) {
 				// TODO Auto-generated method stub
 				Iterator<User> iterator = result.values().iterator();
@@ -158,32 +143,19 @@ public class ContactsPresenter extends DesktopUnit {
 				contactDataProvider.addDataDisplay(display.getUserListBox());
 				
 			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				contactList.add(new User("vssnake@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
+				contactList.add(new User("vssnake1@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
+				contactList.add(new User("vssnake2@thesocialos.net", null, null, "juan", "palomo", "ni uno"));
+				contactDataProvider.addDataDisplay(display.getUserListBox());
+				
+			}
 		});
 		
 		handlers();
 		
-	}
-	
-	@Override
-	public void getID() {
-		
-	}
-	
-	@Override
-	public int getXPosition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getYPosition() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getZposition() {
-		return 0;
 	}
 	
 	private void handlers() {
@@ -211,12 +183,6 @@ public class ContactsPresenter extends DesktopUnit {
 				CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>, User>>() {
 					
 					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
 					public void onSuccess(Map<Key<User>, User> result) {
 						
 						String text[] = display.getSearchBox().getText().split(" ");
@@ -236,24 +202,40 @@ public class ContactsPresenter extends DesktopUnit {
 						}
 						
 					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
 				});
 			}
 		});
 		
 	}
 	
+	public HorizontalPanel getContactsPresenter() {
+		return display.getContatcsMenu();
+	}
+	
 	@Override
-	public void isMinimized() {
+	public void toFront() {
 		
 	}
 	
 	@Override
-	public void maximize() {
+	public void toZPosition(int position) {
 		
 	}
 	
 	@Override
-	public void minimize() {
+	public int getZposition() {
+		return 0;
+	}
+	
+	@Override
+	public void close(AbsolutePanel absolutepanel) {
+		absolutepanel.remove(display.asWidget());
 		
 	}
 	
@@ -274,12 +256,32 @@ public class ContactsPresenter extends DesktopUnit {
 	}
 	
 	@Override
-	public void toFront() {
+	public int getWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int getHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public void setSize(int height, int width) {
+		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void toZPosition(int position) {
-		
+	public int getAbsoluteLeft() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int getAbsoluteTop() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -15,14 +15,14 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class ChatPanel extends Composite implements Display {
 	
-	interface PanelUiBinder extends UiBinder<Widget, ChatPanel> {
-	}
 	private final ChatServiceAsync chatService = GWT.create(ChatService.class);
 	private static PanelUiBinder uiBinder = GWT.create(PanelUiBinder.class);
 	@UiField TextArea chatLog;
 	@UiField Button btnSend;
-	
 	@UiField TextBox txtWrite;
+	
+	interface PanelUiBinder extends UiBinder<Widget, ChatPanel> {
+	}
 	
 	public ChatPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -31,12 +31,6 @@ public class ChatPanel extends Composite implements Display {
 	public ChatPanel(String firstName) {
 		initWidget(uiBinder.createAndBindUi(this));
 		
-	}
-	
-	@Override
-	public ChatPanel getChatPanel() {
-		// TODO Auto-generated method stub
-		return this;
 	}
 	
 	@Override
@@ -55,6 +49,12 @@ public class ChatPanel extends Composite implements Display {
 	public TextArea getTextArea() {
 		// TODO Auto-generated method stub
 		return chatLog;
+	}
+	
+	@Override
+	public ChatPanel getChatPanel() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 	
 }

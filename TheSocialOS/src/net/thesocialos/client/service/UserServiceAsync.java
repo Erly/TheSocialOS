@@ -9,7 +9,6 @@ import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.googlecode.objectify.Key;
 
 public interface UserServiceAsync extends ServiceAsync {
 	

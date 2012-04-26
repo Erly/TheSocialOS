@@ -10,13 +10,13 @@ public class AccountAddedEvent extends GwtEvent<AccountAddedEventHandler> {
 	}
 	
 	@Override
-	protected void dispatch(AccountAddedEventHandler handler) {
-		handler.onAcountAdd(this);
+	public Type<AccountAddedEventHandler> getAssociatedType() {
+		return TYPE;
 	}
 	
 	@Override
-	public Type<AccountAddedEventHandler> getAssociatedType() {
-		return TYPE;
+	protected void dispatch(AccountAddedEventHandler handler) {
+		handler.onAcountAdd(this);
 	}
 	
 }

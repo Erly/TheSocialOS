@@ -24,62 +24,16 @@ public class UserHelper extends RemoteServiceServlet {
 	final static String OBJECITIFY = "objetify";
 	
 	/**
-	 * Create and add a new Session on one User
-	 * 
-	 * @param user
-	 * @param httpSession
-	 * @param duration
-	 * @param ofy
-	 * @return
-	 */
-	public static synchronized boolean addSessiontoUser(User user, Session session, long duration, Objectify ofy) {
-		
-		user.getSessions().add(ofy.put(session));
-		return true;
-	}
-	
-	/**
-	 * Return a user
+	 * Return the object user
 	 * 
 	 * @param email
 	 * @param ofy
-	 * @return A user Class
-	 * @throws NotFoundException
-	 *             user has not found
-	 */
-	public static synchronized User authenticateUser(String email, Objectify ofy) throws NotFoundException {
-		return ofy.get(User.class, email);
-	}
-	
-	/**
-	 * 
-	 * @param sid
-	 * @param ofy
-	 * @return
+	 *            Objectify instance
+	 * @return User object
 	 * @throws NotFoundException
 	 */
-	public static synchronized Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException {
-		return ofy.get(SESSION, sid);
-	}
-	
-	/**
-	 * Get Session of HttpSession
-	 * 
-	 * @param httpSession
-	 * @return Session Object
-	 */
-	public static synchronized Session getSesssionHttpSession(HttpSession httpSession) {
-		return (Session) httpSession.getAttribute(sessionN);
-	}
-	
-	/**
-	 * Get User of Httpsession
-	 * 
-	 * @param httpSession
-	 * @return User Object
-	 */
-	public static synchronized String getUserHttpSession(HttpSession httpSession) {
-		return (String) httpSession.getAttribute(userN);
+	public static synchronized User getUserWithEmail(String email, Objectify ofy) throws NotFoundException {
+		return ofy.get(USER, email);
 	}
 	
 	/**
@@ -96,16 +50,44 @@ public class UserHelper extends RemoteServiceServlet {
 	}
 	
 	/**
-	 * Return the object user
+	 * Set a User String of the session
 	 * 
-	 * @param email
+	 * @param session
+	 *            a user session
+	 * @param httpSession
+	 *            HttpSession
+	 * @return
+	 */
+	public static synchronized boolean saveUsertohttpSession(Session session, String userEmail, HttpSession httpSession) {
+		httpSession.setAttribute(userN, userEmail);
+		httpSession.setAttribute(sessionN, session);
+		return true;
+	}
+	
+	/**
+	 * Guarda cambios hechos en el usuario tanto en la BBDD como en la session
+	 * 
+	 * @param user
+	 * @param httpSession
 	 * @param ofy
-	 *            Objectify instance
-	 * @return User object
+	 * @return
+	 */
+	public static synchronized boolean saveUser(User user, HttpSession httpSession, Objectify ofy) {
+		if (((User) httpSession.getAttribute(userN)).getEmail().equalsIgnoreCase(user.getEmail()) != true) { return false; }
+		httpSession.setAttribute(userN, user);
+		ofy.put(user);
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param sid
+	 * @param ofy
+	 * @return
 	 * @throws NotFoundException
 	 */
-	public static synchronized User getUserWithEmail(String email, Objectify ofy) throws NotFoundException {
-		return ofy.get(USER, email);
+	public static synchronized Session getSessionWithCookies(String sid, Objectify ofy) throws NotFoundException {
+		return ofy.get(SESSION, sid);
 	}
 	
 	/**
@@ -119,6 +101,54 @@ public class UserHelper extends RemoteServiceServlet {
 		
 		return ofy.get(User.class, session.getUser().getName());
 		
+	}
+	
+	/**
+	 * Get User of Httpsession
+	 * 
+	 * @param httpSession
+	 * @return User Object
+	 */
+	public static synchronized String getUserHttpSession(HttpSession httpSession) {
+		return (String) httpSession.getAttribute(userN);
+	}
+	
+	/**
+	 * Get Session of HttpSession
+	 * 
+	 * @param httpSession
+	 * @return Session Object
+	 */
+	public static synchronized Session getSesssionHttpSession(HttpSession httpSession) {
+		return (Session) httpSession.getAttribute(sessionN);
+	}
+	
+	/**
+	 * Return a user
+	 * 
+	 * @param email
+	 * @param ofy
+	 * @return A user Class
+	 * @throws NotFoundException
+	 *             user has not found
+	 */
+	public static synchronized User authenticateUser(String email, Objectify ofy) throws NotFoundException {
+		return ofy.get(User.class, email);
+	}
+	
+	/**
+	 * Create and add a new Session on one User
+	 * 
+	 * @param user
+	 * @param httpSession
+	 * @param duration
+	 * @param ofy
+	 * @return
+	 */
+	public static synchronized boolean addSessiontoUser(User user, Session session, long duration, Objectify ofy) {
+		
+		user.getSessions().add(ofy.put(session));
+		return true;
 	}
 	
 	/**
@@ -141,36 +171,6 @@ public class UserHelper extends RemoteServiceServlet {
 		ofy.put(lineChat);
 		session.setAttribute("channelID", user.getEmail());
 		return token;
-	}
-	
-	/**
-	 * Guarda cambios hechos en el usuario tanto en la BBDD como en la session
-	 * 
-	 * @param user
-	 * @param httpSession
-	 * @param ofy
-	 * @return
-	 */
-	public static synchronized boolean saveUser(User user, HttpSession httpSession, Objectify ofy) {
-		if (((User) httpSession.getAttribute(userN)).getEmail().equalsIgnoreCase(user.getEmail()) != true) { return false; }
-		httpSession.setAttribute(userN, user);
-		ofy.put(user);
-		return true;
-	}
-	
-	/**
-	 * Set a User String of the session
-	 * 
-	 * @param session
-	 *            a user session
-	 * @param httpSession
-	 *            HttpSession
-	 * @return
-	 */
-	public static synchronized boolean saveUsertohttpSession(Session session, String userEmail, HttpSession httpSession) {
-		httpSession.setAttribute(userN, userEmail);
-		httpSession.setAttribute(sessionN, session);
-		return true;
 	}
 	
 }

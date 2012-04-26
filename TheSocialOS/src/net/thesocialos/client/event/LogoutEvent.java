@@ -10,13 +10,13 @@ public class LogoutEvent extends GwtEvent<LogoutEventHandler> {
 	}
 	
 	@Override
-	protected void dispatch(LogoutEventHandler handler) {
-		handler.onLogout(this);
+	public Type<LogoutEventHandler> getAssociatedType() {
+		return TYPE;
 	}
 	
 	@Override
-	public Type<LogoutEventHandler> getAssociatedType() {
-		return TYPE;
+	protected void dispatch(LogoutEventHandler handler) {
+		handler.onLogout(this);
 	}
 	
 }

@@ -10,23 +10,23 @@ import com.google.gwt.user.client.ui.Label;
 
 public class AccountText extends Composite {
 	
-	interface AccountTextUiBinder extends UiBinder<Widget, AccountText> {
-	}
 	private static AccountTextUiBinder uiBinder = GWT.create(AccountTextUiBinder.class);
 	@UiField Button btnAccount;
-	
 	@UiField Label lblAccount;
+	
+	interface AccountTextUiBinder extends UiBinder<Widget, AccountText> {
+	}
 	
 	public AccountText() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public void setAccounts(String text) {
-		btnAccount.setText(text);
-	}
-	
 	public void setAccountText(String labelText) {
 		lblAccount.setText(labelText);
+	}
+	
+	public void setAccounts(String text) {
+		btnAccount.setText(text);
 	}
 	
 }

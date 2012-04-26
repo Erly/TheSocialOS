@@ -7,13 +7,13 @@ public class RPCOutEvent extends GwtEvent<RPCOutEventHandler> {
 	public static Type<RPCOutEventHandler> TYPE = new Type<RPCOutEventHandler>();
 	
 	@Override
-	protected void dispatch(RPCOutEventHandler handler) {
-		handler.onRPCOut(this);
+	public Type<RPCOutEventHandler> getAssociatedType() {
+		return TYPE;
 	}
 	
 	@Override
-	public Type<RPCOutEventHandler> getAssociatedType() {
-		return TYPE;
+	protected void dispatch(RPCOutEventHandler handler) {
+		handler.onRPCOut(this);
 	}
 	
 }

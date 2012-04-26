@@ -17,6 +17,12 @@ public class ChannelServer {
 	private static final String APP_KEY = "SOS-";
 	private static final Method dummyMethod = getDummyMethod();
 	
+	// private static SerializationPolicy serializationPolicy =
+	// MergedSerializationPolicy.createPushSerializationPolicy();
+	public ChannelServer() {
+		
+	}
+	
 	/**
 	 * Create a channel for a user. Returns the channel id that the client must use to connect for receiving push
 	 * messages.
@@ -36,15 +42,16 @@ public class ChannelServer {
 		return channelId;
 	}
 	
-	private static String encodeMessage(Message msg) {
-		
-		try {
-			return RPC.encodeResponseForSuccess(dummyMethod, msg,
-					MergedSerializationPolicy.createPushSerializationPolicy());
-		} catch (SerializationException e) {
-			throw new RuntimeException("Unable to encode a message for push.\n" + msg, e);
+	private static boolean setChannelAPIEnabled() {
+		String skey = props.getProperty("com.metadot.connectr.enable-channelapi");
+		if (skey != null) {
+			if (skey.equalsIgnoreCase("true")) {
+				// logger.info("channel API is enabled");
+				return true;
+			}
+			if (skey.equalsIgnoreCase("false")) { return false; }
 		}
-		
+		return false;
 	}
 	
 	private static ChannelService getChannelService() {
@@ -52,12 +59,15 @@ public class ChannelServer {
 		return ChannelServiceFactory.getChannelService();
 	}
 	
-	private static Method getDummyMethod() {
-		try {
-			return ChannelServer.class.getDeclaredMethod("dummyMethod");
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException("Unable to find the dummy RPC method.");
-		}
+	private static void pushMessageById(List<String> userUniqueIds, Message msg) {
+		/*
+		 * String encodedMessage = encodeMessage(msg); for (String userUniqueId : userUniqueIds) { String key =
+		 * getAppKeyForUser(userUniqueId); //logger.info("Pushing msg to " + key); try {
+		 * getChannelService().sendMessage( new ChannelMessage(key, encodedMessage)); } catch (Exception e) { // [The
+		 * original google example code notes here: // A bug in the dev_appserver causes an exception to be // thrown
+		 * when no users are connected yet.] // logger.log(Level.SEVERE, "Failed to push the message " + msg //+
+		 * " to client " + key, e); } }
+		 */
 	}
 	
 	public static void PushallUsers(List<String> userUniqueIds, Message msg) {
@@ -87,32 +97,14 @@ public class ChannelServer {
 		 * userUniqueId) { return APP_KEY + userUniqueId;
 		 */}
 	
-	private static void pushMessageById(List<String> userUniqueIds, Message msg) {
-		/*
-		 * String encodedMessage = encodeMessage(msg); for (String userUniqueId : userUniqueIds) { String key =
-		 * getAppKeyForUser(userUniqueId); //logger.info("Pushing msg to " + key); try {
-		 * getChannelService().sendMessage( new ChannelMessage(key, encodedMessage)); } catch (Exception e) { // [The
-		 * original google example code notes here: // A bug in the dev_appserver causes an exception to be // thrown
-		 * when no users are connected yet.] // logger.log(Level.SEVERE, "Failed to push the message " + msg //+
-		 * " to client " + key, e); } }
-		 */
-	}
-	
-	private static boolean setChannelAPIEnabled() {
-		String skey = props.getProperty("com.metadot.connectr.enable-channelapi");
-		if (skey != null) {
-			if (skey.equalsIgnoreCase("true")) {
-				// logger.info("channel API is enabled");
-				return true;
-			}
-			if (skey.equalsIgnoreCase("false")) { return false; }
+	private static String encodeMessage(Message msg) {
+		
+		try {
+			return RPC.encodeResponseForSuccess(dummyMethod, msg,
+					MergedSerializationPolicy.createPushSerializationPolicy());
+		} catch (SerializationException e) {
+			throw new RuntimeException("Unable to encode a message for push.\n" + msg, e);
 		}
-		return false;
-	}
-	
-	// private static SerializationPolicy serializationPolicy =
-	// MergedSerializationPolicy.createPushSerializationPolicy();
-	public ChannelServer() {
 		
 	}
 	
@@ -127,6 +119,14 @@ public class ChannelServer {
 	@SuppressWarnings("unused")
 	private Message dummyMethod() {
 		throw new UnsupportedOperationException("This should never be called.");
+	}
+	
+	private static Method getDummyMethod() {
+		try {
+			return ChannelServer.class.getDeclaredMethod("dummyMethod");
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException("Unable to find the dummy RPC method.");
+		}
 	}
 	
 }

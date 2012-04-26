@@ -21,6 +21,12 @@ public class ServiceSecurityLayer extends RemoteServiceServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Override
+	public void init() {
+		// checkSession();
+		
+	}
+	
 	/**
 	 * The implementation of the service.
 	 */
@@ -40,72 +46,6 @@ public class ServiceSecurityLayer extends RemoteServiceServlet {
 	 */
 	public ServiceSecurityLayer(Object delegate) {
 		this.delegate = delegate;
-	}
-	
-	/**
-	 * Verify if you have sessions id in server sessions
-	 * 
-	 * @return
-	 */
-	protected User checkSession() {
-		
-		String sid = (String) getThreadLocalRequest().getSession().getAttribute("SID");
-		String uid = (String) getThreadLocalRequest().getSession().getAttribute("UID");
-		
-		// return checkSession(sid,uid);
-		return null;
-		
-	}
-	
-	/**
-	 * The layer
-	 * 
-	 * @param rpcRequest
-	 * @return
-	 */
-	private Boolean checkSession(RPCRequest rpcRequest) {
-		System.out.println(rpcRequest.getMethod().getDeclaringClass().getName());
-		if (rpcRequest.getMethod().getName().equals("login") || rpcRequest.getMethod().getName().equals("logout")
-				|| rpcRequest.getMethod().getName().equals("register") /*
-																		 * || rpcRequest.getMethod().getName().equals(
-																		 * "getLoggedUser")
-																		 */) {
-			return true;
-		} else {
-			if (checkSession() != null) {
-				return true;
-			} else {
-				return false;
-			}
-			
-		}
-		
-	}
-	
-	/**
-	 * 
-	 * @param sid
-	 *            ID of session
-	 * @param uid
-	 *            Code of user
-	 * @return The user
-	 */
-	protected User checkSession(String sid, String uid) {
-		/*
-		 * if (sid == null || uid == null){ return null; } PersistenceManager pm = PMF.get().getPersistenceManager();
-		 * try{ User user = pm.getObjectById(User.class, uid); // Session session = new SearchJDO().searchSession(user,
-		 * sid); //Log.debug(session.getUser().toString()); // if (session != null){ Log.debug("SecurityLayer-->usid: "
-		 * + session.getSessionID()); Log.debug("SecurityLayer-->sid:  " + sid); if (user == null ||
-		 * !session.getSessionID().equals(sid)) {//Verifing session id Log.debug("SecurityLayer-->session altered");
-		 * return null; }else{ return user; } } } finally { pm.close(); } Log.debug("Session null"); return null;
-		 */
-		return null;
-	}
-	
-	@Override
-	public void init() {
-		// checkSession();
-		
 	}
 	
 	/**
@@ -156,6 +96,66 @@ public class ServiceSecurityLayer extends RemoteServiceServlet {
 			log("An RpcTokenException was thrown while processing this call.", tokenException);
 			return RPC.encodeResponseForFailure(null, tokenException);
 		}
+	}
+	
+	/**
+	 * Verify if you have sessions id in server sessions
+	 * 
+	 * @return
+	 */
+	protected User checkSession() {
+		
+		String sid = (String) getThreadLocalRequest().getSession().getAttribute("SID");
+		String uid = (String) getThreadLocalRequest().getSession().getAttribute("UID");
+		
+		// return checkSession(sid,uid);
+		return null;
+		
+	}
+	
+	/**
+	 * 
+	 * @param sid
+	 *            ID of session
+	 * @param uid
+	 *            Code of user
+	 * @return The user
+	 */
+	protected User checkSession(String sid, String uid) {
+		/*
+		 * if (sid == null || uid == null){ return null; } PersistenceManager pm = PMF.get().getPersistenceManager();
+		 * try{ User user = pm.getObjectById(User.class, uid); // Session session = new SearchJDO().searchSession(user,
+		 * sid); //Log.debug(session.getUser().toString()); // if (session != null){ Log.debug("SecurityLayer-->usid: "
+		 * + session.getSessionID()); Log.debug("SecurityLayer-->sid:  " + sid); if (user == null ||
+		 * !session.getSessionID().equals(sid)) {//Verifing session id Log.debug("SecurityLayer-->session altered");
+		 * return null; }else{ return user; } } } finally { pm.close(); } Log.debug("Session null"); return null;
+		 */
+		return null;
+	}
+	
+	/**
+	 * The layer
+	 * 
+	 * @param rpcRequest
+	 * @return
+	 */
+	private Boolean checkSession(RPCRequest rpcRequest) {
+		System.out.println(rpcRequest.getMethod().getDeclaringClass().getName());
+		if (rpcRequest.getMethod().getName().equals("login") || rpcRequest.getMethod().getName().equals("logout")
+				|| rpcRequest.getMethod().getName().equals("register") /*
+																		 * || rpcRequest.getMethod().getName().equals(
+																		 * "getLoggedUser")
+																		 */) {
+			return true;
+		} else {
+			if (checkSession() != null) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		}
+		
 	}
 	
 }

@@ -16,8 +16,6 @@ import com.google.gwt.user.client.ui.StackLayoutPanel;
 
 public class NotificationsBoxView extends Composite implements Display {
 	
-	interface NotificationsBoxUiBinder extends UiBinder<Widget, NotificationsBoxView> {
-	}
 	private static NotificationsBoxUiBinder uiBinder = GWT.create(NotificationsBoxUiBinder.class);
 	@UiField(provided = true) CellList<User> cellListFriends = new CellList<User>(new AbstractCell<User>() {
 		@Override
@@ -47,17 +45,13 @@ public class NotificationsBoxView extends Composite implements Display {
 			// TODO
 		}
 	});
-	
 	@UiField StackLayoutPanel stackLayoutPanel;
+	
+	interface NotificationsBoxUiBinder extends UiBinder<Widget, NotificationsBoxView> {
+	}
 	
 	public NotificationsBoxView() {
 		initWidget(uiBinder.createAndBindUi(this));
-	}
-	
-	@Override
-	public CellList<User> getContactsCellList() {
-		// TODO Auto-generated method stub
-		return cellListFriends;
 	}
 	
 	@Override
@@ -70,6 +64,12 @@ public class NotificationsBoxView extends Composite implements Display {
 	public LabelText getGroupsLabelText() {
 		// TODO Auto-generated method stub
 		return labelTextGroups;
+	}
+	
+	@Override
+	public CellList<User> getContactsCellList() {
+		// TODO Auto-generated method stub
+		return cellListFriends;
 	}
 	
 	@Override

@@ -8,15 +8,15 @@ public class DesktopEventOnMaximize extends DesktopEvent {
 	}
 	
 	@Override
-	protected void dispatch(DesktopEventHandler handler) {
-		handler.onMaximize(this);
-		
-	}
-	
-	@Override
 	public com.google.gwt.event.shared.GwtEvent.Type<DesktopEventHandler> getAssociatedType() {
 		// TODO Auto-generated method stub
 		return TYPE;
+	}
+	
+	@Override
+	protected void dispatch(DesktopEventHandler handler) {
+		handler.onMaximize(this);
+		
 	}
 	
 }

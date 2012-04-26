@@ -1,4 +1,4 @@
-package net.thesocialos.client.view.window;
+package net.thesocialos.client.desktop.window;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.Style.VerticalAlign;

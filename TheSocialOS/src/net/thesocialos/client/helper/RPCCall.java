@@ -21,10 +21,12 @@ import com.google.gwt.user.client.rpc.SerializationException;
 @Deprecated
 public abstract class RPCCall<T> implements AsyncCallback<T> {
 	
-	public RPCCall() {
-	}
+	protected abstract void callService(AsyncCallback<T> cb);
 	
 	// private final UserServiceAsync userService = GWT.create(UserService.class);
+	
+	public RPCCall() {
+	}
 	
 	/**
 	 * Makes a request to check that the user sessionID and userID are correct and if they are correct it makes the call
@@ -47,8 +49,6 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 		 * History.newItem("login"); } } });
 		 */
 	}
-	
-	protected abstract void callService(AsyncCallback<T> cb);
 	
 	/**
 	 * It makes the main request to the server and controls some generic exceptions. In case of failure it calls itself
@@ -93,12 +93,6 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 		});
 	}
 	
-	@Override
-	public void onFailure(Throwable caught) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	/**
 	 * Fires an event indicating that the RPC request has finished.
 	 */
@@ -116,12 +110,6 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 		TheSocialOS.getEventBus().fireEvent(new RPCOutEvent());
 	}
 	
-	@Override
-	public void onSuccess(T result) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	/**
 	 * The main method to make the request.
 	 * 
@@ -130,6 +118,18 @@ public abstract class RPCCall<T> implements AsyncCallback<T> {
 	 */
 	public void retry(int retryCount) { // Public method to call the RPCCall
 		call(retryCount);
+	}
+	
+	@Override
+	public void onFailure(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void onSuccess(T result) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -9,16 +9,18 @@ public class LineChat {
 	@Id String user;
 	String channel;
 	
-	Long date;
-	
-	public LineChat() {
-		
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 	
-	public LineChat(String user, String channel, Long date) {
-		this.user = user;
-		this.channel = channel;
+	Long date;
+	
+	public void setDate(Long date) {
 		this.date = date;
+	}
+	
+	public String getUser() {
+		return user;
 	}
 	
 	public String getChannel() {
@@ -29,16 +31,14 @@ public class LineChat {
 		return date;
 	}
 	
-	public String getUser() {
-		return user;
-	}
-	
-	public void setChannel(String channel) {
+	public LineChat(String user, String channel, Long date) {
+		this.user = user;
 		this.channel = channel;
+		this.date = date;
 	}
 	
-	public void setDate(Long date) {
-		this.date = date;
+	public LineChat() {
+		
 	}
 	
 }

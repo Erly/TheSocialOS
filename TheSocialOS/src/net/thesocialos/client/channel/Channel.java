@@ -29,6 +29,9 @@ public class Channel extends JavaScriptObject {
 																socket.onmessage = function(event) {
 																listener.@net.thesocialos.client.channel.SocketListener::onMessage(Ljava/lang/String;)(event.data);
 																};
+																socket.onclose = function(event){
+																listener.@net.thesocialos.client.channel.SocketListener::onClose()();
+																};
 																return socket;
 																}-*/;
 }

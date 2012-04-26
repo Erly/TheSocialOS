@@ -151,10 +151,6 @@ public class AppController implements ValueChangeHandler<String> {
 		History.newItem("login");
 	}
 	
-	public SimpleEventBus getChatEventBus() {
-		return chatEventBus;
-	}
-	
 	/**
 	 * Method called from the main class during loading to fire the current state of the history and do some minor fixes
 	 * to errors that can occur during the first load.
@@ -245,6 +241,10 @@ public class AppController implements ValueChangeHandler<String> {
 					History.newItem("login");
 			}
 		}
+	}
+	
+	public SimpleEventBus getChatEventBus() {
+		return chatEventBus;
 	}
 	
 	public void setChatEventBus(SimpleEventBus chatEventBus) {

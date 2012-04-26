@@ -24,8 +24,6 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class ContactsView extends Composite implements Display {
 	
-	interface ContactsUiBinder extends UiBinder<Widget, ContactsView> {
-	}
 	private static ContactsUiBinder uiBinder = GWT.create(ContactsUiBinder.class);
 	@UiField LabelText lblName;
 	@UiField LabelText lblSurname;
@@ -77,7 +75,6 @@ public class ContactsView extends Composite implements Display {
 	@UiField DecoratedTabPanel dTPUserGroups;
 	@UiField HorizontalPanel ContactsMenu;
 	@UiField TextBox txtSearch;
-	
 	@UiField(provided = true) CellList<User> listContacts = new CellList<User>(new AbstractCell<User>() {
 		@Override
 		public void render(Context context, User value, SafeHtmlBuilder sb) {
@@ -99,6 +96,9 @@ public class ContactsView extends Composite implements Display {
 			sb.appendHtmlConstant("</td></tr></table>");
 		}
 	});
+	
+	interface ContactsUiBinder extends UiBinder<Widget, ContactsView> {
+	}
 	
 	public ContactsView() {
 		
@@ -124,93 +124,21 @@ public class ContactsView extends Composite implements Display {
 	}
 	
 	@Override
-	public Button GetBtnUserPrivateMessage() {
-		// TODO Auto-generated method stub
-		return null;
+	public DecoratedTabPanel getGroupUsersPanel() {
+		
+		return dTPUserGroups;
 	}
 	
 	@Override
-	public Button GetBtnUserSearchPrivateMessage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public LabelText getContactName() {
-		// TODO Auto-generated method stub
-		return lblName;
-	}
-	
-	@Override
-	public LabelText getContactSearchName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public LabelText getContactSearchSurname() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public LabelText getContactSurname() {
-		// TODO Auto-generated method stub
-		return lblSurname;
-	}
-	
-	@Override
-	public HorizontalPanel getContatcsMenu() {
-		// TODO Auto-generated method stub
-		return ContactsMenu;
+	public CellList getUserListBox() {
+		
+		return listContacts;
 	}
 	
 	@Override
 	public CellList<Group> getGroupListBox() {
 		// TODO Auto-generated method stub
 		return ListGroups;
-	}
-	
-	@Override
-	public Label getGroupName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Label getGroupSearchName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Label getGroupSize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Label GetGroupSizeCount() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Label GetGroupSizeCountSearch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Label GetGroupSizeSearch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public DecoratedTabPanel getGroupUsersPanel() {
-		
-		return dTPUserGroups;
 	}
 	
 	@Override
@@ -238,15 +166,87 @@ public class ContactsView extends Composite implements Display {
 	}
 	
 	@Override
-	public TextBox getSearchBox() {
+	public LabelText getContactName() {
 		// TODO Auto-generated method stub
-		return txtSearch;
+		return lblName;
 	}
 	
 	@Override
-	public CellList getUserListBox() {
-		
-		return listContacts;
+	public LabelText getContactSurname() {
+		// TODO Auto-generated method stub
+		return lblSurname;
+	}
+	
+	@Override
+	public LabelText getContactSearchName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public LabelText getContactSearchSurname() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Label getGroupName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Label getGroupSearchName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Label getGroupSize() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Label GetGroupSizeCount() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Label GetGroupSizeSearch() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Label GetGroupSizeCountSearch() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Button GetBtnUserPrivateMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Button GetBtnUserSearchPrivateMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public HorizontalPanel getContatcsMenu() {
+		// TODO Auto-generated method stub
+		return ContactsMenu;
+	}
+	
+	@Override
+	public TextBox getSearchBox() {
+		// TODO Auto-generated method stub
+		return txtSearch;
 	}
 	
 }

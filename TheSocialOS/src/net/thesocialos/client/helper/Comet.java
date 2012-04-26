@@ -28,33 +28,17 @@ public class Comet {
 		
 	}
 	
-	/**
-	 * Handle messages pushed from the server.
-	 */
-	public void handleMessage(Message msg) {
-		switch (msg.getType()) {
-		
-		case NEW_CHATMSG_AVAILABLE:
-			GWT.log("Pushed msg received: NEW_CONTENT_AVAILABLE");
-			
-			// eventBus.fireEvent(new MessageChatAvailableEvent(((MessageChatAvailableMessage) msg).getMessage()));
-			break;
-		
-		case TEXT_MESSAGE:
-			String ttext = ((ChannelTextMessage) msg).get();
-			GWT.log("Pushed msg received: TEXT_MESSAGE: " + ttext);
-			break;
-		
-		default:
-			Window.alert("Unknown message type: " + msg.getType());
-		}
-	}
-	
 	public void listenToChannel(User user) {
 		// channel = ChannelFactory.createChannel(user.getChannelID());
 		// pushServiceStreamFactory= (SerializationStreamFactory) PushService.App.getInstance();
 		// channel = ChannelFactory.createChannel(user.getChannelID());
 		channel.open(new SocketListener() {
+			
+			@Override
+			public void onOpen() {
+				System.out.println("Conectado");
+				
+			}
 			
 			@Override
 			public void onMessage(String encodedData) {
@@ -78,11 +62,33 @@ public class Comet {
 			}
 			
 			@Override
-			public void onOpen() {
-				System.out.println("Conectado");
+			public void onClose() {
+				// TODO Auto-generated method stub
 				
 			}
 		});
+	}
+	
+	/**
+	 * Handle messages pushed from the server.
+	 */
+	public void handleMessage(Message msg) {
+		switch (msg.getType()) {
+		
+		case NEW_CHATMSG_AVAILABLE:
+			GWT.log("Pushed msg received: NEW_CONTENT_AVAILABLE");
+			
+			// eventBus.fireEvent(new MessageChatAvailableEvent(((MessageChatAvailableMessage) msg).getMessage()));
+			break;
+		
+		case TEXT_MESSAGE:
+			String ttext = ((ChannelTextMessage) msg).get();
+			GWT.log("Pushed msg received: TEXT_MESSAGE: " + ttext);
+			break;
+		
+		default:
+			Window.alert("Unknown message type: " + msg.getType());
+		}
 	}
 	
 }
