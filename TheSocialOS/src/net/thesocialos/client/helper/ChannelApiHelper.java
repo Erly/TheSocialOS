@@ -1,7 +1,5 @@
 package net.thesocialos.client.helper;
 
-import net.thesocialos.client.channel.Channel;
-import net.thesocialos.client.channel.SocketListener;
 import net.thesocialos.client.event.MessageChatAvailableEvent;
 import net.thesocialos.shared.messages.ChannelTextMessage;
 import net.thesocialos.shared.messages.Message;
@@ -9,6 +7,8 @@ import net.thesocialos.shared.messages.Message.Type;
 import net.thesocialos.shared.messages.MessageChat;
 import net.thesocialos.shared.model.User;
 
+import com.google.gwt.appengine.channel.client.Channel;
+import com.google.gwt.appengine.channel.client.SocketListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -16,12 +16,12 @@ import com.google.gwt.user.client.rpc.SerializationStreamFactory;
 import com.google.gwt.user.client.rpc.SerializationStreamReader;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
-public class Comet {
+public class ChannelApiHelper {
 	private Channel channel;
 	SerializationStreamFactory pushServiceStreamFactory;
 	private SimpleEventBus eventBus;
 	
-	public Comet(SimpleEventBus eventBus) {
+	public ChannelApiHelper(SimpleEventBus eventBus) {
 		this.eventBus = eventBus;
 		
 	}
