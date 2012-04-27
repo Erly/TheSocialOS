@@ -43,6 +43,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 			this.service = service;
 		}
 	}
+	
 	public final static String PICTURES = TheSocialOS.getConstants().pictures();
 	public final static String VIDEOS = TheSocialOS.getConstants().videos();
 	public final static String MUSIC = TheSocialOS.getConstants().music();
@@ -93,12 +94,12 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	}
 	
 	public FolderWindow(WindowPanelLayout display, int idProgram) {
-		this.programID = idProgram;
+		programID = idProgram;
 		this.display = display;
-		this.title = "Prueba";
-		this.typeUnit = TypeUnit.APPLICATION;
-		this.x = 1;
-		this.y = 30;
+		title = "Prueba";
+		typeUnit = TypeUnit.APPLICATION;
+		x = 1;
+		y = 30;
 		display.addWindowEvents(new WindowEventHandler() {
 			
 			@Override
@@ -116,17 +117,15 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 			
 			@Override
 			public void onMaximize(WindowMaximizeEvent windowMaximizeEvent) {
-				if (isMaximizable()) {
+				if (isMaximizable())
 					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMaximize(FolderWindow.this));
-				}
 				
 			}
 			
 			@Override
 			public void onMinimize(WindowMinimizeEvent windowMinimizeEvent) {
-				if (isMinimizable()) {
+				if (isMinimizable())
 					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(FolderWindow.this));
-				}
 				
 			}
 			
@@ -205,25 +204,16 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	
 	private TypeAndService getTypeAndService(Media media) {
 		TypeAndService typeAndService = null;
-		if (media instanceof PicasaAPI.Album) {
-			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.PICASA);
-		} else if (media instanceof PicasaAPI.Picture) {
-			typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.PICASA);
-		} else if (media instanceof FacebookAPI.Album) {
-			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.FACEBOOK);
-		} else if (media instanceof FacebookAPI.Picture) {
-			typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.FACEBOOK);
-		} else if (media instanceof FlickrAPI.Album) {
-			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.FLICKR);
-		} else if (media instanceof FlickrAPI.Picture) {
-			typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.FLICKR);
-		} else if (media instanceof YoutubeAPI.Album) {
-			typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.YOUTUBE);
-		} else if (media instanceof YoutubeAPI.Video) {
-			typeAndService = new TypeAndService(TYPE.VIDEO, SERVICE.YOUTUBE);
-		} else if (media instanceof YoutubeAPI.Folder) {
-			typeAndService = new TypeAndService(TYPE.FOLDER, SERVICE.YOUTUBE);
-		}
+		if (media instanceof PicasaAPI.Album) typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.PICASA);
+		else if (media instanceof PicasaAPI.Picture) typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.PICASA);
+		else if (media instanceof FacebookAPI.Album) typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.FACEBOOK);
+		else if (media instanceof FacebookAPI.Picture) typeAndService = new TypeAndService(TYPE.PICTURE,
+				SERVICE.FACEBOOK);
+		else if (media instanceof FlickrAPI.Album) typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.FLICKR);
+		else if (media instanceof FlickrAPI.Picture) typeAndService = new TypeAndService(TYPE.PICTURE, SERVICE.FLICKR);
+		else if (media instanceof YoutubeAPI.Album) typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.YOUTUBE);
+		else if (media instanceof YoutubeAPI.Video) typeAndService = new TypeAndService(TYPE.VIDEO, SERVICE.YOUTUBE);
+		else if (media instanceof YoutubeAPI.Folder) typeAndService = new TypeAndService(TYPE.FOLDER, SERVICE.YOUTUBE);
 		return typeAndService;
 	}
 	
@@ -258,8 +248,8 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		display.setWindowTitle(title);
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		vPanel.setHeight("100%");
-		vPanel.setWidth("100%");
+		vPanel.setSize("100%", "100%");
+		
 		display.getWindow().add(vPanel);
 		if (!hasAlbums && null != contentType) {
 			infoPanel.setText(TheSocialOS.getMessages().folder_NoContent(contentType));
@@ -269,8 +259,8 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		ScrollPanel panel = new ScrollPanel();
 		panel.add(table);
 		vPanel.add(panel);
-		setSize(800, 480);
-		// panel.setSize("800px", "480px");
+		// setSize(800, 480);
+		panel.setSize("100%", "100%");
 	}
 	
 	@Override

@@ -24,8 +24,8 @@ public class DesktopManager {
 	DesktopUnit lastDesktopUnit = null;
 	
 	public DesktopManager(EventBus eventBus, AbsolutePanel Screen, AbsolutePanel Desktop) {
-		this.absolutePanelScreen = Screen;
-		this.absolutePanelDesktop = Desktop;
+		absolutePanelScreen = Screen;
+		absolutePanelDesktop = Desktop;
 		this.eventBus = eventBus;
 		linkedDesktopUnit = new LinkedHashMap<Integer, DesktopUnit>();
 		handlers();
@@ -38,10 +38,8 @@ public class DesktopManager {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				if (lastDesktopUnit != null && lastDesktopUnit.typeUnit != TypeUnit.APPLICATION) {
-					
+				if (lastDesktopUnit != null && lastDesktopUnit.typeUnit != TypeUnit.APPLICATION)
 					removeUnit(lastDesktopUnit);
-				}
 				
 			}
 		};
@@ -55,9 +53,8 @@ public class DesktopManager {
 				public void run() {
 					Iterator<DesktopUnit> desktopIterator = linkedDesktopUnit.values().iterator();
 					
-					while (desktopIterator.hasNext()) {
+					while (desktopIterator.hasNext())
 						checkWindowPosition(desktopIterator.next());
-					}
 					
 				}
 			};
@@ -80,14 +77,12 @@ public class DesktopManager {
 	 * @return True si se a podido abrir // False si ya estaba abierto
 	 */
 	public boolean addUnit(DesktopUnit desktopUnit) {
-		if (linkedDesktopUnit.containsKey(desktopUnit.programID)) { return false; }
-		if (lastDesktopUnit != null && lastDesktopUnit.typeUnit.equals(TypeUnit.INFO)) {
-			removeUnit(lastDesktopUnit);
-		}
+		if (linkedDesktopUnit.containsKey(desktopUnit.programID)) return false;
+		if (lastDesktopUnit != null && lastDesktopUnit.typeUnit.equals(TypeUnit.INFO)) removeUnit(lastDesktopUnit);
 		
 		linkedDesktopUnit.put(desktopUnit.programID, desktopUnit);
 		linkedDesktopUnit.get(desktopUnit.programID).open(absolutePanelScreen);
-		this.lastDesktopUnit = desktopUnit;
+		lastDesktopUnit = desktopUnit;
 		return true;
 	}
 	
@@ -102,20 +97,14 @@ public class DesktopManager {
 	 *            reference value. Y relative position
 	 */
 	private void checkWindowPosition(DesktopUnit desktopUnit) {
-		if (desktopUnit.isMaximized()) {
+		if (desktopUnit.isMaximized())
 			desktopUnit.setSize(absolutePanelDesktop.getOffsetWidth() - 7, absolutePanelDesktop.getOffsetHeight() - 7);
-		}
-		if (desktopUnit.getAbsoluteLeft() < 0) {
-			desktopUnit.setPosition(0, desktopUnit.getAbsoluteTop());
-			
-		} else if (desktopUnit.getAbsoluteLeft() + desktopUnit.getWidth() > Window.getClientWidth()) {
+		if (desktopUnit.getAbsoluteLeft() < 0) desktopUnit.setPosition(0, desktopUnit.getAbsoluteTop());
+		else if (desktopUnit.getAbsoluteLeft() + desktopUnit.getWidth() > Window.getClientWidth())
 			desktopUnit.setPosition(Window.getClientWidth() - desktopUnit.getWidth(), desktopUnit.getAbsoluteTop());
-		}
-		if (desktopUnit.getAbsoluteTop() + desktopUnit.getHeight() > Window.getClientHeight()) {
-			desktopUnit.setPosition(desktopUnit.getAbsoluteLeft(), Window.getClientHeight() - desktopUnit.getHeight());
-		} else if (desktopUnit.getAbsoluteTop() < 30) {
-			desktopUnit.setPosition(desktopUnit.getAbsoluteLeft(), 30);
-		}
+		if (desktopUnit.getAbsoluteTop() + desktopUnit.getHeight() > Window.getClientHeight()) desktopUnit.setPosition(
+				desktopUnit.getAbsoluteLeft(), Window.getClientHeight() - desktopUnit.getHeight());
+		else if (desktopUnit.getAbsoluteTop() < 30) desktopUnit.setPosition(desktopUnit.getAbsoluteLeft(), 30);
 	}
 	
 	private void handlers() {
@@ -165,14 +154,12 @@ public class DesktopManager {
 	}
 	
 	private void MaximizeWindow(DesktopUnit desktopUnit) {
-		
-		if (desktopUnit.isMaximized()) {
-			desktopUnit.setMaximized(false, 0, 0, 0, 0);
-		} else {
+		setWindowsZPositions(desktopUnit);
+		if (desktopUnit.isMaximized()) desktopUnit.setMaximized(false, 0, 0, 0, 0);
+		else
 			desktopUnit.setMaximized(true, absolutePanelDesktop.getOffsetWidth() - 7,
 					absolutePanelDesktop.getOffsetHeight() - 7, absolutePanelDesktop.getAbsoluteTop(),
 					absolutePanelDesktop.getAbsoluteLeft());
-		}
 		
 	}
 	
@@ -194,9 +181,8 @@ public class DesktopManager {
 	
 	private void setWindowsZPositions(DesktopUnit desktopUnit) {
 		Iterator<DesktopUnit> iterator = linkedDesktopUnit.values().iterator();
-		while (iterator.hasNext()) {
+		while (iterator.hasNext())
 			iterator.next().toBack();
-		}
 		desktopUnit.toFront();
 	}
 	
