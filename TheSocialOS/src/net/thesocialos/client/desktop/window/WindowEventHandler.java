@@ -14,4 +14,5 @@ public interface WindowEventHandler extends EventHandler {
 	
 	void onTop(WindowOnTopEvent event);
 	
+	void onResize(WindowResizeEvent event);
 }

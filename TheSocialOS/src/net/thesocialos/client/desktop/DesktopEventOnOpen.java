@@ -14,7 +14,7 @@ public class DesktopEventOnOpen extends DesktopEvent {
 	}
 	
 	@Override
-	public com.google.gwt.event.shared.GwtEvent.Type<DesktopEventHandler> getAssociatedType() {
+	public Type<DesktopEventHandler> getAssociatedType() {
 		// TODO Auto-generated method stub
 		return TYPE;
 	}

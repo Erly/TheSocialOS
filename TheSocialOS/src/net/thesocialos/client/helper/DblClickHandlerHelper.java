@@ -7,33 +7,32 @@ import net.thesocialos.client.api.Media;
 import net.thesocialos.client.api.MediaPicture;
 import net.thesocialos.client.api.PicasaAPI;
 import net.thesocialos.client.api.YoutubeAPI;
-import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.window.FolderWindow;
-import net.thesocialos.client.desktop.window.Footer;
-import net.thesocialos.client.desktop.window.MyCaption;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 public class DblClickHandlerHelper {
+	final FolderWindow folder;
 	final Media media;
 	
 	private DoubleClickHandler picasaAlbum = new DoubleClickHandler() {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Piccasa", media.getName(), new WindowPanelLayout(false, false,
-					new MyCaption(), new Footer()), AppConstants.IMAGEFOLDERS);
-			new PicasaAPI().loadPicturesInFolder((PicasaAPI.Album) media, folder);
-			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
-			
+			openPicasaAlbum();
 		}
 	};
+	
+	private void openPicasaAlbum() {
+		prepareFolder();
+		new PicasaAPI().loadPicturesInFolder((PicasaAPI.Album) media, folder);
+		// TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+	}
 	
 	private DoubleClickHandler picasaPicture = new DoubleClickHandler() {
 		
@@ -47,12 +46,15 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Facebook", media.getName(), new WindowPanelLayout(false, false,
-					new MyCaption(), new Footer()), AppConstants.IMAGEFOLDERS);
-			new FacebookAPI().loadPicturesInFolder((FacebookAPI.Album) media, folder);
-			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+			openFacebookAlbum();
 		}
 	};
+	
+	private void openFacebookAlbum() {
+		prepareFolder();
+		new FacebookAPI().loadPicturesInFolder((FacebookAPI.Album) media, folder);
+		// TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+	}
 	
 	private DoubleClickHandler facebookPicture = new DoubleClickHandler() {
 		
@@ -66,12 +68,15 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Flickr", media.getName(), new WindowPanelLayout(false, false,
-					new MyCaption(), new Footer()), AppConstants.IMAGEFOLDERS);
-			new FlickrAPI().loadPicturesInFolder((FlickrAPI.Album) media, folder);
-			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+			openFlickrAlbum();
 		}
 	};
+	
+	private void openFlickrAlbum() {
+		prepareFolder();
+		new FlickrAPI().loadPicturesInFolder((FlickrAPI.Album) media, folder);
+		// TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+	}
 	
 	private DoubleClickHandler flickrPicture = new DoubleClickHandler() {
 		
@@ -85,12 +90,15 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Youtube", media.getName(), new WindowPanelLayout(false, false,
-					new MyCaption(), new Footer()), AppConstants.VIDEOFOLDERS);
-			new YoutubeAPI().loadPlaylistVideosInFolder((YoutubeAPI.Album) media, folder);
-			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+			openYoutubeAlbum();
 		}
 	};
+	
+	private void openYoutubeAlbum() {
+		prepareFolder();
+		new YoutubeAPI().loadPlaylistVideosInFolder((YoutubeAPI.Album) media, folder);
+		// TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+	}
 	
 	private DoubleClickHandler youtubeVideo = new DoubleClickHandler() {
 		
@@ -104,45 +112,41 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
-			FolderWindow folder = new FolderWindow("Youtube", media.getName(), new WindowPanelLayout(false, false,
-					new MyCaption(), new Footer()), AppConstants.VIDEOFOLDERS);
-			switch (((YoutubeAPI.Folder) media).getType()) {
-			case UPLOADS:
-				new YoutubeAPI().loadUploadsInFolder(folder);
-				break;
-			case PLAYLIST:
-				new YoutubeAPI().loadPlaylistsInFolder(folder);
-				break;
-			case FAVORITES:
-				new YoutubeAPI().loadFavoritesInFolder(folder);
-				break;
-			}
-			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+			openYoutubeFolder();
 		}
 	};
 	
-	public DblClickHandlerHelper(Media media) {
+	private void openYoutubeFolder() {
+		prepareFolder();
+		switch (((YoutubeAPI.Folder) media).getType()) {
+		case UPLOADS:
+			new YoutubeAPI().loadUploadsInFolder(folder);
+			break;
+		case PLAYLIST:
+			new YoutubeAPI().loadPlaylistsInFolder(folder);
+			break;
+		case FAVORITES:
+			new YoutubeAPI().loadFavoritesInFolder(folder);
+			break;
+		}
+		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+	}
+	
+	public DblClickHandlerHelper(FolderWindow folder, Media media) {
+		this.folder = folder;
 		this.media = media;
 	}
 	
 	public DoubleClickHandler getDoubleClickHandler() {
-		if (media instanceof PicasaAPI.Album) {
-			return picasaAlbum;
-		} else if (media instanceof PicasaAPI.Picture) {
-			return picasaPicture;
-		} else if (media instanceof FacebookAPI.Album) {
-			return facebookAlbum;
-		} else if (media instanceof FacebookAPI.Picture) {
-			return facebookPicture;
-		} else if (media instanceof FlickrAPI.Album) {
-			return flickrAlbum;
-		} else if (media instanceof FlickrAPI.Picture) {
-			return flickrPicture;
-		} else if (media instanceof YoutubeAPI.Album) {
-			return youtubeAlbum;
-		} else if (media instanceof YoutubeAPI.Video) {
-			return youtubeVideo;
-		} else if (media instanceof YoutubeAPI.Folder) { return youtubeFolder; }
+		if (media instanceof PicasaAPI.Album) return picasaAlbum;
+		else if (media instanceof PicasaAPI.Picture) return picasaPicture;
+		else if (media instanceof FacebookAPI.Album) return facebookAlbum;
+		else if (media instanceof FacebookAPI.Picture) return facebookPicture;
+		else if (media instanceof FlickrAPI.Album) return flickrAlbum;
+		else if (media instanceof FlickrAPI.Picture) return flickrPicture;
+		else if (media instanceof YoutubeAPI.Album) return youtubeAlbum;
+		else if (media instanceof YoutubeAPI.Video) return youtubeVideo;
+		else if (media instanceof YoutubeAPI.Folder) return youtubeFolder;
 		return null;
 	}
 	
@@ -162,5 +166,20 @@ public class DblClickHandlerHelper {
 		popup.setAnimationEnabled(true);
 		popup.setGlassEnabled(true);
 		popup.center();
+	}
+	
+	public void prepareFolder() {
+		folder.setTitle(media.getName());
+		folder.clearMedia();
+		folder.next();
+		folder.setParent(media);
+	}
+	
+	public void simulateDblClick() {
+		if (media instanceof PicasaAPI.Album) openPicasaAlbum();
+		else if (media instanceof FacebookAPI.Album) openFacebookAlbum();
+		else if (media instanceof FlickrAPI.Album) openFlickrAlbum();
+		else if (media instanceof YoutubeAPI.Album) openYoutubeAlbum();
+		else if (media instanceof YoutubeAPI.Folder) openYoutubeFolder();
 	}
 }

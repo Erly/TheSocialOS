@@ -67,7 +67,7 @@ public abstract class DesktopUnit {
 	 * @return int
 	 */
 	public int getWidth() {
-		return display.getwidth();
+		return display.getWidth();
 	}
 	
 	public abstract int getZposition();
@@ -130,7 +130,7 @@ public abstract class DesktopUnit {
 			beforeX = display.getXposition();
 			beforeY = display.getYPosition();
 			beforeHeight = display.getHeight();
-			beforeWidth = display.getwidth();
+			beforeWidth = display.getWidth();
 			display.setPosition(left, top);
 			display.setSize(width, height);
 		}
