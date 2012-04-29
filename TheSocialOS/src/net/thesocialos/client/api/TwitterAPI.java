@@ -17,6 +17,9 @@ import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.Twitter;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -174,6 +177,7 @@ public class TwitterAPI {
 			Columns c = col.getColumns();
 			String url = "";
 			int j = i++;
+			if (i == 100) i = 0; // Reset the count when reaching the 100th request // NOT NECESSARY (probably)
 			if (c.getType() == Columns.TYPE.TIMELINE) {
 				if (c.getValue().equals(Columns.HOME)) {
 					col.setTitle("Timeline");
@@ -181,9 +185,10 @@ public class TwitterAPI {
 				} else if (c.getValue().equals(Columns.USER)) {
 					col.setTitle("Me");
 					url = getUserTimelineSignedUrl(twitterAccount, j, twitterAccount.getUsername(), c.getLastTweetId());
-				} else
+				} else {
 					col.setTitle(c.getValue());
-				// new TwitterAPI().loadUserTimelineInPanel(col);
+					url = getUserTimelineSignedUrl(twitterAccount, j, c.getValue(), c.getLastTweetId());
+				}
 			} else if (c.getType() == Columns.TYPE.SEARCH) {
 				col.setTitle(c.getValue());
 				url = getSearchTimelineSignedUrl(twitterAccount, j, c.getValue(), c.getLastTweetId());
@@ -206,7 +211,7 @@ public class TwitterAPI {
 		loadTweetsInPanel(url, panel, j);
 	}
 	
-	private void loadTweetsInPanel(String url, final DeckColumn panel, int j) {
+	private void loadTweetsInPanel(String url, final DeckColumn panel, final int j) {
 		OAuth.makeJSONRequest(j, url, new JSONHandler() {
 			
 			@Override
@@ -249,6 +254,12 @@ public class TwitterAPI {
 				panel.clearTweets();
 				panel.setTweets(tweets);
 				panel.loadTweets();
+				NodeList<Element> scripts = Document.get().getElementsByTagName("head").getItem(0)
+						.getElementsByTagName("script");
+				for (int k = 0; k < scripts.getLength(); k++) {
+					Element e = scripts.getItem(k);
+					if (e.getString().contains("jsonCallback[" + j + "]")) e.removeFromParent();
+				}
 			}
 		});
 	}
