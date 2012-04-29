@@ -9,15 +9,24 @@ import java.sql.Date;
  */
 public class ChApiChatRecvMessage extends ChApiEvent {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4016806987952443222L;
 	private Date date;
 	private String contactComeFrom;
 	private String message;
 	
 	public ChApiChatRecvMessage(Date date, String contactComeFrom, String message) {
 		super();
+		
 		this.date = date;
 		this.contactComeFrom = contactComeFrom;
 		this.message = message;
+	}
+	
+	public ChApiChatRecvMessage() {
+		super();
 	}
 	
 	@Override

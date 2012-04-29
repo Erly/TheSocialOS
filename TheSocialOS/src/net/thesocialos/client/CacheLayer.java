@@ -20,6 +20,21 @@ import com.googlecode.objectify.Key;
 
 public class CacheLayer {
 	
+	static User user = null;
+	private static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
+	
+	// Usuarios de la aplicaci�n
+	private static Map<String, User> users = new LinkedHashMap<String, User>();
+	private static LinkedHashMap<String, Session> sessions;
+	
+	private static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
+	
+	private static Map<String, User> petitionsContacts = new LinkedHashMap<String, User>();
+	
+	private final static UserServiceAsync userService = GWT.create(UserService.class);
+	
+	private final static ContacsServiceAsync contactService = GWT.create(ContacsService.class);
+	
 	/**
 	 * Se encarga de hacer las llamadas asincronas de los contactos
 	 * 
@@ -287,16 +302,14 @@ public class CacheLayer {
 	
 	public static class GroupCalls {
 		
-		static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
 	}
 	
 	public static class SessionCalls {
-		static LinkedHashMap<String, Session> sessions;
+		
 	}
 	
 	public static class UserCalls {
 		
-		private static User user = null;
 		private static Map<Key<Account>, Account> accounts = null;
 		private static Map<Key<Columns>, Columns> columns = null;
 		
@@ -357,6 +370,29 @@ public class CacheLayer {
 			}.retry(3);
 		}
 		
+		public static void getNewChannelId(final AsyncCallback<Void> callback) {
+			new RPCXSRF<String>(userService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<String> cb) {
+					System.out.println("callback");
+					userService.getChannel(cb);
+					
+				}
+				
+				@Override
+				public void onSuccess(String channelIDToken) {
+					getUser().setTokenChannel(channelIDToken);
+					callback.onSuccess(null);
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+				}
+			}.retry(3);
+		}
+		
 		public static void setAccounts(Map<Key<Account>, Account> accounts) {
 			CacheLayer.UserCalls.accounts = accounts;
 		}
@@ -366,23 +402,8 @@ public class CacheLayer {
 		}
 		
 		public static void setUser(User user) {
-			CacheLayer.UserCalls.user = user;
+			CacheLayer.user = user;
 		}
 	}
 	
-	static User user;
-	static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
-	
-	// Usuarios de la aplicaci�n
-	static Map<String, User> users = new LinkedHashMap<String, User>();
-	static LinkedHashMap<String, Session> sessions;
-	
-	static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
-	
-	// Usuarios en espera de aceptar la solicitud
-	private static Map<String, User> petitionsContacts = new LinkedHashMap<String, User>();
-	
-	private final static UserServiceAsync userService = GWT.create(UserService.class);
-	
-	private final static ContacsServiceAsync contactService = GWT.create(ContacsService.class);
 }

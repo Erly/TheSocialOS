@@ -1,4 +1,4 @@
-package net.thesocialos.client.chat.view;
+package net.thesocialos.client.chat;
 
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
@@ -27,7 +27,8 @@ public class ChatMenuPresenter extends DesktopUnit {
 	Display display;
 	
 	public ChatMenuPresenter(Display display) {
-		programID = AppConstants.CHAT;
+		super(AppConstants.CHAT, 0, null, TypeUnit.STATIC);
+		
 		typeUnit = TypeUnit.STATIC;
 		this.display = display;
 	}

@@ -351,16 +351,12 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	 */
 	private void checkSpace() {
 		
-		if (this.getAbsoluteLeft() < 0) {
-			this.setPopupPosition(0, this.getAbsoluteTop());
-		} else if (this.getAbsoluteLeft() + this.getOffsetWidth() > Window.getClientWidth()) {
-			this.setPopupPosition(Window.getClientWidth() - this.getOffsetWidth(), this.getAbsoluteTop());
-		}
-		if (this.getAbsoluteTop() + this.getOffsetHeight() > Window.getClientHeight()) {
-			this.setPopupPosition(this.getAbsoluteLeft(), Window.getClientHeight() - this.getOffsetHeight());
-		} else if (this.getAbsoluteTop() < 30) {
-			this.setPopupPosition(this.getAbsoluteLeft(), 30);
-		}
+		if (getAbsoluteLeft() < 0) setPopupPosition(0, getAbsoluteTop());
+		else if (getAbsoluteLeft() + getOffsetWidth() > Window.getClientWidth())
+			setPopupPosition(Window.getClientWidth() - getOffsetWidth(), getAbsoluteTop());
+		if (getAbsoluteTop() + getOffsetHeight() > Window.getClientHeight()) setPopupPosition(getAbsoluteLeft(),
+				Window.getClientHeight() - getOffsetHeight());
+		else if (getAbsoluteTop() < 30) setPopupPosition(getAbsoluteLeft(), 30);
 	}
 	
 	/**
@@ -382,7 +378,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			// if the mouse is off the screen to the left, right, or top, don't
 			// move the dialog box. This would let users lose dialog boxes, which
 			// would be bad for modal popups.
-			if (absX < clientLeft || absX >= windowWidth || absY < clientTop) { return; }
+			if (absX < clientLeft || absX >= windowWidth || absY < clientTop) return;
 			setPopupPosition(absX - dragStartX, absY - dragStartY);
 			checkSpace();
 		}
@@ -415,8 +411,8 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			// return;
 			// }
 			
-			if ((x - getAbsoluteLeft()) < 0) { return; }
-			if ((y - getAbsoluteTop() - caption.getHeight() - footer.getHeight()) < 0) { return; }
+			if ((x - getAbsoluteLeft()) < 0) return;
+			if ((y - getAbsoluteTop() - caption.getHeight() - footer.getHeight()) < 0) return;
 			
 			setWidth((x - getAbsoluteLeft()) + "px");
 			getWidget().setWidth((x - getAbsoluteLeft()) + "px");
@@ -552,9 +548,8 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	private boolean isCaptionEvent(NativeEvent event) {
 		EventTarget target = event.getEventTarget();
-		if (com.google.gwt.dom.client.Element.is(target)) {
-		
-		return getCellElement(0, 1).getParentElement().isOrHasChild(com.google.gwt.dom.client.Element.as(target)); }
+		if (com.google.gwt.dom.client.Element.is(target))
+			return getCellElement(0, 1).getParentElement().isOrHasChild(com.google.gwt.dom.client.Element.as(target));
 		return false;
 	}
 	
@@ -575,20 +570,14 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			public void onPreviewNativeEvent(NativePreviewEvent event) {
 				// TODO Auto-generated method stub
 				if (Event.ONMOUSEMOVE == event.getTypeInt()) {
-					if (dragging == true) {
-						continueDragging(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
-					} else {
+					if (dragging) continueDragging(event.getNativeEvent().getClientX(), event.getNativeEvent()
+							.getClientY());
+					else
 						continueResizing(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
-					}
 					
-				} else if (Event.ONMOUSEUP == event.getTypeInt()) {
-					if (dragging == true) {
-						endDragging();
-					} else {
-						endResizing();
-					}
-					
-				}
+				} else if (Event.ONMOUSEUP == event.getTypeInt()) if (dragging) endDragging();
+				else
+					endResizing();
 				event.cancel();
 			}
 		});
@@ -606,7 +595,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		case Event.ONMOUSEOVER:
 		case Event.ONMOUSEOUT:
 			
-			if (!dragging && !isCaptionEvent(event)) { return; }
+			if (!dragging && !isCaptionEvent(event)) return;
 		}
 		
 		super.onBrowserEvent(event);
@@ -636,9 +625,8 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		
 		NativeEvent nativeEvent = event.getNativeEvent();
 		
-		if (!event.isCanceled() && (event.getTypeInt() == Event.ONMOUSEDOWN) && isCaptionEvent(nativeEvent)) {
+		if (!event.isCanceled() && (event.getTypeInt() == Event.ONMOUSEDOWN) && isCaptionEvent(nativeEvent))
 			nativeEvent.preventDefault();
-		}
 		
 		super.onPreviewNativeEvent(event);
 	}
@@ -678,18 +666,16 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	@Override
 	public void setMinimized(Boolean minimized) {
-		if (minimized == true) {
-			hide();
-		} else {
+		if (minimized) hide();
+		else
 			show();
-		}
 		
 	}
 	
 	@Override
 	public void setPosition(int x, int y) {
 		
-		this.setPopupPosition(x, y);
+		setPopupPosition(x, y);
 		
 	}
 	
@@ -724,14 +710,12 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	@Override
 	public void show() {
-		if (resizeHandlerRegistration == null) {
-			resizeHandlerRegistration = Window.addResizeHandler(new ResizeHandler() {
-				@Override
-				public void onResize(ResizeEvent event) {
-					windowWidth = event.getWidth();
-				}
-			});
-		}
+		if (resizeHandlerRegistration == null) resizeHandlerRegistration = Window.addResizeHandler(new ResizeHandler() {
+			@Override
+			public void onResize(ResizeEvent event) {
+				windowWidth = event.getWidth();
+			}
+		});
 		
 		super.show();
 	}

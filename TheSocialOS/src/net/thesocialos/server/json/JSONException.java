@@ -26,7 +26,7 @@ public class JSONException extends Exception {
 	}
 	
 	@Override
-	public Throwable getCause() {
-		return this.cause;
+	public synchronized Throwable getCause() {
+		return cause;
 	}
 }

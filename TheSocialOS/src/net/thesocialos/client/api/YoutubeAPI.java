@@ -1,3 +1,4 @@
+// $codepro.audit.disable unnecessaryImport
 package net.thesocialos.client.api;
 
 import java.util.HashSet;

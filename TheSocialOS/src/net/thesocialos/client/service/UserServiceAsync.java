@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import net.thesocialos.shared.LoginResult;
+import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.User;
@@ -13,7 +14,7 @@ import com.googlecode.objectify.Key;
 
 public interface UserServiceAsync extends ServiceAsync {
 	
-	void createServerSession(AsyncCallback<Void> callback);
+	void getChannel(AsyncCallback<String> callback);
 	
 	void getCloudAccounts(AsyncCallback<Map<Key<Account>, Account>> callback);
 	
@@ -28,4 +29,6 @@ public interface UserServiceAsync extends ServiceAsync {
 	void register(User user, AsyncCallback<Void> callback);
 	
 	void setDeckColumns(ArrayList<Columns> columns, AsyncCallback<Void> callback);
+	
+	void checkChannel(ChApiContactNew newContact, AsyncCallback<Void> callback);
 }

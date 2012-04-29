@@ -1,35 +1,63 @@
 package net.thesocialos.client.helper;
 
-import net.thesocialos.client.event.MessageChatAvailableEvent;
+import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.channelApi.Channel;
+import net.thesocialos.client.channelApi.ChannelFactory;
+import net.thesocialos.client.channelApi.ChannelFactory.ChannelCreatedCallback;
+import net.thesocialos.client.channelApi.SocketError;
+import net.thesocialos.client.channelApi.SocketListener;
+import net.thesocialos.client.service.ChannelService;
+import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
 import net.thesocialos.shared.messages.ChannelTextMessage;
 import net.thesocialos.shared.messages.Message;
-import net.thesocialos.shared.messages.Message.Type;
-import net.thesocialos.shared.messages.MessageChat;
 import net.thesocialos.shared.model.User;
 
-import com.google.gwt.appengine.channel.client.Channel;
-import com.google.gwt.appengine.channel.client.SocketListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.rpc.SerializationStreamFactory;
-import com.google.gwt.user.client.rpc.SerializationStreamReader;
-import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ChannelApiHelper {
-	private Channel channel;
-	SerializationStreamFactory pushServiceStreamFactory;
-	private SimpleEventBus eventBus;
+	// private Channel channel;
+	static SerializationStreamFactory serializationStreamFactory;
 	
-	public ChannelApiHelper(SimpleEventBus eventBus) {
-		this.eventBus = eventBus;
+	static int retry = 2;
+	
+	public static boolean isChannelOpen = false;
+	
+	public ChannelApiHelper() {
+		
+	}
+	
+	/**
+	 * Extract the Object information of the encodedString
+	 * 
+	 * @param encodedString
+	 *            the string coded
+	 * @return a ChApiEvent Object
+	 */
+	private static ChApiEvent decodedString(String encodedString) {
+		
+		try {
+			SerializationStreamFactory ssf = GWT.create(ChannelService.class);
+			return (ChApiEvent) ssf.createStreamReader(encodedString).readObject();
+		} catch (SerializationException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static void fireEvent(ChApiEvent channelApiEvent) {
+		if (channelApiEvent != null) TheSocialOS.getEventBus().fireEvent(channelApiEvent);
 		
 	}
 	
 	/**
 	 * Handle messages pushed from the server.
 	 */
-	public void handleMessage(Message msg) {
+	public static void handleMessage(Message msg) {
 		switch (msg.getType()) {
 		
 		case NEW_CHATMSG_AVAILABLE:
@@ -48,45 +76,65 @@ public class ChannelApiHelper {
 		}
 	}
 	
-	public void listenToChannel(User user) {
-		// channel = ChannelFactory.createChannel(user.getChannelID());
-		// pushServiceStreamFactory= (SerializationStreamFactory) PushService.App.getInstance();
-		// channel = ChannelFactory.createChannel(user.getChannelID());
-		channel.open(new SocketListener() {
+	private static void updateTokenChannel() {
+		CacheLayer.UserCalls.getNewChannelId(new AsyncCallback<Void>() {
 			
 			@Override
-			public void onClose() {
-				// TODO Auto-generated method stub
-				
+			public void onSuccess(Void result) {
+				listenToChannel(CacheLayer.UserCalls.getUser());
 			}
 			
 			@Override
-			public void onMessage(String encodedData) {
-				SerializationStreamReader reader;
-				try {
-					System.out.println(encodedData);
-					reader = pushServiceStreamFactory.createStreamReader(encodedData);
-					Message message = (Message) reader.readObject();
-					
-					if (message.getType() == Type.NEW_CHATMSG_AVAILABLE) {
-						MessageChat messageChat = (MessageChat) message;
-						System.out.println(messageChat.getTypeChat());
-						eventBus.fireEvent(new MessageChatAvailableEvent(messageChat)); // Fire a event to AppController
-					}
-					System.out.println(message.toString());
-				} catch (SerializationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			
-			@Override
-			public void onOpen() {
-				System.out.println("Conectado");
+			public void onFailure(Throwable caught) {
+				System.out.println(caught);
 				
 			}
 		});
+	}
+	
+	public static void listenToChannel(User user) {
+		if (retry <= 0) return;
+		if (user.getTokenChannel() == null) {
+			updateTokenChannel();
+			return;
+		}
+		// System.out.println(user.getTokenChannel());
+		ChannelFactory.createChannel(user.getTokenChannel(), new ChannelCreatedCallback() {
+			
+			@Override
+			public void onChannelCreated(Channel channel) {
+				channel.open(new SocketListener() {
+					
+					@Override
+					public void onClose() {
+						isChannelOpen = false;
+						// System.out.println("Socket Close");
+					}
+					
+					@Override
+					public void onError(SocketError error) {
+						// System.out.println(error.getDescription());
+						ChannelFactory.deleteChannel();
+						updateTokenChannel();
+						retry--;
+					}
+					
+					@Override
+					public void onMessage(String encodedString) {
+						fireEvent((decodedString(encodedString)));
+					}
+					
+					@Override
+					public void onOpen() {
+						isChannelOpen = true;
+						retry = 2;
+						// System.out.println("Socket Open");
+					}
+				});
+				
+			}
+		});
+		
 	}
 	
 }

@@ -7,6 +7,11 @@ package net.thesocialos.shared.ChannelApiEvents;
  */
 public class ChApiChatUserChngState extends ChApiEvent {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2134913159491146422L;
+	
 	public static enum STATETYPE {
 		ONLINE, OFFLINE, BUSY, AFK, CUSTOM
 	};
@@ -15,7 +20,13 @@ public class ChApiChatUserChngState extends ChApiEvent {
 	private String customState;
 	
 	public ChApiChatUserChngState(STATETYPE state, String customsState) {
+		super();
+		this.state = state;
 		customState = customsState;
+	}
+	
+	public ChApiChatUserChngState() {
+		super();
 	}
 	
 	@Override

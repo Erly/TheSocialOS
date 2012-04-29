@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Properties;
 
 import net.thesocialos.shared.messages.Message;
-import net.thesocialos.shared.model.User;
 
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
@@ -80,50 +79,25 @@ public class ChannelServer {
 	 * @param msg
 	 *            The message to be sent.
 	 */
-	public static void pushMessage(User user, Message msg) {
-		/*
-		 * if(user.getChannelID() == null){ //logger.log(Level.SEVERE,
-		 * "Can't push a message to a null channeID. Maybe the Channel API is disabled in Connectr."); return; }
-		 * pushMessageById(Arrays.asList(user.getEmail()), msg); } private static String getAppKeyForUser(String
-		 * userUniqueId) { return APP_KEY + userUniqueId;
-		 */}
-	
-	private static void pushMessageById(List<String> userUniqueIds, Message msg) {
-		/*
-		 * String encodedMessage = encodeMessage(msg); for (String userUniqueId : userUniqueIds) { String key =
-		 * getAppKeyForUser(userUniqueId); //logger.info("Pushing msg to " + key); try {
-		 * getChannelService().sendMessage( new ChannelMessage(key, encodedMessage)); } catch (Exception e) { // [The
-		 * original google example code notes here: // A bug in the dev_appserver causes an exception to be // thrown
-		 * when no users are connected yet.] // logger.log(Level.SEVERE, "Failed to push the message " + msg //+
-		 * " to client " + key, e); } }
-		 */
-	}
-	
-	private static boolean setChannelAPIEnabled() {
-		String skey = props.getProperty("com.metadot.connectr.enable-channelapi");
-		if (skey != null) {
-			if (skey.equalsIgnoreCase("true")) {
-				// logger.info("channel API is enabled");
-				return true;
-			}
-			if (skey.equalsIgnoreCase("false")) { return false; }
-		}
-		return false;
-	}
-	
-	// private static SerializationPolicy serializationPolicy =
-	// MergedSerializationPolicy.createPushSerializationPolicy();
-	public ChannelServer() {
-		
-	}
-	
-	/**
-	 * This method exists to make GWT RPC happy.
-	 * <p>
-	 * {@link RPC#encodeResponseForSuccess(java.lang.reflect.Method, Object)} insists that we pass it a Method that has
-	 * a return type equal to the object we're encoding. What we really want to use is
-	 * {@link RPC#encodeResponse(Class, Object, boolean, int, com.google.gwt.user.server.rpc.SerializationPolicy)} , but
-	 * it is unfortunately private.
+	/*
+	 * public static void pushMessage(User user, Message msg) { if (user.getChannelID() == null) {
+	 * logger.log(Level.SEVERE,
+	 * "Can't push a message to a null channeID. Maybe the Channel API is disabled in Connectr."); return; }
+	 * pushMessageById(Arrays.asList(user.getEmail()), msg); } private static String getAppKeyForUser(String
+	 * userUniqueId) { return APP_KEY + userUniqueId; } private static void pushMessageById(List<String> userUniqueIds,
+	 * Message msg) { String encodedMessage = encodeMessage(msg); for (String userUniqueId : userUniqueIds) { String key
+	 * = getAppKeyForUser(userUniqueId); //logger.info("Pushing msg to " + key); try { getChannelService().sendMessage(
+	 * new ChannelMessage(key, encodedMessage)); } catch (Exception e) { // [The original google example code notes
+	 * here: // A bug in the dev_appserver causes an exception to be // thrown when no users are connected yet.] //
+	 * logger.log(Level.SEVERE, "Failed to push the message " + msg //+ " to client " + key, e); } } } private static
+	 * boolean setChannelAPIEnabled() { String skey = props.getProperty("com.metadot.connectr.enable-channelapi"); if
+	 * (skey != null) { if (skey.equalsIgnoreCase("true")) // logger.info("channel API is enabled"); return true; if
+	 * (skey.equalsIgnoreCase("false")) return false; } return false; } // private static SerializationPolicy
+	 * serializationPolicy = // MergedSerializationPolicy.createPushSerializationPolicy(); public ChannelServer() { }
+	 * /** This method exists to make GWT RPC happy. <p> {@link RPC#encodeResponseForSuccess(java.lang.reflect.Method,
+	 * Object)} insists that we pass it a Method that has a return type equal to the object we're encoding. What we
+	 * really want to use is {@link RPC#encodeResponse(Class, Object, boolean, int,
+	 * com.google.gwt.user.server.rpc.SerializationPolicy)} , but it is unfortunately private.
 	 */
 	@SuppressWarnings("unused")
 	private Message dummyMethod() {

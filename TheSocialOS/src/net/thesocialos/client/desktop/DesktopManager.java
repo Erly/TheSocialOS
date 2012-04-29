@@ -1,5 +1,7 @@
+// $codepro.audit.disable unnecessaryImport
 package net.thesocialos.client.desktop;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
@@ -20,14 +22,17 @@ public class DesktopManager {
 	AbsolutePanel absolutePanelScreen;
 	AbsolutePanel absolutePanelDesktop;
 	
-	LinkedHashMap<Integer, DesktopUnit> linkedDesktopUnit; // Desde ventanas hasta formularios
+	LinkedHashMap<Integer, HashMap<Integer, DesktopUnit>> linkedDesktopUnit; // Desde ventanas hasta formularios
+	
 	DesktopUnit lastDesktopUnit = null;
+	
+	UnitsManager unitsManager = new UnitsManager();
 	
 	public DesktopManager(EventBus eventBus, AbsolutePanel Screen, AbsolutePanel Desktop) {
 		absolutePanelScreen = Screen;
 		absolutePanelDesktop = Desktop;
 		this.eventBus = eventBus;
-		linkedDesktopUnit = new LinkedHashMap<Integer, DesktopUnit>();
+		linkedDesktopUnit = new LinkedHashMap<Integer, HashMap<Integer, DesktopUnit>>();
 		handlers();
 		
 		/*
@@ -38,8 +43,8 @@ public class DesktopManager {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				if (lastDesktopUnit != null && lastDesktopUnit.typeUnit != TypeUnit.APPLICATION)
-					removeUnit(lastDesktopUnit);
+				if (lastDesktopUnit != null && lastDesktopUnit.typeUnit != TypeUnit.WINDOW)
+					unitsManager.removeUnit(lastDesktopUnit);
 				
 			}
 		};
@@ -51,10 +56,12 @@ public class DesktopManager {
 			Timer resizeTimer = new Timer() {
 				@Override
 				public void run() {
-					Iterator<DesktopUnit> desktopIterator = linkedDesktopUnit.values().iterator();
-					
-					while (desktopIterator.hasNext())
-						checkWindowPosition(desktopIterator.next());
+					Iterator<HashMap<Integer, DesktopUnit>> desktopIterator = linkedDesktopUnit.values().iterator();
+					while (desktopIterator.hasNext()) {
+						Iterator<DesktopUnit> desktopUnitIterator = desktopIterator.next().values().iterator();
+						while (desktopUnitIterator.hasNext())
+							checkWindowPosition(desktopUnitIterator.next());
+					}
 					
 				}
 			};
@@ -70,20 +77,65 @@ public class DesktopManager {
 		
 	}
 	
-	/**
-	 * A�ade una unidad dada en el escritorio
-	 * 
-	 * @param desktopUnit
-	 * @return True si se a podido abrir // False si ya estaba abierto
-	 */
-	public boolean addUnit(DesktopUnit desktopUnit) {
-		if (linkedDesktopUnit.containsKey(desktopUnit.programID)) return false;
-		if (lastDesktopUnit != null && lastDesktopUnit.typeUnit.equals(TypeUnit.INFO)) removeUnit(lastDesktopUnit);
+	class UnitsManager {
 		
-		linkedDesktopUnit.put(desktopUnit.programID, desktopUnit);
-		linkedDesktopUnit.get(desktopUnit.programID).open(absolutePanelScreen);
-		lastDesktopUnit = desktopUnit;
-		return true;
+		/**
+		 * A�ade una unidad dada en el escritorio
+		 * 
+		 * @param desktopUnit
+		 * @return True si se a podido abrir // False si ya estaba abierto
+		 */
+		public boolean addUnit(DesktopUnit desktopUnit) {
+			
+			if (linkedDesktopUnit.containsKey(desktopUnit.getProgramID())) {
+				if (desktopUnit.isSubApplication()) {
+					HashMap<Integer, DesktopUnit> hashDesktopUnits = linkedDesktopUnit.get(desktopUnit.getProgramID());
+					if (hashDesktopUnits.containsKey(desktopUnit.getSubID())) return false;
+					else
+						hashDesktopUnits.put(desktopUnit.getSubID(), desktopUnit);
+				} else
+					return false;
+			} else {
+				HashMap<Integer, DesktopUnit> desktopUnits = new HashMap<Integer, DesktopUnit>();
+				desktopUnits.put(desktopUnit.getSubID(), desktopUnit);
+				linkedDesktopUnit.put(desktopUnit.getID(), desktopUnits);
+			}
+			lastDesktopUnit = desktopUnit;
+			if (lastDesktopUnit != null && lastDesktopUnit.typeUnit.equals(TypeUnit.INFO)) removeUnit(lastDesktopUnit);
+			desktopUnit.open(absolutePanelScreen);
+			return true;
+		}
+		
+		/**
+		 * Delete a windows of the desktop
+		 * 
+		 * @param desktopUnit
+		 * @return True si se a podido cerrar // False si no existia
+		 */
+		public boolean removeUnit(DesktopUnit desktopUnit) {
+			
+			if (linkedDesktopUnit.containsKey(desktopUnit.getProgramID())) {
+				if (desktopUnit.isSubApplication()) {
+					if (linkedDesktopUnit.get(desktopUnit.getProgramID()).containsKey(desktopUnit.getSubID())) {
+						linkedDesktopUnit.get(desktopUnit.getProgramID()).remove(desktopUnit);
+						desktopUnit.close(absolutePanelScreen);
+					}
+				} else {
+					Iterator<DesktopUnit> iDesktopUnit = linkedDesktopUnit.get(desktopUnit.getProgramID()).values()
+							.iterator();
+					while (iDesktopUnit.hasNext()) {
+						DesktopUnit deskUnit = iDesktopUnit.next();
+						deskUnit.close(absolutePanelScreen);
+						linkedDesktopUnit.get(desktopUnit.getProgramID()).remove(deskUnit.getSubID());
+					}
+					linkedDesktopUnit.remove(desktopUnit.getProgramID());
+				}
+				
+				lastDesktopUnit = null;
+				return true;
+			}
+			return false;
+		}
 	}
 	
 	/**
@@ -112,7 +164,7 @@ public class DesktopManager {
 			
 			@Override
 			public void onClose(DesktopEventOnClose event) {
-				removeUnit(event.getDesktopUnit());
+				unitsManager.removeUnit(event.getDesktopUnit());
 				
 			}
 			
@@ -135,7 +187,7 @@ public class DesktopManager {
 			
 			@Override
 			public void onOpen(DesktopEventOnOpen event) {
-				addUnit(event.getDesktopUnit());
+				unitsManager.addUnit(event.getDesktopUnit());
 				
 			}
 			
@@ -163,27 +215,15 @@ public class DesktopManager {
 		
 	}
 	
-	/**
-	 * Delete a windows of the desktop
-	 * 
-	 * @param desktopUnit
-	 * @return True si se a podido cerrar // False si no existia
-	 */
-	public boolean removeUnit(DesktopUnit desktopUnit) {
-		if (linkedDesktopUnit.containsKey(desktopUnit.programID)) {
-			desktopUnit.close(absolutePanelScreen);
-			linkedDesktopUnit.remove(desktopUnit.programID);
-			lastDesktopUnit = null;
-			return true;
-		}
-		return false;
-	}
-	
 	private void setWindowsZPositions(DesktopUnit desktopUnit) {
-		Iterator<DesktopUnit> iterator = linkedDesktopUnit.values().iterator();
-		while (iterator.hasNext())
-			iterator.next().toBack();
+		Iterator<HashMap<Integer, DesktopUnit>> desktopIterator = linkedDesktopUnit.values().iterator();
+		while (desktopIterator.hasNext()) {
+			Iterator<DesktopUnit> desktopUnitIterator = desktopIterator.next().values().iterator();
+			while (desktopUnitIterator.hasNext())
+				desktopUnitIterator.next().toBack();
+		}
 		desktopUnit.toFront();
+		
 	}
 	
 }

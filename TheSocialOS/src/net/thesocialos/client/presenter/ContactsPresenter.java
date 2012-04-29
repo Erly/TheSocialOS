@@ -100,8 +100,7 @@ public class ContactsPresenter extends DesktopUnit {
 	List<User> contactList;
 	
 	public ContactsPresenter(Display display) {
-		programID = AppConstants.CONTACTS;
-		typeUnit = TypeUnit.INFO;
+		super(AppConstants.CONTACTS, 0, null, TypeUnit.INFO);
 		this.display = display;
 		KEY_PROVIDER = new ProvidesKey<User>() {
 			@Override

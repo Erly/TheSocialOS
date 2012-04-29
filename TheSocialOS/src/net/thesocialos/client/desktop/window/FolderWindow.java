@@ -94,10 +94,8 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	}
 	
 	public FolderWindow(WindowPanelLayout display, int idProgram) {
-		programID = idProgram;
-		this.display = display;
+		super(idProgram, 0, display, TypeUnit.WINDOW);
 		title = "Prueba";
-		typeUnit = TypeUnit.APPLICATION;
 		x = 1;
 		y = 30;
 		display.addWindowEvents(new WindowEventHandler() {

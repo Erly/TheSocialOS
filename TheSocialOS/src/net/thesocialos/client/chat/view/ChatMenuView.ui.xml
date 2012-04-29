@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client" xmlns:p2="urn:import:net.thesocialos.client.chat.view">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client" >
 	<ui:style>
 		.important {
 			font-weight: bold;
@@ -89,6 +89,9 @@
 			</g:at>
 			<g:at left="106" top="73">
 				<g:Label text="virtual.solid.snake@gmail.com" ui:field="lblEmail" styleName="{style.font_style}"/>
+			</g:at>
+			<g:at left="130" top="91">
+				<g:Button text="Test Channel" ui:field="button">Test</g:Button>
 			</g:at>
 		</g:AbsolutePanel>
 				<g:ScrollPanel height="259px">

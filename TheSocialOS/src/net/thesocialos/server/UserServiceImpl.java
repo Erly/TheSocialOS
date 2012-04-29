@@ -6,14 +6,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.server.utils.BCrypt;
-import net.thesocialos.shared.Chat;
-import net.thesocialos.shared.LineChat;
 import net.thesocialos.shared.LoginResult;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatRecvMessage;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserConnected;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserDisconnect;
+import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
+import net.thesocialos.shared.ChannelApiEvents.ChApiPetitionNew;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
@@ -21,6 +25,7 @@ import net.thesocialos.shared.model.Google;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
+import com.google.appengine.api.channel.ChannelFailureException;
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
@@ -32,9 +37,25 @@ import com.googlecode.objectify.ObjectifyService;
 public class UserServiceImpl extends XsrfProtectedServiceServlet implements UserService {
 	
 	@Override
-	public void createServerSession() {
-		// TODO Auto-generated method stub
+	public String getChannel() {
+		try {
+			Objectify ofy = ObjectifyService.begin();
+			User user = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
+			user.setTokenChannel(ChannelApiHelper.createChannel(perThreadRequest.get().getSession()));
+			ofy.put(user);
+			return user.getTokenChannel();
+		} catch (ChannelFailureException e) {
+			e.printStackTrace();
+			
+		}
+		return null;
 		
+	}
+	
+	private String getOldChannel() {
+		Objectify ofy = ObjectifyService.begin();
+		User user = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
+		return user.getTokenChannel();
 	}
 	
 	@Override
@@ -92,7 +113,9 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		if ((session = UserHelper.getSesssionHttpSession(httpSession)) != null
 				&& (user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy)) != null)
 			if (session.getSessionID().equalsIgnoreCase(sid)
-					&& session.getUser().getName().equalsIgnoreCase(user.getEmail())) return User.toDTO(user);
+					&& session.getUser().getName().equalsIgnoreCase(user.getEmail()))
+				User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(), user.getLastName(),
+						user.getRole(), user.getTokenChannel());
 		try {
 			session = UserHelper.getSessionWithCookies(sid, ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
@@ -100,27 +123,14 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			
 			UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 			ofy.put(user);
-			return User.toDTO(user);
+			return User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(),
+					user.getLastName(), user.getRole(), user.getTokenChannel());
 		} catch (NotFoundException e) {
-			return null;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	@Override
-	public void init() {
-		try {
-			ObjectifyService.register(LineChat.class);
-			ObjectifyService.register(Chat.class);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		try {
-			super.init();
-		} catch (ServletException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
@@ -129,8 +139,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		// Duration remembering login. 30 days in this case.
 		long duration = 2592000000L;// 1000l * 60l * 60l * 24l * 30l;
 		
-		ObjectifyOpts opts = new ObjectifyOpts().setSessionCache(true);
-		Objectify ofy = ObjectifyService.begin(opts);
+		Objectify ofy = ObjectifyService.begin();
 		User user;
 		HttpSession httpSession = perThreadRequest.get().getSession();
 		
@@ -140,7 +149,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			return null;
 		}
 		
-		if (BCrypt.checkpw(password, user.getPassword()) == false) return null;
+		if (!BCrypt.checkpw(password, user.getPassword())) return null;
 		
 		Key<User> userKey = ObjectifyService.factory().getKey(user);
 		Session session = new Session(httpSession.getId(), new Date(System.currentTimeMillis() + duration), userKey);
@@ -154,8 +163,10 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		user.setLastTimeActive(new Date()); // Set last time to user is login
 		// Store user and session
 		UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
+		
 		ofy.put(user); // Save user
-		return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
+		return new LoginResult(User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(),
+				user.getLastName(), user.getRole(), user.getTokenChannel()), httpSession.getId(), duration);
 	}
 	
 	@Override
@@ -257,5 +268,23 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		Map<Key<Columns>, Columns> mColumns = ofy.put(columns);
 		removeUserColumns(user);
 		user.setColumns(new ArrayList<Key<Columns>>(mColumns.keySet()));
+	}
+	
+	@Override
+	public void checkChannel(ChApiContactNew newContact) {
+		
+		ChannelApiHelper.sendMessage("unai@thesocialos.net",
+				ChannelApiHelper.encodeMessage(new ChApiContactNew("perico@gmail.com")));
+		ChannelApiHelper.sendMessage("unai@thesocialos.net",
+				ChannelApiHelper.encodeMessage(new ChApiChatRecvMessage(null, "palomo@gmail.com", "hola")));
+		ChannelApiHelper.sendMessage("unai@thesocialos.net",
+				ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(STATETYPE.ONLINE, null)));
+		ChannelApiHelper.sendMessage("unai@thesocialos.net",
+				ChannelApiHelper.encodeMessage(new ChApiChatUserConnected("palomo@gmail.com")));
+		ChannelApiHelper.sendMessage("unai@thesocialos.net",
+				ChannelApiHelper.encodeMessage(new ChApiChatUserDisconnect("palomo@gmail.com")));
+		ChannelApiHelper.sendMessage("unai@thesocialos.net",
+				ChannelApiHelper.encodeMessage(new ChApiPetitionNew("lolita5@hotmail.com")));
+		
 	}
 }

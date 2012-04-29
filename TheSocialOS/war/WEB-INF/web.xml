@@ -37,6 +37,27 @@
   	<servlet-name>chatService</servlet-name>
   	<url-pattern>/thesocialos/chatService</url-pattern>
   </servlet-mapping>
+  
+  <!--  Tracking channelApi (Contections and disconnections -->
+  <servlet>
+  	<servlet-name>userConnectChannel</servlet-name>
+  	<servlet-class>net.thesocialos.server.ChannelConnect</servlet-class>
+  </servlet>
+  	
+  <servlet>
+  	<servlet-name>userDisconnectChannel</servlet-name>
+  	<servlet-class>net.thesocialos.server.ChannelDisconnect</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>userConnectChannel</servlet-name>
+  	<url-pattern>/_ah/channel/connected/</url-pattern>
+  </servlet-mapping>
+  	
+  <servlet-mapping>
+  	<servlet-name>userDisconnectChannel</servlet-name>
+  	<url-pattern>/_ah/channel/disconnected/</url-pattern>
+  </servlet-mapping>
 
   <servlet>
   	<servlet-name>oauth2callback</servlet-name>

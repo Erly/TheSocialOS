@@ -2,12 +2,10 @@ package net.thesocialos.client.app;
 
 import java.util.List;
 
-import net.thesocialos.client.event.MessageChatAvailableEvent;
-import net.thesocialos.client.event.MessageChatAvailableEventHandler;
+import net.thesocialos.client.chat.view.ChatPanel;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ChatService;
 import net.thesocialos.client.service.ChatServiceAsync;
-import net.thesocialos.client.view.chat.ChatPanel;
 import net.thesocialos.shared.Chat;
 
 import com.google.gwt.core.client.GWT;
@@ -34,6 +32,7 @@ public class ChatApp implements IApplication {
 		
 		TextArea getTextArea();
 	}
+	
 	private String name;
 	private String image;
 	Display panel;
@@ -56,23 +55,12 @@ public class ChatApp implements IApplication {
 	}
 	
 	private void bind() {
-		chatEventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
-			
-			@Override
-			public void onContentAvailable(MessageChatAvailableEvent contentAvailableEvent) {
-				// panel.getTextArea().setText("Push enviado correctamente " +
-				// contentAvailableEvent.getMessageChat().getType());
-				getMessages();
-			}
-			
-		});
+		
 		panel.getSendButton().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if (!panel.getSendText().getText().isEmpty()) {
-					sendMessage(panel.getSendText().getText());
-				}
+				if (!panel.getSendText().getText().isEmpty()) sendMessage(panel.getSendText().getText());
 				
 			}
 		});
@@ -81,12 +69,8 @@ public class ChatApp implements IApplication {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				// TODO Auto-generated method stub
-				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-					if (!panel.getSendText().getText().isEmpty()) {
-						sendMessage(panel.getSendText().getText());
-					}
-					
-				}
+				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
+					if (!panel.getSendText().getText().isEmpty()) sendMessage(panel.getSendText().getText());
 				
 			}
 		});
@@ -120,9 +104,8 @@ public class ChatApp implements IApplication {
 					@Override
 					public void onSuccess(List<Chat> result) {
 						String textToAdd = "";
-						for (int i = 0; i < result.size(); i++) {
+						for (int i = 0; i < result.size(); i++)
 							textToAdd += result.get(i).getText() + "\n";
-						}
 						panel.getTextArea().setText(panel.getTextArea().getText() + textToAdd);
 						panel.getTextArea().getElement()
 								.setScrollTop(panel.getTextArea().getElement().getScrollHeight());

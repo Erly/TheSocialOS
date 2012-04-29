@@ -1,11 +1,8 @@
 package net.thesocialos.server;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.ServletException;
 
 import net.thesocialos.server.utils.ChannelServer;
 import net.thesocialos.shared.Chat;
@@ -48,6 +45,7 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 	
 	@Override
 	public List<Chat> getText() {
+		
 		/*
 		 * Query<Chat> chatQ; LineChat lineChat; HttpSession session = perThreadRequest.get().getSession(); Objectify
 		 * ofy = ObjectifyService.begin(); List<Chat> list; String uid = (String) session.getAttribute("uid");
@@ -65,25 +63,14 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 		return null;
 	}
 	
-	@Override
-	public void init() throws ServletException {
-		
-		// ObjectifyService.register(LineChat.class);
-		// TODO Auto-generated method stub
-		super.init();
-		
-	}
-	
 	private void sendEvent(Objectify ofy) {
 		MessageChat message = new MessageChat();
 		
 		Iterable<Key<LineChat>> allKeys = ofy.query(LineChat.class).fetchKeys();
 		Map<Key<LineChat>, LineChat> qChat = ofy.get(allKeys);
 		List<String> usersEmails = new ArrayList<String>();
-		for (Iterator<LineChat> e = qChat.values().iterator(); e.hasNext();) {
-			LineChat chat = e.next();
+		for (LineChat chat : qChat.values())
 			usersEmails.add(chat.getUser());
-		}
 		ChannelServer.PushallUsers(usersEmails, message);
 		
 	}

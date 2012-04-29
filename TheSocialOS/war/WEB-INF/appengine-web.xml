@@ -22,6 +22,10 @@
   <sessions-enabled>true</sessions-enabled>
   <warmup-requests-enabled>true</warmup-requests-enabled>
   
+  <!--  Channel api  -->
+  <inbound-services>
+  <service>channel_presence</service>
+  </inbound-services>
 
 
 </appengine-web-app>

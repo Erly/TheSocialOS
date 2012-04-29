@@ -19,9 +19,18 @@ public class User implements Serializable {
 		return new User(user.email, user.avatar, user.background, user.firstName, user.lastName, user.role);
 	}
 	
+	public static User toDTO(String email, String avatar, String background, String firstName, String lastName,
+			String role, String tokenChannel) {
+		return new User(email, avatar, background, firstName, lastName, role, tokenChannel);
+	}
+	
 	@Id private String email; // Email of the user
 	
 	@Unindexed private String password; // Password of the user
+	
+	@Unindexed private String tokenChannel; // The token of channelApi
+	
+	@Unindexed public boolean isConnected; // Is the user connected?
 	
 	@Unindexed private String avatar; // Avatar of the user
 	
@@ -61,7 +70,7 @@ public class User implements Serializable {
 		
 	}
 	
-	private User(String email, String picture, String background, String firstName, String lastName, String role) {
+	public User(String email, String picture, String background, String firstName, String lastName, String role) {
 		this.email = email;
 		avatar = picture;
 		this.background = background;
@@ -70,8 +79,20 @@ public class User implements Serializable {
 		this.role = role;
 	}
 	
+	public User(String email, String picture, String background, String firstName, String lastName, String role,
+			String tokenChannel) {
+		this.email = email;
+		// password = password;
+		avatar = picture;
+		this.background = background;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.role = role;
+		this.tokenChannel = tokenChannel;
+	}
+	
 	public User(String email, String password, String picture, String background, String firstName, String lastName,
-			String role) {
+			String role, String tokenChannel) {
 		this.email = email;
 		this.password = password;
 		avatar = picture;
@@ -79,6 +100,7 @@ public class User implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.role = role;
+		this.tokenChannel = tokenChannel;
 	}
 	
 	public void addAccount(Key<? extends Account> account) {
@@ -146,7 +168,7 @@ public class User implements Serializable {
 	 * @return true si se a podido a�adir. False si ya estaba a�adido
 	 */
 	public boolean addPetitionContactTOContact(Key<User> contact) {
-		if (petitionsContacts.contains(contact) && (contacts.contains(contact) == false)) {
+		if (!petitionsContacts.contains(contact) && (contacts.contains(contact))) {
 			contacts.add(contact);
 			petitionsContacts.remove(contact);
 			return true;
@@ -271,5 +293,20 @@ public class User implements Serializable {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	/**
+	 * @return the tokenChannel
+	 */
+	public String getTokenChannel() {
+		return tokenChannel;
+	}
+	
+	/**
+	 * @param tokenChannel
+	 *            the tokenChannel to set
+	 */
+	public void setTokenChannel(String tokenChannel) {
+		this.tokenChannel = tokenChannel;
 	}
 }

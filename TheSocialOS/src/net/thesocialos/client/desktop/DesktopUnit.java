@@ -7,28 +7,40 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 public abstract class DesktopUnit {
 	
 	public enum TypeUnit {
-		APPLICATION, INFO, POPUP, STATIC
+		WINDOW, INFO, POPUP, STATIC
 	}
-	protected int programID;
+	
+	private int programID;
+	private int programSubID;
+	private boolean isSubApplication = false;
+	
 	protected int x;
 	protected int y;
-	
 	protected int zPosition;
-	private boolean minimized = false;
 	
+	private boolean minimized = false;
 	private boolean maximized = false;
 	private boolean isMaximizable = true;
-	
 	private boolean isMinimizable = true;
+	
 	private int beforeWidth = 0;
-	
 	private int beforeHeight = 0;
-	private int beforeX = 0;
 	
+	private int beforeX = 0;
 	private int beforeY = 0;
 	
 	protected TypeUnit typeUnit;
 	protected WindowDisplay display;
+	
+	public DesktopUnit(int programID, int programSubID, WindowDisplay display, TypeUnit typeUnit) {
+		this.programID = programID;
+		if (programSubID != 0) {
+			isSubApplication = true;
+			this.programSubID = programSubID;
+		}
+		this.display = display;
+		this.typeUnit = typeUnit;
+	}
 	
 	public abstract void close(AbsolutePanel absolutePanel);
 	
@@ -59,6 +71,15 @@ public abstract class DesktopUnit {
 	 */
 	public int getID() {
 		return programID;
+	}
+	
+	/**
+	 * Return the identification of the subapplication
+	 * 
+	 * @return
+	 */
+	public int getSubID() {
+		return programSubID;
 	}
 	
 	/**
@@ -174,5 +195,26 @@ public abstract class DesktopUnit {
 	}
 	
 	public abstract void toZPosition(int position);
+	
+	/**
+	 * @return the programID
+	 */
+	public Integer getProgramID() {
+		return programID;
+	}
+	
+	/**
+	 * @return the programSubID
+	 */
+	public Integer getProgramSubID() {
+		return programSubID;
+	}
+	
+	/**
+	 * @return the isSubApplication
+	 */
+	public boolean isSubApplication() {
+		return isSubApplication;
+	}
 	
 }

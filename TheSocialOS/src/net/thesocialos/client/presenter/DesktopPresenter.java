@@ -10,7 +10,7 @@ import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.app.IApplication;
-import net.thesocialos.client.chat.view.ChatMenuPresenter;
+import net.thesocialos.client.chat.ChatMenuPresenter;
 import net.thesocialos.client.chat.view.ChatMenuView;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
@@ -106,7 +106,7 @@ public class DesktopPresenter implements Presenter {
 	}
 	
 	private SimpleEventBus eventBus;
-	private SimpleEventBus chatEventBus;
+	
 	/*
 	 * All declarations of the desktop
 	 */
@@ -129,7 +129,7 @@ public class DesktopPresenter implements Presenter {
 	public DesktopPresenter(SimpleEventBus[] eventBus, Display display) {
 		
 		this.eventBus = eventBus[0];
-		chatEventBus = eventBus[1];
+		
 		this.display = display;
 	}
 	

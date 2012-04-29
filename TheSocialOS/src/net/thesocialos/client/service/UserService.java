@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import net.thesocialos.shared.LoginResult;
+import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
@@ -18,7 +19,7 @@ import com.googlecode.objectify.Key;
 @XsrfProtect
 public interface UserService extends RemoteService {
 	
-	void createServerSession();
+	String getChannel();
 	
 	Map<Key<Account>, Account> getCloudAccounts();
 	
@@ -33,4 +34,6 @@ public interface UserService extends RemoteService {
 	void register(User user) throws UserExistsException;
 	
 	void setDeckColumns(ArrayList<Columns> columns);
+	
+	void checkChannel(ChApiContactNew newContact);
 }

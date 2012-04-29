@@ -6,8 +6,6 @@ import net.thesocialos.client.event.AccountAddedEvent;
 import net.thesocialos.client.event.AccountAddedEventHandler;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.event.LogoutEventHandler;
-import net.thesocialos.client.event.MessageChatAvailableEvent;
-import net.thesocialos.client.event.MessageChatAvailableEventHandler;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.presenter.DesktopPresenter;
 import net.thesocialos.client.presenter.Presenter;
@@ -18,6 +16,14 @@ import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.view.DesktopView;
 import net.thesocialos.client.view.RegisterView;
 import net.thesocialos.client.view.profile.UserProfileView;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatRecvMessage;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserConnected;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserDisconnect;
+import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
+import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
+import net.thesocialos.shared.ChannelApiEvents.ChApiEventHandler;
+import net.thesocialos.shared.ChannelApiEvents.ChApiPetitionNew;
 import net.thesocialos.shared.model.Account;
 
 import com.google.gwt.core.client.GWT;
@@ -45,6 +51,7 @@ public class AppController implements ValueChangeHandler<String> {
 	public AppController(SimpleEventBus eventBus) {
 		this.eventBus = eventBus;
 		bind(); // Bind the appController to History to control its changes
+		bindChannedlApiHandlers(); // Bind ChannelAPiHandlers to control the Channel api
 	}
 	
 	private void accountAdded() {
@@ -112,11 +119,51 @@ public class AppController implements ValueChangeHandler<String> {
 			}
 		});
 		
-		eventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
+	}
+	
+	/**
+	 * Bind the Channel Api Events. To control the Channel Api
+	 */
+	private void bindChannedlApiHandlers() {
+		eventBus.addHandler(ChApiEvent.TYPE, new ChApiEventHandler() {
 			
 			@Override
-			public void onContentAvailable(MessageChatAvailableEvent contentAvailableEvent) {
-				chatEventBus.fireEvent(new MessageChatAvailableEvent(contentAvailableEvent.getMessageChat()));
+			public void onPetitionNew(ChApiPetitionNew event) {
+				System.out.println("Contact petition  " + event.getContactUser());
+				
+			}
+			
+			@Override
+			public void onContactNew(ChApiContactNew event) {
+				System.out.println("Contact New  " + event.getContactUser());
+				
+			}
+			
+			@Override
+			public void onChatUserDisconnected(ChApiChatUserDisconnect event) {
+				System.out.println(CacheLayer.UserCalls.getUser().getEmail() + "  Contact Disconnected:  "
+						+ event.getContactUser());
+				
+			}
+			
+			@Override
+			public void onChatUserConnected(ChApiChatUserConnected event) {
+				System.out.println(CacheLayer.UserCalls.getUser().getEmail() + "  Contact Connected:  "
+						+ event.getContactUser());
+				
+			}
+			
+			@Override
+			public void onChatUserChangeState(ChApiChatUserChngState event) {
+				System.out.println("User change state to" + event.getState().toString());
+				
+			}
+			
+			@Override
+			public void onChatRcvMessage(ChApiChatRecvMessage event) {
+				System.out.println("Message recieve from: " + event.getContactComeFrom() + " write: "
+						+ event.getMessage());
+				
 			}
 		});
 	}
@@ -164,11 +211,9 @@ public class AppController implements ValueChangeHandler<String> {
 													// lastToken is replaced by "" so the profile window is correctly
 													// loaded. Just in case there is some garbage in it.
 			lastToken = "";
-		if (History.getToken().equals("")) { // If there is no History token, then go to the desktop
-			History.newItem("desktop");
-		} else {
+		if (History.getToken().equals("")) History.newItem("desktop");
+		else
 			History.fireCurrentHistoryState();
-		}
 	}
 	
 	private void loadProfile(Presenter presenter) {
@@ -214,36 +259,26 @@ public class AppController implements ValueChangeHandler<String> {
 				} else if (token.equals("desktop")) {
 					presenter = new DesktopPresenter(new SimpleEventBus[] { eventBus, chatEventBus }, new DesktopView());
 					presenter.go(TheSocialOS.get().root);
-				} else if (token.equals("profile")) {
-					loadProfile(presenter);
-				} else if (token.equals("profile-timeline")) {
-					loadProfileTimeline(presenter);
-				} else if (token.equals("profile-photos")) {
-					loadProfilePhotos(presenter);
-				} else if (token.equals("profile-music")) {
-					loadProfileMusic(presenter);
-				} else if (token.equals("profile-videos")) {
-					loadProfileVideos(presenter);
-				} else if (token.equals("profile-links")) {
-					loadProfileLinks(presenter);
-				} else if (token.equals("account-added")) {
-					// token = lastToken = "profile";
-					accountAdded();
-					// eventBus.fireEvent(new AccountAddedEvent());
-				} else {
+				} else if (token.equals("profile")) loadProfile(presenter);
+				else if (token.equals("profile-timeline")) loadProfileTimeline(presenter);
+				else if (token.equals("profile-photos")) loadProfilePhotos(presenter);
+				else if (token.equals("profile-music")) loadProfileMusic(presenter);
+				else if (token.equals("profile-videos")) loadProfileVideos(presenter);
+				else if (token.equals("profile-links")) loadProfileLinks(presenter);
+				else if (token.equals("account-added")) // token = lastToken = "profile";
+				accountAdded();
+				// eventBus.fireEvent(new AccountAddedEvent());
+				else
 					History.newItem("desktop");
-				}
-			} else {
-				if (token.equals("register")) {
-					presenter = new RegisterPresenter(eventBus, new RegisterView());
-					presenter.go(TheSocialOS.get().root);
-					return;
-				} else if (token.equals("login")) {
-					TheSocialOS.get().showLoginView();
-					return;
-				} else
-					History.newItem("login");
-			}
+			} else if (token.equals("register")) {
+				presenter = new RegisterPresenter(eventBus, new RegisterView());
+				presenter.go(TheSocialOS.get().root);
+				return;
+			} else if (token.equals("login")) {
+				TheSocialOS.get().showLoginView();
+				return;
+			} else
+				History.newItem("login");
 		}
 	}
 	

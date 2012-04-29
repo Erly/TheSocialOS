@@ -54,8 +54,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	List<User> usersList = new ArrayList<User>();
 	
 	public NotificationsBoxPresenter(Display display) {
-		programID = AppConstants.NOTIFICATIONS;
-		typeUnit = TypeUnit.INFO;
+		super(AppConstants.NOTIFICATIONS, 0, null, TypeUnit.INFO);
 		this.display = display;
 		
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {

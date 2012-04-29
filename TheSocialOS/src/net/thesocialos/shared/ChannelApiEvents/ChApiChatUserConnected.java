@@ -7,10 +7,19 @@ package net.thesocialos.shared.ChannelApiEvents;
 
 public class ChApiChatUserConnected extends ChApiEvent {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9062896989802463430L;
 	private String contactConnect;
 	
 	public ChApiChatUserConnected(String ContactUser) {
+		super();
 		contactConnect = ContactUser;
+	}
+	
+	public ChApiChatUserConnected() {
+		super();
 	}
 	
 	/*
