@@ -11,7 +11,7 @@ public class ChatSendMessage extends ChatEvent {
 	
 	@Override
 	public com.google.gwt.event.shared.GwtEvent.Type<ChatEventHandler> getAssociatedType() {
-		// TODO Auto-generated method stub
+		
 		return TYPE;
 	}
 	

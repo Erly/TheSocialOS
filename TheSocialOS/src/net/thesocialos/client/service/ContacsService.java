@@ -11,7 +11,6 @@ import net.thesocialos.shared.model.User;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
-import com.googlecode.objectify.Key;
 
 @RemoteServiceRelativePath("ContactsRPC")
 @XsrfProtect
@@ -25,7 +24,7 @@ public interface ContacsService extends RemoteService {
 	
 	User getFriend(String email) throws FriendNotFoundException;
 	
-	Map<Key<User>, User> getFriendsList() throws FriendNotFoundException;
+	Map<String, User> getFriendsList() throws FriendNotFoundException;
 	
 	List<User> getFriendsSuggestionList(String text) throws FriendNotFoundException;
 	

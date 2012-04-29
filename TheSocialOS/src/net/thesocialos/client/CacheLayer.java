@@ -8,6 +8,7 @@ import net.thesocialos.client.service.ContacsService;
 import net.thesocialos.client.service.ContacsServiceAsync;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.Group;
@@ -21,7 +22,7 @@ import com.googlecode.objectify.Key;
 public class CacheLayer {
 	
 	static User user = null;
-	private static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
+	private static Map<String, User> contacts = new LinkedHashMap<String, User>();
 	
 	// Usuarios de la aplicaci�n
 	private static Map<String, User> users = new LinkedHashMap<String, User>();
@@ -172,8 +173,8 @@ public class CacheLayer {
 		 * 
 		 * @param callback
 		 */
-		static private void getContacts(final AsyncCallback<Map<Key<User>, User>> callback) {
-			new RPCXSRF<Map<Key<User>, User>>(contactService) {
+		static private void getContacts(final AsyncCallback<Map<String, User>> callback) {
+			new RPCXSRF<Map<String, User>>(contactService) {
 				
 				@Override
 				public void onFailure(Throwable caught) {
@@ -181,13 +182,13 @@ public class CacheLayer {
 				}
 				
 				@Override
-				public void onSuccess(Map<Key<User>, User> contacts) {
+				public void onSuccess(Map<String, User> contacts) {
 					CacheLayer.contacts = contacts;
 					callback.onSuccess(contacts);
 				}
 				
 				@Override
-				protected void XSRFcallService(AsyncCallback<Map<Key<User>, User>> cb) {
+				protected void XSRFcallService(AsyncCallback<Map<String, User>> cb) {
 					contactService.getFriendsList(cb);
 				}
 				
@@ -201,7 +202,7 @@ public class CacheLayer {
 		 *            if true si se quiere cojer los cacheados
 		 * @param callback
 		 */
-		public static void getContacts(boolean cached, AsyncCallback<Map<Key<User>, User>> callback) {
+		public static void getContacts(boolean cached, AsyncCallback<Map<String, User>> callback) {
 			if (contacts.isEmpty() || !cached) ContactCalls.getContacts(callback);
 			else
 				callback.onSuccess(contacts);
@@ -263,7 +264,7 @@ public class CacheLayer {
 		}
 		
 		public static void updateContacts(final AsyncCallback<Boolean> callback) {
-			getContacts(new AsyncCallback<Map<Key<User>, User>>() {
+			getContacts(new AsyncCallback<Map<String, User>>() {
 				
 				@Override
 				public void onFailure(Throwable caught) {
@@ -272,7 +273,7 @@ public class CacheLayer {
 				}
 				
 				@Override
-				public void onSuccess(Map<Key<User>, User> result) {
+				public void onSuccess(Map<String, User> result) {
 					
 					contacts = result;
 					if (callback != null) callback.onSuccess(true);
@@ -375,7 +376,6 @@ public class CacheLayer {
 				
 				@Override
 				protected void XSRFcallService(AsyncCallback<String> cb) {
-					System.out.println("callback");
 					userService.getChannel(cb);
 					
 				}
@@ -384,6 +384,30 @@ public class CacheLayer {
 				public void onSuccess(String channelIDToken) {
 					getUser().setTokenChannel(channelIDToken);
 					callback.onSuccess(null);
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+				}
+			}.retry(3);
+		}
+		
+		public static void setChatState(final STATETYPE stateType, final String customMsg,
+				final AsyncCallback<Void> callback) {
+			new RPCXSRF<Void>(userService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<Void> cb) {
+					userService.setState(stateType, customMsg, cb);
+					
+				}
+				
+				@Override
+				public void onSuccess(Void nothing) {
+					getUser().chatState = stateType;
+					// Falta custom State
+					callback.onSuccess(nothing);
 				}
 				
 				@Override

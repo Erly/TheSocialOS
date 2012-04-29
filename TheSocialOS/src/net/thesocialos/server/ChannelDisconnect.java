@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserDisconnect;
 import net.thesocialos.shared.model.User;
 
@@ -31,6 +33,7 @@ public class ChannelDisconnect extends HttpServlet {
 			return;
 		}
 		user.isConnected = false;
+		user.chatState = STATETYPE.OFFLINE;
 		ofy.put(user);
 		sendConnectionToContacts(ofy.get(user.getContacts()).values().iterator(), user.getEmail());
 	}
@@ -41,6 +44,8 @@ public class ChannelDisconnect extends HttpServlet {
 			if (user.isConnected)
 				ChannelApiHelper.sendMessage(user.getEmail(),
 						ChannelApiHelper.encodeMessage(new ChApiChatUserDisconnect(email)));
+			ChannelApiHelper.sendMessage(user.getEmail(),
+					ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(STATETYPE.OFFLINE, null, email)));
 		}
 	}
 }

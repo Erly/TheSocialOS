@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import net.thesocialos.shared.LoginResult;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
@@ -36,4 +37,6 @@ public interface UserService extends RemoteService {
 	void setDeckColumns(ArrayList<Columns> columns);
 	
 	void checkChannel(ChApiContactNew newContact);
+	
+	void setState(STATETYPE statetype, String customMsg);
 }

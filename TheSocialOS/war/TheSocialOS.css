@@ -513,7 +513,7 @@ center-label {
 
 
 
-.chatMenu_circle_green{
+.chatMenu_circle_online{
 			
 	width:100px;
 	height:100px;
@@ -528,7 +528,7 @@ center-label {
 	text-align:center;
 	background:#00FF00}
 		}
-.chatMenu_circle_red{
+.chatMenu_circle_busy{
 	width:100px;
 	height:100px;		
 	border-radius:50px;
@@ -536,11 +536,39 @@ center-label {
 	-webkit-border-radius:50px;
 	-khtml-border-radius:50px;
 	font-size:20px;
-	color:#fff;
+	color:#FF0000;
 	line-height:100px;
 	text-align:center;
 	background:#FF0000
-		}
+	}
+	
+.chatMenu_circle_away{
+	width:100px;
+	height:100px;		
+	border-radius:50px;
+	-moz-border-radius:50px;
+	-webkit-border-radius:50px;
+	-khtml-border-radius:50px;
+	font-size:20px;
+	color:#FF6000;
+	line-height:100px;
+	text-align:center;
+	background:#FF0000
+	}
+	
+.chatMenu_circle_offline{
+	width:100px;
+	height:100px;		
+	border-radius:50px;
+	-moz-border-radius:50px;
+	-webkit-border-radius:50px;
+	-khtml-border-radius:50px;
+	font-size:20px;
+	color:#ADADAD;
+	line-height:100px;
+	text-align:center;
+	background:#FF0000
+	}
 		
 .chatBlock_background_red{
 	background-color: red;
@@ -559,4 +587,53 @@ center-label {
 	-moz-box-shadow: 10px 10px 5px #888;
 	-webkit-box-shadow: 10px 10px 5px #888;
 	box-shadow: 10px 10px 5px #888;
+}
+.chat_state_online{
+	background: #84ff82; /* Old browsers */
+	background: -moz-linear-gradient(left,  #84ff82 0%, #019700 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#84ff82), color-stop(100%,#019700)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  #84ff82 0%,#019700 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  #84ff82 0%,#019700 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  #84ff82 0%,#019700 100%); /* IE10+ */
+	background: linear-gradient(left,  #84ff82 0%,#019700 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#84ff82', endColorstr='#019700',GradientType=1 ); /* IE6-9 */
+
+
+}
+
+.chat_state_busy{
+	background: #ff6254; /* Old browsers */
+	background: -moz-linear-gradient(left,  #ff6254 0%, #cf0404 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ff6254), color-stop(100%,#cf0404)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  #ff6254 0%,#cf0404 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  #ff6254 0%,#cf0404 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  #ff6254 0%,#cf0404 100%); /* IE10+ */
+	background: linear-gradient(left,  #ff6254 0%,#cf0404 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff6254', endColorstr='#cf0404',GradientType=1 ); /* IE6-9 */
+
+}
+
+.chat_state_away{
+	background: #ff7a2d; /* Old browsers */
+	background: -moz-linear-gradient(left,  #ff7a2d 0%, #bf4c00 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ff7a2d), color-stop(100%,#bf4c00)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  #ff7a2d 0%,#bf4c00 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  #ff7a2d 0%,#bf4c00 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  #ff7a2d 0%,#bf4c00 100%); /* IE10+ */
+	background: linear-gradient(left,  #ff7a2d 0%,#bf4c00 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff7a2d', endColorstr='#bf4c00',GradientType=1 ); /* IE6-9 */
+
+	
+}
+.chat_state_offline{
+	background: #cccccc; /* Old browsers */
+	background: -moz-linear-gradient(left,  #cccccc 0%, #565656 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#cccccc), color-stop(100%,#565656)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  #cccccc 0%,#565656 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  #cccccc 0%,#565656 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  #cccccc 0%,#565656 100%); /* IE10+ */
+	background: linear-gradient(left,  #cccccc 0%,#565656 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#565656',GradientType=1 ); /* IE6-9 */
+
+	
 }

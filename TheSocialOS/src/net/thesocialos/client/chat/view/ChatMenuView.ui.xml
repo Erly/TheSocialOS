@@ -68,30 +68,33 @@
 	
 	</ui:style>
 
-		<g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM" width="319px" height="418px" ui:field="ConversationsPanel" addStyleNames="{style.chatMenu}">
+		<g:HorizontalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_BOTTOM" width="260px" height="418px" ui:field="ConversationsPanel" addStyleNames="{style.chatMenu}">
 			<g:VerticalPanel styleName="{style.border}" borderWidth="0" horizontalAlignment="ALIGN_LEFT" height="100%" width="100%">
 				<g:AbsolutePanel height="130px" width="100%">
 			<g:at left="0" top="0">
-				<g:HorizontalPanel width="100%" height="18px" borderWidth="0" styleName="{style.bar}" addStyleNames="{style.chatMenu_Head}" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_MIDDLE">
+				<g:HorizontalPanel width="100%" height="18px" borderWidth="0" styleName="{style.bar}" addStyleNames="{style.chatMenu_Head}" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
 					<g:Label text="unai@thesocialos.net" width="170px" styleName="{style.font_style}" horizontalAlignment="ALIGN_CENTER"/>
 					<g:Label text="+" width="19px" styleName="{style.font_style}" direction="RTL" horizontalAlignment="ALIGN_CENTER"/>
 					<g:Label text="0" width="17px" horizontalAlignment="ALIGN_RIGHT" styleName="{style.font_style}"/>
 				</g:HorizontalPanel>
 			</g:at>
 			<g:at left="10" top="27">
-				<g:Image url="images/anonymous_avatar.png" width="90px" height="93px" styleName="{style.border}"/>
+				<g:Image url="images/anonymous_avatar.png" width="70px" height="74px" styleName="{style.border}"/>
 			</g:at>
-			<g:at left="106" top="27">
-				<g:HorizontalPanel width="103px" height="21px" verticalAlignment="ALIGN_MIDDLE" styleName="{style.border}" horizontalAlignment="ALIGN_CENTER">
-					<g:HTMLPanel width="20px" height="20px" styleName="chatMenu_circle_red"/>
+			<g:at left="86" top="24">
+				<g:HorizontalPanel width="103px" height="21px" verticalAlignment="ALIGN_MIDDLE" styleName="{style.border}" horizontalAlignment="ALIGN_LEFT">
+					<g:HTMLPanel width="20px" height="20px" styleName="chatMenu_circle_away"/>
 					<g:Label text="Busy" ui:field="lblState" styleName="{style.font_style}"/>
 				</g:HorizontalPanel>
 			</g:at>
-			<g:at left="106" top="73">
-				<g:Label text="virtual.solid.snake@gmail.com" ui:field="lblEmail" styleName="{style.font_style}"/>
-			</g:at>
-			<g:at left="130" top="91">
+			<g:at left="86" top="91">
 				<g:Button text="Test Channel" ui:field="button">Test</g:Button>
+			</g:at>
+			<g:at left="121" top="51">
+				<g:Label text="New Label" ui:field="lblName"/>
+			</g:at>
+			<g:at left="121" top="68">
+				<g:Label text="New Label" ui:field="lblSurname"/>
 			</g:at>
 		</g:AbsolutePanel>
 				<g:ScrollPanel height="259px">

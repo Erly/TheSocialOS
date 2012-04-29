@@ -127,25 +127,13 @@ public class ChatApp implements IApplication {
 	}
 	
 	private void sendMessage(String text) {
-		new RPCXSRF<Void>(chatService) {
-			
-			@Override
-			protected void XSRFcallService(AsyncCallback<Void> cb) {
-				chatService.sendText(panel.getSendText().getText(), new AsyncCallback<Boolean>() {
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-					}
-					
-					@Override
-					public void onSuccess(Boolean result) {
-						panel.getSendText().setText("");
-					}
-				});
-			}
-			
-		}.retry(3);
+		/*
+		 * new RPCXSRF<Void>(chatService) {
+		 * @Override protected void XSRFcallService(AsyncCallback<Void> cb) {
+		 * chatService.sendText(panel.getSendText().getText(), new AsyncCallback<Boolean>() {
+		 * @Override public void onFailure(Throwable caught) { // TODO Auto-generated method stub }
+		 * @Override public void onSuccess(Boolean result) { panel.getSendText().setText(""); } }); } }.retry(3);
+		 */
 	}
 	
 	public void setHeight(String height) {

@@ -1,11 +1,15 @@
 package net.thesocialos.server;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.servlet.http.HttpSession;
 
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
+import net.thesocialos.shared.model.User;
 
 import com.google.appengine.api.channel.ChannelFailureException;
 import com.google.appengine.api.channel.ChannelMessage;
@@ -116,6 +120,23 @@ public class ChannelApiHelper {
 	public static String getUserForAppkey(String appKeyUser) {
 		String[] stringSplit = appKeyUser.split("-");
 		return stringSplit[1];
+	}
+	
+	/**
+	 * Send the user state for all contacts if are connected
+	 * 
+	 * @param contacts
+	 * @param state
+	 * @param custom
+	 * @param email
+	 */
+	public static void sendStateToContacts(Iterator<User> contacts, STATETYPE state, String custom, String email) {
+		while (contacts.hasNext()) {
+			User user = contacts.next();
+			if (user.isConnected)
+				ChannelApiHelper.sendMessage(user.getEmail(),
+						ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(state, custom, email)));
+		}
 	}
 	
 	public static Method getDummyMethod() {

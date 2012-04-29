@@ -6,7 +6,6 @@ import java.util.Map;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.googlecode.objectify.Key;
 
 public interface ContacsServiceAsync extends ServiceAsync {
 	
@@ -18,7 +17,7 @@ public interface ContacsServiceAsync extends ServiceAsync {
 	
 	void getFriend(String email, AsyncCallback<User> callback);
 	
-	void getFriendsList(AsyncCallback<Map<Key<User>, User>> callback);
+	void getFriendsList(AsyncCallback<Map<String, User>> callback);
 	
 	void getFriendsSuggestionList(String text, AsyncCallback<List<User>> callback);
 	

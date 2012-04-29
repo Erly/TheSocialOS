@@ -10,8 +10,7 @@ import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.FrameApp;
 import net.thesocialos.client.app.IApplication;
-import net.thesocialos.client.chat.ChatMenuPresenter;
-import net.thesocialos.client.chat.view.ChatMenuView;
+import net.thesocialos.client.chat.ChatManager;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
@@ -247,8 +246,9 @@ public class DesktopPresenter implements Presenter {
 		// Footer()),AppConstants.NOTHING);
 		// prueba.setPosition(20, 20);
 		// eventBus.fireEvent(new DesktopEventOnOpen(prueba));
-		ChatMenuPresenter chatMenu = new ChatMenuPresenter(new ChatMenuView());
-		eventBus.fireEvent(new DesktopEventOnOpen(chatMenu));
+		// ChatMenuPresenter chatMenu = new ChatMenuPresenter(new ChatMenuView());
+		// eventBus.fireEvent(new DesktopEventOnOpen(chatMenu));
+		ChatManager chatmanager = new ChatManager();
 	}
 	
 	private void bindProgramMenu() {

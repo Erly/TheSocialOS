@@ -2,6 +2,7 @@ package net.thesocialos.client;
 
 import java.util.Map;
 
+import net.thesocialos.client.chat.events.ChatStateChange;
 import net.thesocialos.client.event.AccountAddedEvent;
 import net.thesocialos.client.event.AccountAddedEventHandler;
 import net.thesocialos.client.event.LogoutEvent;
@@ -155,7 +156,8 @@ public class AppController implements ValueChangeHandler<String> {
 			
 			@Override
 			public void onChatUserChangeState(ChApiChatUserChngState event) {
-				System.out.println("User change state to" + event.getState().toString());
+				TheSocialOS.getEventBus().fireEvent(
+						new ChatStateChange(event.getUserEmail(), event.getState(), event.getCustomState()));
 				
 			}
 			

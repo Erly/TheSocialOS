@@ -12,6 +12,10 @@ public abstract class ChatEvent extends GwtEvent<ChatEventHandler> {
 		this.userEmail = userEmail;
 	}
 	
+	public ChatEvent() {
+		
+	}
+	
 	/**
 	 * @return the userEmail
 	 */

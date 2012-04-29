@@ -28,22 +28,52 @@ public class ChatMenuView extends Composite implements Display {
 	}
 	
 	private static ChatMenuViewUiBinder uiBinder = GWT.create(ChatMenuViewUiBinder.class);
-	@UiField Label lblEmail;
 	@UiField(provided = true) CellList<User> cellList = new CellList<User>(new AbstractCell<User>() {
 		@Override
 		public void render(Context context, User value, SafeHtmlBuilder sb) {
-			// TODO
+			if (value == null) return;
+			switch (value.chatState) {
+			case ONLINE:
+				sb.appendHtmlConstant("<table class='chat_state_online'  width= '100%'>");
+				break;
+			case BUSY:
+				sb.appendHtmlConstant("<table class='chat_state_busy'  width= '100%'>");
+				break;
+			case CUSTOM:
+				sb.appendHtmlConstant("<table class='chat_state_custom'  width= '100%'>");
+				break;
+			case OFFLINE:
+				sb.appendHtmlConstant("<table class='chat_state_offline'  width= '100%'>");
+				break;
+			default:
+				break;
+			}
+			
+			// Add the contact image.
+			sb.appendHtmlConstant("<tr><td rowspan='3'>");
+			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			sb.appendHtmlConstant("</td>");
+			
+			// Add the name and address.
+			sb.appendHtmlConstant("<td style='font-size:95%;' align='left'>");
+			sb.appendEscaped(value.chatState.toString());
+			sb.appendHtmlConstant("</td></tr><tr><td>");
+			sb.appendEscaped(value.getName() + " " + value.getLastName());
+			
+			sb.appendHtmlConstant("</td></tr></table>");
 		}
 	});
 	@UiField HorizontalPanel ConversationsPanel;
 	
 	@UiField Label lblState;
 	@UiField Button button;
+	@UiField Label lblName;
+	@UiField Label lblSurname;
 	
 	public ChatMenuView() {
 		initWidget(uiBinder.createAndBindUi(this));
-		com.google.gwt.user.client.Element element = asWidget().getElement();
-		ListChatBlocks chatBlocks = new ListChatBlocks();
+		// com.google.gwt.user.client.Element element = asWidget().getElement();
+		// ListChatBlocks chatBlocks = new ListChatBlocks();
 		// chatBlocks.setVisible(true);
 		// DOM.appendChild(element, chatBlocks.asWidget().getElement());
 	}
@@ -59,12 +89,6 @@ public class ChatMenuView extends Composite implements Display {
 		// TODO Auto-generated method stub
 		return ConversationsPanel;
 		
-	}
-	
-	@Override
-	public Label getEmail() {
-		// TODO Auto-generated method stub
-		return lblEmail;
 	}
 	
 	@Override
@@ -91,5 +115,17 @@ public class ChatMenuView extends Composite implements Display {
 			
 		}.retry(3);
 		
+	}
+	
+	@Override
+	public Label getName() {
+		// TODO Auto-generated method stub
+		return lblName;
+	}
+	
+	@Override
+	public Label getSurname() {
+		// TODO Auto-generated method stub
+		return lblSurname;
 	}
 }

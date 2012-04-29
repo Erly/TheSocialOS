@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.Id;
 
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Unindexed;
@@ -16,7 +18,8 @@ import com.googlecode.objectify.annotation.Unindexed;
 public class User implements Serializable {
 	
 	public static User toDTO(User user) {
-		return new User(user.email, user.avatar, user.background, user.firstName, user.lastName, user.role);
+		return new User(user.email, user.avatar, user.background, user.firstName, user.lastName, user.role,
+				user.isConnected, user.chatState);
 	}
 	
 	public static User toDTO(String email, String avatar, String background, String firstName, String lastName,
@@ -31,6 +34,8 @@ public class User implements Serializable {
 	@Unindexed private String tokenChannel; // The token of channelApi
 	
 	@Unindexed public boolean isConnected; // Is the user connected?
+	
+	@Unindexed public STATETYPE chatState = STATETYPE.OFFLINE;
 	
 	@Unindexed private String avatar; // Avatar of the user
 	
@@ -89,6 +94,19 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.role = role;
 		this.tokenChannel = tokenChannel;
+	}
+	
+	public User(String email, String picture, String background, String firstName, String lastName, String role,
+			Boolean isConnected, STATETYPE chatState) {
+		this.email = email;
+		// password = password;
+		avatar = picture;
+		this.background = background;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.role = role;
+		this.isConnected = isConnected;
+		this.chatState = chatState;
 	}
 	
 	public User(String email, String password, String picture, String background, String firstName, String lastName,

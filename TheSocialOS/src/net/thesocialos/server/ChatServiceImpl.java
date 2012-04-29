@@ -76,9 +76,9 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 	}
 	
 	@Override
-	public Boolean sendText(String text) {
+	public void sendText(String contactEmail, String message) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 	
 }

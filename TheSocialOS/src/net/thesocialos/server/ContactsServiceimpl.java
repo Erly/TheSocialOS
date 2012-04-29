@@ -1,6 +1,7 @@
 package net.thesocialos.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -99,7 +100,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 	}
 	
 	@Override
-	public Map<Key<User>, User> getFriendsList() throws FriendNotFoundException {
+	public Map<String, User> getFriendsList() throws FriendNotFoundException {
 		Objectify ofy = ObjectifyService.begin();
 		
 		User user = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
@@ -109,9 +110,15 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 		
 		Map<Key<User>, User> usuarios = ofy.get(contacts);
 		
+		Iterator<User> usersIterator = usuarios.values().iterator();
+		Map<String, User> userList = new HashMap<String, User>();
+		while (usersIterator.hasNext()) {
+			User userTemp = usersIterator.next();
+			userList.put(userTemp.getEmail(), User.toDTO(userTemp));
+		}
 		// ArrayList<String> list = new ArrayList<String>();
 		// Arrays.
-		return usuarios;
+		return userList;
 	}
 	
 	@Override

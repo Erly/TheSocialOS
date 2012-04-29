@@ -18,11 +18,13 @@ public class ChApiChatUserChngState extends ChApiEvent {
 	
 	private STATETYPE state;
 	private String customState;
+	private String userEmail;
 	
-	public ChApiChatUserChngState(STATETYPE state, String customsState) {
+	public ChApiChatUserChngState(STATETYPE state, String customsState, String userEmail) {
 		super();
 		this.state = state;
 		customState = customsState;
+		this.userEmail = userEmail;
 	}
 	
 	public ChApiChatUserChngState() {
@@ -53,6 +55,13 @@ public class ChApiChatUserChngState extends ChApiEvent {
 	 */
 	public STATETYPE getState() {
 		return state;
+	}
+	
+	/**
+	 * @return the userEmail
+	 */
+	public String getUserEmail() {
+		return userEmail;
 	}
 	
 }

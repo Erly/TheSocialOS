@@ -15,6 +15,6 @@ public interface ChatService extends RemoteService {
 	
 	List<Chat> getText();
 	
-	Boolean sendText(String text);
+	void sendText(String contactEmail, String message);
 	
 }

@@ -1,53 +1,40 @@
-/**
- * 
- */
 package net.thesocialos.shared.ChannelApiEvents;
 
-/**
- * @author vssnake
- * 
- */
 public class ChApiChatUserDisconnect extends ChApiEvent {
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2728803222037908415L;
-	private String contactDisconnect;
+	private String userEmail;
 	
-	public ChApiChatUserDisconnect(String ContactUser) {
+	public ChApiChatUserDisconnect(String userEmail) {
 		super();
-		contactDisconnect = ContactUser;
+		this.userEmail = userEmail;
 	}
 	
 	public ChApiChatUserDisconnect() {
 		super();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see com.google.gwt.event.shared.GwtEvent#dispatch(com.google.gwt.event.shared.EventHandler)
-	 */
+	private static final long serialVersionUID = 7074318690223079108L;
+	
+	@Override
+	public com.google.gwt.event.shared.GwtEvent.Type<ChApiEventHandler> getAssociatedType() {
+		// TODO Auto-generated method stub
+		return TYPE;
+	}
+	
 	@Override
 	protected void dispatch(ChApiEventHandler handler) {
 		handler.onChatUserDisconnected(this);
 		
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see com.google.gwt.event.shared.GwtEvent#getAssociatedType()
-	 */
-	@Override
-	public com.google.gwt.event.shared.GwtEvent.Type<ChApiEventHandler> getAssociatedType() {
-		return TYPE;
-	}
-	
 	/**
-	 * @return the contactDisconnect
+	 * @return the userEmail
 	 */
 	public String getContactUser() {
-		return contactDisconnect;
+		return userEmail;
 	}
 	
 }

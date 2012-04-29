@@ -278,13 +278,25 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		ChannelApiHelper.sendMessage("unai@thesocialos.net",
 				ChannelApiHelper.encodeMessage(new ChApiChatRecvMessage(null, "palomo@gmail.com", "hola")));
 		ChannelApiHelper.sendMessage("unai@thesocialos.net",
-				ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(STATETYPE.ONLINE, null)));
+				ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(STATETYPE.ONLINE, null, "palomo@gmail.com")));
 		ChannelApiHelper.sendMessage("unai@thesocialos.net",
 				ChannelApiHelper.encodeMessage(new ChApiChatUserConnected("palomo@gmail.com")));
 		ChannelApiHelper.sendMessage("unai@thesocialos.net",
 				ChannelApiHelper.encodeMessage(new ChApiChatUserDisconnect("palomo@gmail.com")));
 		ChannelApiHelper.sendMessage("unai@thesocialos.net",
 				ChannelApiHelper.encodeMessage(new ChApiPetitionNew("lolita5@hotmail.com")));
+		
+	}
+	
+	@Override
+	public void setState(STATETYPE statetype, String customMsg) {
+		Objectify ofy = ObjectifyService.begin();
+		User user = ofy.get(User.class, UserHelper.getUserHttpSession(perThreadRequest.get().getSession()));
+		user.chatState = statetype;
+		ofy.put(user);
+		
+		ChannelApiHelper.sendStateToContacts(ofy.get(user.getContacts()).values().iterator(), statetype, customMsg,
+				user.getEmail());
 		
 	}
 }
