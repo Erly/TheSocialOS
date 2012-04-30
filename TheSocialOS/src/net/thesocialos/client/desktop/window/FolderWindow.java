@@ -122,8 +122,11 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 			
 			@Override
 			public void onMaximize(WindowMaximizeEvent windowMaximizeEvent) {
-				if (isMaximizable())
+				if (isMaximizable()) {
 					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMaximize(FolderWindow.this));
+					clearMedia();
+					addMedia((HashSet<? extends Media>) files.get(arrayPosition));
+				}
 			}
 			
 			@Override

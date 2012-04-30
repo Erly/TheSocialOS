@@ -319,7 +319,13 @@ public class TwitterAPI {
 			@Override
 			public void onSuccess(String result) {
 				// Window.alert(result);
-				loadColumns(twitterAccount);
+				new Timer() {
+					
+					@Override
+					public void run() {
+						loadColumns(twitterAccount);
+					}
+				}.schedule(1000);
 			}
 			
 			@Override
