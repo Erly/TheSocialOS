@@ -23,7 +23,7 @@ public class ChannelApiHelper {
 	// private Channel channel;
 	static SerializationStreamFactory serializationStreamFactory;
 	
-	static int retry = 2;
+	static int retry = 3;
 	
 	public static boolean isChannelOpen = false;
 	
@@ -49,8 +49,9 @@ public class ChannelApiHelper {
 		}
 	}
 	
-	private static void fireEvent(ChApiEvent channelApiEvent) {
-		if (channelApiEvent != null) TheSocialOS.getEventBus().fireEvent(channelApiEvent);
+	private static void fireEvent(String encodedString) {
+		ChApiEvent channelEvent = decodedString(encodedString);
+		if (channelEvent != null) TheSocialOS.getEventBus().fireEvent(channelEvent);
 		
 	}
 	
@@ -77,6 +78,7 @@ public class ChannelApiHelper {
 	}
 	
 	private static void updateTokenChannel() {
+		if (retry != 0) return;
 		CacheLayer.UserCalls.getNewChannelId(new AsyncCallback<Void>() {
 			
 			@Override
@@ -93,7 +95,7 @@ public class ChannelApiHelper {
 	}
 	
 	public static void listenToChannel(User user) {
-		if (retry <= 0) return;
+		
 		if (user.getTokenChannel() == null) {
 			updateTokenChannel();
 			return;
@@ -121,14 +123,14 @@ public class ChannelApiHelper {
 					
 					@Override
 					public void onMessage(String encodedString) {
-						fireEvent((decodedString(encodedString)));
+						fireEvent(encodedString);
 					}
 					
 					@Override
 					public void onOpen() {
 						isChannelOpen = true;
-						retry = 2;
-						// System.out.println("Socket Open");
+						retry = 3;
+						
 					}
 				});
 				

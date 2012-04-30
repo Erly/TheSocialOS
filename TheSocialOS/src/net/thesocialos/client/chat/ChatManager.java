@@ -27,7 +27,7 @@ public class ChatManager {
 	ChatMenuPresenter chatMenuPresenter;
 	
 	public ChatManager() {
-		chatMenuPresenter = new ChatMenuPresenter(new ChatMenuView());
+		chatMenuPresenter = new ChatMenuPresenter(new ChatMenuView(), this);
 		bindHandlers();
 		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatMenuPresenter));
 		getContacts();
@@ -70,9 +70,8 @@ public class ChatManager {
 			@Override
 			public void onChangeState(ChatStateChange event) {
 				// TODO Auto-generated method stub
-				System.out.println(CacheLayer.UserCalls.getUser().getEmail() + "  Chamnge state  "
-						+ event.getUserEmail() + " " + event.getStateType().toString() + " " + event.getCustomState());
-				changeState(event.getUserEmail(), event.getStateType(), event.getCustomState());
+				chatMenuPresenter.changeContactState(event.getUserEmail(), event.getStateType(), event.getCustomState());
+				// changeState(event.getUserEmail(), event.getStateType(), event.getCustomState());
 			}
 			
 		});
@@ -100,20 +99,7 @@ public class ChatManager {
 	}
 	
 	private void init() {
-		CacheLayer.UserCalls.setChatState(STATETYPE.ONLINE, null, new AsyncCallback<Void>() {
-			
-			@Override
-			public void onSuccess(Void result) {
-				// TODO Auto-generated method stub
-				System.out.println("llego");
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		changeState(STATETYPE.ONLINE, null);
 	}
 	
 	/**
@@ -128,14 +114,25 @@ public class ChatManager {
 	}
 	
 	/**
-	 * Change the state in one conversation
+	 * Change user state
 	 * 
-	 * @param email
 	 * @param stateType
 	 * @param customState
 	 */
-	private void changeState(String email, STATETYPE stateType, String customState) {
-		chatMenuPresenter.changeContactState(email, stateType, customState);
+	protected void changeState(final STATETYPE stateType, String customState) {
+		CacheLayer.UserCalls.setChatState(stateType, customState, new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				chatMenuPresenter.changeUserState(stateType);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		/*
 		 * ChatDisplay display = getConversation(email); if (display != null) display.setState(stateType, customState);
 		 */

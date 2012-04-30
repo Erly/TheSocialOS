@@ -81,12 +81,6 @@
 			<g:at left="10" top="27">
 				<g:Image url="images/anonymous_avatar.png" width="70px" height="74px" styleName="{style.border}"/>
 			</g:at>
-			<g:at left="86" top="24">
-				<g:HorizontalPanel width="103px" height="21px" verticalAlignment="ALIGN_MIDDLE" styleName="{style.border}" horizontalAlignment="ALIGN_LEFT">
-					<g:HTMLPanel width="20px" height="20px" styleName="chatMenu_circle_away"/>
-					<g:Label text="Busy" ui:field="lblState" styleName="{style.font_style}"/>
-				</g:HorizontalPanel>
-			</g:at>
 			<g:at left="86" top="91">
 				<g:Button text="Test Channel" ui:field="button">Test</g:Button>
 			</g:at>
@@ -95,6 +89,14 @@
 			</g:at>
 			<g:at left="121" top="68">
 				<g:Label text="New Label" ui:field="lblSurname"/>
+			</g:at>
+			<g:at left="86" top="24">
+				<g:FocusPanel width="100px" height="29px" ui:field="FocusPanelState">
+					<g:HorizontalPanel width="100%" height="28px" verticalAlignment="ALIGN_MIDDLE" styleName="{style.border}" horizontalAlignment="ALIGN_LEFT">
+					<g:HTMLPanel width="20px" height="20px" styleName="chatMenu_circle_away" ui:field="htmlState"/>
+					<g:Label text="Busy" ui:field="lblState" styleName="{style.font_style}"/>
+				</g:HorizontalPanel>
+				</g:FocusPanel>
 			</g:at>
 		</g:AbsolutePanel>
 				<g:ScrollPanel height="259px">

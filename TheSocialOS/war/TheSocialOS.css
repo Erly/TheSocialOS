@@ -406,7 +406,7 @@ desktopbar {
 	background: white;
 	/*border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;*/
-
+}
 .sos-Window .dialogBottomCenter {
 	background: url(/thesocialos/gwt/cleano/images/hborder.png) repeat-x
 		0px -2945px;
@@ -523,10 +523,10 @@ center-label {
 	-webkit-border-radius:50px;
 	-khtml-border-radius:50px;
 	font-size:20px;
-	color:#fff;
+	color:#33FF00;
 	line-height:100px;
 	text-align:center;
-	background:#00FF00}
+	background:#33FF00;
 		}
 .chatMenu_circle_busy{
 	width:100px;
@@ -553,7 +553,7 @@ center-label {
 	color:#FF6000;
 	line-height:100px;
 	text-align:center;
-	background:#FF0000
+	background:#FF6000
 	}
 	
 .chatMenu_circle_offline{
@@ -567,7 +567,7 @@ center-label {
 	color:#ADADAD;
 	line-height:100px;
 	text-align:center;
-	background:#FF0000
+	background:#ADADAD
 	}
 		
 .chatBlock_background_red{

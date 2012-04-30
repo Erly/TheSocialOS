@@ -18,6 +18,8 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -39,8 +41,8 @@ public class ChatMenuView extends Composite implements Display {
 			case BUSY:
 				sb.appendHtmlConstant("<table class='chat_state_busy'  width= '100%'>");
 				break;
-			case CUSTOM:
-				sb.appendHtmlConstant("<table class='chat_state_custom'  width= '100%'>");
+			case AFK:
+				sb.appendHtmlConstant("<table class='chat_state_away'  width= '100%'>");
 				break;
 			case OFFLINE:
 				sb.appendHtmlConstant("<table class='chat_state_offline'  width= '100%'>");
@@ -69,6 +71,8 @@ public class ChatMenuView extends Composite implements Display {
 	@UiField Button button;
 	@UiField Label lblName;
 	@UiField Label lblSurname;
+	@UiField HTMLPanel htmlState;
+	@UiField FocusPanel FocusPanelState;
 	
 	public ChatMenuView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -89,12 +93,6 @@ public class ChatMenuView extends Composite implements Display {
 		// TODO Auto-generated method stub
 		return ConversationsPanel;
 		
-	}
-	
-	@Override
-	public Label getState() {
-		// TODO Auto-generated method stub
-		return lblState;
 	}
 	
 	@UiHandler("button")
@@ -127,5 +125,23 @@ public class ChatMenuView extends Composite implements Display {
 	public Label getSurname() {
 		// TODO Auto-generated method stub
 		return lblSurname;
+	}
+	
+	@Override
+	public Label getStateLabel() {
+		// TODO Auto-generated method stub
+		return lblState;
+	}
+	
+	@Override
+	public FocusPanel getStateFocus() {
+		// TODO Auto-generated method stub
+		return FocusPanelState;
+	}
+	
+	@Override
+	public HTMLPanel getStateCircle() {
+		// TODO Auto-generated method stub
+		return htmlState;
 	}
 }

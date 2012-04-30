@@ -1,8 +1,6 @@
 package net.thesocialos.client.chat.view;
 
 import net.thesocialos.client.app.ChatApp.Display;
-import net.thesocialos.client.service.ChatService;
-import net.thesocialos.client.service.ChatServiceAsync;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
@@ -13,37 +11,35 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ChatPanel extends Composite implements Display {
+public class ChatConversationView extends Composite implements Display {
 	
-	interface PanelUiBinder extends UiBinder<Widget, ChatPanel> {
+	interface PanelUiBinder extends UiBinder<Widget, ChatConversationView> {
 	}
 	
-	private final ChatServiceAsync chatService = GWT.create(ChatService.class);
 	private static PanelUiBinder uiBinder = GWT.create(PanelUiBinder.class);
 	@UiField Button btnSend;
-	
-	@UiField TextBox txtWrite;
 	@UiField(provided = true) CellList<Object> cellList = new CellList<Object>(new AbstractCell<Object>() {
 		@Override
 		public void render(Context context, Object value, SafeHtmlBuilder sb) {
 			// TODO
 		}
 	});
+	@UiField TextArea lblTextToSend;
 	
-	public ChatPanel() {
+	public ChatConversationView() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
 	}
 	
-	public ChatPanel(String firstName) {
+	public ChatConversationView(String firstName) {
 		initWidget(uiBinder.createAndBindUi(this));
 		
 	}
 	
 	@Override
-	public ChatPanel getChatPanel() {
+	public ChatConversationView getChatPanel() {
 		// TODO Auto-generated method stub
 		return this;
 	}
@@ -55,9 +51,9 @@ public class ChatPanel extends Composite implements Display {
 	}
 	
 	@Override
-	public TextBox getSendText() {
+	public TextArea getSendText() {
 		// TODO Auto-generated method stub
-		return txtWrite;
+		return lblTextToSend;
 	}
 	
 	@Override

@@ -2,7 +2,7 @@ package net.thesocialos.client.app;
 
 import java.util.List;
 
-import net.thesocialos.client.chat.view.ChatPanel;
+import net.thesocialos.client.chat.view.ChatConversationView;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ChatService;
 import net.thesocialos.client.service.ChatServiceAsync;
@@ -17,18 +17,17 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ChatApp implements IApplication {
 	
 	public interface Display {
 		
-		ChatPanel getChatPanel();
+		ChatConversationView getChatPanel();
 		
 		Button getSendButton();
 		
-		TextBox getSendText();
+		TextArea getSendText();
 		
 		TextArea getTextArea();
 	}
