@@ -42,6 +42,7 @@ public class SocialDeckPresenter implements Presenter {
 			public void onClick(ClickEvent event) {
 				String postText = display.getTextField().getValue();
 				// Tweet it
+				new TwitterAPI().post(postText);
 				// Post it in Facebook
 				display.getTextField().setValue("");
 			}

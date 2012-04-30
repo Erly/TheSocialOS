@@ -18,6 +18,7 @@ public class Columns implements Serializable {
 	private static final long serialVersionUID = 1246235297743607751L;
 	
 	public static final String HOME = "HOME";
+	public static final String MENTIONS = "MENTIONS";
 	public static final String USER = "USER";
 	
 	@Id Long id;
