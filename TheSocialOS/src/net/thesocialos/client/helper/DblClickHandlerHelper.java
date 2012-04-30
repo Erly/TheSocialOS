@@ -152,6 +152,7 @@ public class DblClickHandlerHelper {
 		popup.add(new Image(((MediaPicture) media).getUrl()));
 		popup.setAnimationEnabled(true);
 		popup.setGlassEnabled(true);
+		popup.getElement().getStyle().setZIndex(850);
 		popup.center();
 	}
 	
@@ -162,6 +163,7 @@ public class DblClickHandlerHelper {
 		popup.add(frame);
 		popup.setAnimationEnabled(true);
 		popup.setGlassEnabled(true);
+		popup.getElement().getStyle().setZIndex(850);
 		popup.center();
 	}
 	
