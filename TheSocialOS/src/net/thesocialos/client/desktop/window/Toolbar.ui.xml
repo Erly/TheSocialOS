@@ -9,8 +9,8 @@
 			left: -3px;
 			right: -3px;
 			width: 100%;
-			height: 40px;
-			background-color: lightgrey;
+			height: 30px;
+			background-color: rgba(25, 25, 25, 0.8);
 			overflow: hidden;
 			border-bottom-style: solid;
 			border-width: 1px;
@@ -22,16 +22,16 @@
 			padding-right: 5px;
 		}
 	</ui:style>
-	<g:SimplePanel width="100%" height="35px" addStyleNames="{style.panel}">
-		<g:HorizontalPanel width="120px" height="40px" verticalAlignment="ALIGN_MIDDLE">
+	<g:SimplePanel width="100%" height="29px" addStyleNames="{style.panel}">
+		<g:HorizontalPanel width="120px" height="34px" verticalAlignment="ALIGN_MIDDLE">
 			<g:FocusPanel ui:field="back" addStyleNames="{style.padding}">
-				<g:Image ui:field="backImage" url="themes/default/backward.png" width="" height="30px" />
+				<g:Image ui:field="backImage" url="themes/default/backward.png" width="" height="24px" />
 			</g:FocusPanel>
 			<g:FocusPanel ui:field="forward" addStyleNames="{style.padding}">
-				<g:Image ui:field="forwardImage" url="themes/default/forward.png" height="30px" />
+				<g:Image ui:field="forwardImage" url="themes/default/forward.png" height="24px" />
 			</g:FocusPanel>
 			<g:FocusPanel ui:field="refresh" addStyleNames="{style.padding}">
-				<g:Image ui:field="refreshImage" url="themes/default/refresh.png" height="30px" />
+				<g:Image ui:field="refreshImage" url="themes/default/refresh.png" height="24px" />
 			</g:FocusPanel>
 		</g:HorizontalPanel>
 	</g:SimplePanel>

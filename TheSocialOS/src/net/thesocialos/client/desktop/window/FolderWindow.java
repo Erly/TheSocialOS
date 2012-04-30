@@ -282,8 +282,8 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	private void bindToolbar(VerticalPanel vPanel) {
 		Toolbar toolbar = new Toolbar();
 		vPanel.add(toolbar);
-		toolbar.setHeight("40px");
-		vPanel.setCellHeight(toolbar, "40px");
+		toolbar.setHeight("30px");
+		vPanel.setCellHeight(toolbar, "30px");
 		// toolbar.setBackImage("./themes/default/backward.png");
 		// toolbar.setForwardImage("./themes/default/forward.png");
 		// toolbar.setRefreshImage("./themes/default/refresh.png");
@@ -331,7 +331,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 						
 					}
 				} else
-					new DblClickHandlerHelper(FolderWindow.this, parent.get(arrayPosition)).simulateDblClick();
+					new DblClickHandlerHelper(FolderWindow.this, mediaP).simulateDblClick();
 			}
 		});
 	}

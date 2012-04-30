@@ -319,6 +319,7 @@ public class TwitterAPI {
 			@Override
 			public void onSuccess(String result) {
 				// Window.alert(result);
+				loadColumns(twitterAccount);
 			}
 			
 			@Override

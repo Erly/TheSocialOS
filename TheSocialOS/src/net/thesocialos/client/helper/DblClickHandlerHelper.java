@@ -24,14 +24,13 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
+			prepareFolder();
 			openPicasaAlbum();
 		}
 	};
 	
 	private void openPicasaAlbum() {
-		prepareFolder();
 		new PicasaAPI().loadPicturesInFolder((PicasaAPI.Album) media, folder);
-		// TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 	}
 	
 	private DoubleClickHandler picasaPicture = new DoubleClickHandler() {
@@ -46,14 +45,13 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
+			prepareFolder();
 			openFacebookAlbum();
 		}
 	};
 	
 	private void openFacebookAlbum() {
-		prepareFolder();
 		new FacebookAPI().loadPicturesInFolder((FacebookAPI.Album) media, folder);
-		// TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 	}
 	
 	private DoubleClickHandler facebookPicture = new DoubleClickHandler() {
@@ -68,6 +66,7 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
+			prepareFolder();
 			openFlickrAlbum();
 		}
 	};
@@ -75,7 +74,6 @@ public class DblClickHandlerHelper {
 	private void openFlickrAlbum() {
 		prepareFolder();
 		new FlickrAPI().loadPicturesInFolder((FlickrAPI.Album) media, folder);
-		// TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 	}
 	
 	private DoubleClickHandler flickrPicture = new DoubleClickHandler() {
@@ -90,14 +88,13 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
+			prepareFolder();
 			openYoutubeAlbum();
 		}
 	};
 	
 	private void openYoutubeAlbum() {
-		prepareFolder();
 		new YoutubeAPI().loadPlaylistVideosInFolder((YoutubeAPI.Album) media, folder);
-		// TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
 	}
 	
 	private DoubleClickHandler youtubeVideo = new DoubleClickHandler() {
@@ -112,12 +109,12 @@ public class DblClickHandlerHelper {
 		
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
+			prepareFolder();
 			openYoutubeFolder();
 		}
 	};
 	
 	private void openYoutubeFolder() {
-		prepareFolder();
 		switch (((YoutubeAPI.Folder) media).getType()) {
 		case UPLOADS:
 			new YoutubeAPI().loadUploadsInFolder(folder);
