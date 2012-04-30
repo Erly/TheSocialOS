@@ -160,15 +160,13 @@ public class AppController implements ValueChangeHandler<String> {
 	 * to errors that can occur during the first load.
 	 */
 	public void go() {
-		if (History.getToken().contains("profile")) // This method can only be called when the web is loaded so
-													// lastToken is replaced by "" so the profile window is correctly
-													// loaded. Just in case there is some garbage in it.
+		if (History.getToken().contains("profile"))
+		// This method can only be called when the web is loaded so lastToken is replaced by "" so the profile window is
+		// correctly loaded. Just in case there is some garbage in it.
 			lastToken = "";
-		if (History.getToken().equals("")) { // If there is no History token, then go to the desktop
-			History.newItem("desktop");
-		} else {
+		if (History.getToken().equals("")) History.newItem("desktop");
+		else
 			History.fireCurrentHistoryState();
-		}
 	}
 	
 	private void loadProfile(Presenter presenter) {
@@ -214,36 +212,26 @@ public class AppController implements ValueChangeHandler<String> {
 				} else if (token.equals("desktop")) {
 					presenter = new DesktopPresenter(new SimpleEventBus[] { eventBus, chatEventBus }, new DesktopView());
 					presenter.go(TheSocialOS.get().root);
-				} else if (token.equals("profile")) {
-					loadProfile(presenter);
-				} else if (token.equals("profile-timeline")) {
-					loadProfileTimeline(presenter);
-				} else if (token.equals("profile-photos")) {
-					loadProfilePhotos(presenter);
-				} else if (token.equals("profile-music")) {
-					loadProfileMusic(presenter);
-				} else if (token.equals("profile-videos")) {
-					loadProfileVideos(presenter);
-				} else if (token.equals("profile-links")) {
-					loadProfileLinks(presenter);
-				} else if (token.equals("account-added")) {
-					// token = lastToken = "profile";
-					accountAdded();
-					// eventBus.fireEvent(new AccountAddedEvent());
-				} else {
+				} else if (token.equals("profile")) loadProfile(presenter);
+				else if (token.equals("profile-timeline")) loadProfileTimeline(presenter);
+				else if (token.equals("profile-photos")) loadProfilePhotos(presenter);
+				else if (token.equals("profile-music")) loadProfileMusic(presenter);
+				else if (token.equals("profile-videos")) loadProfileVideos(presenter);
+				else if (token.equals("profile-links")) loadProfileLinks(presenter);
+				else if (token.equals("account-added")) // token = lastToken = "profile";
+				accountAdded();
+				// eventBus.fireEvent(new AccountAddedEvent());
+				else
 					History.newItem("desktop");
-				}
-			} else {
-				if (token.equals("register")) {
-					presenter = new RegisterPresenter(eventBus, new RegisterView());
-					presenter.go(TheSocialOS.get().root);
-					return;
-				} else if (token.equals("login")) {
-					TheSocialOS.get().showLoginView();
-					return;
-				} else
-					History.newItem("login");
-			}
+			} else if (token.equals("register")) {
+				presenter = new RegisterPresenter(eventBus, new RegisterView());
+				presenter.go(TheSocialOS.get().root);
+				return;
+			} else if (token.equals("login")) {
+				TheSocialOS.get().showLoginView();
+				return;
+			} else
+				History.newItem("login");
 		}
 	}
 	
