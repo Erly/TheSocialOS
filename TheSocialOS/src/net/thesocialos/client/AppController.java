@@ -142,6 +142,7 @@ public class AppController implements ValueChangeHandler<String> {
 			
 			@Override
 			public void onChatUserDisconnected(ChApiChatUserDisconnect event) {
+				
 				System.out.println(CacheLayer.UserCalls.getUser().getEmail() + "  Contact Disconnected:  "
 						+ event.getContactUser());
 				

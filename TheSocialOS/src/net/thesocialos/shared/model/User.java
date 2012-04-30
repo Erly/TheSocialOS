@@ -33,7 +33,7 @@ public class User implements Serializable {
 	
 	@Unindexed private String tokenChannel; // The token of channelApi
 	
-	@Unindexed public boolean isConnected; // Is the user connected?
+	public boolean isConnected; // Is the user connected?
 	
 	@Unindexed public STATETYPE chatState = STATETYPE.OFFLINE;
 	

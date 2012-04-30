@@ -158,6 +158,11 @@
 	<servlet-class>net.thesocialos.server.LoadOnStart</servlet-class>
 	<load-on-startup>1</load-on-startup>
  </servlet>
+ 
+ 
+ <!-- Queues -->
+
+ 
   
   <!-- Default page to serve -->
   <welcome-file-list>

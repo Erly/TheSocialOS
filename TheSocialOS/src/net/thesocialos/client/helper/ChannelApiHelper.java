@@ -7,6 +7,8 @@ import net.thesocialos.client.channelApi.ChannelFactory;
 import net.thesocialos.client.channelApi.ChannelFactory.ChannelCreatedCallback;
 import net.thesocialos.client.channelApi.SocketError;
 import net.thesocialos.client.channelApi.SocketListener;
+import net.thesocialos.client.event.ChannelClose;
+import net.thesocialos.client.event.ChannelOpen;
 import net.thesocialos.client.service.ChannelService;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
 import net.thesocialos.shared.messages.ChannelTextMessage;
@@ -50,7 +52,9 @@ public class ChannelApiHelper {
 	}
 	
 	private static void fireEvent(String encodedString) {
+		System.out.println(encodedString);
 		ChApiEvent channelEvent = decodedString(encodedString);
+		// System.out.println(c);
 		if (channelEvent != null) TheSocialOS.getEventBus().fireEvent(channelEvent);
 		
 	}
@@ -78,7 +82,7 @@ public class ChannelApiHelper {
 	}
 	
 	private static void updateTokenChannel() {
-		if (retry != 0) return;
+		if (retry == 0) return;
 		CacheLayer.UserCalls.getNewChannelId(new AsyncCallback<Void>() {
 			
 			@Override
@@ -100,7 +104,7 @@ public class ChannelApiHelper {
 			updateTokenChannel();
 			return;
 		}
-		// System.out.println(user.getTokenChannel());
+		System.out.println(user.getTokenChannel());
 		ChannelFactory.createChannel(user.getTokenChannel(), new ChannelCreatedCallback() {
 			
 			@Override
@@ -109,8 +113,9 @@ public class ChannelApiHelper {
 					
 					@Override
 					public void onClose() {
+						TheSocialOS.getEventBus().fireEvent(new ChannelClose());
 						isChannelOpen = false;
-						// System.out.println("Socket Close");
+						System.out.println("Socket Close");
 					}
 					
 					@Override
@@ -128,6 +133,8 @@ public class ChannelApiHelper {
 					
 					@Override
 					public void onOpen() {
+						TheSocialOS.getEventBus().fireEvent(new ChannelOpen());
+						System.out.println("Canal abierto " + CacheLayer.UserCalls.getUser().getEmail());
 						isChannelOpen = true;
 						retry = 3;
 						
