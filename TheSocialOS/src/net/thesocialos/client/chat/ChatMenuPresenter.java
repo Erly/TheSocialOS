@@ -23,9 +23,12 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.CellPreviewEvent;
+import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.googlecode.objectify.Key;
 
 public class ChatMenuPresenter extends DesktopUnit {
 	
@@ -62,7 +65,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 	POPUPMenu popUPMenu;
 	
 	public ChatMenuPresenter(Display display, ChatManager chatManager) {
-		super(AppConstants.CHAT, 0, null, TypeUnit.STATIC);
+		super(AppConstants.CHAT, null, TypeUnit.STATIC, false);
 		typeUnit = TypeUnit.STATIC;
 		this.display = display;
 		this.chatManager = chatManager;
@@ -79,6 +82,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 		usersList.addAll(result.values());
 		dataProvider.flush();
 		dataProvider.refresh();
+		
 	}
 	
 	public void changeContactState(String userEmail, STATETYPE stateType, String customMSG) {
@@ -87,6 +91,8 @@ public class ChatMenuPresenter extends DesktopUnit {
 				dataProvider.getList().get(a).chatState = stateType;
 		dataProvider.flush();
 		dataProvider.refresh();
+		
+		Key.create(User.class, "perito@gmail.com");
 		
 	}
 	
@@ -116,6 +122,14 @@ public class ChatMenuPresenter extends DesktopUnit {
 	private void init() {
 		popUPMenu = new POPUPMenu();
 		handlers();
+		display.getCellContacts().addCellPreviewHandler(new Handler<User>() {
+			
+			@Override
+			public void onCellPreview(CellPreviewEvent<User> event) {
+				System.out.println(event.getNativeEvent().getType());
+				
+			}
+		});
 	}
 	
 	private void handlers() {

@@ -72,7 +72,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 	Display display;
 	
 	public SearchBoxPresenter(Display display) {
-		super(AppConstants.SEARCHBOX, 0, null, TypeUnit.INFO);
+		super(AppConstants.SEARCHBOX, null, TypeUnit.INFO, false);
 		this.display = display;
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
 			@Override

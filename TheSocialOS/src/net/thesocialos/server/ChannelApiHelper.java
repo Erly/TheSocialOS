@@ -25,9 +25,9 @@ public class ChannelApiHelper {
 	private static final String APP_KEY = "SOS-";
 	private static final Method dummyMethod = getDummyMethod();
 	// final names;
-	final static String sessionN = "session";
-	final static String userN = "user";
-	final static String OBJECITIFY = "objetify";
+	private final static String sessionN = "session";
+	private final static String userN = "user";
+	private final static String OBJECITIFY = "objetify";
 	
 	/**
 	 * Create a channel for a user. Returns the channel id that the client must use to connect for receiving push

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.chat.events.ChatCloseConversation;
 import net.thesocialos.client.chat.events.ChatEvent;
 import net.thesocialos.client.chat.events.ChatEventHandler;
@@ -13,18 +14,29 @@ import net.thesocialos.client.chat.events.ChatOpenConversation;
 import net.thesocialos.client.chat.events.ChatRecieveMessage;
 import net.thesocialos.client.chat.events.ChatSendMessage;
 import net.thesocialos.client.chat.events.ChatStateChange;
+import net.thesocialos.client.chat.view.ChatConversationView;
 import net.thesocialos.client.chat.view.ChatMenuView;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
+import net.thesocialos.client.desktop.window.Footer;
+import net.thesocialos.client.desktop.window.MyCaption;
+import net.thesocialos.client.helper.RPCXSRF;
+import net.thesocialos.client.service.ChatService;
+import net.thesocialos.client.service.ChatServiceAsync;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.model.User;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.WindowPanelLayout;
+import com.googlecode.objectify.Key;
 
 public class ChatManager {
 	
-	private HashMap<String, ChatDisplay> conversations;
+	private HashMap<String, ChatConversationPresenter> conversations = new HashMap<String, ChatConversationPresenter>();
 	
 	ChatMenuPresenter chatMenuPresenter;
+	
+	ChatServiceAsync chatService = GWT.create(ChatService.class);
 	
 	public ChatManager() {
 		chatMenuPresenter = new ChatMenuPresenter(new ChatMenuView(), this);
@@ -35,23 +47,49 @@ public class ChatManager {
 	}
 	
 	private void bindHandlers() {
+		
 		TheSocialOS.getEventBus().addHandler(ChatEvent.TYPE, new ChatEventHandler() {
 			
 			@Override
 			public void onSendMessage(ChatSendMessage event) {
-				// TODO Auto-generated method stub
+				sendText(event.getUserEmail(), event.getMessage());
 				
 			}
 			
 			@Override
-			public void onRecieveMessage(ChatRecieveMessage event) {
+			public void onRecieveMessage(final ChatRecieveMessage event) {
 				// TODO Auto-generated method stub
-				recieveMessage(getConversation(event.getUserEmail()), event.getText());
+				OpenWindow(event.getUserEmail(), new AsyncCallback<Boolean>() {
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onSuccess(Boolean result) {
+						// TODO Auto-generated method stub
+						sendMessage(event.getUserEmail(), event.getText());
+					}
+				});
 			}
 			
 			@Override
-			public void onConversationOpen(ChatOpenConversation event) {
-				// TODO Auto-generated method stub
+			public void onConversationOpen(final ChatOpenConversation event) {
+				OpenWindow(event.getUserEmail(), new AsyncCallback<Boolean>() {
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onSuccess(Boolean result) {
+						
+					}
+				});
 				
 			}
 			
@@ -94,7 +132,7 @@ public class ChatManager {
 		});
 	}
 	
-	private ChatDisplay getConversation(String email) {
+	private ChatConversationPresenter getConversation(String email) {
 		return conversations.get(email);
 	}
 	
@@ -103,13 +141,48 @@ public class ChatManager {
 	}
 	
 	/**
+	 * Create a new Window of chat
+	 * 
+	 * @param userEmail
+	 * @return
+	 */
+	private ChatConversationPresenter createConversation(String userEmail) {
+		return new ChatConversationPresenter(AppConstants.CHAT, "Chat to" + userEmail, null, userEmail,
+				new WindowPanelLayout(false, false, new MyCaption(), new Footer()), new ChatConversationView());
+	}
+	
+	/**
 	 * Send a message on one chat
 	 * 
 	 * @param display
 	 * @param message
 	 */
-	private void recieveMessage(ChatDisplay display, String message) {
-		if (display != null) display.setMessage(message);
+	private void sendMessage(String userEmail, String message) {
+		conversations.get(userEmail).writeMessage(message);
+	}
+	
+	private void OpenWindow(final String userEmail, final AsyncCallback<Boolean> callback) {
+		if (CacheLayer.ContactCalls.isContact(userEmail)) {
+			if (!conversations.containsKey(userEmail)) conversations.put(userEmail, createConversation(userEmail));
+			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(conversations.get(userEmail)));
+			callback.onSuccess(true);
+		}
+		CacheLayer.ContactCalls.updateContacts(new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result == false) callback.onSuccess(false);
+				if (!conversations.containsKey(userEmail)) conversations.put(userEmail, createConversation(userEmail));
+				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(conversations.get(userEmail)));
+				callback.onSuccess(true);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 	
@@ -138,4 +211,27 @@ public class ChatManager {
 		 */
 		
 	}
+	
+	private void sendText(String toContact, final String message) {
+		final Key<User> keyContact = Key.create(User.class, toContact);
+		new RPCXSRF<Void>(chatService) {
+			
+			@Override
+			protected void XSRFcallService(AsyncCallback<Void> cb) {
+				// TODO Auto-generated method stub
+				chatService.sendText(keyContact, message, cb);
+			}
+			
+			@Override
+			public void onSuccess(Void success) {
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println(caught);
+			}
+		}.retry(3);
+	}
+	
 }

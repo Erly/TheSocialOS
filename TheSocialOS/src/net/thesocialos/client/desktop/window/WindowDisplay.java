@@ -30,4 +30,8 @@ public interface WindowDisplay {
 	
 	void toFront();
 	
+	void hide();
+	
+	void show();
+	
 }

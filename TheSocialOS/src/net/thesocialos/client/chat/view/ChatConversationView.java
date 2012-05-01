@@ -1,6 +1,7 @@
 package net.thesocialos.client.chat.view;
 
-import net.thesocialos.client.app.ChatApp.Display;
+import net.thesocialos.client.chat.ChatConversationPresenter.Display;
+import net.thesocialos.shared.model.Lines;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
@@ -20,9 +21,9 @@ public class ChatConversationView extends Composite implements Display {
 	
 	private static PanelUiBinder uiBinder = GWT.create(PanelUiBinder.class);
 	@UiField Button btnSend;
-	@UiField(provided = true) CellList<Object> cellList = new CellList<Object>(new AbstractCell<Object>() {
+	@UiField(provided = true) CellList<Lines> cellList = new CellList<Lines>(new AbstractCell<Lines>() {
 		@Override
-		public void render(Context context, Object value, SafeHtmlBuilder sb) {
+		public void render(Context context, Lines value, SafeHtmlBuilder sb) {
 			// TODO
 		}
 	});
@@ -57,9 +58,9 @@ public class ChatConversationView extends Composite implements Display {
 	}
 	
 	@Override
-	public TextArea getTextArea() {
+	public CellList<Lines> getConversation() {
 		// TODO Auto-generated method stub
-		return null;
+		return cellList;
 	}
 	
 }

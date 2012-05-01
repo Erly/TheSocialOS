@@ -202,6 +202,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	 * {@link #add(Widget)}.
 	 */
 	public WindowPanelLayout() {
+		
 		this(false);
 	}
 	

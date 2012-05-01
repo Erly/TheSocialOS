@@ -99,7 +99,7 @@ public class ContactsPresenter extends DesktopUnit {
 	List<User> contactList;
 	
 	public ContactsPresenter(Display display) {
-		super(AppConstants.CONTACTS, 0, null, TypeUnit.INFO);
+		super(AppConstants.CONTACTS, null, TypeUnit.INFO, false);
 		this.display = display;
 		KEY_PROVIDER = new ProvidesKey<User>() {
 			@Override

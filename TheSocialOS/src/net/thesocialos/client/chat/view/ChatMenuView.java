@@ -76,10 +76,7 @@ public class ChatMenuView extends Composite implements Display {
 	
 	public ChatMenuView() {
 		initWidget(uiBinder.createAndBindUi(this));
-		// com.google.gwt.user.client.Element element = asWidget().getElement();
-		// ListChatBlocks chatBlocks = new ListChatBlocks();
-		// chatBlocks.setVisible(true);
-		// DOM.appendChild(element, chatBlocks.asWidget().getElement());
+		
 	}
 	
 	@Override

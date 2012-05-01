@@ -10,6 +10,7 @@ import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -174,4 +175,17 @@ public class UserHelper extends RemoteServiceServlet {
 		return true;
 	}
 	
+	/**
+	 * Check if the contact is your friend
+	 * 
+	 * @param httpSession
+	 * @param ofy
+	 * @param contactUser
+	 * @return
+	 */
+	public static synchronized boolean isYourFriend(HttpSession httpSession, Objectify ofy, Key<User> contactUser) {
+		User user = ofy.get(User.class, (String) httpSession.getAttribute(USERN));
+		return user.getContacts().contains(contactUser);
+		
+	}
 }

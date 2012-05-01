@@ -1,7 +1,7 @@
 // $codepro.audit.disable unnecessaryImport
 package net.thesocialos.client.desktop;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
@@ -22,7 +22,7 @@ public class DesktopManager {
 	AbsolutePanel absolutePanelScreen;
 	AbsolutePanel absolutePanelDesktop;
 	
-	LinkedHashMap<Integer, HashMap<Integer, DesktopUnit>> linkedDesktopUnit; // Desde ventanas hasta formularios
+	LinkedHashMap<Integer, ArrayList<DesktopUnit>> linkedDesktopUnit; // Desde ventanas hasta formularios
 	
 	DesktopUnit lastDesktopUnit = null;
 	
@@ -32,7 +32,7 @@ public class DesktopManager {
 		absolutePanelScreen = Screen;
 		absolutePanelDesktop = Desktop;
 		this.eventBus = eventBus;
-		linkedDesktopUnit = new LinkedHashMap<Integer, HashMap<Integer, DesktopUnit>>();
+		linkedDesktopUnit = new LinkedHashMap<Integer, ArrayList<DesktopUnit>>();
 		handlers();
 		
 		/*
@@ -56,9 +56,9 @@ public class DesktopManager {
 			Timer resizeTimer = new Timer() {
 				@Override
 				public void run() {
-					Iterator<HashMap<Integer, DesktopUnit>> desktopIterator = linkedDesktopUnit.values().iterator();
+					Iterator<ArrayList<DesktopUnit>> desktopIterator = linkedDesktopUnit.values().iterator();
 					while (desktopIterator.hasNext()) {
-						Iterator<DesktopUnit> desktopUnitIterator = desktopIterator.next().values().iterator();
+						Iterator<DesktopUnit> desktopUnitIterator = desktopIterator.next().iterator();
 						while (desktopUnitIterator.hasNext())
 							checkWindowPosition(desktopUnitIterator.next());
 					}
@@ -89,15 +89,21 @@ public class DesktopManager {
 			
 			if (linkedDesktopUnit.containsKey(desktopUnit.getProgramID())) {
 				if (desktopUnit.isSubApplication()) {
-					HashMap<Integer, DesktopUnit> hashDesktopUnits = linkedDesktopUnit.get(desktopUnit.getProgramID());
-					if (hashDesktopUnits.containsKey(desktopUnit.getSubID())) return false;
-					else
-						hashDesktopUnits.put(desktopUnit.getSubID(), desktopUnit);
+					ArrayList<DesktopUnit> hashDesktopUnits = linkedDesktopUnit.get(desktopUnit.getProgramID());
+					if (hashDesktopUnits.contains(desktopUnit)) {
+						setWindowsZPositions(desktopUnit);
+						return true;
+					} else
+						hashDesktopUnits.add(desktopUnit);
+					
 				} else
-					return false;
+					setWindowsZPositions(desktopUnit);
+				return true;
 			} else {
-				HashMap<Integer, DesktopUnit> desktopUnits = new HashMap<Integer, DesktopUnit>();
-				desktopUnits.put(desktopUnit.getSubID(), desktopUnit);
+				if (desktopUnit.isSubApplication()) return false;
+				ArrayList<DesktopUnit> desktopUnits = new ArrayList<DesktopUnit>();
+				
+				desktopUnits.add(desktopUnit);
 				linkedDesktopUnit.put(desktopUnit.getID(), desktopUnits);
 			}
 			lastDesktopUnit = desktopUnit;
@@ -116,17 +122,16 @@ public class DesktopManager {
 			
 			if (linkedDesktopUnit.containsKey(desktopUnit.getProgramID())) {
 				if (desktopUnit.isSubApplication()) {
-					if (linkedDesktopUnit.get(desktopUnit.getProgramID()).containsKey(desktopUnit.getSubID())) {
+					if (linkedDesktopUnit.get(desktopUnit.getProgramID()).contains(desktopUnit)) {
 						linkedDesktopUnit.get(desktopUnit.getProgramID()).remove(desktopUnit);
 						desktopUnit.close(absolutePanelScreen);
 					}
 				} else {
-					Iterator<DesktopUnit> iDesktopUnit = linkedDesktopUnit.get(desktopUnit.getProgramID()).values()
-							.iterator();
+					Iterator<DesktopUnit> iDesktopUnit = linkedDesktopUnit.get(desktopUnit.getProgramID()).iterator();
 					while (iDesktopUnit.hasNext()) {
 						DesktopUnit deskUnit = iDesktopUnit.next();
 						deskUnit.close(absolutePanelScreen);
-						linkedDesktopUnit.get(desktopUnit.getProgramID()).remove(deskUnit.getSubID());
+						linkedDesktopUnit.get(desktopUnit.getProgramID()).remove(deskUnit);
 					}
 					linkedDesktopUnit.remove(desktopUnit.getProgramID());
 				}
@@ -216,9 +221,9 @@ public class DesktopManager {
 	}
 	
 	private void setWindowsZPositions(DesktopUnit desktopUnit) {
-		Iterator<HashMap<Integer, DesktopUnit>> desktopIterator = linkedDesktopUnit.values().iterator();
+		Iterator<ArrayList<DesktopUnit>> desktopIterator = linkedDesktopUnit.values().iterator();
 		while (desktopIterator.hasNext()) {
-			Iterator<DesktopUnit> desktopUnitIterator = desktopIterator.next().values().iterator();
+			Iterator<DesktopUnit> desktopUnitIterator = desktopIterator.next().iterator();
 			while (desktopUnitIterator.hasNext())
 				desktopUnitIterator.next().toBack();
 		}

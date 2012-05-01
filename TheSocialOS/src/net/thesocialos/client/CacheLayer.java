@@ -43,6 +43,16 @@ public class CacheLayer {
 	 */
 	public static class ContactCalls {
 		/**
+		 * CHECK if this user has in your contacts
+		 * 
+		 * @param emailTocontact
+		 * @return true if is | false if not
+		 */
+		public static boolean isContact(String emailTocontact) {
+			return contacts.containsKey(emailTocontact);
+		}
+		
+		/**
 		 * Accept a contact
 		 * 
 		 * @param contact

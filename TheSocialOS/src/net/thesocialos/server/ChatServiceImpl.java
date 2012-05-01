@@ -1,17 +1,21 @@
 package net.thesocialos.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import net.thesocialos.server.utils.ChannelServer;
 import net.thesocialos.shared.Chat;
 import net.thesocialos.shared.LineChat;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatRecvMessage;
 import net.thesocialos.shared.messages.MessageChat;
+import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 public class ChatServiceImpl extends RemoteServiceServlet implements net.thesocialos.client.service.ChatService {
 	
@@ -76,9 +80,12 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 	}
 	
 	@Override
-	public void sendText(String contactEmail, String message) {
-		// TODO Auto-generated method stub
+	public void sendText(Key<User> contactUser, String message) {
+		Objectify ofy = ObjectifyService.begin();
+		if (UserHelper.isYourFriend(perThreadRequest.get().getSession(), ofy, contactUser))
+			ChannelApiHelper.sendMessage(contactUser.getName(), ChannelApiHelper
+					.encodeMessage(new ChApiChatRecvMessage(new Date(), UserHelper.getUserHttpSession(perThreadRequest
+							.get().getSession()), message)));
 		
 	}
-	
 }

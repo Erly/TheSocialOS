@@ -24,7 +24,7 @@ public class ChatSendMessage extends ChatEvent {
 	/**
 	 * @return the text
 	 */
-	public String getText() {
+	public String getMessage() {
 		return text;
 	}
 	

@@ -94,7 +94,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	}
 	
 	public FolderWindow(WindowPanelLayout display, int idProgram) {
-		super(idProgram, 0, display, TypeUnit.WINDOW);
+		super(idProgram, display, TypeUnit.WINDOW, false);
 		title = "Prueba";
 		x = 1;
 		y = 30;
@@ -184,7 +184,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	
 	@Override
 	public void close(AbsolutePanel absolutePanel) {
-		absolutePanel.remove(display.getWindow());
+		absolutePanel.remove(windowDisplay.getWindow());
 		
 	}
 	
@@ -223,9 +223,9 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
-		show();
-		absolutePanel.add(display.getWindow(), x, y);
-		display.getWindow().setVisible(true);
+		initWindow();
+		absolutePanel.add(windowDisplay.getWindow(), x, y);
+		windowDisplay.getWindow().setVisible(true);
 		
 	}
 	
@@ -241,14 +241,14 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		
 	}
 	
-	private void show() {
+	private void initWindow() {
 		
-		display.setWindowTitle(title);
+		windowDisplay.setWindowTitle(title);
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		vPanel.setSize("100%", "100%");
 		
-		display.getWindow().add(vPanel);
+		windowDisplay.getWindow().add(vPanel);
 		if (!hasAlbums && null != contentType) {
 			infoPanel.setText(TheSocialOS.getMessages().folder_NoContent(contentType));
 			infoPanel.getElement().getStyle().setPosition(Position.RELATIVE);

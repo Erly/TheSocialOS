@@ -11,7 +11,6 @@ public abstract class DesktopUnit {
 	}
 	
 	private int programID;
-	private int programSubID;
 	private boolean isSubApplication = false;
 	
 	protected int x;
@@ -30,28 +29,25 @@ public abstract class DesktopUnit {
 	private int beforeY = 0;
 	
 	protected TypeUnit typeUnit;
-	protected WindowDisplay display;
+	protected WindowDisplay windowDisplay;
 	
-	public DesktopUnit(int programID, int programSubID, WindowDisplay display, TypeUnit typeUnit) {
+	public DesktopUnit(int programID, WindowDisplay display, TypeUnit typeUnit, boolean isSubApplication) {
 		this.programID = programID;
-		if (programSubID != 0) {
-			isSubApplication = true;
-			this.programSubID = programSubID;
-		}
-		this.display = display;
+		windowDisplay = display;
 		this.typeUnit = typeUnit;
+		this.isSubApplication = isSubApplication;
 	}
 	
 	public abstract void close(AbsolutePanel absolutePanel);
 	
 	public int getAbsoluteLeft() {
 		
-		return display.getXposition();
+		return windowDisplay.getXposition();
 	}
 	
 	public int getAbsoluteTop() {
 		
-		return display.getYPosition();
+		return windowDisplay.getYPosition();
 	}
 	
 	/**
@@ -61,7 +57,7 @@ public abstract class DesktopUnit {
 	 */
 	public int getHeight() {
 		
-		return display.getHeight();
+		return windowDisplay.getHeight();
 	}
 	
 	/**
@@ -74,21 +70,12 @@ public abstract class DesktopUnit {
 	}
 	
 	/**
-	 * Return the identification of the subapplication
-	 * 
-	 * @return
-	 */
-	public int getSubID() {
-		return programSubID;
-	}
-	
-	/**
 	 * Return Width of the window in pixels
 	 * 
 	 * @return int
 	 */
 	public int getWidth() {
-		return display.getwidth();
+		return windowDisplay.getwidth();
 	}
 	
 	public abstract int getZposition();
@@ -141,19 +128,19 @@ public abstract class DesktopUnit {
 	public void setMaximized(Boolean maximized, int width, int height, int top, int left) {
 		if (this.maximized) {
 			
-			display.setPosition(beforeX, beforeY);
-			display.setSize(beforeWidth, beforeHeight);
+			windowDisplay.setPosition(beforeX, beforeY);
+			windowDisplay.setSize(beforeWidth, beforeHeight);
 			this.maximized = false;
-			display.setMaximized(false);
+			windowDisplay.setMaximized(false);
 		} else {
 			this.maximized = maximized;
-			display.setMaximized(true);
-			beforeX = display.getXposition();
-			beforeY = display.getYPosition();
-			beforeHeight = display.getHeight();
-			beforeWidth = display.getwidth();
-			display.setPosition(left, top);
-			display.setSize(width, height);
+			windowDisplay.setMaximized(true);
+			beforeX = windowDisplay.getXposition();
+			beforeY = windowDisplay.getYPosition();
+			beforeHeight = windowDisplay.getHeight();
+			beforeWidth = windowDisplay.getwidth();
+			windowDisplay.setPosition(left, top);
+			windowDisplay.setSize(width, height);
 		}
 		
 	}
@@ -166,11 +153,11 @@ public abstract class DesktopUnit {
 	public void setMinimized(Boolean minimized) {
 		
 		this.minimized = minimized;
-		display.setMinimized(minimized);
+		windowDisplay.setMinimized(minimized);
 	}
 	
 	public void setPosition(int x, int y) {
-		display.setPosition(x, y);
+		windowDisplay.setPosition(x, y);
 	}
 	
 	/**
@@ -183,15 +170,15 @@ public abstract class DesktopUnit {
 	 */
 	public void setSize(int width, int height) {
 		
-		display.setSize(width, height);
+		windowDisplay.setSize(width, height);
 	}
 	
 	public void toBack() {
-		display.toback();
+		windowDisplay.toback();
 	}
 	
 	public void toFront() {
-		display.toFront();
+		windowDisplay.toFront();
 	}
 	
 	public abstract void toZPosition(int position);
@@ -204,17 +191,24 @@ public abstract class DesktopUnit {
 	}
 	
 	/**
-	 * @return the programSubID
-	 */
-	public Integer getProgramSubID() {
-		return programSubID;
-	}
-	
-	/**
 	 * @return the isSubApplication
 	 */
 	public boolean isSubApplication() {
 		return isSubApplication;
+	}
+	
+	/**
+	 * Hide the desktop Unit
+	 */
+	public void hide() {
+		windowDisplay.hide();
+	}
+	
+	/**
+	 * Show the desktop Unit
+	 */
+	protected void show() {
+		windowDisplay.show();
 	}
 	
 }
