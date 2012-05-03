@@ -1,6 +1,7 @@
 package net.thesocialos.client.helper;
 
 import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.api.DriveAPI;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.Media;
@@ -12,6 +13,7 @@ import net.thesocialos.client.desktop.window.FolderWindow;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Image;
@@ -114,6 +116,14 @@ public class DblClickHandlerHelper {
 		}
 	};
 	
+	private DoubleClickHandler driveFile = new DoubleClickHandler() {
+		
+		@Override
+		public void onDoubleClick(DoubleClickEvent event) {
+			Window.alert(media.getName());
+		}
+	};
+	
 	private void openYoutubeFolder() {
 		switch (((YoutubeAPI.Folder) media).getType()) {
 		case UPLOADS:
@@ -144,6 +154,7 @@ public class DblClickHandlerHelper {
 		else if (media instanceof YoutubeAPI.Album) return youtubeAlbum;
 		else if (media instanceof YoutubeAPI.Video) return youtubeVideo;
 		else if (media instanceof YoutubeAPI.Folder) return youtubeFolder;
+		else if (media instanceof DriveAPI.File) return driveFile;
 		return null;
 	}
 	

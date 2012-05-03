@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.api.DriveAPI;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.Media;
@@ -227,6 +228,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		else if (media instanceof YoutubeAPI.Album) typeAndService = new TypeAndService(TYPE.ALBUM, SERVICE.YOUTUBE);
 		else if (media instanceof YoutubeAPI.Video) typeAndService = new TypeAndService(TYPE.VIDEO, SERVICE.YOUTUBE);
 		else if (media instanceof YoutubeAPI.Folder) typeAndService = new TypeAndService(TYPE.FOLDER, SERVICE.YOUTUBE);
+		else if (media instanceof DriveAPI.File) typeAndService = new TypeAndService(TYPE.OTHER, SERVICE.DRIVE);
 		return typeAndService;
 	}
 	
@@ -330,9 +332,8 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 							.reloadVideoFolders(FolderWindow.this);
 					else if (mediaP.getID().equalsIgnoreCase(MediaParent.MUSIC)) {
 						
-					} else if (mediaP.getID().equalsIgnoreCase(MediaParent.OTHER)) {
-						
-					}
+					} else if (mediaP.getID().equalsIgnoreCase(MediaParent.OTHER))
+						MediaHelper.reloadOtherFolders(FolderWindow.this);
 				} else
 					new DblClickHandlerHelper(FolderWindow.this, mediaP).simulateDblClick();
 			}

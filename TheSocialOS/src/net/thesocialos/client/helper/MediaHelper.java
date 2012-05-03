@@ -3,6 +3,7 @@ package net.thesocialos.client.helper;
 import java.util.HashSet;
 
 import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.api.DriveAPI;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
 import net.thesocialos.client.api.Media;
@@ -46,6 +47,16 @@ public class MediaHelper {
 	}
 	
 	/**
+	 * Loads the Drive folders (if there is any) in the passed FolderWindow
+	 * 
+	 * @param folder
+	 *            The FolderWindow in which the albums are gonna be loaded
+	 */
+	private static void loadDriveFolders(final FolderWindow folder) {
+		new DriveAPI().loadFoldersInFolder(folder);
+	}
+	
+	/**
 	 * Loads the photo albums in a new FolderWindow
 	 */
 	protected static void loadPictureAlbums() {
@@ -80,5 +91,16 @@ public class MediaHelper {
 		mediaSet.add(yt.createFolder(YoutubeAPI.Folder.TYPE.FAVORITES));
 		
 		folder.addMedia(mediaSet);
+	}
+	
+	public static void loadOtherFolders() {
+		FolderWindow folder = new FolderWindow("Other documents", FolderWindow.OTHER, AppConstants.OTHERFOLDERS);
+		reloadOtherFolders(folder);
+		folder.setParent(new MediaParent(MediaParent.OTHER, "Other documents"));
+		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(folder));
+	}
+	
+	public static void reloadOtherFolders(FolderWindow folder) {
+		loadDriveFolders(folder);
 	}
 }

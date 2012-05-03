@@ -65,10 +65,4 @@ public class OAuth {
 		return $wnd.makeSignedRequest(key, secret, accessToken,
 				accessTokenSecret, url);
 	}-*/;
-	
-	public native static String signPostRequest(String key, String secret, String accessToken,
-			String accessTokenSecret, String url, String status) /*-{
-		return $wnd.makeSignedPostRequest(key, secret, accessToken,
-				accessTokenSecret, url, status);
-	}-*/;
 }

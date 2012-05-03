@@ -65,29 +65,6 @@
     	}
     </script>
     
-    <script type="text/javascript">
-    	var makeSignedPostRequest = function(ck, cks, tk, tks, encodeUrl, tweet) {
-    		//var encodedStatus = OAuth.percentEncode(tweet);
-    		var accessor = {
-    			consumerKey : ck,
-    			consumerSecret: cks,
-    			token: tk,
-    			tokenSecret: tks};
-    		var message = {
-    			method: "POST",
-    			action: encodeUrl,
-   				parameters: [
-   				    ['status', tweet],
-   					['oauth_signature_method', 'HMAC-SHA1'],
-   					['format', 'json']
-   				]
-   			};
-   			
-   			OAuth.completeRequest(message, accessor);
-   			return OAuth.addToURL(message.action, message.parameters);
-    	}
-    </script>
-    
     <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
     <noscript>
       <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">

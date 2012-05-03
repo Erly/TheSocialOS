@@ -123,7 +123,21 @@ public class OauthCallback extends HttpServlet {
 		
 		try {
 			PrintWriter writer = response.getWriter();
-			writer.write("<center><Button onClick=\"javascript:window.opener.location.hash='account-added';window.close();\">Close window</Button></center>");
+			response.setContentType("text/html");
+			writer.println("<html>");
+			writer.println("<head>");
+			writer.println("<TITLE>");
+			writer.println("Account Added");
+			writer.println("</TITLE>");
+			writer.println("<SCRIPT LANGUAGE=javascript>");
+			writer.println("<!--");
+			writer.println("function window_onload() { window.opener.location.hash='account-added'; window.close(); } ");
+			writer.println("//-->");
+			writer.println("</SCRIPT>");
+			writer.println("</head>");
+			writer.println("<body onload=window_onload()>");
+			writer.println("</body>");
+			writer.println("</html>");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

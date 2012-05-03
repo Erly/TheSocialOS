@@ -20,9 +20,8 @@ public class AppIconHelper {
 		other.setTitle(TheSocialOS.getConstants().other());
 		
 		Icon[] folders = { pictures, videos, music, other };
-		for (int i = 0; i < folders.length; i++) {
+		for (int i = 0; i < folders.length; i++)
 			desktop.add(folders[i], 10, 10 + i * 90);
-		}
 		
 		pictures.addDoubleClickHandler(new DoubleClickHandler() {
 			
@@ -37,6 +36,13 @@ public class AppIconHelper {
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
 				MediaHelper.loadVideoFolders();
+			}
+		});
+		other.addDoubleClickHandler(new DoubleClickHandler() {
+			
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				MediaHelper.loadOtherFolders();
 			}
 		});
 	}
