@@ -1,8 +1,13 @@
 package net.thesocialos.client;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import net.thesocialos.client.event.ContactsChangeEvent;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ContacsService;
 import net.thesocialos.client.service.ContacsServiceAsync;
@@ -22,7 +27,7 @@ import com.googlecode.objectify.Key;
 public class CacheLayer {
 	
 	static User user = null;
-	private static Map<String, User> contacts = new LinkedHashMap<String, User>();
+	private static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
 	
 	// Usuarios de la aplicaci�n
 	private static Map<String, User> users = new LinkedHashMap<String, User>();
@@ -42,14 +47,15 @@ public class CacheLayer {
 	 * @author vssnake
 	 */
 	public static class ContactCalls {
+		
 		/**
 		 * CHECK if this user has in your contacts
 		 * 
 		 * @param emailTocontact
 		 * @return true if is | false if not
 		 */
-		public static boolean isContact(String emailTocontact) {
-			return contacts.containsKey(emailTocontact);
+		public static boolean isContact(Key<User> userKey) {
+			return contacts.containsKey(userKey);
 		}
 		
 		/**
@@ -140,7 +146,7 @@ public class CacheLayer {
 			}.retry(3);
 		}
 		
-		public static User getContact(String email) {
+		public static Key<User> getContactKey(String email) {
 			return null;
 		}
 		
@@ -183,8 +189,8 @@ public class CacheLayer {
 		 * 
 		 * @param callback
 		 */
-		static private void getContacts(final AsyncCallback<Map<String, User>> callback) {
-			new RPCXSRF<Map<String, User>>(contactService) {
+		static private void getContacts(final AsyncCallback<Map<Key<User>, User>> callback) {
+			new RPCXSRF<Map<Key<User>, User>>(contactService) {
 				
 				@Override
 				public void onFailure(Throwable caught) {
@@ -192,13 +198,13 @@ public class CacheLayer {
 				}
 				
 				@Override
-				public void onSuccess(Map<String, User> contacts) {
+				public void onSuccess(Map<Key<User>, User> contacts) {
 					CacheLayer.contacts = contacts;
 					callback.onSuccess(contacts);
 				}
 				
 				@Override
-				protected void XSRFcallService(AsyncCallback<Map<String, User>> cb) {
+				protected void XSRFcallService(AsyncCallback<Map<Key<User>, User>> cb) {
 					contactService.getFriendsList(cb);
 				}
 				
@@ -212,10 +218,52 @@ public class CacheLayer {
 		 *            if true si se quiere cojer los cacheados
 		 * @param callback
 		 */
-		public static void getContacts(boolean cached, AsyncCallback<Map<String, User>> callback) {
+		public static void getContacts(boolean cached, AsyncCallback<Map<Key<User>, User>> callback) {
 			if (contacts.isEmpty() || !cached) ContactCalls.getContacts(callback);
 			else
 				callback.onSuccess(contacts);
+		}
+		
+		public static void getContactsWithoutKey(boolean cached, final AsyncCallback<Map<String, User>> callback) {
+			if (contacts.isEmpty() || !cached) ContactCalls.getContacts(new AsyncCallback<Map<Key<User>, User>>() {
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onSuccess(Map<Key<User>, User> result) {
+					Set<Entry<Key<User>, User>> set = result.entrySet();
+					Iterator<Entry<Key<User>, User>> i = set.iterator();
+					Map<String, User> resultWhitoutKey = new HashMap<String, User>();
+					
+					while (i.hasNext()) {
+						Entry<Key<User>, User> me = i.next();
+						
+						User user = me.getValue();
+						user.setOwnKey(me.getKey());
+						resultWhitoutKey.put(user.getEmail(), user);
+					}
+					callback.onSuccess(resultWhitoutKey);
+					
+				}
+			});
+			else {
+				Set<Entry<Key<User>, User>> set = contacts.entrySet();
+				Iterator<Entry<Key<User>, User>> i = set.iterator();
+				Map<String, User> resultWhitoutKey = new HashMap<String, User>();
+				
+				while (i.hasNext()) {
+					Entry<Key<User>, User> me = i.next();
+					
+					User user = me.getValue();
+					user.setOwnKey(me.getKey());
+					resultWhitoutKey.put(user.getEmail(), user);
+				}
+				callback.onSuccess(resultWhitoutKey);
+			}
 		}
 		
 		/**
@@ -274,7 +322,7 @@ public class CacheLayer {
 		}
 		
 		public static void updateContacts(final AsyncCallback<Boolean> callback) {
-			getContacts(new AsyncCallback<Map<String, User>>() {
+			getContacts(new AsyncCallback<Map<Key<User>, User>>() {
 				
 				@Override
 				public void onFailure(Throwable caught) {
@@ -283,10 +331,13 @@ public class CacheLayer {
 				}
 				
 				@Override
-				public void onSuccess(Map<String, User> result) {
+				public void onSuccess(Map<Key<User>, User> result) {
 					
 					contacts = result;
-					if (callback != null) callback.onSuccess(true);
+					if (callback != null) {
+						TheSocialOS.getEventBus().fireEvent(new ContactsChangeEvent());
+						callback.onSuccess(true);
+					}
 				}
 			});
 		}

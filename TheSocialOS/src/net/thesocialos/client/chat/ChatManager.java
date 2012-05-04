@@ -19,10 +19,13 @@ import net.thesocialos.client.chat.view.ChatMenuView;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.window.Footer;
 import net.thesocialos.client.desktop.window.MyCaption;
+import net.thesocialos.client.event.ContactsChangeEvent;
+import net.thesocialos.client.event.ContactsChangeEventHandler;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ChatService;
 import net.thesocialos.client.service.ChatServiceAsync;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
+import net.thesocialos.shared.model.Lines;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
@@ -32,7 +35,7 @@ import com.googlecode.objectify.Key;
 
 public class ChatManager {
 	
-	private HashMap<String, ChatConversationPresenter> conversations = new HashMap<String, ChatConversationPresenter>();
+	private HashMap<Key<User>, ChatConversationPresenter> conversations = new HashMap<Key<User>, ChatConversationPresenter>();
 	
 	ChatMenuPresenter chatMenuPresenter;
 	
@@ -52,32 +55,18 @@ public class ChatManager {
 			
 			@Override
 			public void onSendMessage(ChatSendMessage event) {
-				sendText(event.getUserEmail(), event.getMessage());
+				sendText(event.getUserKey(), event.getMessage());
 				
 			}
 			
 			@Override
 			public void onRecieveMessage(final ChatRecieveMessage event) {
-				// TODO Auto-generated method stub
-				OpenWindow(event.getUserEmail(), new AsyncCallback<Boolean>() {
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void onSuccess(Boolean result) {
-						// TODO Auto-generated method stub
-						sendMessage(event.getUserEmail(), event.getText());
-					}
-				});
+				sendMessage(event.getUserKey(), event.getLine());
 			}
 			
 			@Override
 			public void onConversationOpen(final ChatOpenConversation event) {
-				OpenWindow(event.getUserEmail(), new AsyncCallback<Boolean>() {
+				OpenWindow(event.getUserKey(), new AsyncCallback<Boolean>() {
 					
 					@Override
 					public void onFailure(Throwable caught) {
@@ -109,15 +98,23 @@ public class ChatManager {
 			public void onChangeState(ChatStateChange event) {
 				// TODO Auto-generated method stub
 				chatMenuPresenter.changeContactState(event.getUserEmail(), event.getStateType(), event.getCustomState());
-				// changeState(event.getUserEmail(), event.getStateType(), event.getCustomState());
+				// changeState(event.getUserEmail(
 			}
+		});
+		
+		TheSocialOS.getEventBus().addHandler(ContactsChangeEvent.TYPE, new ContactsChangeEventHandler() {
 			
+			@Override
+			public void onContactsChange(ContactsChangeEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 	}
 	
 	private void getContacts() {
 		
-		CacheLayer.ContactCalls.getContacts(true, new AsyncCallback<Map<String, User>>() {
+		CacheLayer.ContactCalls.getContactsWithoutKey(true, new AsyncCallback<Map<String, User>>() {
 			
 			@Override
 			public void onSuccess(Map<String, User> result) {
@@ -146,43 +143,74 @@ public class ChatManager {
 	 * @param userEmail
 	 * @return
 	 */
-	private ChatConversationPresenter createConversation(String userEmail) {
-		return new ChatConversationPresenter(AppConstants.CHAT, "Chat to" + userEmail, null, userEmail,
+	private ChatConversationPresenter createConversation(Key<User> userKey) {
+		return new ChatConversationPresenter(AppConstants.CHAT, "Chat to" + userKey.getName(), null, userKey,
 				new WindowPanelLayout(false, false, new MyCaption(), new Footer()), new ChatConversationView());
 	}
 	
 	/**
-	 * Send a message on one chat
+	 * Send a message in one chat
 	 * 
 	 * @param display
 	 * @param message
 	 */
-	private void sendMessage(String userEmail, String message) {
-		conversations.get(userEmail).writeMessage(message);
-	}
-	
-	private void OpenWindow(final String userEmail, final AsyncCallback<Boolean> callback) {
-		if (CacheLayer.ContactCalls.isContact(userEmail)) {
-			if (!conversations.containsKey(userEmail)) conversations.put(userEmail, createConversation(userEmail));
-			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(conversations.get(userEmail)));
-			callback.onSuccess(true);
-		}
-		CacheLayer.ContactCalls.updateContacts(new AsyncCallback<Boolean>() {
-			
-			@Override
-			public void onSuccess(Boolean result) {
-				if (result == false) callback.onSuccess(false);
-				if (!conversations.containsKey(userEmail)) conversations.put(userEmail, createConversation(userEmail));
-				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(conversations.get(userEmail)));
-				callback.onSuccess(true);
-			}
+	private void sendMessage(final Key<User> contact, final Lines line) {
+		
+		OpenWindow(contact, new AsyncCallback<Boolean>() {
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 				
 			}
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				
+				if (result) conversations.get(contact).writeMessage(line);
+			}
 		});
+		
+	}
+	
+	private void OpenWindow(final Key<User> contact, final AsyncCallback<Boolean> callback) {
+		if (CacheLayer.ContactCalls.isContact(contact)) {
+			if (conversations.containsKey(contact)) {
+				ChatConversationPresenter conversationPresenter = conversations.get(contact);
+				if (conversationPresenter.isOpen) conversationPresenter.setOnTop();
+				else {
+					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(conversationPresenter));
+					callback.onSuccess(true);
+				}
+				
+			} else {
+				ChatConversationPresenter chatConversation = createConversation(contact);
+				conversations.put(contact, chatConversation);
+				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatConversation));
+				callback.onSuccess(true);
+			}
+			
+		} else
+			CacheLayer.ContactCalls.updateContacts(new AsyncCallback<Boolean>() {
+				
+				@Override
+				public void onSuccess(Boolean result) {
+					if (result == false) callback.onSuccess(false);
+					if (CacheLayer.ContactCalls.isContact(contact))
+						if (conversations.containsKey(contact)) conversations.get(contact).setOnTop();
+						else {
+							ChatConversationPresenter chatConversation = createConversation(contact);
+							conversations.put(contact, chatConversation);
+							TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatConversation));
+							callback.onSuccess(true);
+						}
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		
 	}
 	
@@ -212,8 +240,8 @@ public class ChatManager {
 		
 	}
 	
-	private void sendText(String toContact, final String message) {
-		final Key<User> keyContact = Key.create(User.class, toContact);
+	private void sendText(final Key<User> keyContact, final String message) {
+		
 		new RPCXSRF<Void>(chatService) {
 			
 			@Override

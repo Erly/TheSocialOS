@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.AppConstants;
+import net.thesocialos.client.chat.events.ChatOpenConversation;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.model.User;
@@ -14,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -28,7 +31,6 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.googlecode.objectify.Key;
 
 public class ChatMenuPresenter extends DesktopUnit {
 	
@@ -52,6 +54,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 	
 	Display display;
 	
+	private static Integer clickCount = new Integer(0);
 	SingleSelectionModel<User> selectionModel;
 	ListDataProvider<User> dataProvider;
 	/*
@@ -92,8 +95,6 @@ public class ChatMenuPresenter extends DesktopUnit {
 		dataProvider.flush();
 		dataProvider.refresh();
 		
-		Key.create(User.class, "perito@gmail.com");
-		
 	}
 	
 	public void changeUserState(STATETYPE StateType) {
@@ -122,11 +123,28 @@ public class ChatMenuPresenter extends DesktopUnit {
 	private void init() {
 		popUPMenu = new POPUPMenu();
 		handlers();
+		
+		final Timer t = new Timer() {
+			@Override
+			public void run() {
+				System.out.println("click Reseteado");
+				clickCount = 0;
+				cancel();
+			}
+		};
 		display.getCellContacts().addCellPreviewHandler(new Handler<User>() {
 			
 			@Override
 			public void onCellPreview(CellPreviewEvent<User> event) {
-				System.out.println(event.getNativeEvent().getType());
+				// System.out.println(event.getValue().getOwnKey());
+				if (event.getNativeEvent().getType().equalsIgnoreCase("click")) {
+					
+					clickCount++;
+					t.schedule(500);
+					if (clickCount > 1) // System.out.println("double click");
+						TheSocialOS.getEventBus().fireEvent(new ChatOpenConversation(event.getValue().getOwnKey()));
+					
+				}
 				
 			}
 		});
@@ -137,6 +155,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				
 				popUPMenu.show(event.getClientX(), event.getClientY());
 				
 			}
@@ -164,6 +183,16 @@ public class ChatMenuPresenter extends DesktopUnit {
 	@Override
 	public void toZPosition(int position) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void toBack() {
+		
+	}
+	
+	@Override
+	public void toFront() {
 		
 	}
 	

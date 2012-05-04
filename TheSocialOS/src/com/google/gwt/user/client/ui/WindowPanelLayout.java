@@ -182,6 +182,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	private static final String DEFAULT_STYLENAME = "sos-Window";
 	
 	private boolean isMaximized = false;
+	private boolean isResizable = true;
 	private Caption caption;
 	private Footer footer;
 	private boolean dragging;
@@ -285,7 +286,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			
 			@Override
 			public void onMouseDown(MouseDownEvent event) {
-				if (!isMaximized) {
+				if (!isMaximized && isResizable) {
 					windowEventBus.fireEvent(new WindowOnTopEvent());
 					beginResizing(event);
 				}
@@ -723,14 +724,20 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	@Override
 	public void toback() {
-		System.out.println("to back");
+		// System.out.println("to back");
 		getElement().getStyle().setZIndex(0);
 	}
 	
 	@Override
 	public void toFront() {
-		System.out.println("to front");
+		// System.out.println("to front");
 		getElement().getStyle().setZIndex(100);
+		
+	}
+	
+	@Override
+	public void setResizable(Boolean resizable) {
+		isResizable = resizable;
 		
 	}
 	

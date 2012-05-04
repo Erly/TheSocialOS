@@ -2,6 +2,7 @@ package net.thesocialos.client;
 
 import java.util.Map;
 
+import net.thesocialos.client.chat.events.ChatRecieveMessage;
 import net.thesocialos.client.chat.events.ChatStateChange;
 import net.thesocialos.client.event.AccountAddedEvent;
 import net.thesocialos.client.event.AccountAddedEventHandler;
@@ -151,21 +152,22 @@ public class AppController implements ValueChangeHandler<String> {
 			@Override
 			public void onChatUserConnected(ChApiChatUserConnected event) {
 				System.out.println(CacheLayer.UserCalls.getUser().getEmail() + "  Contact Connected:  "
-						+ event.getContactUser());
+						+ event.getKeyUser().getName());
 				
 			}
 			
 			@Override
 			public void onChatUserChangeState(ChApiChatUserChngState event) {
 				TheSocialOS.getEventBus().fireEvent(
-						new ChatStateChange(event.getUserEmail(), event.getState(), event.getCustomState()));
+						new ChatStateChange(event.getUserKey(), event.getState(), event.getCustomState()));
 				
 			}
 			
 			@Override
 			public void onChatRcvMessage(ChApiChatRecvMessage event) {
-				System.out.println("Message recieve from: " + event.getContactComeFrom() + " write: "
-						+ event.getMessage());
+				TheSocialOS.getEventBus().fireEvent(new ChatRecieveMessage(event.getLine()));
+				// System.out.println("Message recieve from: " + event.getContactComeFrom() + " write: "
+				// + event.getMessage());
 				
 			}
 		});

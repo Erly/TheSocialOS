@@ -1,13 +1,16 @@
 package net.thesocialos.client.chat.events;
 
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
+import net.thesocialos.shared.model.User;
+
+import com.googlecode.objectify.Key;
 
 public class ChatStateChange extends ChatEvent {
 	private STATETYPE stateType;
 	private String customState;
 	
-	public ChatStateChange(String userEmail, STATETYPE stateType, String customState) {
-		super(userEmail);
+	public ChatStateChange(Key<User> userKey, STATETYPE stateType, String customState) {
+		super(userKey);
 		this.stateType = stateType;
 		this.customState = customState;
 		

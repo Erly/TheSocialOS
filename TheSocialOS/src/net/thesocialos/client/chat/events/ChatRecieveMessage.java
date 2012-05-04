@@ -2,14 +2,14 @@ package net.thesocialos.client.chat.events;
 
 import java.util.Date;
 
+import net.thesocialos.shared.model.Lines;
+
 public class ChatRecieveMessage extends ChatEvent {
-	private String text;
-	private Date date;
+	private Lines line;
 	
-	public ChatRecieveMessage(String userEmail, String text, Date date) {
-		super(userEmail);
-		this.text = text;
-		this.date = date;
+	public ChatRecieveMessage(Lines line) {
+		super(line.getUserOwner());
+		this.line = line;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -29,14 +29,22 @@ public class ChatRecieveMessage extends ChatEvent {
 	 * @return the date
 	 */
 	public Date getDate() {
-		return date;
+		return line.getDate();
 	}
 	
 	/**
 	 * @return the text
 	 */
 	public String getText() {
-		return text;
+		return line.getText();
+	}
+	
+	/**
+	 * 
+	 * @return the line of the message
+	 */
+	public Lines getLine() {
+		return line;
 	}
 	
 }

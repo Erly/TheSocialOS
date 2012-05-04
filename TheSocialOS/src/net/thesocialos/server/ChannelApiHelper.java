@@ -18,6 +18,7 @@ import com.google.appengine.api.channel.ChannelServiceFactory;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
+import com.googlecode.objectify.Key;
 
 public class ChannelApiHelper {
 	private static Properties props = System.getProperties();
@@ -130,12 +131,12 @@ public class ChannelApiHelper {
 	 * @param custom
 	 * @param email
 	 */
-	public static void sendStateToContacts(Iterator<User> contacts, STATETYPE state, String custom, String email) {
+	public static void sendStateToContacts(Iterator<User> contacts, STATETYPE state, String custom, Key<User> userKey) {
 		while (contacts.hasNext()) {
 			User user = contacts.next();
 			if (user.isConnected)
 				ChannelApiHelper.sendMessage(user.getEmail(),
-						ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(state, custom, email)));
+						ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(state, custom, userKey)));
 		}
 	}
 	

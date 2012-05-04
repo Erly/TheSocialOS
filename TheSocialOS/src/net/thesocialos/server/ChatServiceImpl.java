@@ -83,9 +83,10 @@ public class ChatServiceImpl extends RemoteServiceServlet implements net.thesoci
 	public void sendText(Key<User> contactUser, String message) {
 		Objectify ofy = ObjectifyService.begin();
 		if (UserHelper.isYourFriend(perThreadRequest.get().getSession(), ofy, contactUser))
+			
 			ChannelApiHelper.sendMessage(contactUser.getName(), ChannelApiHelper
-					.encodeMessage(new ChApiChatRecvMessage(new Date(), UserHelper.getUserHttpSession(perThreadRequest
-							.get().getSession()), message)));
+					.encodeMessage(new ChApiChatRecvMessage(new Date(), Key.create(User.class,
+							UserHelper.getUserHttpSession(perThreadRequest.get().getSession())), message)));
 		
 	}
 }

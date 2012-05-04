@@ -11,13 +11,8 @@ import javax.servlet.http.HttpSession;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.server.utils.BCrypt;
 import net.thesocialos.shared.LoginResult;
-import net.thesocialos.shared.ChannelApiEvents.ChApiChatRecvMessage;
-import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
-import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserConnected;
-import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserDisconnect;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
-import net.thesocialos.shared.ChannelApiEvents.ChApiPetitionNew;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
@@ -272,19 +267,18 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 	
 	@Override
 	public void checkChannel(ChApiContactNew newContact) {
-		
-		ChannelApiHelper.sendMessage("unai@thesocialos.net",
-				ChannelApiHelper.encodeMessage(new ChApiContactNew("perico@gmail.com")));
-		ChannelApiHelper.sendMessage("unai@thesocialos.net",
-				ChannelApiHelper.encodeMessage(new ChApiChatRecvMessage(null, "palomo@gmail.com", "hola")));
-		ChannelApiHelper.sendMessage("unai@thesocialos.net",
-				ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(STATETYPE.ONLINE, null, "palomo@gmail.com")));
-		ChannelApiHelper.sendMessage("unai@thesocialos.net",
-				ChannelApiHelper.encodeMessage(new ChApiChatUserConnected("palomo@gmail.com")));
-		ChannelApiHelper.sendMessage("unai@thesocialos.net",
-				ChannelApiHelper.encodeMessage(new ChApiChatUserDisconnect("palomo@gmail.com")));
-		ChannelApiHelper.sendMessage("unai@thesocialos.net",
-				ChannelApiHelper.encodeMessage(new ChApiPetitionNew("lolita5@hotmail.com")));
+		/*
+		 * ChannelApiHelper.sendMessage("unai@thesocialos.net", ChannelApiHelper.encodeMessage(new
+		 * ChApiContactNew("perico@gmail.com"))); ChannelApiHelper.sendMessage("unai@thesocialos.net",
+		 * ChannelApiHelper.encodeMessage(new ChApiChatRecvMessage(null, "palomo@gmail.com", "hola")));
+		 * ChannelApiHelper.sendMessage("unai@thesocialos.net", ChannelApiHelper.encodeMessage(new
+		 * ChApiChatUserChngState(STATETYPE.ONLINE, null, "palomo@gmail.com")));
+		 * ChannelApiHelper.sendMessage("unai@thesocialos.net", ChannelApiHelper.encodeMessage(new
+		 * ChApiChatUserConnected("palomo@gmail.com"))); ChannelApiHelper.sendMessage("unai@thesocialos.net",
+		 * ChannelApiHelper.encodeMessage(new ChApiChatUserDisconnect("palomo@gmail.com")));
+		 * ChannelApiHelper.sendMessage("unai@thesocialos.net", ChannelApiHelper.encodeMessage(new
+		 * ChApiPetitionNew("lolita5@hotmail.com")));
+		 */
 		
 	}
 	
@@ -296,7 +290,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		ofy.put(user);
 		
 		ChannelApiHelper.sendStateToContacts(ofy.get(user.getContacts()).values().iterator(), statetype, customMsg,
-				user.getEmail());
+				Key.create(User.class, user.getEmail()));
 		
 	}
 }

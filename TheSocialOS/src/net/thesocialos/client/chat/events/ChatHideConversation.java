@@ -1,9 +1,13 @@
 package net.thesocialos.client.chat.events;
 
+import net.thesocialos.shared.model.User;
+
+import com.googlecode.objectify.Key;
+
 public class ChatHideConversation extends ChatEvent {
 	
-	public ChatHideConversation(String userEmail) {
-		super(userEmail);
+	public ChatHideConversation(Key<User> userKey) {
+		super(userKey);
 		// TODO Auto-generated constructor stub
 	}
 	

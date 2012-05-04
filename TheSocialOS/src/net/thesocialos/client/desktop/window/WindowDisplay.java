@@ -20,6 +20,8 @@ public interface WindowDisplay {
 	
 	void setMinimized(Boolean minimized);
 	
+	void setResizable(Boolean resizable);
+	
 	void setPosition(int x, int y);
 	
 	void setSize(int width, int height);

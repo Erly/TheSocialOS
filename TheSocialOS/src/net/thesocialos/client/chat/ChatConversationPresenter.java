@@ -4,9 +4,19 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.chat.events.ChatSendMessage;
 import net.thesocialos.client.chat.view.ChatConversationView;
+import net.thesocialos.client.desktop.DesktopEventOnClose;
+import net.thesocialos.client.desktop.DesktopEventOnTop;
+import net.thesocialos.client.desktop.DesktopEventonEndDrag;
 import net.thesocialos.client.desktop.DesktopUnit;
+import net.thesocialos.client.desktop.window.WindowCloseEvent;
 import net.thesocialos.client.desktop.window.WindowDisplay;
+import net.thesocialos.client.desktop.window.WindowEndDragEvent;
+import net.thesocialos.client.desktop.window.WindowEventHandler;
+import net.thesocialos.client.desktop.window.WindowMaximizeEvent;
+import net.thesocialos.client.desktop.window.WindowMinimizeEvent;
+import net.thesocialos.client.desktop.window.WindowOnTopEvent;
 import net.thesocialos.shared.model.Lines;
+import net.thesocialos.shared.model.User;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -15,6 +25,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import com.googlecode.objectify.Key;
 
 public class ChatConversationPresenter extends DesktopUnit implements IApplication {
 	
@@ -33,12 +44,11 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	
 	private String name;
 	private String image;
-	String message = "hellow World";
 	
 	private Display display;
-	private String userWithChat;
+	private Key<User> userWithChat;
 	
-	public ChatConversationPresenter(int programID, String appName, String appImageURL, String userWithChat,
+	public ChatConversationPresenter(int programID, String appName, String appImageURL, Key<User> userWithChat,
 			WindowDisplay windoDisplay, Display display) {
 		super(programID, windoDisplay, TypeUnit.WINDOW, true);
 		setName(appName);
@@ -52,6 +62,7 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	
 	private void init() {
 		bindHandlers();
+		initWindow();
 	}
 	
 	private void bindHandlers() {
@@ -63,6 +74,38 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 				
 			}
 		});
+		windowDisplay.addWindowEvents(new WindowEventHandler() {
+			
+			@Override
+			public void onTop(WindowOnTopEvent event) {
+				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnTop(ChatConversationPresenter.this));
+				
+			}
+			
+			@Override
+			public void onMinimize(WindowMinimizeEvent windowMinimizeEvent) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onMaximize(WindowMaximizeEvent windowMaximizeEvent) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onEndDrag(WindowEndDragEvent event) {
+				// TODO Auto-generated method stub
+				TheSocialOS.getEventBus().fireEvent(new DesktopEventonEndDrag(ChatConversationPresenter.this));
+			}
+			
+			@Override
+			public void onClose(WindowCloseEvent event) {
+				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnClose(ChatConversationPresenter.this));
+				
+			}
+		});
 	}
 	
 	/**
@@ -71,8 +114,16 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	 * @param message
 	 *            to write in the chat window
 	 */
-	public void writeMessage(String message) {
-		
+	public void writeMessage(Lines line) {
+		display.getSendText().setText(
+				"User:" + line.getUserOwner().getName() + " text: " + line.getText() + " Date " + line.getDate());
+	}
+	
+	/**
+	 * Make the window have go on top of the desktop
+	 */
+	public void setOnTop() {
+		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnTop(this));
 	}
 	
 	@Override
@@ -101,7 +152,7 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	
 	@Override
 	public void close(AbsolutePanel absolutePanel) {
-		absolutePanel.remove(display.asWidget());
+		absolutePanel.remove(windowDisplay.getWindow());
 		
 	}
 	
@@ -113,7 +164,20 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
-		absolutePanel.add(display.asWidget(), 20, 50);
+		
+		absolutePanel.add(windowDisplay.getWindow(), 20, 50);
+		windowDisplay.getWindow().setVisible(true);
+		
+		// absolutePanel.add(display.asWidget(), 20, 50);
+		
+	}
+	
+	private void initWindow() {
+		
+		windowDisplay.setResizable(false);
+		windowDisplay.setWindowTitle(userWithChat.getName());
+		display.asWidget().setSize("447px", "323px");
+		windowDisplay.getWindow().add(display.asWidget());
 		
 	}
 	

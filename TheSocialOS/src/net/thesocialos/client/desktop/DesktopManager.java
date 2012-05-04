@@ -86,7 +86,7 @@ public class DesktopManager {
 		 * @return True si se a podido abrir // False si ya estaba abierto
 		 */
 		public boolean addUnit(DesktopUnit desktopUnit) {
-			
+			if (lastDesktopUnit != null && lastDesktopUnit.typeUnit.equals(TypeUnit.INFO)) removeUnit(lastDesktopUnit);
 			if (linkedDesktopUnit.containsKey(desktopUnit.getProgramID())) {
 				if (desktopUnit.isSubApplication()) {
 					ArrayList<DesktopUnit> hashDesktopUnits = linkedDesktopUnit.get(desktopUnit.getProgramID());
@@ -98,7 +98,7 @@ public class DesktopManager {
 					
 				} else
 					setWindowsZPositions(desktopUnit);
-				return true;
+				
 			} else {
 				if (desktopUnit.isSubApplication()) return false;
 				ArrayList<DesktopUnit> desktopUnits = new ArrayList<DesktopUnit>();
@@ -106,8 +106,8 @@ public class DesktopManager {
 				desktopUnits.add(desktopUnit);
 				linkedDesktopUnit.put(desktopUnit.getID(), desktopUnits);
 			}
-			lastDesktopUnit = desktopUnit;
-			if (lastDesktopUnit != null && lastDesktopUnit.typeUnit.equals(TypeUnit.INFO)) removeUnit(lastDesktopUnit);
+			if (desktopUnit.typeUnit.equals(TypeUnit.INFO)) lastDesktopUnit = desktopUnit;
+			
 			desktopUnit.open(absolutePanelScreen);
 			return true;
 		}
@@ -131,7 +131,7 @@ public class DesktopManager {
 					while (iDesktopUnit.hasNext()) {
 						DesktopUnit deskUnit = iDesktopUnit.next();
 						deskUnit.close(absolutePanelScreen);
-						linkedDesktopUnit.get(desktopUnit.getProgramID()).remove(deskUnit);
+						
 					}
 					linkedDesktopUnit.remove(desktopUnit.getProgramID());
 				}
@@ -154,14 +154,18 @@ public class DesktopManager {
 	 *            reference value. Y relative position
 	 */
 	private void checkWindowPosition(DesktopUnit desktopUnit) {
-		if (desktopUnit.isMaximized())
-			desktopUnit.setSize(absolutePanelDesktop.getOffsetWidth() - 7, absolutePanelDesktop.getOffsetHeight() - 7);
-		if (desktopUnit.getAbsoluteLeft() < 0) desktopUnit.setPosition(0, desktopUnit.getAbsoluteTop());
-		else if (desktopUnit.getAbsoluteLeft() + desktopUnit.getWidth() > Window.getClientWidth())
-			desktopUnit.setPosition(Window.getClientWidth() - desktopUnit.getWidth(), desktopUnit.getAbsoluteTop());
-		if (desktopUnit.getAbsoluteTop() + desktopUnit.getHeight() > Window.getClientHeight()) desktopUnit.setPosition(
-				desktopUnit.getAbsoluteLeft(), Window.getClientHeight() - desktopUnit.getHeight());
-		else if (desktopUnit.getAbsoluteTop() < 30) desktopUnit.setPosition(desktopUnit.getAbsoluteLeft(), 30);
+		if (desktopUnit.typeUnit == TypeUnit.WINDOW) {
+			if (desktopUnit.isMaximized())
+				desktopUnit.setSize(absolutePanelDesktop.getOffsetWidth() - 7,
+						absolutePanelDesktop.getOffsetHeight() - 7);
+			if (desktopUnit.getAbsoluteLeft() < 0) desktopUnit.setPosition(0, desktopUnit.getAbsoluteTop());
+			else if (desktopUnit.getAbsoluteLeft() + desktopUnit.getWidth() > Window.getClientWidth())
+				desktopUnit.setPosition(Window.getClientWidth() - desktopUnit.getWidth(), desktopUnit.getAbsoluteTop());
+			if (desktopUnit.getAbsoluteTop() + desktopUnit.getHeight() > Window.getClientHeight()) desktopUnit
+					.setPosition(desktopUnit.getAbsoluteLeft(), Window.getClientHeight() - desktopUnit.getHeight());
+			else if (desktopUnit.getAbsoluteTop() < 30) desktopUnit.setPosition(desktopUnit.getAbsoluteLeft(), 30);
+		}
+		
 	}
 	
 	private void handlers() {

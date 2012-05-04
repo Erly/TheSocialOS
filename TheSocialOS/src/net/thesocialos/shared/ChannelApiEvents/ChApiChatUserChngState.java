@@ -1,5 +1,9 @@
 package net.thesocialos.shared.ChannelApiEvents;
 
+import net.thesocialos.shared.model.User;
+
+import com.googlecode.objectify.Key;
+
 /**
  * 
  * @author vssnake
@@ -18,13 +22,13 @@ public class ChApiChatUserChngState extends ChApiEvent {
 	
 	private STATETYPE state;
 	private String customState;
-	private String userEmail;
+	private Key<User> userKey;
 	
-	public ChApiChatUserChngState(STATETYPE state, String customsState, String userEmail) {
+	public ChApiChatUserChngState(STATETYPE state, String customsState, Key<User> userKey) {
 		super();
 		this.state = state;
 		customState = customsState;
-		this.userEmail = userEmail;
+		this.userKey = userKey;
 	}
 	
 	public ChApiChatUserChngState() {
@@ -60,8 +64,8 @@ public class ChApiChatUserChngState extends ChApiEvent {
 	/**
 	 * @return the userEmail
 	 */
-	public String getUserEmail() {
-		return userEmail;
+	public Key<User> getUserKey() {
+		return userKey;
 	}
 	
 }

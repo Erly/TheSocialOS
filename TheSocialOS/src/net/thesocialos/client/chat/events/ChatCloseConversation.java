@@ -1,9 +1,13 @@
 package net.thesocialos.client.chat.events;
 
+import net.thesocialos.shared.model.User;
+
+import com.googlecode.objectify.Key;
+
 public class ChatCloseConversation extends ChatEvent {
 	
-	public ChatCloseConversation(String userEmail) {
-		super(userEmail);
+	public ChatCloseConversation(Key<User> userKey) {
+		super(userKey);
 		// TODO Auto-generated constructor stub
 	}
 	

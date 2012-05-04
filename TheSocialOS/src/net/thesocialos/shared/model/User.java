@@ -11,6 +11,7 @@ import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
+import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @SuppressWarnings("serial")
@@ -28,6 +29,7 @@ public class User implements Serializable {
 	}
 	
 	@Id private String email; // Email of the user
+	@NotSaved private Key<User> ownKey;
 	
 	@Unindexed private String password; // Password of the user
 	
@@ -327,4 +329,17 @@ public class User implements Serializable {
 	public void setTokenChannel(String tokenChannel) {
 		this.tokenChannel = tokenChannel;
 	}
+	
+	/**
+	 * @return the ownKey
+	 */
+	public Key<User> getOwnKey() {
+		return ownKey;
+	}
+	
+	public void setOwnKey(Key<User> key) {
+		ownKey = key;
+		
+	}
+	
 }

@@ -148,7 +148,7 @@ public class ContactsPresenter extends DesktopUnit {
 		contactList = new ArrayList<User>();
 		contactDataProvider = new ListDataProvider<User>(contactList);
 		
-		CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<String, User>>() {
+		CacheLayer.ContactCalls.getContactsWithoutKey(false, new AsyncCallback<Map<String, User>>() {
 			
 			@Override
 			public void onFailure(Throwable caught) {
@@ -214,7 +214,7 @@ public class ContactsPresenter extends DesktopUnit {
 				 * onSuccess(List<User> returnUsers){ System.out.println(returnUsers.size()); } public void
 				 * onFailure(Throwable caught){ } }.retry(3);
 				 */
-				CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<String, User>>() {
+				CacheLayer.ContactCalls.getContactsWithoutKey(false, new AsyncCallback<Map<String, User>>() {
 					
 					@Override
 					public void onFailure(Throwable caught) {

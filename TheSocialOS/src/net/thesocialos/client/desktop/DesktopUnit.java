@@ -21,6 +21,7 @@ public abstract class DesktopUnit {
 	private boolean maximized = false;
 	private boolean isMaximizable = true;
 	private boolean isMinimizable = true;
+	public boolean isOpen = false;
 	
 	private int beforeWidth = 0;
 	private int beforeHeight = 0;

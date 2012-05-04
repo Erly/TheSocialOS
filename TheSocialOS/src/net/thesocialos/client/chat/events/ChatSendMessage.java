@@ -1,11 +1,15 @@
 package net.thesocialos.client.chat.events;
 
+import net.thesocialos.shared.model.User;
+
+import com.googlecode.objectify.Key;
+
 public class ChatSendMessage extends ChatEvent {
 	
 	private String text;
 	
-	public ChatSendMessage(String userEmail, String text) {
-		super(userEmail);
+	public ChatSendMessage(Key<User> userKey, String text) {
+		super(userKey);
 		this.text = text;
 	}
 	

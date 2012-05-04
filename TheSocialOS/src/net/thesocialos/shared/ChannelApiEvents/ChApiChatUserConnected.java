@@ -1,15 +1,19 @@
 package net.thesocialos.shared.ChannelApiEvents;
 
+import net.thesocialos.shared.model.User;
+
+import com.googlecode.objectify.Key;
+
 public class ChApiChatUserConnected extends ChApiEvent {
 	
 	/**
 	 * 
 	 */
-	private String userEmail;
+	private Key<User> userKey;
 	
-	public ChApiChatUserConnected(String userEmail) {
+	public ChApiChatUserConnected(Key<User> userKey) {
 		super();
-		this.userEmail = userEmail;
+		this.userKey = userKey;
 	}
 	
 	public ChApiChatUserConnected() {
@@ -33,8 +37,8 @@ public class ChApiChatUserConnected extends ChApiEvent {
 	/**
 	 * @return the userEmail
 	 */
-	public String getContactUser() {
-		return userEmail;
+	public Key<User> getKeyUser() {
+		return userKey;
 	}
 	
 }

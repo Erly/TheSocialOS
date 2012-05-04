@@ -13,6 +13,7 @@ import net.thesocialos.shared.model.User;
 import com.google.appengine.api.channel.ChannelPresence;
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
@@ -40,7 +41,7 @@ public class ChannelConnect extends HttpServlet {
 			User user = contacts.next();
 			if (user.isConnected)
 				ChannelApiHelper.sendMessage(user.getEmail(),
-						ChannelApiHelper.encodeMessage(new ChApiChatUserConnected(email)));
+						ChannelApiHelper.encodeMessage(new ChApiChatUserConnected(Key.create(User.class, email))));
 		}
 	}
 	
