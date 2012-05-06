@@ -502,92 +502,6 @@ center-label {
 
 /* Chat Panel */
 
-
-.chatBlock_Popup{
-	background-color: gray;
-  	border-color: gray gray gray gray;
-  	border-width: 1px 3px 3px 1px;
-  	border-style: solid solid solid solid;
-  	
-}
-
-.chatBlock_background_red{
-	background-color: red;
-	border-style:solid;
-	border-width:1px;
-	border-radius:4px;
-/*	-moz-box-shadow: 5px 5px 5px #888;
-	-webkit-box-shadow: 5px 5px 5px #888;
-	box-shadow: 5px 5px 5px #888;*/
-}
-.chatBlock_background_white{
-	background-color: white;
-	border-style:solid;
-	border-width:1px;
-	border-radius:4px;
-	/*-moz-box-shadow: 10px 10px 5px #888;
-	-webkit-box-shadow: 10px 10px 5px #888;
-	box-shadow: 10px 10px 5px #888;*/
-}
-.chatBlock_activated
-{
-	/*width:80px;
-	height:80px;*/
-	background:red;
-	position:relative;
-	animation-name:myfirst;
-	animation-duration:5s;
-	animation-timing-function:linear;
-	animation-delay:2s;
-	animation-iteration-count:infinite;
-	animation-direction:alternate;
-	animation-play-state:running;
-	border-radius:3px;
-	/* Firefox: */
-	-moz-animation-name:myfirst;
-	-moz-animation-duration:5s;
-	-moz-animation-timing-function:linear;
-	-moz-animation-delay:2s;
-	-moz-animation-iteration-count:infinite;
-	-moz-animation-direction:alternate;
-	-moz-animation-play-state:running;
-	/* Safari and Chrome: */
-	-webkit-animation-name:myfirst;
-	-webkit-animation-duration:5s;
-	-webkit-animation-timing-function:linear;
-	-webkit-animation-delay:2s;
-	-webkit-animation-iteration-count:infinite;
-	-webkit-animation-direction:alternate;
-	-webkit-animation-play-state:running;
-}
-
-@keyframes myfirst
-{
-0%   {background:red; left:0px; top:0px;}
-25%  {background:yellow; left:0px; top:-10px;}
-50%  {background:blue; left:0px; top:-20px;}
-75%  {background:green; left:0px; top:-10px;}
-100% {background:red; left:0px; top:0px;}
-}
-
-@-moz-keyframes myfirst /* Firefox */
-{
-0%   {background:red; left:0px; top:0px;}
-25%  {background:yellow; left:0px; top:-10px;}
-50%  {background:blue; left:0px; top:-20px;}
-75%  {background:green; left:0px; top:-10px;}
-100% {background:red; left:0px; top:0px;}
-}
-
-@-webkit-keyframes myfirst /* Safari and Chrome */
-{
-0%   {background:red; left:0px; top:0px;}
-25%  {background:yellow; left:0px; top:-10px;}
-50%  {background:blue; left:0px; top:-20px;}
-75%  {background:green; left:0px; top:-10px;}
-100% {background:red; left:0px; top:0px;}
-}
-
 .chatMenu_circle_online{
 			
 	width:100px;
@@ -696,6 +610,103 @@ center-label {
 
 	
 }
+
+.chat_contactTable_imageCell{
+	width: 45px;
+	
+	
+}
+
+/**   Chat Blocks  **/
+
+.chatBlock_Popup{
+	background-color: gray;
+  	border-color: gray gray gray gray;
+  	border-width: 1px 3px 3px 1px;
+  	border-style: solid solid solid solid;
+  	
+}
+
+.chatBlock_background_red{
+	background-color: red;
+	border-style:solid;
+	border-width:1px;
+	border-radius:4px;
+/*	-moz-box-shadow: 5px 5px 5px #888;
+	-webkit-box-shadow: 5px 5px 5px #888;
+	box-shadow: 5px 5px 5px #888;*/
+}
+.chatBlock_background_white{
+	background-color: white;
+	border-style:solid;
+	border-width:1px;
+	border-radius:4px;
+	/*-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px #888;*/
+}
+.chatBlock_activated
+{
+	/*width:80px;
+	height:80px;*/
+	
+	background:red;
+	position:relative;
+	animation-name:myfirst;
+	animation-duration:5s;
+	animation-timing-function:linear;
+	animation-delay:2s;
+	animation-iteration-count:infinite;
+	animation-direction:alternate;
+	animation-play-state:running;
+	border-radius:3px;
+	/* Firefox: */
+	-moz-animation-name:myfirst;
+	-moz-animation-duration:5s;
+	-moz-animation-timing-function:linear;
+	-moz-animation-delay:2s;
+	-moz-animation-iteration-count:infinite;
+	-moz-animation-direction:alternate;
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:myfirst;
+	-webkit-animation-duration:5s;
+	-webkit-animation-timing-function:linear;
+	-webkit-animation-delay:2s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-direction:alternate;
+	-webkit-animation-play-state:running;
+}
+
+
+@keyframes myfirst
+{
+0%   {background:red; left:0px; top:0px;}
+25%  {background:yellow; left:0px; top:-10px;}
+50%  {background:blue; left:0px; top:-20px;}
+75%  {background:green; left:0px; top:-10px;}
+100% {background:red; left:0px; top:0px;}
+}
+
+@-moz-keyframes myfirst /* Firefox */
+{
+0%   {background:red; left:0px; top:0px;}
+25%  {background:yellow; left:0px; top:-10px;}
+50%  {background:blue; left:0px; top:-20px;}
+75%  {background:green; left:0px; top:-10px;}
+100% {background:red; left:0px; top:0px;}
+}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */
+{
+0%   {background:red; left:0px; top:0px;}
+25%  {background:yellow; left:0px; top:-10px;}
+50%  {background:blue; left:0px; top:-20px;}
+75%  {background:green; left:0px; top:-10px;}
+100% {background:red; left:0px; top:0px;}
+}
+
+
 
 /**  Test zone */
 

@@ -13,13 +13,8 @@
 	}
 	</ui:style>
 
-		<g:HorizontalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_BOTTOM" height="74px" styleName="{style.ChatBlocks}" spacing="4">
-			<p1:ChatBlockView height="74px" width="62px"/>
-			<p1:ChatBlockView/>
-			<p1:ChatBlockView/>
-			<p1:ChatBlockView/>
-			<p1:ChatBlockView height="74px" width="62px"/>
-			<p1:ChatBlockView height="74px" width="62px"/>
+		<g:HorizontalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_BOTTOM" height="74px" styleName="{style.ChatBlocks}" spacing="4" ui:field="horizontalConversationsPanel">
+			
 		</g:HorizontalPanel>
 		
 

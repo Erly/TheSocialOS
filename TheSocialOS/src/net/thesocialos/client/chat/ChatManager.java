@@ -14,9 +14,11 @@ import net.thesocialos.client.chat.events.ChatOpenConversation;
 import net.thesocialos.client.chat.events.ChatRecieveMessage;
 import net.thesocialos.client.chat.events.ChatSendMessage;
 import net.thesocialos.client.chat.events.ChatStateChange;
+import net.thesocialos.client.chat.events.ChatTopConversation;
 import net.thesocialos.client.chat.view.ChatConversationView;
 import net.thesocialos.client.chat.view.ChatMenuView;
 import net.thesocialos.client.chat.view.ListChatBlocks;
+import net.thesocialos.client.desktop.DesktopEventOnMinimize;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.window.Footer;
 import net.thesocialos.client.desktop.window.MyCaption;
@@ -66,6 +68,7 @@ public class ChatManager {
 			@Override
 			public void onRecieveMessage(final ChatRecieveMessage event) {
 				sendMessage(event.getUserKey(), event.getLine());
+				chatListChatBlocksPresenter.messagePending(event.getUserKey());
 			}
 			
 			@Override
@@ -88,13 +91,13 @@ public class ChatManager {
 			
 			@Override
 			public void onConversationHide(ChatHideConversation event) {
-				// TODO Auto-generated method stub
+				hideRestoreWindow(event.getUserKey());
 				
 			}
 			
 			@Override
 			public void onConversationClose(ChatCloseConversation event) {
-				// TODO Auto-generated method stub
+				chatListChatBlocksPresenter.removeConversationBlock(event.getUserKey());
 				
 			}
 			
@@ -103,6 +106,12 @@ public class ChatManager {
 				// TODO Auto-generated method stub
 				chatMenuPresenter.changeContactState(event.getUserEmail(), event.getStateType(), event.getCustomState());
 				// changeState(event.getUserEmail(
+			}
+			
+			@Override
+			public void onTopConversation(ChatTopConversation event) {
+				activateConversationsBlock(event.getUserKey());
+				
 			}
 		});
 		
@@ -131,10 +140,6 @@ public class ChatManager {
 				
 			}
 		});
-	}
-	
-	private ChatConversationPresenter getConversation(String email) {
-		return conversations.get(email);
 	}
 	
 	private void init() {
@@ -182,7 +187,9 @@ public class ChatManager {
 				ChatConversationPresenter conversationPresenter = conversations.get(contact);
 				if (conversationPresenter.isOpen) conversationPresenter.setOnTop();
 				else {
+					chatListChatBlocksPresenter.addConvesationBlock(contact);
 					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(conversationPresenter));
+					
 					callback.onSuccess(true);
 				}
 				
@@ -190,7 +197,9 @@ public class ChatManager {
 				ChatConversationPresenter chatConversation = createConversation(contact);
 				conversations.put(contact, chatConversation);
 				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatConversation));
+				chatListChatBlocksPresenter.addConvesationBlock(contact);
 				callback.onSuccess(true);
+				
 			}
 			
 		} else
@@ -205,6 +214,7 @@ public class ChatManager {
 							ChatConversationPresenter chatConversation = createConversation(contact);
 							conversations.put(contact, chatConversation);
 							TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatConversation));
+							chatListChatBlocksPresenter.addConvesationBlock(contact);
 							callback.onSuccess(true);
 						}
 				}
@@ -215,6 +225,22 @@ public class ChatManager {
 					
 				}
 			});
+		
+	}
+	
+	private void hideRestoreWindow(Key<User> userKey) {
+		if (!conversations.containsKey(userKey)) return;
+		if (conversations.get(userKey).isMinimized()) activateConversationsBlock(userKey);
+		else {
+			activateConversationsBlock(userKey);
+			chatListChatBlocksPresenter.setActivateConversationBlock(userKey, true);
+		}
+		
+		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(conversations.get(userKey)));
+	}
+	
+	private void activateConversationsBlock(Key<User> userKey) {
+		chatListChatBlocksPresenter.modifyConversationsBlock(userKey);
 		
 	}
 	

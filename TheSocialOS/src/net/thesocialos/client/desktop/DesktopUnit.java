@@ -22,6 +22,7 @@ public abstract class DesktopUnit {
 	private boolean isMaximizable = true;
 	private boolean isMinimizable = true;
 	public boolean isOpen = false;
+	private boolean onFocus = false;
 	
 	private int beforeWidth = 0;
 	private int beforeHeight = 0;
@@ -82,15 +83,6 @@ public abstract class DesktopUnit {
 	public abstract int getZposition();
 	
 	/**
-	 * Return if the window is Maximized
-	 * 
-	 * @return boolean
-	 */
-	public boolean isMaximizable() {
-		return isMaximizable;
-	}
-	
-	/**
 	 * Return if the window is now Maximized
 	 * 
 	 * @return boolean
@@ -100,7 +92,16 @@ public abstract class DesktopUnit {
 	}
 	
 	/**
-	 * Return if the window is Minimized
+	 * Return if the window is now Minimized
+	 * 
+	 * @return boolean
+	 */
+	public boolean isMinimized() {
+		return minimized;
+	}
+	
+	/**
+	 * Return if the window can Minimized
 	 * 
 	 * @return boolean
 	 */
@@ -109,12 +110,30 @@ public abstract class DesktopUnit {
 	}
 	
 	/**
-	 * Return if the window is now Minimized
+	 * Return if the window can Maximized
 	 * 
 	 * @return boolean
 	 */
-	public boolean isMinimized() {
-		return minimized;
+	public boolean isMaximizable() {
+		return isMaximizable;
+	}
+	
+	/**
+	 * Set if the window can Maximized
+	 * 
+	 * @param maximizable
+	 */
+	public void setMaximizable(Boolean maximizable) {
+		isMaximizable = maximizable;
+	}
+	
+	/**
+	 * Set the window can Minimized
+	 * 
+	 * @param minimizable
+	 */
+	public void setMinimizable(Boolean minimizable) {
+		isMinimizable = minimizable;
 	}
 	
 	public abstract void open(AbsolutePanel absolutePanel);
@@ -175,10 +194,12 @@ public abstract class DesktopUnit {
 	}
 	
 	public void toBack() {
+		onFocus = false;
 		windowDisplay.toback();
 	}
 	
 	public void toFront() {
+		onFocus = true;
 		windowDisplay.toFront();
 	}
 	
@@ -201,15 +222,27 @@ public abstract class DesktopUnit {
 	/**
 	 * Hide the desktop Unit
 	 */
-	public void hide() {
+	public void minimize() {
+		minimized = true;
+		maximized = false;
 		windowDisplay.hide();
 	}
 	
 	/**
 	 * Show the desktop Unit
 	 */
-	protected void show() {
+	protected void restore() {
+		minimized = false;
 		windowDisplay.show();
+	}
+	
+	/**
+	 * IF the windows in the front?
+	 * 
+	 * @return the onFocus
+	 */
+	public boolean isOnFocus() {
+		return onFocus;
 	}
 	
 }

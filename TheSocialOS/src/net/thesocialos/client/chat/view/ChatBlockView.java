@@ -1,5 +1,7 @@
 package net.thesocialos.client.chat.view;
 
+import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.chat.events.ChatHideConversation;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
@@ -9,10 +11,13 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -35,14 +40,16 @@ public class ChatBlockView extends Composite {
 	
 	@UiField Image lblImage;
 	@UiField AbsolutePanel background;
+	@UiField HTMLPanel htmlPanel;
 	
 	Key<User> userKey;
+	private boolean activated = false;
 	
 	PopupPanel popupPanel = new PopupPanel(true);
 	
-	public ChatBlockView() {
+	private ChatBlockView() {
 		initWidget(uiBinder.createAndBindUi(this));
-		CreatePopUP();
+		
 		// Scheduler.get().scheduleFixedPeriod(new ChangeColor(), 3000);
 		// background.setStyleName("chatBlock_activated", true);
 		handlers();
@@ -52,12 +59,13 @@ public class ChatBlockView extends Composite {
 	public ChatBlockView(Key<User> userKey) {
 		this();
 		this.userKey = userKey;
+		CreatePopUP();
 	}
 	
 	private void CreatePopUP() {
 		
-		popupPanel.setStyleName("chatBlock_Popup");
-		Label lblname = new Label("vssnake");
+		popupPanel.setStyleName("chatBlock_Popup", true);
+		Label lblname = new Label(userKey.getName());
 		
 		popupPanel.add(lblname);
 	}
@@ -88,6 +96,15 @@ public class ChatBlockView extends Composite {
 				popupPanel.setPopupPosition(event.getClientX(), event.getClientY() - 20);
 			}
 		}, MouseMoveEvent.getType());
+		getBackground().addDomHandler(new MouseUpHandler() {
+			
+			@Override
+			public void onMouseUp(MouseUpEvent event) {
+				// messagesPending(false);
+				TheSocialOS.getEventBus().fireEvent(new ChatHideConversation(userKey));
+				
+			}
+		}, MouseUpEvent.getType());
 		
 	}
 	
@@ -97,6 +114,33 @@ public class ChatBlockView extends Composite {
 	
 	public Image getimgAvatar() {
 		return lblImage;
+	}
+	
+	/**
+	 * Makes the ChatBlock animate or not
+	 * 
+	 * @param pending
+	 *            true to animate
+	 */
+	public void messagesPending(Boolean pending) {
+		if (activated) htmlPanel.setStyleName("chatBlock_activated", pending);
+		
+	}
+	
+	/**
+	 * @return the activated
+	 */
+	public boolean isActivated() {
+		return activated;
+	}
+	
+	/**
+	 * @param activated
+	 *            the activated to set
+	 */
+	public void setActivated(boolean activated) {
+		if (!activated) htmlPanel.setStyleName("chatBlock_activated", activated);
+		this.activated = activated;
 	}
 	
 }

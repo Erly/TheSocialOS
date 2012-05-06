@@ -52,8 +52,8 @@ public class ChatMenuView extends Composite implements Display {
 			}
 			
 			// Add the contact image.
-			sb.appendHtmlConstant("<tr><td rowspan='3'>");
-			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			sb.appendHtmlConstant("<tr><td rowspan='3' align='center' class='chat_contactTable_imageCell'>");
+			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30px' height='35px' />");
 			sb.appendHtmlConstant("</td>");
 			
 			// Add the name and address.

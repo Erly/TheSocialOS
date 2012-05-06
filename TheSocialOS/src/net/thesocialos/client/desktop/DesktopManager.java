@@ -190,7 +190,7 @@ public class DesktopManager {
 			
 			@Override
 			public void onMinimize(DesktopEventOnMinimize event) {
-				// TODO Auto-generated method stub
+				MinimizeRestoreWindow(event.getDesktopUnit());
 				
 			}
 			
@@ -221,6 +221,24 @@ public class DesktopManager {
 			desktopUnit.setMaximized(true, absolutePanelDesktop.getOffsetWidth() - 7,
 					absolutePanelDesktop.getOffsetHeight() - 7, absolutePanelDesktop.getAbsoluteTop(),
 					absolutePanelDesktop.getAbsoluteLeft());
+		
+	}
+	
+	/**
+	 * Minimize or restore windows
+	 * 
+	 * @param desktopUnit
+	 */
+	private void MinimizeRestoreWindow(DesktopUnit desktopUnit) {
+		if (!desktopUnit.isMinimizable()) return;
+		if (desktopUnit.isMinimized()) {
+			desktopUnit.setMinimized(false);
+			// desktopUnit.open(absolutePanelScreen);
+			
+			setWindowsZPositions(desktopUnit);
+		} else
+			desktopUnit.setMinimized(true);
+		// desktopUnit.close(absolutePanelScreen);
 		
 	}
 	

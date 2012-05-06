@@ -545,6 +545,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			resizeHandlerRegistration.removeHandler();
 			resizeHandlerRegistration = null;
 		}
+		
 		super.hide();
 	}
 	
@@ -668,9 +669,9 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	@Override
 	public void setMinimized(Boolean minimized) {
-		if (minimized) hide();
+		if (minimized) setVisible(false);
 		else
-			show();
+			setVisible(true);
 		
 	}
 	

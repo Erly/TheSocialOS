@@ -20,7 +20,7 @@
 		}
 		
 	</ui:style>
-	<g:HTMLPanel height="74px" width="62px" styleName="chatBlock_activated">
+	<g:HTMLPanel height="74px" width="62px" ui:field="htmlPanel">
 	<div>
 		<g:AbsolutePanel height="74px" width="62px" ui:field="background">
 			<g:at left="3" top="3">
