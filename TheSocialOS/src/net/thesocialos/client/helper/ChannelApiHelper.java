@@ -48,19 +48,14 @@ public class ChannelApiHelper {
 			SerializationStreamReader reader = pushServiceStreamFactory.createStreamReader(encodedString);
 			ChApiEvent message = (ChApiEvent) reader.readObject();
 			return message;
-			/*
-			 * Window.alert("Creando clase de compilacion"); SerializationStreamFactory ssf =
-			 * (SerializationStreamFactory) GWT.create(ChannelService.class); Window.alert("Deserializando objeto");
-			 * ChApiEvent event = (ChApiEvent) ssf.createStreamReader(encodedString).readObject();
-			 * Window.alert("Objeto deserializado"); return event;
-			 */
+			
 		} catch (SerializationException e) {
 			e.printStackTrace();
-			Window.alert("Excepcion serializacion");
+			// Window.alert("Excepcion serializacion");
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Window.alert("Excepcion" + e.getCause().toString());
+			// Window.alert("Excepcion" + e.getCause().toString());
 			return null;
 		}
 		

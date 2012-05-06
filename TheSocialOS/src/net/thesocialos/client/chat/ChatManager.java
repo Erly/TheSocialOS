@@ -16,6 +16,7 @@ import net.thesocialos.client.chat.events.ChatSendMessage;
 import net.thesocialos.client.chat.events.ChatStateChange;
 import net.thesocialos.client.chat.view.ChatConversationView;
 import net.thesocialos.client.chat.view.ChatMenuView;
+import net.thesocialos.client.chat.view.ListChatBlocks;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.window.Footer;
 import net.thesocialos.client.desktop.window.MyCaption;
@@ -38,13 +39,16 @@ public class ChatManager {
 	private HashMap<Key<User>, ChatConversationPresenter> conversations = new HashMap<Key<User>, ChatConversationPresenter>();
 	
 	ChatMenuPresenter chatMenuPresenter;
+	ListChatBlocksPresenter chatListChatBlocksPresenter;
 	
 	ChatServiceAsync chatService = GWT.create(ChatService.class);
 	
 	public ChatManager() {
 		chatMenuPresenter = new ChatMenuPresenter(new ChatMenuView(), this);
+		chatListChatBlocksPresenter = new ListChatBlocksPresenter(new ListChatBlocks());
 		bindHandlers();
 		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatMenuPresenter));
+		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatListChatBlocksPresenter));
 		getContacts();
 		init();
 	}
