@@ -13,6 +13,6 @@ public interface ChatServiceAsync extends ServiceAsync {
 	
 	void getText(AsyncCallback<List<Chat>> callback);
 	
-	void sendText(Key<User> contactUser, String message, AsyncCallback<Void> callback);
+	void sendText(Key<User> contactUser, String message, AsyncCallback<Long> callback);
 	
 }

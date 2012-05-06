@@ -188,12 +188,12 @@ public class User implements Serializable {
 	 * @return true si se a podido a�adir. False si ya estaba a�adido
 	 */
 	public boolean addPetitionContactTOContact(Key<User> contact) {
-		if (!petitionsContacts.contains(contact) && (contacts.contains(contact))) {
-			contacts.add(contact);
-			petitionsContacts.remove(contact);
-			return true;
-		}
-		return false;
+		// if (!petitionsContacts.contains(contact) && (contacts.contains(contact))) {
+		contacts.add(contact);
+		petitionsContacts.remove(contact);
+		return true;
+		// }
+		// return false;
 	}
 	
 	public void addSessions(Key<Session> session) {

@@ -3,16 +3,22 @@
  */
 package net.thesocialos.shared.ChannelApiEvents;
 
+import java.io.Serializable;
+
 /**
  * @author vssnake
  * 
  */
-public class ChApiContactNew extends ChApiEvent {
+public class ChApiContactNew extends ChApiEvent implements Serializable {
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6369085840506019531L;
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	
 	private String ContactNew;
 	
 	public ChApiContactNew(String ContactUser) {

@@ -17,6 +17,6 @@ public interface ChatService extends RemoteService {
 	
 	List<Chat> getText();
 	
-	void sendText(Key<User> contactUser, String message);
+	Long sendText(Key<User> contactUser, String message);
 	
 }

@@ -3,16 +3,13 @@
  */
 package net.thesocialos.shared.ChannelApiEvents;
 
+
 /**
  * @author vssnake
  * 
  */
 public class ChApiPetitionNew extends ChApiEvent {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7634514927413981397L;
 	private String petitionNew;
 	
 	public ChApiPetitionNew(String ContactUser) {

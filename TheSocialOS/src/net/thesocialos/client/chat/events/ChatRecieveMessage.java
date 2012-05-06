@@ -1,7 +1,5 @@
 package net.thesocialos.client.chat.events;
 
-import java.util.Date;
-
 import net.thesocialos.shared.model.Lines;
 
 public class ChatRecieveMessage extends ChatEvent {
@@ -28,7 +26,7 @@ public class ChatRecieveMessage extends ChatEvent {
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public Long getDate() {
 		return line.getDate();
 	}
 	

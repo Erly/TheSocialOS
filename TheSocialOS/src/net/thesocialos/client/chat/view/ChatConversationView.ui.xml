@@ -15,17 +15,20 @@
 		}
 	</ui:style>
 	<g:HTMLPanel>
-		<g:AbsolutePanel height="334px" width="100%">
+		<g:AbsolutePanel height="334px" width="450px">
 			<g:at left="375" top="259">
 				<g:Button styleName="Conectar" text="Enviar" ui:field="btnSend" width="71px" height="61px"/>
 			</g:at>
-			<g:at left="0" top="0">
-				<g:ScrollPanel width="450px" height="253px">
-					<p1:CellList ui:field="cellList" width="99%" height="251px" keyboardSelectionPolicy="DISABLED" styleName="{style.border}"/>
-				</g:ScrollPanel>
-			</g:at>
 			<g:at left="0" top="259">
 				<g:TextArea width="363px" height="51px" ui:field="lblTextToSend" styleName="{style.textArea-NotResize}"/>
+			</g:at>
+			<g:at left="0" top="0">
+				<g:ScrollPanel width="446px" height="254px" ui:field="scroll">
+					<p1:CellList ui:field="cellList" keyboardSelectionPolicy="DISABLED" width="430px" height="151px"/>
+				</g:ScrollPanel>
+			</g:at>
+			<g:at left="340" top="296">
+				<g:Label text="150" ui:field="lblSize"/>
 			</g:at>
 		</g:AbsolutePanel>
 		

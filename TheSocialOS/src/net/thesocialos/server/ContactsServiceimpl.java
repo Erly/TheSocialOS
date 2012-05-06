@@ -37,11 +37,11 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 		}
 		
 		Key<User> contactKey = ObjectifyService.factory().getKey(contactToAccept);
-		if (userLoged.getpetitionsContacts().contains(ObjectifyService.factory().getKey(contactKey))) {
+		if (userLoged.getpetitionsContacts().contains(contactKey)) {
 			Key<User> userKey = ObjectifyService.factory().getKey(userLoged);
 			userLoged.addPetitionContactTOContact(contactKey);
-			
-			contactToAccept.addContact(userKey);
+			contactToAccept.addPetitionContactTOContact(userKey);
+			// contactToAccept.addContact(userKey);
 			ofy.put(userLoged);
 			ofy.put(contactToAccept);
 			return true;

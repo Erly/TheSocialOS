@@ -20,10 +20,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.rpc.SerializationStreamFactory;
+import com.google.gwt.user.client.rpc.SerializationStreamReader;
 
 public class ChannelApiHelper {
 	// private Channel channel;
-	static SerializationStreamFactory serializationStreamFactory;
+	static SerializationStreamFactory pushServiceStreamFactory;
 	
 	static int retry = 3;
 	
@@ -43,18 +44,35 @@ public class ChannelApiHelper {
 	private static ChApiEvent decodedString(String encodedString) {
 		
 		try {
-			SerializationStreamFactory ssf = GWT.create(ChannelService.class);
-			return (ChApiEvent) ssf.createStreamReader(encodedString).readObject();
+			pushServiceStreamFactory = (SerializationStreamFactory) ChannelService.App.getInstance();
+			SerializationStreamReader reader = pushServiceStreamFactory.createStreamReader(encodedString);
+			ChApiEvent message = (ChApiEvent) reader.readObject();
+			return message;
+			/*
+			 * Window.alert("Creando clase de compilacion"); SerializationStreamFactory ssf =
+			 * (SerializationStreamFactory) GWT.create(ChannelService.class); Window.alert("Deserializando objeto");
+			 * ChApiEvent event = (ChApiEvent) ssf.createStreamReader(encodedString).readObject();
+			 * Window.alert("Objeto deserializado"); return event;
+			 */
 		} catch (SerializationException e) {
 			e.printStackTrace();
+			Window.alert("Excepcion serializacion");
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Window.alert("Excepcion" + e.getCause().toString());
 			return null;
 		}
+		
 	}
 	
 	private static void fireEvent(String encodedString) {
+		// Window.alert("Descodificando String");
 		System.out.println(encodedString);
 		ChApiEvent channelEvent = decodedString(encodedString);
-		// System.out.println(c);
+		System.out.println(channelEvent.getClass());
+		// System.out.println(c)
+		// Window.alert("String descodificado:" + channelEvent.getAssociatedType());;
 		if (channelEvent != null) TheSocialOS.getEventBus().fireEvent(channelEvent);
 		
 	}
@@ -104,7 +122,7 @@ public class ChannelApiHelper {
 			updateTokenChannel();
 			return;
 		}
-		System.out.println(user.getTokenChannel());
+		
 		ChannelFactory.createChannel(user.getTokenChannel(), new ChannelCreatedCallback() {
 			
 			@Override
@@ -115,7 +133,7 @@ public class ChannelApiHelper {
 					public void onClose() {
 						TheSocialOS.getEventBus().fireEvent(new ChannelClose());
 						isChannelOpen = false;
-						System.out.println("Socket Close");
+						// Window.alert("Socket close");
 					}
 					
 					@Override
@@ -124,10 +142,12 @@ public class ChannelApiHelper {
 						ChannelFactory.deleteChannel();
 						updateTokenChannel();
 						retry--;
+						// Window.alert("Socket error");
 					}
 					
 					@Override
 					public void onMessage(String encodedString) {
+						// .alert("Socket onMessage " + encodedString);
 						fireEvent(encodedString);
 					}
 					
@@ -137,6 +157,7 @@ public class ChannelApiHelper {
 						System.out.println("Canal abierto " + CacheLayer.UserCalls.getUser().getEmail());
 						isChannelOpen = true;
 						retry = 3;
+						// Window.alert("Socket open");
 						
 					}
 				});

@@ -60,34 +60,31 @@ public class ChannelApiHelper {
 		
 		try {
 			return RPC.encodeResponseForSuccess(dummyMethod, channelApiEvent, new SerializationPolicy() {
-				
 				@Override
 				public boolean shouldDeserializeFields(Class<?> clazz) {
-					// TODO Auto-generated method stub
-					return false;
+					return false; // TODO Auto-generated method stub return false;
+					
 				}
 				
 				@Override
 				public boolean shouldSerializeFields(Class<?> clazz) {
-					// TODO Auto-generated method stub
-					return false;
-				}
-				
-				@Override
-				public void validateDeserialize(Class<?> clazz) throws SerializationException {
-					// TODO Auto-generated method stub
+					return false; // TODO Auto-generated method stub return false;
 					
 				}
 				
 				@Override
-				public void validateSerialize(Class<?> clazz) throws SerializationException {
-					// TODO Auto-generated method stub
-					
+				public void validateDeserialize(Class<?> clazz) throws SerializationException { // TODOAuto-generated
+																								// method stub
+				
 				}
 				
-			});
-			// return RPC.encodeResponseForSuccess(dummyMethod, channelApiEvent,
-			// MergedSerializationPolicy.createPushSerializationPolicy());
+				@Override
+				public void validateSerialize(Class<?> clazz) throws SerializationException { // TODOAuto-generated
+																								// method stub
+				
+				}
+			}); // return RPC.encodeResponseForSuccess(dummyMethod, channelApiEvent,
+				// //MergedSerializationPolicy.createPushSerializationPolicy());
 		} catch (SerializationException e) {
 			throw new RuntimeException("Unable to encode a message for push.\n" + channelApiEvent, e);
 		}

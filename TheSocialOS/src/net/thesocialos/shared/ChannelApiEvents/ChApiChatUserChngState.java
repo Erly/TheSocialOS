@@ -11,11 +11,6 @@ import com.googlecode.objectify.Key;
  */
 public class ChApiChatUserChngState extends ChApiEvent {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2134913159491146422L;
-	
 	public static enum STATETYPE {
 		ONLINE, OFFLINE, BUSY, AFK, CUSTOM
 	};

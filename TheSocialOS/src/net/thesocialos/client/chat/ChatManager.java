@@ -242,17 +242,17 @@ public class ChatManager {
 	
 	private void sendText(final Key<User> keyContact, final String message) {
 		
-		new RPCXSRF<Void>(chatService) {
+		new RPCXSRF<Long>(chatService) {
 			
 			@Override
-			protected void XSRFcallService(AsyncCallback<Void> cb) {
+			protected void XSRFcallService(AsyncCallback<Long> cb) {
 				// TODO Auto-generated method stub
 				chatService.sendText(keyContact, message, cb);
 			}
 			
 			@Override
-			public void onSuccess(Void success) {
-				
+			public void onSuccess(Long time) {
+				conversations.get(keyContact).writeMessage(new Lines(message, null, time));
 			}
 			
 			@Override
@@ -261,5 +261,4 @@ public class ChatManager {
 			}
 		}.retry(3);
 	}
-	
 }

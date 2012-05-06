@@ -1,7 +1,5 @@
 package net.thesocialos.shared.ChannelApiEvents;
 
-import java.util.Date;
-
 import net.thesocialos.shared.model.Lines;
 import net.thesocialos.shared.model.User;
 
@@ -14,13 +12,9 @@ import com.googlecode.objectify.Key;
  */
 public class ChApiChatRecvMessage extends ChApiEvent {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4016806987952443222L;
 	private Lines line;
 	
-	public ChApiChatRecvMessage(Date date, Key<User> contactComeFrom, String message) {
+	public ChApiChatRecvMessage(long date, Key<User> contactComeFrom, String message) {
 		super();
 		
 		line = new Lines(message, contactComeFrom, date);
@@ -50,9 +44,9 @@ public class ChApiChatRecvMessage extends ChApiEvent {
 	}
 	
 	/**
-	 * @return the date
+	 * @return the date in milliseconds
 	 */
-	public Date getDate() {
+	public long getDate() {
 		return line.getDate();
 	}
 	

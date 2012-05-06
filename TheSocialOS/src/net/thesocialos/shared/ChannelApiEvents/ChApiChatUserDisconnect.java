@@ -1,5 +1,6 @@
 package net.thesocialos.shared.ChannelApiEvents;
 
+
 public class ChApiChatUserDisconnect extends ChApiEvent {
 	
 	/**

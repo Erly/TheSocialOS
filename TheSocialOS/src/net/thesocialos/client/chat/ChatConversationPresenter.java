@@ -1,5 +1,8 @@
 package net.thesocialos.client.chat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.chat.events.ChatSendMessage;
@@ -20,11 +23,18 @@ import net.thesocialos.shared.model.User;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.googlecode.objectify.Key;
 
 public class ChatConversationPresenter extends DesktopUnit implements IApplication {
@@ -39,6 +49,10 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 		
 		CellList<Lines> getConversation();
 		
+		Label lblCharacters();
+		
+		ScrollPanel getScrollPanel();
+		
 		Widget asWidget();
 	}
 	
@@ -47,6 +61,13 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	
 	private Display display;
 	private Key<User> userWithChat;
+	
+	/*
+	 * Los modelos de la cajas de seleccion de los contactos
+	 */
+	
+	List<Lines> linesList = new ArrayList<Lines>();
+	ListDataProvider<Lines> linesDataProvider = new ListDataProvider<Lines>(linesList);
 	
 	public ChatConversationPresenter(int programID, String appName, String appImageURL, Key<User> userWithChat,
 			WindowDisplay windoDisplay, Display display) {
@@ -63,6 +84,8 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	private void init() {
 		bindHandlers();
 		initWindow();
+		linesDataProvider.addDataDisplay(display.getConversation());
+		
 	}
 	
 	private void bindHandlers() {
@@ -71,9 +94,25 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 			@Override
 			public void onClick(ClickEvent event) {
 				TheSocialOS.getEventBus().fireEvent(new ChatSendMessage(userWithChat, display.getSendText().getText()));
+				display.getSendText().setText("");
 				
 			}
 		});
+		
+		display.getSendText().addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				// TODO Auto-generated method stub
+				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+					TheSocialOS.getEventBus().fireEvent(
+							new ChatSendMessage(userWithChat, display.getSendText().getText()));
+					display.getSendText().setValue(null);
+				}
+				display.lblCharacters().setText(String.valueOf((150 - display.getSendText().getText().length())));
+			}
+		});
+		
 		windowDisplay.addWindowEvents(new WindowEventHandler() {
 			
 			@Override
@@ -115,8 +154,32 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	 *            to write in the chat window
 	 */
 	public void writeMessage(Lines line) {
-		display.getSendText().setText(
-				"User:" + line.getUserOwner().getName() + " text: " + line.getText() + " Date " + line.getDate());
+		
+		linesList.add(line);
+		linesDataProvider.flush();
+		linesDataProvider.refresh();
+		// display.getScrollPanel().scrollToBottom();
+		// display.getScrollPanel().setVerticalScrollPosition(
+		// display.getScrollPanel().getMaximumVerticalScrollPosition() - 20);
+		scrollTobottom();
+		
+	}
+	
+	private void scrollTobottom() {
+		Timer timer = new Timer() {
+			
+			@Override
+			public void run() {
+				display.getScrollPanel().scrollToBottom();
+				cancel();
+				
+			}
+		};
+		timer.schedule(300);
+		/*
+		 * Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+		 * @Override public void execute() { // your commands here } });
+		 */
 	}
 	
 	/**
@@ -167,7 +230,7 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 		
 		absolutePanel.add(windowDisplay.getWindow(), 20, 50);
 		windowDisplay.getWindow().setVisible(true);
-		
+		scrollTobottom();
 		// absolutePanel.add(display.asWidget(), 20, 50);
 		
 	}

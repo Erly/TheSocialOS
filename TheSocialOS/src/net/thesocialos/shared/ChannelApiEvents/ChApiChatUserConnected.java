@@ -20,8 +20,6 @@ public class ChApiChatUserConnected extends ChApiEvent {
 		super();
 	}
 	
-	private static final long serialVersionUID = 1L;
-	
 	@Override
 	public com.google.gwt.event.shared.GwtEvent.Type<ChApiEventHandler> getAssociatedType() {
 		// TODO Auto-generated method stub
