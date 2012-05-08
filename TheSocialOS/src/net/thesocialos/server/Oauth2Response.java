@@ -62,9 +62,8 @@ public class Oauth2Response extends HttpServlet {
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			StringBuffer results = new StringBuffer();
 			String oneline;
-			while ((oneline = br.readLine()) != null) {
+			while ((oneline = br.readLine()) != null)
 				results.append(oneline);
-			}
 			br.close();
 			JSONObject js = new JSONObject(results.toString());
 			username = js.getString(jsonParameter);
@@ -112,8 +111,24 @@ public class Oauth2Response extends HttpServlet {
 		
 		try {
 			PrintWriter writer = response.getWriter();
+			response.setContentType("text/html");
+			writer.println("<html>");
+			writer.println("<head>");
+			writer.println("<TITLE>");
+			writer.println("Account Added");
+			writer.println("</TITLE>");
+			writer.println("<SCRIPT LANGUAGE=javascript>");
+			writer.println("<!--");
+			writer.println("function window_onload() { window.opener.location.hash='account-added'; window.close(); } ");
+			writer.println("//-->");
+			writer.println("</SCRIPT>");
+			writer.println("</head>");
+			writer.println("<body onload=window_onload()>");
+			writer.println("</body>");
+			writer.println("</html>");
 			// TheSocialOS.get().getEventBus().fireEvent(new AccountAddedEvent());
-			writer.write("<Button onClick=\"javascript:window.opener.location.hash='account-added';window.close();\">Close window</Button>");
+			// writer.write("<script>window.opener.location.hash='account-added'</script>");
+			// writer.write("<Button onClick=\"javascript:window.opener.location.hash='account-added';window.close();\">Close window</Button>");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

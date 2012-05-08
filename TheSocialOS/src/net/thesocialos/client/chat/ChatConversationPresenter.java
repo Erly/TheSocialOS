@@ -21,6 +21,7 @@ import net.thesocialos.client.desktop.window.WindowEventHandler;
 import net.thesocialos.client.desktop.window.WindowMaximizeEvent;
 import net.thesocialos.client.desktop.window.WindowMinimizeEvent;
 import net.thesocialos.client.desktop.window.WindowOnTopEvent;
+import net.thesocialos.client.desktop.window.WindowResizeEvent;
 import net.thesocialos.shared.model.Lines;
 import net.thesocialos.shared.model.User;
 
@@ -148,6 +149,12 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 			public void onClose(WindowCloseEvent event) {
 				TheSocialOS.getEventBus().fireEvent(new ChatCloseConversation(userWithChat));
 				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnClose(ChatConversationPresenter.this));
+				
+			}
+			
+			@Override
+			public void onResize(WindowResizeEvent event) {
+				// TODO Auto-generated method stub
 				
 			}
 		});

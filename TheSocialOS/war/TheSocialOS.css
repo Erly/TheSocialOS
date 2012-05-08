@@ -36,7 +36,7 @@
 }
 
 /** Example rules used by the template application (remove for your app) */
-h1 {
+.h1 {
 	font-size: 2em;
 	font-weight: bold;
 	color: #777777;
@@ -99,7 +99,7 @@ h1 {
 	opacity: 0.3;
 }
 
-desktopbar {
+.desktopbar {
 	border: 1px solid;
 	background-color: lightgray;
 }
@@ -393,7 +393,7 @@ desktopbar {
 	background: #F1F1F1;
 
 }
-. sos-Window .resize:hover{
+.sos-Window .resize:hover{
 }
 
 
@@ -495,7 +495,7 @@ desktopbar {
 	cursor:pointer;
 	cursor:se-resize;
 }
-center-label {
+.center-label {
 	vertical-align: bottom;
 	text-align: center;
 }

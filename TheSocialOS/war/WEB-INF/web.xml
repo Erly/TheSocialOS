@@ -28,6 +28,16 @@
   	<url-pattern>/thesocialos/userService</url-pattern>
   </servlet-mapping>
   
+   <servlet>
+  	<servlet-name>socialService</servlet-name>
+  	<servlet-class>net.thesocialos.server.SocialServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>socialService</servlet-name>
+  	<url-pattern>/thesocialos/socialService</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
   	<servlet-name>chatService</servlet-name>
   	<servlet-class>net.thesocialos.server.ChatServiceImpl</servlet-class>

@@ -15,7 +15,7 @@ public class Thumbnail extends Composite implements HasText {
 	
 	public enum SERVICE {
 		PICASA("images/badges/picasa.png"), YOUTUBE("images/badges/youtube.png"), FACEBOOK("images/badges/facebook.png"), FLICKR(
-				"images/badges/flickr.png"), TWITTER("images/badges/twitter.png");
+				"images/badges/flickr.png"), TWITTER("images/badges/twitter.png"), DRIVE("images/badges/drive.png");
 		
 		private final String iconUrl;
 		
@@ -35,7 +35,7 @@ public class Thumbnail extends Composite implements HasText {
 	}
 	
 	public enum TYPE {
-		ALBUM, PICTURE, VIDEO, MUSIC, FOLDER;
+		ALBUM, PICTURE, VIDEO, MUSIC, OTHER, FOLDER;
 	}
 	
 	private static ThumbnailUiBinder uiBinder = GWT.create(ThumbnailUiBinder.class);
@@ -68,8 +68,8 @@ public class Thumbnail extends Composite implements HasText {
 		this.image = image;
 		this.text.setText(text);
 		this.subText.setText(subText);
-		this.setType(type);
-		this.setService(service);
+		setType(type);
+		setService(service);
 	}
 	
 	/**
@@ -85,8 +85,8 @@ public class Thumbnail extends Composite implements HasText {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.image = image;
 		this.text.setText(text);
-		this.setType(type);
-		this.setService(service);
+		setType(type);
+		setService(service);
 	}
 	
 	/**
@@ -101,11 +101,11 @@ public class Thumbnail extends Composite implements HasText {
 	 */
 	public Thumbnail(String imageURL, String text, String subText, TYPE type, SERVICE service) {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.image.setUrl(imageURL);
+		image.setUrl(imageURL);
 		this.text.setText(text);
 		this.subText.setText(subText);
-		this.setType(type);
-		this.setService(service);
+		setType(type);
+		setService(service);
 	}
 	
 	/**
@@ -119,10 +119,10 @@ public class Thumbnail extends Composite implements HasText {
 	 */
 	public Thumbnail(String imageURL, String text, TYPE type, SERVICE service) {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.image.setUrl(imageURL);
+		image.setUrl(imageURL);
 		this.text.setText(text);
-		this.setType(type);
-		this.setService(service);
+		setType(type);
+		setService(service);
 	}
 	
 	public void addDoubleClickHandler(DoubleClickHandler handler) {

@@ -19,6 +19,8 @@ import com.googlecode.objectify.Key;
 
 public class SocialDeckPresenter implements Presenter {
 	
+	TwitterAPI twitter = new TwitterAPI();
+	
 	public interface Display {
 		Widget asWidget();
 		
@@ -42,6 +44,7 @@ public class SocialDeckPresenter implements Presenter {
 			public void onClick(ClickEvent event) {
 				String postText = display.getTextField().getValue();
 				// Tweet it
+				twitter.post(postText);
 				// Post it in Facebook
 				display.getTextField().setValue("");
 			}
@@ -59,20 +62,8 @@ public class SocialDeckPresenter implements Presenter {
 	
 	private void loadColumns() {
 		Map<Key<Columns>, Columns> columns = CacheLayer.UserCalls.getColumns();
-		// Iterator<Columns> it = columns.values().iterator();
-		TwitterAPI twitter = new TwitterAPI();
 		Set<Columns> columnsSet = new HashSet<Columns>(columns.values());
 		twitter.loadColumns(display, columnsSet);
-		/*
-		 * while (it.hasNext()) { Columns c = it.next(); DeckColumn col = new DeckColumn(); if (c.getType() ==
-		 * Columns.TYPE.TIMELINE) { if (c.getValue().equals(Columns.HOME)) { col.setTitle("Timeline");
-		 * twitter.loadHomeTimelineInPanel(col); } else if (c.getValue().equals(Columns.USER)) { col.setTitle("Me");
-		 * twitter.loadUserTimelineInPanel(col); } else col.setTitle(c.getValue()); // new
-		 * TwitterAPI().loadUserTimelineInPanel(col); } else if (c.getType() == Columns.TYPE.SEARCH)
-		 * col.setTitle(c.getValue()); // new TwitterAPI().loadUserTimelineInPanel(col); else if (c.getType() ==
-		 * Columns.TYPE.LIST) col.setTitle(c.getValue()); // new TwitterAPI().loadUserTimelineInPanel(col);
-		 * display.getAllPostColumnsPanel().add(col); col.getParent().setWidth("300px"); }
-		 */
 	}
 	
 	public void switchVisible() {

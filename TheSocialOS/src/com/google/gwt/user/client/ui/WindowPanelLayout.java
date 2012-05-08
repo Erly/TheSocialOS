@@ -15,6 +15,7 @@ import net.thesocialos.client.desktop.window.WindowEndDragEvent;
 import net.thesocialos.client.desktop.window.WindowEvent;
 import net.thesocialos.client.desktop.window.WindowEventHandler;
 import net.thesocialos.client.desktop.window.WindowOnTopEvent;
+import net.thesocialos.client.desktop.window.WindowResizeEvent;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.EventTarget;
@@ -420,7 +421,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			getWidget().setWidth((x - getAbsoluteLeft()) + "px");
 			setHeight((y - getAbsoluteTop()) + "px");
 			getWidget().setHeight((y - getAbsoluteTop() - caption.getHeight() - footer.getHeight()) + "px");
-			
+			windowEventBus.fireEvent(new WindowResizeEvent());
 			// checkResizeSpace();
 		}
 	}
@@ -516,7 +517,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	}
 	
 	@Override
-	public int getwidth() {
+	public int getWidth() {
 		// TODO Auto-generated method stub
 		return getOffsetWidth();
 	}
@@ -573,12 +574,14 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			public void onPreviewNativeEvent(NativePreviewEvent event) {
 				// TODO Auto-generated method stub
 				if (Event.ONMOUSEMOVE == event.getTypeInt()) {
+					
 					if (dragging) continueDragging(event.getNativeEvent().getClientX(), event.getNativeEvent()
 							.getClientY());
 					else
 						continueResizing(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
 					
 				} else if (Event.ONMOUSEUP == event.getTypeInt()) if (dragging) endDragging();
+				
 				else
 					endResizing();
 				event.cancel();
@@ -669,6 +672,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	@Override
 	public void setMinimized(Boolean minimized) {
+		
 		if (minimized) setVisible(false);
 		else
 			setVisible(true);

@@ -12,7 +12,7 @@ import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.googlecode.objectify.Key;
 
-public class Plus {
+public class PlusAPI {
 	
 	public class Activities {
 		public class List {
@@ -93,7 +93,7 @@ public class Plus {
 		
 	}
 	
-	public Plus() {
+	public PlusAPI() {
 		// TODO Auto-generated constructor stub
 	}
 	

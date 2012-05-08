@@ -248,8 +248,8 @@ public class YoutubeAPI {
 							.isString().stringValue();
 					playlist.thumbnailURL = array.get(i).isObject().get("media$group").isObject()
 							.get("media$thumbnail").isArray().get(0).isObject().get("url").isString().stringValue();
-					playlist.numVideos = Integer.parseInt(array.get(i).isObject().get("gd$feedLink").isArray().get(0)
-							.isObject().get("countHint").isNumber().toString());
+					// playlist.numVideos =
+					// Integer.parseInt(array.get(i).isObject().get("gd$feedLink").isArray().get(0).isObject().get("countHint").isNumber().toString());
 					playlists.add(playlist);
 				}
 				folder.addMedia(playlists);

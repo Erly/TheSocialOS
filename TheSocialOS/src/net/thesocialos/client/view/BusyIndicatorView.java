@@ -14,6 +14,7 @@ public class BusyIndicatorView extends PopupPanel implements Display {
 	public BusyIndicatorView() {
 		setAnimationEnabled(false);
 		add(message);
+		getElement().getStyle().setZIndex(999999);
 	}
 	
 	public BusyIndicatorView(String msg) {

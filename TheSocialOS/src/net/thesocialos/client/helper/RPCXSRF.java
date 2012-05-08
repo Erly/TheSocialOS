@@ -39,7 +39,6 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 	 * Fires an event indicating that the RPC request has finished.
 	 */
 	private void onRPCIn() {
-		TheSocialOS.get();
 		TheSocialOS.getEventBus().fireEvent(new RPCInEvent());
 	}
 	
@@ -48,7 +47,6 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 	 * indicating that the system is working.
 	 */
 	private void onRPCOut() {
-		TheSocialOS.get();
 		TheSocialOS.getEventBus().fireEvent(new RPCOutEvent());
 	}
 	

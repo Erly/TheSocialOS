@@ -8,7 +8,7 @@ public interface WindowDisplay {
 	
 	int getHeight();
 	
-	int getwidth();
+	int getWidth();
 	
 	WindowPanelLayout getWindow();
 	

@@ -77,7 +77,9 @@ public abstract class DesktopUnit {
 	 * @return int
 	 */
 	public int getWidth() {
-		return windowDisplay.getwidth();
+		
+		return windowDisplay.getWidth();
+		
 	}
 	
 	public abstract int getZposition();
@@ -154,13 +156,15 @@ public abstract class DesktopUnit {
 			windowDisplay.setMaximized(false);
 		} else {
 			this.maximized = maximized;
+			
 			windowDisplay.setMaximized(true);
 			beforeX = windowDisplay.getXposition();
 			beforeY = windowDisplay.getYPosition();
 			beforeHeight = windowDisplay.getHeight();
-			beforeWidth = windowDisplay.getwidth();
+			beforeWidth = windowDisplay.getWidth();
 			windowDisplay.setPosition(left, top);
 			windowDisplay.setSize(width, height);
+			
 		}
 		
 	}

@@ -7,16 +7,23 @@ import java.util.Map;
 import java.util.Set;
 
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.oauth.OAuth;
 import net.thesocialos.client.oauth.OAuth.JSONHandler;
 import net.thesocialos.client.presenter.SocialDeckPresenter.Display;
+import net.thesocialos.client.service.SocialService;
+import net.thesocialos.client.service.SocialServiceAsync;
 import net.thesocialos.client.view.deck.DeckColumn;
 import net.thesocialos.client.view.deck.TimelinePost;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.Twitter;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -24,10 +31,13 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.googlecode.objectify.Key;
 
 public class TwitterAPI {
+	
+	private static final SocialServiceAsync socialService = GWT.create(SocialService.class);
 	
 	public class Tweet {
 		private String id;
@@ -114,6 +124,15 @@ public class TwitterAPI {
 	
 	private String getHomeTimelineSignedUrl(Twitter twitterAccount, int j, String lastId) {
 		String url = "https://api.twitter.com/1/statuses/home_timeline.json?callback=jsonCallback[" + j + "]";
+		
+		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
+		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
+				twitterAccount.getTokenSecret(), url);
+	}
+	
+	private String getMentionsTimelineSignedUrl(Twitter twitterAccount, int j, String lastId) {
+		String url = "https://api.twitter.com/1/statuses/mentions.json?callback=jsonCallback[" + j + "]";
+		
 		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
 		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
 				twitterAccount.getTokenSecret(), url);
@@ -121,7 +140,7 @@ public class TwitterAPI {
 	
 	private String getSearchTimelineSignedUrl(Twitter twitterAccount, int j, String query, String lastId) {
 		if (null == query || query.isEmpty()) return "";
-		if (query.contains("#")) query = query.replace("#", "");
+		if (query.contains("#")) query = query.replace("#", "%23");
 		String url = "https://search.twitter.com/search.json?q=" + query + "&callback=jsonCallback[" + j + "]";
 		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
 		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
@@ -174,16 +193,21 @@ public class TwitterAPI {
 			Columns c = col.getColumns();
 			String url = "";
 			int j = i++;
+			if (i == 100) i = 0; // Reset the count when reaching the 100th request // NOT NECESSARY (probably)
 			if (c.getType() == Columns.TYPE.TIMELINE) {
 				if (c.getValue().equals(Columns.HOME)) {
 					col.setTitle("Timeline");
 					url = getHomeTimelineSignedUrl(twitterAccount, j, c.getLastTweetId());
+				} else if (c.getValue().equals(Columns.MENTIONS)) {
+					col.setTitle("Mentions");
+					url = getMentionsTimelineSignedUrl(twitterAccount, j, c.getLastTweetId());
 				} else if (c.getValue().equals(Columns.USER)) {
 					col.setTitle("Me");
 					url = getUserTimelineSignedUrl(twitterAccount, j, twitterAccount.getUsername(), c.getLastTweetId());
-				} else
+				} else {
 					col.setTitle(c.getValue());
-				// new TwitterAPI().loadUserTimelineInPanel(col);
+					url = getUserTimelineSignedUrl(twitterAccount, j, c.getValue(), c.getLastTweetId());
+				}
 			} else if (c.getType() == Columns.TYPE.SEARCH) {
 				col.setTitle(c.getValue());
 				url = getSearchTimelineSignedUrl(twitterAccount, j, c.getValue(), c.getLastTweetId());
@@ -206,7 +230,7 @@ public class TwitterAPI {
 		loadTweetsInPanel(url, panel, j);
 	}
 	
-	private void loadTweetsInPanel(String url, final DeckColumn panel, int j) {
+	private void loadTweetsInPanel(String url, final DeckColumn panel, final int j) {
 		OAuth.makeJSONRequest(j, url, new JSONHandler() {
 			
 			@Override
@@ -249,6 +273,12 @@ public class TwitterAPI {
 				panel.clearTweets();
 				panel.setTweets(tweets);
 				panel.loadTweets();
+				NodeList<Element> scripts = Document.get().getElementsByTagName("head").getItem(0)
+						.getElementsByTagName("script");
+				for (int k = 0; k < scripts.getLength(); k++) {
+					Element e = scripts.getItem(k);
+					if (e.getString().contains("jsonCallback[" + j + "]")) e.removeFromParent();
+				}
 			}
 		});
 	}
@@ -278,6 +308,44 @@ public class TwitterAPI {
 			}
 		});
 	}
+	
+	public void post(final String message) {
+		final Twitter twitterAccount = getTwitterAccount();
+		new RPCXSRF<String>(socialService) {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				caught.printStackTrace();
+			}
+			
+			@Override
+			public void onSuccess(String result) {
+				// Window.alert(result);
+				new Timer() {
+					
+					@Override
+					public void run() {
+						loadColumns(twitterAccount);
+					}
+				}.schedule(1000);
+			}
+			
+			@Override
+			protected void XSRFcallService(AsyncCallback<String> cb) {
+				socialService.tweet(twitterAccount, message, cb);
+			}
+		}.retry(3);
+	}
+	
+	/*
+	 * int j = i++; if (i == 100) i = 0; String url =
+	 * "https://api.twitter.com/1/statuses/update.json?callback=jsonCallback[" + j + "]"; url =
+	 * OAuth.signPostRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
+	 * twitterAccount.getTokenSecret(), url, message); postTweet(url, j); } private void postTweet(String url, int j) {
+	 * OAuth.makeJSONRequest(j, url, new JSONHandler() {
+	 * @Override public void handleJSON(JavaScriptObject obj) { JSONObject js = new JSONObject(obj);
+	 * Window.alert(js.toString()); } }); }
+	 */
 	
 	public synchronized void loadUserTimelineInPanel(final HasWidgets panel) {
 		int j = i++;

@@ -212,9 +212,9 @@ public class AppController implements ValueChangeHandler<String> {
 	 * to errors that can occur during the first load.
 	 */
 	public void go() {
-		if (History.getToken().contains("profile")) // This method can only be called when the web is loaded so
-													// lastToken is replaced by "" so the profile window is correctly
-													// loaded. Just in case there is some garbage in it.
+		if (History.getToken().contains("profile"))
+		// This method can only be called when the web is loaded so lastToken is replaced by "" so the profile window is
+		// correctly loaded. Just in case there is some garbage in it.
 			lastToken = "";
 		if (History.getToken().equals("")) History.newItem("desktop");
 		else

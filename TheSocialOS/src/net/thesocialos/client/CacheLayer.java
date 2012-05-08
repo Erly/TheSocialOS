@@ -1,12 +1,15 @@
 package net.thesocialos.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import net.thesocialos.client.api.Media;
 import net.thesocialos.client.event.ContactsChangeEvent;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ContacsService;
@@ -489,6 +492,10 @@ public class CacheLayer {
 		public static void setUser(User user) {
 			CacheLayer.user = user;
 		}
+	}
+	
+	public static class FolderCalls {
+		public static List<Set<? extends Media>> files = new ArrayList<Set<? extends Media>>();
 	}
 	
 }
