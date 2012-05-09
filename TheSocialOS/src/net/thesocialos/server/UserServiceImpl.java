@@ -204,7 +204,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		// name, lastName); // Encrypt the password
 	}
 	
-	public void removeDeletedAccounts(Objectify ofy) {
+	private void removeDeletedAccounts(Objectify ofy) {
 		HttpSession httpSession = perThreadRequest.get().getSession();
 		User user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy);
 		List<Key<? extends Account>> accountsKeys = user.getAccounts();
@@ -257,5 +257,14 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		Map<Key<Columns>, Columns> mColumns = ofy.put(columns);
 		removeUserColumns(user);
 		user.setColumns(new ArrayList<Key<Columns>>(mColumns.keySet()));
+	}
+	
+	@Override
+	public void addDeckColumn(Columns column) {
+		Objectify ofy = ObjectifyService.begin();
+		User user = UserHelper
+				.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
+		user.addColumn(ofy.put(column));
+		ofy.put(user);
 	}
 }

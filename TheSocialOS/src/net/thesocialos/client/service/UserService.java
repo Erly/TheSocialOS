@@ -33,4 +33,6 @@ public interface UserService extends RemoteService {
 	void register(User user) throws UserExistsException;
 	
 	void setDeckColumns(ArrayList<Columns> columns);
+	
+	void addDeckColumn(Columns column);
 }

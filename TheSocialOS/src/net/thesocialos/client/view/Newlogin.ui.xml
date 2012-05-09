@@ -1,0 +1,129 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:style>
+		.login {
+                margin: 0;
+                padding: 0;
+        }
+        /*.wrap {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+        }
+        .appEngine {
+                position: absolute;
+                right: 50px;
+                top: 30px;
+                z-index: 10;
+        }*/
+        .logoDiv {
+                position: absolute;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 10px;
+                z-index: 10;
+        }
+        .title {
+                position: absolute;
+                width: 100%;
+                top: 30px;
+                font-size: 32px;
+                color: #282D2A;
+        }       
+        .bg {
+                position: absolute;
+                top: 0px;
+                width: 100%;
+                height: 480px;
+        }
+        .email {
+                position: absolute;
+                top: 375px;
+                left: 200px;
+                font-size: 20px;
+                border: 1px solid #282D2A;
+                padding: 6px;
+        }
+        .password {
+                position: absolute;
+                top: 375px;
+                left: 450px;
+                font-size: 20px;
+                border: 1px solid #282D2A;
+                padding: 6px;
+        }
+        .loginButton {
+                position: absolute;
+                top: 375px;
+                left: 700px;
+                font-size: 20px;
+                background-color: #4BF;
+                border: 1px solid #282D2A;
+                padding: 6px;
+        }
+        .loginButton:hover {
+                background-color: #AAD450;
+        }
+        .helpers {
+                position: absolute;
+                top: 425px;
+                left: 200px;
+                font-size: 18px;
+        }
+        a {
+                font-weight: 700;
+                color: #90D5EC;
+                text-decoration: none;
+        }
+        .footer {
+                position: absolute;
+                top: 500px;
+                width: 100%;
+                color: #ACB1B4;
+        }
+        .flags {
+                cursor: pointer;
+                padding-left: 10px;
+        }
+	</ui:style>
+	<div id="wrap">
+		<div class="logoDiv" align="center">
+			<img class="logo" src="./Logo-solo.png"/>
+		</div>
+		<div class="title" align="center">The center of your social life</div>
+		<img class="bg" src="./Fondo Login.png"/>
+		<form>
+			<input class="email" type="email" id="email" placeholder="Email Adress" ui:field="email"/>
+			<input class="password" type="password" id="password" placeholder="Password" ui:field="password"/>
+			<input class="loginButton" type="submit" value="Log in" id="loginButton" ui:field="loginButton"/>
+		</form>
+		<div class="helpers">
+			<a href="#">Register</a>
+			/
+			<a href="#">Forgot your password?</a>
+		</div>
+		<div class="footer">
+			<table cellspacing="0" cellpadding="0" style="width: 100%; ">
+				<tbody>
+					<tr>
+						<td align="center" style="vertical-align: bottom; ">
+							<div class="gwt-Label">This web is optimized for Google Chrome and Mozilla Firefox</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<image class="flags spain" src="http://www.crwflags.com/fotw/misc/wes.gif"/>
+							<image class="flags us" src="http://www.crwflags.com/fotw/misc/wus.gif"/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<img class="appEngine" src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</ui:UiBinder>

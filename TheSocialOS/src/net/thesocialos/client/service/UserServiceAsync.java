@@ -28,4 +28,6 @@ public interface UserServiceAsync extends ServiceAsync {
 	void register(User user, AsyncCallback<Void> callback);
 	
 	void setDeckColumns(ArrayList<Columns> columns, AsyncCallback<Void> callback);
+	
+	void addDeckColumn(Columns column, AsyncCallback<Void> callback);
 }
