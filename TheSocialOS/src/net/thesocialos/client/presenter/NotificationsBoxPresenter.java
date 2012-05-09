@@ -54,8 +54,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	List<User> usersList = new ArrayList<User>();
 	
 	public NotificationsBoxPresenter(Display display) {
-		programID = AppConstants.NOTIFICATIONS;
-		typeUnit = TypeUnit.INFO;
+		super(AppConstants.NOTIFICATIONS, null, TypeUnit.INFO, false);
 		this.display = display;
 		
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
@@ -141,6 +140,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	}
 	
 	private void handlers() {
+		
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			
 			@Override
@@ -152,6 +152,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 			
 			@Override
 			public void onCellPreview(CellPreviewEvent<User> event) {
+				
 				System.out.println(event.getNativeEvent().getClientX());
 				if (event.getNativeEvent().getClientX() != 0) {
 					UserPopUpMenu = new PopUpMenu();

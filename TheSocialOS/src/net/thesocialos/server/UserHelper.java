@@ -10,6 +10,7 @@ import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -20,8 +21,8 @@ public class UserHelper extends RemoteServiceServlet {
 	final static Class<Session> SESSION = net.thesocialos.shared.model.Session.class;
 	
 	// final names;
-	final static String sessionN = "session";
-	final static String userN = "user";
+	final static String SESSIONN = "session";
+	final static String USERN = "user";
 	final static String OBJECITIFY = "objetify";
 	
 	/**
@@ -70,7 +71,7 @@ public class UserHelper extends RemoteServiceServlet {
 	 * @return Session Object
 	 */
 	public static synchronized Session getSesssionHttpSession(HttpSession httpSession) {
-		return (Session) httpSession.getAttribute(sessionN);
+		return (Session) httpSession.getAttribute(SESSIONN);
 	}
 	
 	/**
@@ -80,7 +81,7 @@ public class UserHelper extends RemoteServiceServlet {
 	 * @return User Object
 	 */
 	public static synchronized String getUserHttpSession(HttpSession httpSession) {
-		return (String) httpSession.getAttribute(userN);
+		return (String) httpSession.getAttribute(USERN);
 	}
 	
 	/**
@@ -92,7 +93,7 @@ public class UserHelper extends RemoteServiceServlet {
 	 * @throws NotFoundException
 	 */
 	public static synchronized User getUserSession(HttpSession httpSession, Objectify ofy) throws NotFoundException {
-		String email = (String) httpSession.getAttribute(userN);
+		String email = (String) httpSession.getAttribute(USERN);
 		return ofy.get(USER, email);
 	}
 	
@@ -153,8 +154,8 @@ public class UserHelper extends RemoteServiceServlet {
 	 * @return
 	 */
 	public static synchronized boolean saveUser(User user, HttpSession httpSession, Objectify ofy) {
-		if (((User) httpSession.getAttribute(userN)).getEmail().equalsIgnoreCase(user.getEmail()) != true) { return false; }
-		httpSession.setAttribute(userN, user);
+		if (!((User) httpSession.getAttribute(USERN)).getEmail().equalsIgnoreCase(user.getEmail())) return false;
+		httpSession.setAttribute(USERN, user);
 		ofy.put(user);
 		return true;
 	}
@@ -169,9 +170,22 @@ public class UserHelper extends RemoteServiceServlet {
 	 * @return
 	 */
 	public static synchronized boolean saveUsertohttpSession(Session session, String userEmail, HttpSession httpSession) {
-		httpSession.setAttribute(userN, userEmail);
-		httpSession.setAttribute(sessionN, session);
+		httpSession.setAttribute(USERN, userEmail);
+		httpSession.setAttribute(SESSIONN, session);
 		return true;
 	}
 	
+	/**
+	 * Check if the contact is your friend
+	 * 
+	 * @param httpSession
+	 * @param ofy
+	 * @param contactUser
+	 * @return
+	 */
+	public static synchronized boolean isYourFriend(HttpSession httpSession, Objectify ofy, Key<User> contactUser) {
+		User user = ofy.get(User.class, (String) httpSession.getAttribute(USERN));
+		return user.getContacts().contains(contactUser);
+		
+	}
 }

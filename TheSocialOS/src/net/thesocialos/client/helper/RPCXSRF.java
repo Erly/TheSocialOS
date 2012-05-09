@@ -73,12 +73,14 @@ public abstract class RPCXSRF<T> implements AsyncCallback<T> {
 				try {
 					throw caught;
 				} catch (RpcTokenException e) {
+					e.printStackTrace();
 					// Can be thrown for several reasons:
 					// - duplicate session cookie, which may be a sign of a cookie
 					// overwrite attack
 					// - XSRF token cannot be generated because session cookie isn't
 					// present
 				} catch (Throwable e) {
+					e.printStackTrace();
 					// unexpected
 				}
 			}

@@ -21,15 +21,18 @@ public class SearchBoxView extends Composite implements Display {
 	
 	interface SearchBoxUiBinder extends UiBinder<Widget, SearchBoxView> {
 	}
+	
 	private static SearchBoxUiBinder uiBinder = GWT.create(SearchBoxUiBinder.class);
 	@UiField(provided = true) CellList<User> cellList = new CellList<User>(new AbstractCell<User>() {
 		@Override
 		public void render(Context context, User value, SafeHtmlBuilder sb) {
 			
-			if (value == null) { return; }
-			sb.appendHtmlConstant("<table>");
+			if (value == null) return;
+			
+			sb.appendHtmlConstant("<table class='chat_state_offline'  width= '100%'>");
 			
 			// Add the contact image.
+			
 			sb.appendHtmlConstant("<tr><td rowspan='3'>");
 			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
 			sb.appendHtmlConstant("</td>");

@@ -2,12 +2,12 @@ package net.thesocialos.client;
 
 import java.util.Map;
 
+import net.thesocialos.client.chat.events.ChatRecieveMessage;
+import net.thesocialos.client.chat.events.ChatStateChange;
 import net.thesocialos.client.event.AccountAddedEvent;
 import net.thesocialos.client.event.AccountAddedEventHandler;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.event.LogoutEventHandler;
-import net.thesocialos.client.event.MessageChatAvailableEvent;
-import net.thesocialos.client.event.MessageChatAvailableEventHandler;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.presenter.DesktopPresenter;
 import net.thesocialos.client.presenter.Presenter;
@@ -18,6 +18,14 @@ import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.view.DesktopView;
 import net.thesocialos.client.view.RegisterView;
 import net.thesocialos.client.view.profile.UserProfileView;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatRecvMessage;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserConnected;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserDisconnect;
+import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
+import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
+import net.thesocialos.shared.ChannelApiEvents.ChApiEventHandler;
+import net.thesocialos.shared.ChannelApiEvents.ChApiPetitionNew;
 import net.thesocialos.shared.model.Account;
 
 import com.google.gwt.core.client.GWT;
@@ -45,6 +53,7 @@ public class AppController implements ValueChangeHandler<String> {
 	public AppController(SimpleEventBus eventBus) {
 		this.eventBus = eventBus;
 		bind(); // Bind the appController to History to control its changes
+		bindChannedlApiHandlers(); // Bind ChannelAPiHandlers to control the Channel api
 	}
 	
 	private void accountAdded() {
@@ -112,11 +121,54 @@ public class AppController implements ValueChangeHandler<String> {
 			}
 		});
 		
-		eventBus.addHandler(MessageChatAvailableEvent.TYPE, new MessageChatAvailableEventHandler() {
+	}
+	
+	/**
+	 * Bind the Channel Api Events. To control the Channel Api
+	 */
+	private void bindChannedlApiHandlers() {
+		eventBus.addHandler(ChApiEvent.TYPE, new ChApiEventHandler() {
 			
 			@Override
-			public void onContentAvailable(MessageChatAvailableEvent contentAvailableEvent) {
-				chatEventBus.fireEvent(new MessageChatAvailableEvent(contentAvailableEvent.getMessageChat()));
+			public void onPetitionNew(ChApiPetitionNew event) {
+				System.out.println("Contact petition  " + event.getContactUser());
+				
+			}
+			
+			@Override
+			public void onContactNew(ChApiContactNew event) {
+				System.out.println("Contact New  " + event.getContactUser());
+				
+			}
+			
+			@Override
+			public void onChatUserDisconnected(ChApiChatUserDisconnect event) {
+				
+				System.out.println(CacheLayer.UserCalls.getUser().getEmail() + "  Contact Disconnected:  "
+						+ event.getContactUser());
+				
+			}
+			
+			@Override
+			public void onChatUserConnected(ChApiChatUserConnected event) {
+				System.out.println(CacheLayer.UserCalls.getUser().getEmail() + "  Contact Connected:  "
+						+ event.getKeyUser().getName());
+				
+			}
+			
+			@Override
+			public void onChatUserChangeState(ChApiChatUserChngState event) {
+				TheSocialOS.getEventBus().fireEvent(
+						new ChatStateChange(event.getUserKey(), event.getState(), event.getCustomState()));
+				
+			}
+			
+			@Override
+			public void onChatRcvMessage(ChApiChatRecvMessage event) {
+				TheSocialOS.getEventBus().fireEvent(new ChatRecieveMessage(event.getLine()));
+				// System.out.println("Message recieve from: " + event.getContactComeFrom() + " write: "
+				// + event.getMessage());
+				
 			}
 		});
 	}

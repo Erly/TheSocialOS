@@ -5,9 +5,17 @@
 		.important {
 			font-weight: bold;
 		}
+		.ChatBlocks{
+			position:absolute;
+			right:262px;
+			bottom: 0px;
+
+	}
 	</ui:style>
 
-		<g:HorizontalPanel horizontalAlignment="ALIGN_LEFT" width="100%"/>
+		<g:HorizontalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_BOTTOM" height="74px" styleName="{style.ChatBlocks}" spacing="4" ui:field="horizontalConversationsPanel">
+			
+		</g:HorizontalPanel>
 		
 
 </ui:UiBinder> 

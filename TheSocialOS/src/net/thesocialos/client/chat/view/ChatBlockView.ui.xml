@@ -15,17 +15,18 @@
 		background-color: white;
 		border-style:solid;
 		border-width:1px;
+		border-radius:3px;
 		
 		}
 		
 	</ui:style>
-	<g:HTMLPanel>
-		<g:AbsolutePanel height="74px" width="62px" ui:field="background" styleName="chatBlock_background_red">
+	<g:HTMLPanel height="74px" width="62px" ui:field="htmlPanel">
+	<div>
+		<g:AbsolutePanel height="74px" width="62px" ui:field="background">
 			<g:at left="3" top="3">
 				<g:Image url="images/anonymous_avatar.png" styleName="{style.image}" width="53px" height="65px" ui:field="lblImage"/>
 			</g:at>
-			
 		</g:AbsolutePanel>
-		
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

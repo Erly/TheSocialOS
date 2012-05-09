@@ -13,12 +13,15 @@
 
   <!-- Other module inherits                                      -->
   <inherits name="com.googlecode.objectify.Objectify" />
+  <inherits name='com.kfuntak.gwt.json.serialization.GWTProJsonSerializer'/>
+  
   
   <inherits name="gwtupload.GWTUpload"/>
   <stylesheet src="Upload.css"/>
   
   <inherits name="com.google.gwt.json.JSON" /> 
   <inherits name="com.googlecode.objectify.Objectify" />
+ 
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='net.thesocialos.client.TheSocialOS'/>
@@ -31,7 +34,7 @@
   
   <set-configuration-property name="UiBinder.useSafeHtmlTemplates" value="true" />
   
- 
+
   <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
   	<extend-property name="log_level" values="DEBUG,WARN"/>
   	

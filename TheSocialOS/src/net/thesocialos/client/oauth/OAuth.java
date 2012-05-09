@@ -1,3 +1,4 @@
+// $codepro.audit.disable disallowNativeMethods
 package net.thesocialos.client.oauth;
 
 import com.google.gwt.core.client.JavaScriptObject;

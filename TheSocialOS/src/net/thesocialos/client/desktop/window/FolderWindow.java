@@ -84,7 +84,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	public FolderWindow(String title, HashSet<? extends Media> mediaSet, int idProgram) {
 		this(idProgram);
 		this.title = title;
-		int width = display.getWidth();
+		int width = windowDisplay.getWidth();
 		int col = width / 152;
 		Iterator<? extends Media> iterator = mediaSet.iterator();
 		i = 0;
@@ -102,14 +102,24 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		
 	}
 	
+	public FolderWindow(String title, WindowPanelLayout display, int idProgram) {
+		this(display, idProgram);
+		this.title = title;
+		
+	}
+	
+	public FolderWindow(WindowPanelLayout display, int idProgram) {
+		super(idProgram, display, TypeUnit.WINDOW, false);
+		title = "Prueba";
+	}
+	
 	public FolderWindow(int idProgram) {
+		super(idProgram, new WindowPanelLayout(false, false, new MyCaption(), new Footer()), TypeUnit.WINDOW, false);
 		files.add(new HashSet<Media>());
-		display = new WindowPanelLayout(false, false, new MyCaption(), new Footer());
-		programID = idProgram;
-		typeUnit = TypeUnit.APPLICATION;
+		
 		x = 1;
 		y = 30;
-		display.addWindowEvents(new WindowEventHandler() {
+		windowDisplay.addWindowEvents(new WindowEventHandler() {
 			
 			@Override
 			public void onClose(WindowCloseEvent event) {
@@ -171,7 +181,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 			hasAlbums = true;
 			infoPanel.removeFromParent();
 		}
-		int width = display.getWidth();
+		int width = windowDisplay.getWidth();
 		int col = width / 152;
 		Iterator<? extends Media> iterator = mediaSet.iterator();
 		while (iterator.hasNext()) {
@@ -186,7 +196,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 			hasAlbums = true;
 			infoPanel.removeFromParent();
 		}
-		int width = display.getWidth();
+		int width = windowDisplay.getWidth();
 		int col = width / 152;
 		files.get(arrayPosition).add(media);
 		printMedia(media, col);
@@ -200,7 +210,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	
 	@Override
 	public void close(AbsolutePanel absolutePanel) {
-		absolutePanel.remove(display.getWindow());
+		absolutePanel.remove(windowDisplay.getWindow());
 		
 	}
 	
@@ -240,10 +250,13 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
+		
+		initWindow();
+		absolutePanel.add(windowDisplay.getWindow(), x, y);
+		windowDisplay.setSize(800, 480);
+		windowDisplay.getWindow().setVisible(true);
+		
 		show();
-		absolutePanel.add(display.getWindow(), x, y);
-		display.setSize(800, 480);
-		display.getWindow().setVisible(true);
 		
 	}
 	
@@ -259,14 +272,19 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		
 	}
 	
+	private void initWindow() {
+		
+		windowDisplay.setWindowTitle(title);
+	}
+	
 	private void show() {
-		display.setWindowTitle(title);
+		windowDisplay.setWindowTitle(title);
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		vPanel.setSize("100%", "100%");
 		bindToolbar(vPanel);
 		
-		display.getWindow().add(vPanel);
+		windowDisplay.getWindow().add(vPanel);
 		if (!hasAlbums && null != contentType) {
 			infoPanel.setText(TheSocialOS.getMessages().folder_NoContent(contentType));
 			infoPanel.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -281,7 +299,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	}
 	
 	public void setTitle(String title) {
-		display.setWindowTitle(title);
+		windowDisplay.setWindowTitle(title);
 	}
 	
 	private void bindToolbar(VerticalPanel vPanel) {

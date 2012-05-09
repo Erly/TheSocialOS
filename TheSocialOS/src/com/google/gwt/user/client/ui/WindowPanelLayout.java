@@ -183,6 +183,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	private static final String DEFAULT_STYLENAME = "sos-Window";
 	
 	private boolean isMaximized = false;
+	private boolean isResizable = true;
 	private Caption caption;
 	private Footer footer;
 	private boolean dragging;
@@ -203,6 +204,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	 * {@link #add(Widget)}.
 	 */
 	public WindowPanelLayout() {
+		
 		this(false);
 	}
 	
@@ -285,7 +287,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			
 			@Override
 			public void onMouseDown(MouseDownEvent event) {
-				if (!isMaximized) {
+				if (!isMaximized && isResizable) {
 					windowEventBus.fireEvent(new WindowOnTopEvent());
 					beginResizing(event);
 				}
@@ -544,6 +546,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			resizeHandlerRegistration.removeHandler();
 			resizeHandlerRegistration = null;
 		}
+		
 		super.hide();
 	}
 	
@@ -571,12 +574,14 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			public void onPreviewNativeEvent(NativePreviewEvent event) {
 				// TODO Auto-generated method stub
 				if (Event.ONMOUSEMOVE == event.getTypeInt()) {
-					if (dragging == true) continueDragging(event.getNativeEvent().getClientX(), event.getNativeEvent()
+					
+					if (dragging) continueDragging(event.getNativeEvent().getClientX(), event.getNativeEvent()
 							.getClientY());
 					else
 						continueResizing(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
 					
-				} else if (Event.ONMOUSEUP == event.getTypeInt()) if (dragging == true) endDragging();
+				} else if (Event.ONMOUSEUP == event.getTypeInt()) if (dragging) endDragging();
+				
 				else
 					endResizing();
 				event.cancel();
@@ -667,9 +672,10 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	@Override
 	public void setMinimized(Boolean minimized) {
-		if (minimized == true) hide();
+		
+		if (minimized) setVisible(false);
 		else
-			show();
+			setVisible(true);
 		
 	}
 	
@@ -723,14 +729,20 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	@Override
 	public void toback() {
-		System.out.println("to back");
+		// System.out.println("to back");
 		getElement().getStyle().setZIndex(0);
 	}
 	
 	@Override
 	public void toFront() {
-		System.out.println("to front");
+		// System.out.println("to front");
 		getElement().getStyle().setZIndex(100);
+		
+	}
+	
+	@Override
+	public void setResizable(Boolean resizable) {
+		isResizable = resizable;
 		
 	}
 	

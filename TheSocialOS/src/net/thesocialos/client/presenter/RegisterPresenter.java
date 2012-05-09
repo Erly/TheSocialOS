@@ -50,7 +50,7 @@ public class RegisterPresenter implements Presenter {
 	}
 	
 	public void bind() {
-		this.display.getRegisterButton().addClickHandler(new ClickHandler() {
+		display.getRegisterButton().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -60,30 +60,28 @@ public class RegisterPresenter implements Presenter {
 	}
 	
 	private void doRegister() {
-		Label incorrect = (Label) this.display.getIncorrect();
-		if (this.display.getEmail().getValue().length() < 6
-				|| (!this.display.getEmail().getValue().contains("@") || !this.display.getEmail().getValue()
-						.contains("."))) {
+		Label incorrect = (Label) display.getIncorrect();
+		if (display.getEmail().getValue().length() < 6
+				|| (!display.getEmail().getValue().contains("@") || !display.getEmail().getValue().contains("."))) {
 			incorrect.setText(TheSocialOS.getConstants().error_Email()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
 			return;
 		}
-		if (this.display.getPassword().getValue().length() < 6) {
+		if (display.getPassword().getValue().length() < 6) {
 			incorrect.setText(TheSocialOS.getConstants().error_Password()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
 			return;
 		}
-		if (!this.display.getPassword().getValue().equals(this.display.getPassword2().getValue())) { // Password and
-																										// Retype
-																										// password
-																										// fields aren't
-																										// equal
+		if (!display.getPassword().getValue().equals(display.getPassword2().getValue())) { // Password and
+																							// Retype
+																							// password
+																							// fields aren't
+																							// equal
 			incorrect.setText(TheSocialOS.getConstants().error_Password2()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
 			return;
 		}
-		if (this.display.getName().getValue().trim().isEmpty()
-				|| this.display.getLastName().getValue().trim().isEmpty()) {
+		if (display.getName().getValue().trim().isEmpty() || display.getLastName().getValue().trim().isEmpty()) {
 			incorrect.setText(TheSocialOS.getConstants().error_emptyTxt()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
 			
@@ -112,7 +110,7 @@ public class RegisterPresenter implements Presenter {
 				
 				userService.register(new User(display.getEmail().getValue().trim(), display.getPassword().getValue()
 						.trim(), null, null, display.getName().getValue().trim(), display.getLastName().getValue()
-						.trim(), "User"), cb);
+						.trim(), "User", null), cb);
 			}
 		}.retry(3);
 	}

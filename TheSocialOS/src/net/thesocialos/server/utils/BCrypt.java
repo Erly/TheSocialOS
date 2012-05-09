@@ -353,9 +353,9 @@ public class BCrypt {
 		random.nextBytes(rnd);
 		
 		rs.append("$2a$");
-		if (log_rounds < 10) rs.append("0");
+		if (log_rounds < 10) rs.append('0');
 		rs.append(Integer.toString(log_rounds));
-		rs.append("$");
+		rs.append('$');
 		rs.append(encode_base64(rnd, rnd.length));
 		return rs.toString();
 	}
@@ -403,10 +403,10 @@ public class BCrypt {
 		
 		rs.append("$2");
 		if (minor >= 'a') rs.append(minor);
-		rs.append("$");
-		if (rounds < 10) rs.append("0");
+		rs.append('$');
+		if (rounds < 10) rs.append('0');
 		rs.append(Integer.toString(rounds));
-		rs.append("$");
+		rs.append('$');
 		rs.append(encode_base64(saltb, saltb.length));
 		rs.append(encode_base64(hashed, bf_crypt_ciphertext.length * 4 - 1));
 		return rs.toString();
@@ -468,10 +468,9 @@ public class BCrypt {
 			key(salt);
 		}
 		
-		for (i = 0; i < 64; i++) {
+		for (i = 0; i < 64; i++)
 			for (j = 0; j < (clen >> 1); j++)
 				encipher(cdata, j << 1);
-		}
 		
 		ret = new byte[clen * 4];
 		for (i = 0, j = 0; i < clen; i++) {

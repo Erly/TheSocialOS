@@ -167,7 +167,7 @@ public class TheSocialOS implements EntryPoint {
 					}.retry(3);
 					
 					// User listening to the channel push
-					
+					net.thesocialos.client.helper.ChannelApiHelper.listenToChannel(CacheLayer.UserCalls.getUser());
 					// comet = new Comet(eventBus);
 					// comet.listenToChannel(user);
 				}

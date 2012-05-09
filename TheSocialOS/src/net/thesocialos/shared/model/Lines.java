@@ -2,17 +2,26 @@ package net.thesocialos.shared.model;
 
 import javax.persistence.Id;
 
+import com.google.gwt.i18n.shared.impl.cldr.DateTimeFormatInfoImpl_es;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
-public class Lines {
+public class Lines implements IsSerializable {
 	
 	private @Id Long id;
-	private int date; // The date that has been written
+	private long date; // The date that has been written
 	private @Unindexed String text; // The text of the line
 	private @Parent Key<Conversation> converOwner;
 	private Key<User> userOwner;
+	
+	public Lines(String text, Key<User> userOwner, long date) {
+		this.text = text;
+		this.userOwner = userOwner;
+		this.date = date;
+		new DateTimeFormatInfoImpl_es();
+	}
 	
 	public Lines() {
 		
@@ -22,7 +31,7 @@ public class Lines {
 		return converOwner;
 	}
 	
-	public int getDate() {
+	public long getDate() {
 		return date;
 	}
 	
@@ -38,19 +47,4 @@ public class Lines {
 		return userOwner;
 	}
 	
-	public void setConverOwner(Key<Conversation> converOwner) {
-		this.converOwner = converOwner;
-	}
-	
-	public void setDate(int date) {
-		this.date = date;
-	}
-	
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-	public void setUserOwner(Key<User> userOwner) {
-		this.userOwner = userOwner;
-	}
 }

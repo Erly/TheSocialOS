@@ -124,6 +124,7 @@ public class TwitterAPI {
 	
 	private String getHomeTimelineSignedUrl(Twitter twitterAccount, int j, String lastId) {
 		String url = "https://api.twitter.com/1/statuses/home_timeline.json?callback=jsonCallback[" + j + "]";
+		
 		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
 		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
 				twitterAccount.getTokenSecret(), url);
@@ -131,6 +132,7 @@ public class TwitterAPI {
 	
 	private String getMentionsTimelineSignedUrl(Twitter twitterAccount, int j, String lastId) {
 		String url = "https://api.twitter.com/1/statuses/mentions.json?callback=jsonCallback[" + j + "]";
+		
 		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
 		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
 				twitterAccount.getTokenSecret(), url);

@@ -87,6 +87,7 @@ public class LoginPresenter implements Presenter {
 					}
 					CacheLayer.UserCalls.refreshAccounts();
 					CacheLayer.UserCalls.refreshColumns();
+					
 					History.newItem("desktop");
 				}
 			}

@@ -31,7 +31,6 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.googlecode.objectify.Key;
 
 public class ContactsPresenter extends DesktopUnit {
 	
@@ -100,8 +99,7 @@ public class ContactsPresenter extends DesktopUnit {
 	List<User> contactList;
 	
 	public ContactsPresenter(Display display) {
-		programID = AppConstants.CONTACTS;
-		typeUnit = TypeUnit.INFO;
+		super(AppConstants.CONTACTS, null, TypeUnit.INFO, false);
 		this.display = display;
 		KEY_PROVIDER = new ProvidesKey<User>() {
 			@Override
@@ -150,7 +148,7 @@ public class ContactsPresenter extends DesktopUnit {
 		contactList = new ArrayList<User>();
 		contactDataProvider = new ListDataProvider<User>(contactList);
 		
-		CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>, User>>() {
+		CacheLayer.ContactCalls.getContactsWithoutKey(false, new AsyncCallback<Map<String, User>>() {
 			
 			@Override
 			public void onFailure(Throwable caught) {
@@ -159,7 +157,7 @@ public class ContactsPresenter extends DesktopUnit {
 			}
 			
 			@Override
-			public void onSuccess(Map<Key<User>, User> result) {
+			public void onSuccess(Map<String, User> result) {
 				// TODO Auto-generated method stub
 				Iterator<User> iterator = result.values().iterator();
 				
@@ -216,7 +214,7 @@ public class ContactsPresenter extends DesktopUnit {
 				 * onSuccess(List<User> returnUsers){ System.out.println(returnUsers.size()); } public void
 				 * onFailure(Throwable caught){ } }.retry(3);
 				 */
-				CacheLayer.ContactCalls.getContacts(false, new AsyncCallback<Map<Key<User>, User>>() {
+				CacheLayer.ContactCalls.getContactsWithoutKey(false, new AsyncCallback<Map<String, User>>() {
 					
 					@Override
 					public void onFailure(Throwable caught) {
@@ -225,7 +223,7 @@ public class ContactsPresenter extends DesktopUnit {
 					}
 					
 					@Override
-					public void onSuccess(Map<Key<User>, User> result) {
+					public void onSuccess(Map<String, User> result) {
 						
 						String text[] = display.getSearchBox().getText().split(" ");
 						

@@ -1,17 +1,22 @@
 package net.thesocialos.client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.thesocialos.client.api.Media;
+import net.thesocialos.client.event.ContactsChangeEvent;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ContacsService;
 import net.thesocialos.client.service.ContacsServiceAsync;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
+import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.Group;
@@ -24,12 +29,38 @@ import com.googlecode.objectify.Key;
 
 public class CacheLayer {
 	
+	static User user = null;
+	private static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
+	
+	// Usuarios de la aplicaci�n
+	private static Map<String, User> users = new LinkedHashMap<String, User>();
+	private static LinkedHashMap<String, Session> sessions;
+	
+	private static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
+	
+	private static Map<String, User> petitionsContacts = new LinkedHashMap<String, User>();
+	
+	private final static UserServiceAsync userService = GWT.create(UserService.class);
+	
+	private final static ContacsServiceAsync contactService = GWT.create(ContacsService.class);
+	
 	/**
 	 * Se encarga de hacer las llamadas asincronas de los contactos
 	 * 
 	 * @author vssnake
 	 */
 	public static class ContactCalls {
+		
+		/**
+		 * CHECK if this user has in your contacts
+		 * 
+		 * @param emailTocontact
+		 * @return true if is | false if not
+		 */
+		public static boolean isContact(Key<User> userKey) {
+			return contacts.containsKey(userKey);
+		}
+		
 		/**
 		 * Accept a contact
 		 * 
@@ -118,7 +149,7 @@ public class CacheLayer {
 			}.retry(3);
 		}
 		
-		public static User getContact(String email) {
+		public static Key<User> getContactKey(String email) {
 			return null;
 		}
 		
@@ -196,6 +227,48 @@ public class CacheLayer {
 				callback.onSuccess(contacts);
 		}
 		
+		public static void getContactsWithoutKey(boolean cached, final AsyncCallback<Map<String, User>> callback) {
+			if (contacts.isEmpty() || !cached) ContactCalls.getContacts(new AsyncCallback<Map<Key<User>, User>>() {
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onSuccess(Map<Key<User>, User> result) {
+					Set<Entry<Key<User>, User>> set = result.entrySet();
+					Iterator<Entry<Key<User>, User>> i = set.iterator();
+					Map<String, User> resultWhitoutKey = new HashMap<String, User>();
+					
+					while (i.hasNext()) {
+						Entry<Key<User>, User> me = i.next();
+						
+						User user = me.getValue();
+						user.setOwnKey(me.getKey());
+						resultWhitoutKey.put(user.getEmail(), user);
+					}
+					callback.onSuccess(resultWhitoutKey);
+					
+				}
+			});
+			else {
+				Set<Entry<Key<User>, User>> set = contacts.entrySet();
+				Iterator<Entry<Key<User>, User>> i = set.iterator();
+				Map<String, User> resultWhitoutKey = new HashMap<String, User>();
+				
+				while (i.hasNext()) {
+					Entry<Key<User>, User> me = i.next();
+					
+					User user = me.getValue();
+					user.setOwnKey(me.getKey());
+					resultWhitoutKey.put(user.getEmail(), user);
+				}
+				callback.onSuccess(resultWhitoutKey);
+			}
+		}
+		
 		/**
 		 * Obtienes el numero de peticiones en espera
 		 * 
@@ -264,7 +337,10 @@ public class CacheLayer {
 				public void onSuccess(Map<Key<User>, User> result) {
 					
 					contacts = result;
-					if (callback != null) callback.onSuccess(true);
+					if (callback != null) {
+						TheSocialOS.getEventBus().fireEvent(new ContactsChangeEvent());
+						callback.onSuccess(true);
+					}
 				}
 			});
 		}
@@ -291,16 +367,14 @@ public class CacheLayer {
 	
 	public static class GroupCalls {
 		
-		static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
 	}
 	
 	public static class SessionCalls {
-		static LinkedHashMap<String, Session> sessions;
+		
 	}
 	
 	public static class UserCalls {
 		
-		private static User user = null;
 		private static Map<Key<Account>, Account> accounts = null;
 		private static Map<Key<Columns>, Columns> columns = null;
 		
@@ -361,6 +435,52 @@ public class CacheLayer {
 			}.retry(3);
 		}
 		
+		public static void getNewChannelId(final AsyncCallback<Void> callback) {
+			new RPCXSRF<String>(userService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<String> cb) {
+					userService.getChannel(cb);
+					
+				}
+				
+				@Override
+				public void onSuccess(String channelIDToken) {
+					getUser().setTokenChannel(channelIDToken);
+					callback.onSuccess(null);
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+				}
+			}.retry(3);
+		}
+		
+		public static void setChatState(final STATETYPE stateType, final String customMsg,
+				final AsyncCallback<Void> callback) {
+			new RPCXSRF<Void>(userService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<Void> cb) {
+					userService.setState(stateType, customMsg, cb);
+					
+				}
+				
+				@Override
+				public void onSuccess(Void nothing) {
+					getUser().chatState = stateType;
+					// Falta custom State
+					callback.onSuccess(nothing);
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+				}
+			}.retry(3);
+		}
+		
 		public static void setAccounts(Map<Key<Account>, Account> accounts) {
 			CacheLayer.UserCalls.accounts = accounts;
 		}
@@ -370,7 +490,7 @@ public class CacheLayer {
 		}
 		
 		public static void setUser(User user) {
-			CacheLayer.UserCalls.user = user;
+			CacheLayer.user = user;
 		}
 	}
 	
@@ -378,19 +498,4 @@ public class CacheLayer {
 		public static List<Set<? extends Media>> files = new ArrayList<Set<? extends Media>>();
 	}
 	
-	static User user;
-	static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
-	
-	// Usuarios de la aplicaci�n
-	static Map<String, User> users = new LinkedHashMap<String, User>();
-	static LinkedHashMap<String, Session> sessions;
-	
-	static Map<Key<Group>, Group> group = new LinkedHashMap<Key<Group>, Group>();
-	
-	// Usuarios en espera de aceptar la solicitud
-	private static Map<String, User> petitionsContacts = new LinkedHashMap<String, User>();
-	
-	private final static UserServiceAsync userService = GWT.create(UserService.class);
-	
-	private final static ContacsServiceAsync contactService = GWT.create(ContacsService.class);
 }

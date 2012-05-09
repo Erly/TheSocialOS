@@ -23,14 +23,13 @@ public class MergedSerializationPolicy extends SerializationPolicy {
 		
 		List<SerializationPolicy> policies = new ArrayList<SerializationPolicy>();
 		
-		for (File f : files) {
+		for (File f : files)
 			try {
 				BufferedInputStream input = new BufferedInputStream(new FileInputStream(f));
 				policies.add(SerializationPolicyLoader.loadFromStream(input, null));
 			} catch (Exception e) {
 				throw new RuntimeException("Unable to load a policy file: " + f.getAbsolutePath());
 			}
-		}
 		
 		return new MergedSerializationPolicy(policies);
 	}
@@ -43,45 +42,41 @@ public class MergedSerializationPolicy extends SerializationPolicy {
 	
 	@Override
 	public boolean shouldDeserializeFields(Class<?> clazz) {
-		for (SerializationPolicy p : policies) {
-			if (p.shouldDeserializeFields(clazz)) { return true; }
-		}
+		for (SerializationPolicy p : policies)
+			if (p.shouldDeserializeFields(clazz)) return true;
 		return false;
 	}
 	
 	@Override
 	public boolean shouldSerializeFields(Class<?> clazz) {
-		for (SerializationPolicy p : policies) {
-			if (p.shouldSerializeFields(clazz)) { return true; }
-		}
+		for (SerializationPolicy p : policies)
+			if (p.shouldSerializeFields(clazz)) return true;
 		return false;
 	}
 	
 	@Override
 	public void validateDeserialize(Class<?> clazz) throws SerializationException {
 		SerializationException se = null;
-		for (SerializationPolicy p : policies) {
+		for (SerializationPolicy p : policies)
 			try {
 				p.validateDeserialize(clazz);
 				return;
 			} catch (SerializationException e) {
 				se = e;
 			}
-		}
 		throw se;
 	}
 	
 	@Override
 	public void validateSerialize(Class<?> clazz) throws SerializationException {
 		SerializationException se = null;
-		for (SerializationPolicy p : policies) {
+		for (SerializationPolicy p : policies)
 			try {
 				p.validateSerialize(clazz);
 				return;
 			} catch (SerializationException e) {
 				se = e;
 			}
-		}
 		throw se;
 	}
 }

@@ -53,6 +53,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 		
 		void setComponentsList(CellList<User> cellList);
 	}
+	
 	SingleSelectionModel<User> selectionModel;
 	ListDataProvider<User> dataProvider;
 	/*
@@ -71,8 +72,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 	Display display;
 	
 	public SearchBoxPresenter(Display display) {
-		programID = AppConstants.SEARCHBOX;
-		typeUnit = TypeUnit.INFO;
+		super(AppConstants.SEARCHBOX, null, TypeUnit.INFO, false);
 		this.display = display;
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
 			@Override
@@ -226,9 +226,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 			@Override
 			public void onClick(ClickEvent event) {
 				User contactUser;
-				if ((contactUser = selectionModel.getSelectedObject()) != null) {
-					addPetitionContact(contactUser);
-				}
+				if ((contactUser = selectionModel.getSelectedObject()) != null) addPetitionContact(contactUser);
 				
 			}
 		});
