@@ -36,6 +36,8 @@ public interface UserService extends RemoteService {
 	
 	void setDeckColumns(ArrayList<Columns> columns);
 	
+	void addDeckColumn(Columns column);
+
 	void checkChannel(ChApiContactNew newContact);
 	
 	void setState(STATETYPE statetype, String customMsg);

@@ -31,6 +31,8 @@ public interface UserServiceAsync extends ServiceAsync {
 	
 	void setDeckColumns(ArrayList<Columns> columns, AsyncCallback<Void> callback);
 	
+	void addDeckColumn(Columns column, AsyncCallback<Void> callback);
+
 	void checkChannel(ChApiContactNew newContact, AsyncCallback<Void> callback);
 	
 	void setState(STATETYPE stateType, String customMsg, AsyncCallback<Void> callback);

@@ -109,6 +109,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 				&& (user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy)) != null)
 			if (session.getSessionID().equalsIgnoreCase(sid)
 					&& session.getUser().getName().equalsIgnoreCase(user.getEmail()))
+				// return User.toDTO(user);
 				User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(), user.getLastName(),
 						user.getRole(), user.getTokenChannel());
 		try {
@@ -118,6 +119,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			
 			UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 			ofy.put(user);
+			//return User.toDTO(user);
 			return User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(),
 					user.getLastName(), user.getRole(), user.getTokenChannel());
 		} catch (NotFoundException e) {
@@ -160,6 +162,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 		
 		ofy.put(user); // Save user
+		//return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 		return new LoginResult(User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(),
 				user.getLastName(), user.getRole(), user.getTokenChannel()), httpSession.getId(), duration);
 	}
@@ -210,7 +213,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		// name, lastName); // Encrypt the password
 	}
 	
-	public void removeDeletedAccounts(Objectify ofy) {
+	private void removeDeletedAccounts(Objectify ofy) {
 		HttpSession httpSession = perThreadRequest.get().getSession();
 		User user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy);
 		List<Key<? extends Account>> accountsKeys = user.getAccounts();
@@ -266,6 +269,13 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 	}
 	
 	@Override
+	public void addDeckColumn(Columns column) {
+		Objectify ofy = ObjectifyService.begin();
+		User user = UserHelper
+				.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
+		user.addColumn(ofy.put(column));
+		ofy.put(user);
+
 	public void checkChannel(ChApiContactNew newContact) {
 		/*
 		 * ChannelApiHelper.sendMessage("unai@thesocialos.net", ChannelApiHelper.encodeMessage(new

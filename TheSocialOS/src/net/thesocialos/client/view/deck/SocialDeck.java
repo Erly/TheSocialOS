@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.VerticalSplitPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SocialDeck extends Composite implements Display {
@@ -23,10 +24,15 @@ public class SocialDeck extends Composite implements Display {
 	@UiField TextArea textField;
 	@UiField Button postButton;
 	@UiField TabPanel postsColumnsPanel;
-	@UiField HorizontalPanel plusTab;
-	@UiField HorizontalPanel facebookTab;
-	@UiField HorizontalPanel twitterTab;
-	@UiField HorizontalPanel allTab;
+	/*
+	 * @UiField HorizontalPanel plusTab;
+	 * @UiField HorizontalPanel facebookTab;
+	 * @UiField HorizontalPanel twitterTab;
+	 * @UiField HorizontalPanel allTab;
+	 */
+	@UiField HorizontalPanel timelineTab;
+	@UiField Button addColumnButton;
+	@UiField VerticalSplitPanel addColumnTab;
 	
 	public SocialDeck() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -35,7 +41,7 @@ public class SocialDeck extends Composite implements Display {
 	
 	@Override
 	public HasWidgets getAllPostColumnsPanel() {
-		return allTab;
+		return timelineTab;
 	}
 	
 	@Override
@@ -46,5 +52,10 @@ public class SocialDeck extends Composite implements Display {
 	@Override
 	public TextArea getTextField() {
 		return textField;
+	}
+	
+	@Override
+	public HasClickHandlers getAddColumnButton() {
+		return null;
 	}
 }
