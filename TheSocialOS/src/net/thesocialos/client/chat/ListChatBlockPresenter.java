@@ -13,12 +13,12 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.objectify.Key;
 
-public class ListChatBlocksPresenter extends DesktopUnit {
+public class ListChatBlockPresenter extends DesktopUnit {
 	
 	Display display;
 	HashMap<Key<User>, ChatBlockView> conversationsBlock = new HashMap<Key<User>, ChatBlockView>();
 	
-	public ListChatBlocksPresenter(Display display) {
+	public ListChatBlockPresenter(Display display) {
 		super(AppConstants.CHAT, null, TypeUnit.STATIC, true);
 		this.display = display;
 	}

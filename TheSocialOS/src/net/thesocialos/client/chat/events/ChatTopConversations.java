@@ -4,7 +4,7 @@ import net.thesocialos.shared.model.User;
 
 import com.googlecode.objectify.Key;
 
-public class ChatTopConversation extends ChatEvent {
+public class ChatTopConversations extends ChatEvent {
 	
 	@Override
 	public com.google.gwt.event.shared.GwtEvent.Type<ChatEventHandler> getAssociatedType() {
@@ -18,7 +18,7 @@ public class ChatTopConversation extends ChatEvent {
 		
 	}
 	
-	public ChatTopConversation(Key<User> userKey) {
+	public ChatTopConversations(Key<User> userKey) {
 		super(userKey);
 	}
 	

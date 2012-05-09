@@ -8,7 +8,7 @@ import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.chat.events.ChatCloseConversation;
 import net.thesocialos.client.chat.events.ChatHideConversation;
 import net.thesocialos.client.chat.events.ChatSendMessage;
-import net.thesocialos.client.chat.events.ChatTopConversation;
+import net.thesocialos.client.chat.events.ChatTopConversations;
 import net.thesocialos.client.chat.view.ChatConversationView;
 import net.thesocialos.client.desktop.DesktopEventOnClose;
 import net.thesocialos.client.desktop.DesktopEventOnTop;
@@ -121,7 +121,7 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 			
 			@Override
 			public void onTop(WindowOnTopEvent event) {
-				TheSocialOS.getEventBus().fireEvent(new ChatTopConversation(userWithChat));
+				TheSocialOS.getEventBus().fireEvent(new ChatTopConversations(userWithChat));
 				TheSocialOS.getEventBus().fireEvent(new DesktopEventOnTop(ChatConversationPresenter.this));
 				
 			}

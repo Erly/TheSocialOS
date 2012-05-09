@@ -1,6 +1,6 @@
 package net.thesocialos.client.chat.view;
 
-import net.thesocialos.client.chat.ListChatBlocksPresenter.Display;
+import net.thesocialos.client.chat.ListChatBlockPresenter.Display;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;

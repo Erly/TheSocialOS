@@ -109,7 +109,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 				&& (user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(httpSession), ofy)) != null)
 			if (session.getSessionID().equalsIgnoreCase(sid)
 					&& session.getUser().getName().equalsIgnoreCase(user.getEmail()))
-				// return User.toDTO(user);
+			// return User.toDTO(user);
 				User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(), user.getLastName(),
 						user.getRole(), user.getTokenChannel());
 		try {
@@ -119,7 +119,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			
 			UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 			ofy.put(user);
-			//return User.toDTO(user);
+			// return User.toDTO(user);
 			return User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(),
 					user.getLastName(), user.getRole(), user.getTokenChannel());
 		} catch (NotFoundException e) {
@@ -162,7 +162,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 		
 		ofy.put(user); // Save user
-		//return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
+		// return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 		return new LoginResult(User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(),
 				user.getLastName(), user.getRole(), user.getTokenChannel()), httpSession.getId(), duration);
 	}
@@ -275,7 +275,9 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 				.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
 		user.addColumn(ofy.put(column));
 		ofy.put(user);
-
+	}
+	
+	@Override
 	public void checkChannel(ChApiContactNew newContact) {
 		/*
 		 * ChannelApiHelper.sendMessage("unai@thesocialos.net", ChannelApiHelper.encodeMessage(new

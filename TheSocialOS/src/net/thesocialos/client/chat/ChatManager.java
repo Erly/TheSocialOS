@@ -14,7 +14,7 @@ import net.thesocialos.client.chat.events.ChatOpenConversation;
 import net.thesocialos.client.chat.events.ChatRecieveMessage;
 import net.thesocialos.client.chat.events.ChatSendMessage;
 import net.thesocialos.client.chat.events.ChatStateChange;
-import net.thesocialos.client.chat.events.ChatTopConversation;
+import net.thesocialos.client.chat.events.ChatTopConversations;
 import net.thesocialos.client.chat.view.ChatConversationView;
 import net.thesocialos.client.chat.view.ChatMenuView;
 import net.thesocialos.client.chat.view.ListChatBlocks;
@@ -41,13 +41,13 @@ public class ChatManager {
 	private HashMap<Key<User>, ChatConversationPresenter> conversations = new HashMap<Key<User>, ChatConversationPresenter>();
 	
 	ChatMenuPresenter chatMenuPresenter;
-	ListChatBlocksPresenter chatListChatBlocksPresenter;
+	ListChatBlockPresenter chatListChatBlocksPresenter;
 	
 	ChatServiceAsync chatService = GWT.create(ChatService.class);
 	
 	public ChatManager() {
 		chatMenuPresenter = new ChatMenuPresenter(new ChatMenuView(), this);
-		chatListChatBlocksPresenter = new ListChatBlocksPresenter(new ListChatBlocks());
+		chatListChatBlocksPresenter = new ListChatBlockPresenter(new ListChatBlocks());
 		bindHandlers();
 		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatMenuPresenter));
 		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(chatListChatBlocksPresenter));
@@ -109,7 +109,7 @@ public class ChatManager {
 			}
 			
 			@Override
-			public void onTopConversation(ChatTopConversation event) {
+			public void onTopConversation(ChatTopConversations event) {
 				activateConversationsBlock(event.getUserKey());
 				
 			}

@@ -16,6 +16,6 @@ public interface ChatEventHandler extends EventHandler {
 	
 	void onChangeState(ChatStateChange event);
 	
-	void onTopConversation(ChatTopConversation event);
+	void onTopConversation(ChatTopConversations event);
 	
 }
