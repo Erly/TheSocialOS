@@ -7,24 +7,29 @@
 			color: #90D5EC;
 			text-decoration: none;
 		}
+		a:visited {
+			font-weight: 700;
+			color: #90D5EC;
+			text-decoration: none;
+		}
 	</ui:style>
 	<g:HTMLPanel>
 		<div id="wrap">
 		<div class="logoDiv" align="center">
 			<img class="logo" src="./images/logo.png"/>
 		</div>
-		<img class="bg" src="./images/wpLogin.png"/>
+		<img class="bg" src="./images/wpLogin.png" ui:field="background"/>
 		<form>
 			<input class="email" type="email" placeholder="Email Address" ui:field="email"/>
 			<input class="password" type="password" placeholder="Password" ui:field="password"/>
-			<input class="loginButton" type="submit" value="Log in" ui:field="loginButton" />			
+			<input class="loginButton" type="button" value="Log in" ui:field="loginButton" />			
 		</form>
-		<div class="helpers">
-			<a href="#">Register</a>
+		<div class="helpers" ui:field="helpers">
+			<a href="#register">Register</a>
 			/
 			<a href="#">Forgot your password?</a>
 		</div>
-		<div class="footer">
+		<div class="footer" ui:field="footer">
 			<table cellspacing="0" cellpadding="0" style="width: 100%; ">
 				<tbody>
 					<tr>

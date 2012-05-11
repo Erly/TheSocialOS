@@ -17,7 +17,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.2.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribe-java.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine (1)"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtprojsonserializer-1.0.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

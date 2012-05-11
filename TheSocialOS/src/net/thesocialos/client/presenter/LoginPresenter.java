@@ -14,14 +14,20 @@ import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class LoginPresenter implements Presenter {
+	ElementWrapper wrapper;
+	HandlerRegistration handlerRegistration;
 	
 	public interface Display {
 		Widget asWidget();
@@ -47,8 +53,7 @@ public class LoginPresenter implements Presenter {
 	 * Binds this presenter to its view and adds its handlers.
 	 */
 	public void bind() {
-		ElementWrapper wrapper = new ElementWrapper(display.getLoginButton());
-		wrapper.onAttach();
+		wrapper = new ElementWrapper(display.getLoginButton());
 		wrapper.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -56,6 +61,19 @@ public class LoginPresenter implements Presenter {
 				doLogin();
 			}
 		});
+		handlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
+			
+			@Override
+			public void onPreviewNativeEvent(NativePreviewEvent event) {
+				// TODO Auto-generated method stub
+				if (event.getNativeEvent().getKeyCode() == 13) {
+					display.getLoginButton().click();
+					handlerRegistration.removeHandler();
+				}
+				
+			}
+		});
+		wrapper.onAttach();
 	}
 	
 	/**
@@ -64,12 +82,12 @@ public class LoginPresenter implements Presenter {
 	 * desktop.
 	 */
 	private void doLogin() {
-		Window.alert("buuuu");
 		new RPCXSRF<LoginResult>(userService) {
 			
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("Error: " + caught.getMessage());
+				Window.alert(caught.getLocalizedMessage());
 			}
 			
 			@Override
@@ -80,6 +98,7 @@ public class LoginPresenter implements Presenter {
 					
 				} else { // The user exists and the password is correct
 					CacheLayer.UserCalls.setUser(result.getUser());
+					Window.alert(result.getUser().getEmail());
 					if (result.getDuration() < 0) Cookies.setCookie("sid", result.getSessionID());
 					else {
 						Date expires = new Date(System.currentTimeMillis() + result.getDuration());

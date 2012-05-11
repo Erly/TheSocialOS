@@ -643,7 +643,7 @@
 	border-radius:4px;
 	/*-moz-box-shadow: 10px 10px 5px #888;
 	-webkit-box-shadow: 10px 10px 5px #888;
-	box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px #888;*/
 }
 
 /*
@@ -684,7 +684,6 @@
 	position: absolute;
 	top: 0px;
 	width: 100%;
-	height: 480px;
 }
 input {
 	font-size: 20px;
@@ -693,17 +692,14 @@ input {
 }
 .email {
 	position: absolute;
-	top: 375px;
 	left: 200px;
 }
 .password {
 	position: absolute;
-	top: 375px;
 	left: 450px;
 }
 .loginButton {
 	position: absolute;
-	top: 375px;
 	left: 700px;
 	background-color: #4BF;
 }
@@ -712,19 +708,65 @@ input {
 }
 .helpers {
 	position: absolute;
-	top: 425px;
 	left: 200px;
 	font-size: 18px;
 }
 .footer {
 	position: absolute;
-	top: 500px;
 	width: 100%;
 	color: #ACB1B4;
 }
 .flags {
 	cursor: pointer;
 	padding-left: 10px;
+}
+.firstName {
+	position: absolute;
+	left: 100px;
+	font-size: 20px;
+	border: 1px solid #282D2A;
+	padding: 6px;
+}
+.secondName {
+	position: absolute;
+	left: 350px;
+	font-size: 20px;
+	border: 1px solid #282D2A;
+	padding: 6px;
+}
+.rEmail {
+	position: absolute;
+	left: 100px;
+	font-size: 20px;
+	border: 1px solid #282D2A;
+	padding: 6px;
+}
+.rPassword {
+	position: absolute;
+	left: 350px;
+	font-size: 20px;
+	border: 1px solid #282D2A;
+	padding: 6px;
+}
+.repeatPassword {
+	position: absolute;
+	left: 600px;
+	font-size: 20px;
+	border: 1px solid #282D2A;
+	padding: 6px;
+}
+.registerButton {
+	position: absolute;
+	left: 850px;
+	font-size: 20px;
+	background-color: #4BF;
+	border: 1px solid #282D2A;
+	padding: 6px;
+}
+.rHelpers {
+	position: absolute;
+	left: 100px;
+	font-size: 18px;
 }
 .chatBlock_activated {
 	/*width:80px;

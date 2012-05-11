@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.VerticalSplitPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SocialDeck extends Composite implements Display {
@@ -32,7 +32,7 @@ public class SocialDeck extends Composite implements Display {
 	 */
 	@UiField HorizontalPanel timelineTab;
 	@UiField Button addColumnButton;
-	@UiField VerticalSplitPanel addColumnTab;
+	@UiField VerticalPanel addColumnTab;
 	
 	public SocialDeck() {
 		initWidget(uiBinder.createAndBindUi(this));

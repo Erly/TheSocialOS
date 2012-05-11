@@ -1,84 +1,112 @@
 package net.thesocialos.client.view;
 
-import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.RegisterPresenter.Display;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.TextBox;
 
 public class RegisterView extends Composite implements Display {
 	
-	interface RegisterViewUiBinder extends UiBinder<DockLayoutPanel, RegisterView> {
+	interface RegisterViewUiBinder extends UiBinder<HTMLPanel, RegisterView> {
 	}
 	
 	private static RegisterViewUiBinder uiBinder = GWT.create(RegisterViewUiBinder.class);
-	@UiField Label lblIncorrect;
-	@UiField Label lblEmail;
-	@UiField Label lblPass;
-	@UiField Label lblPass2;
-	@UiField Label lblName;
-	@UiField Label lblLastName;
-	@UiField TextBox txtEmail;
-	@UiField PasswordTextBox txtPass;
-	@UiField PasswordTextBox txtPass2;
-	@UiField TextBox txtName;
-	@UiField TextBox txtLastName;
+	// @UiField Label lblIncorrect;
+	@UiField ImageElement background;
+	@UiField InputElement email;
+	@UiField InputElement password;
+	@UiField InputElement password2;
+	@UiField InputElement firstName;
+	@UiField InputElement secondName;
+	@UiField InputElement terms;
+	@UiField DivElement helpers;
+	@UiField DivElement footer;
 	
-	@UiField Button registerButton;
+	@UiField InputElement registerButton;
 	
 	public RegisterView() {
 		initWidget(uiBinder.createAndBindUi(this));
-		lblPass.setText(TheSocialOS.getConstants().password());
-		lblPass2.setText(TheSocialOS.getConstants().password2());
-		lblName.setText(TheSocialOS.getConstants().name());
-		lblLastName.setText(TheSocialOS.getConstants().lastName());
-		registerButton.setText(TheSocialOS.getConstants().register());
-		lblIncorrect.setVisible(false);
+		/*
+		 * lblPass.setText(TheSocialOS.getConstants().password());
+		 * lblPass2.setText(TheSocialOS.getConstants().password2()); lblName.setText(TheSocialOS.getConstants().name());
+		 * lblLastName.setText(TheSocialOS.getConstants().lastName());
+		 * registerButton.setText(TheSocialOS.getConstants().register()); lblIncorrect.setVisible(false);
+		 */
+		
+		Window.addResizeHandler(new ResizeHandler() {
+			
+			@Override
+			public void onResize(ResizeEvent event) {
+				repositionElements();
+			}
+		});
+		
+		repositionElements();
+		new Timer() {
+			
+			@Override
+			public void run() {
+				repositionElements();
+			}
+		}.schedule(10);
+	}
+	
+	protected void repositionElements() {
+		firstName.getStyle().setTop(background.getHeight() - 150, Unit.PX);
+		secondName.getStyle().setTop(background.getHeight() - 150, Unit.PX);
+		email.getStyle().setTop(background.getHeight() - 100, Unit.PX);
+		password.getStyle().setTop(background.getHeight() - 100, Unit.PX);
+		password2.getStyle().setTop(background.getHeight() - 100, Unit.PX);
+		registerButton.getStyle().setTop(background.getHeight() - 100, Unit.PX);
+		terms.getStyle().setTop(background.getHeight() - 50, Unit.PX);
+		helpers.getStyle().setTop(background.getHeight() - 50, Unit.PX);
+		footer.getStyle().setTop(background.getHeight() + 2, Unit.PX);
 	}
 	
 	@Override
-	public HasValue<String> getEmail() {
-		return txtEmail;
+	public String getEmail() {
+		return email.getValue();
 	}
 	
 	@Override
 	public HasText getIncorrect() {
-		return lblIncorrect;
+		return null;
 	}
 	
 	@Override
-	public HasValue<String> getLastName() {
-		return txtLastName;
+	public String getLastName() {
+		return secondName.getValue();
 	}
 	
 	@Override
-	public HasValue<String> getName() {
-		return txtName;
+	public String getName() {
+		return firstName.getValue();
 	}
 	
 	@Override
-	public HasValue<String> getPassword() {
-		return txtPass;
+	public String getPassword() {
+		return password.getValue();
 	}
 	
 	@Override
-	public HasValue<String> getPassword2() {
-		return txtPass2;
+	public String getPassword2() {
+		return password2.getValue();
 	}
 	
 	@Override
-	public HasClickHandlers getRegisterButton() {
+	public InputElement getRegisterButton() {
 		return registerButton;
 	}
-	
 }
