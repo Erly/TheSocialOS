@@ -14,16 +14,22 @@
 		.profileAttrName {
 			color: grey;
 		}
-		
+		.textArea-NotResize {
+			resize:none;
+
+		}
 	</ui:style>
-	<g:FocusPanel addStyleNames="{style.profileAttr}" ui:field="focusPanel">
-		<g:HorizontalPanel>
+	<g:HTMLPanel>
+		<g:FocusPanel addStyleNames="{style.profileAttr}" ui:field="focusPanel">
+		<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
 			<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" addStyleNames="{style.profileAttrPadding}" width="140px">
 				<g:Label ui:field="attrName" addStyleNames="{style.profileAttrName}" />
 			</g:VerticalPanel>
 			<g:VerticalPanel addStyleNames="{style.profileAttrPadding}">
-				<g:TextBox ui:field="attrValue" textAlignment="ALIGN_CENTER"/>
+				
+				<g:TextArea styleName="{style.textArea-NotResize}" width="187px" height="58px" ui:field="attrValue"/>
 			</g:VerticalPanel>
 		</g:HorizontalPanel>
 	</g:FocusPanel>
+	</g:HTMLPanel>
 </ui:UiBinder> 

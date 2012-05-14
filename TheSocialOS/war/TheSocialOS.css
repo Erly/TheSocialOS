@@ -874,3 +874,8 @@ div.autosize {
 	margin-right:1px;
 	display: table-cell;
 }
+
+.textArea-NotResize {
+			resize:none;
+
+}
