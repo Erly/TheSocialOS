@@ -1,6 +1,7 @@
 package net.thesocialos.client.presenter;
 
 import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.helper.ElementWrapper;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
@@ -8,14 +9,13 @@ import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,19 +26,19 @@ public class RegisterPresenter implements Presenter {
 	public interface Display {
 		Widget asWidget();
 		
-		HasValue<String> getEmail();
+		String getEmail();
 		
 		HasText getIncorrect();
 		
-		HasValue<String> getLastName();
+		String getLastName();
 		
-		HasValue<String> getName();
+		String getName();
 		
-		HasValue<String> getPassword();
+		String getPassword();
 		
-		HasValue<String> getPassword2();
+		String getPassword2();
 		
-		HasClickHandlers getRegisterButton();
+		InputElement getRegisterButton();
 	}
 	
 	private final UserServiceAsync userService = GWT.create(UserService.class);
@@ -50,7 +50,9 @@ public class RegisterPresenter implements Presenter {
 	}
 	
 	public void bind() {
-		display.getRegisterButton().addClickHandler(new ClickHandler() {
+		ElementWrapper wrapper = new ElementWrapper(display.getRegisterButton());
+		wrapper.onAttach();
+		wrapper.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -61,27 +63,26 @@ public class RegisterPresenter implements Presenter {
 	
 	private void doRegister() {
 		Label incorrect = (Label) display.getIncorrect();
-		if (display.getEmail().getValue().length() < 6
-				|| (!display.getEmail().getValue().contains("@") || !display.getEmail().getValue().contains("."))) {
+		if (display.getEmail().length() < 6 || (!display.getEmail().contains("@") || !display.getEmail().contains("."))) {
 			incorrect.setText(TheSocialOS.getConstants().error_Email()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
 			return;
 		}
-		if (display.getPassword().getValue().length() < 6) {
+		if (display.getPassword().length() < 6) {
 			incorrect.setText(TheSocialOS.getConstants().error_Password()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
 			return;
 		}
-		if (!display.getPassword().getValue().equals(display.getPassword2().getValue())) { // Password and
-																							// Retype
-																							// password
-																							// fields aren't
-																							// equal
+		if (!display.getPassword().equals(display.getPassword2())) { // Password and
+																		// Retype
+																		// password
+																		// fields aren't
+																		// equal
 			incorrect.setText(TheSocialOS.getConstants().error_Password2()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
 			return;
 		}
-		if (display.getName().getValue().trim().isEmpty() || display.getLastName().getValue().trim().isEmpty()) {
+		if (display.getName().trim().isEmpty() || display.getLastName().trim().isEmpty()) {
 			incorrect.setText(TheSocialOS.getConstants().error_emptyTxt()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
 			
@@ -93,7 +94,7 @@ public class RegisterPresenter implements Presenter {
 			public void onFailure(Throwable caught) {
 				GWT.log(caught.getMessage(), caught);
 				if (caught.getClass() == UserExistsException.class) Window.alert(TheSocialOS.getMessages()
-						.error_UserExists(display.getEmail().getValue().trim()));
+						.error_UserExists(display.getEmail().trim()));
 				else
 					Window.alert("Error: " + caught.getMessage());
 				
@@ -108,9 +109,8 @@ public class RegisterPresenter implements Presenter {
 			@Override
 			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				
-				userService.register(new User(display.getEmail().getValue().trim(), display.getPassword().getValue()
-						.trim(), null, null, display.getName().getValue().trim(), display.getLastName().getValue()
-						.trim(), "User", null), cb);
+				userService.register(new User(display.getEmail().trim(), display.getPassword().trim(), null, null,
+						display.getName().trim(), display.getLastName().trim(), "User", null), cb);
 			}
 		}.retry(3);
 	}

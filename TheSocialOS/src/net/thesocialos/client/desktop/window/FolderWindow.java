@@ -250,14 +250,10 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
-		
-		initWindow();
+		show();
 		absolutePanel.add(windowDisplay.getWindow(), x, y);
 		windowDisplay.setSize(800, 480);
 		windowDisplay.getWindow().setVisible(true);
-		
-		show();
-		
 	}
 	
 	@Override
@@ -270,11 +266,6 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	public void setName(String name) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	private void initWindow() {
-		
-		windowDisplay.setWindowTitle(title);
 	}
 	
 	private void show() {
