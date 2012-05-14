@@ -8,14 +8,15 @@ import net.thesocialos.client.api.Media;
 import net.thesocialos.client.api.MediaPicture;
 import net.thesocialos.client.api.PicasaAPI;
 import net.thesocialos.client.api.YoutubeAPI;
+import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.window.FolderWindow;
+import net.thesocialos.client.desktop.window.PlayerWindow;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Image;
 
 public class DblClickHandlerHelper {
@@ -168,14 +169,13 @@ public class DblClickHandlerHelper {
 	}
 	
 	protected void openVideo() {
-		DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
-		Frame frame = new Frame(((MediaPicture) media).getUrl());
-		frame.setSize("560px", "315px");
-		popup.add(frame);
-		popup.setAnimationEnabled(true);
-		popup.setGlassEnabled(true);
-		popup.getElement().getStyle().setZIndex(850);
-		popup.center();
+		PlayerWindow window = new PlayerWindow(((MediaPicture) media).getUrl(), AppConstants.VIDEOPLAYER);
+		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(window));
+		/*
+		 * DecoratedPopupPanel popup = new DecoratedPopupPanel(true); Frame frame = new Frame(((MediaPicture)
+		 * media).getUrl()); frame.setSize("560px", "315px"); popup.add(frame); popup.setAnimationEnabled(true);
+		 * popup.setGlassEnabled(true); popup.getElement().getStyle().setZIndex(850); popup.center();
+		 */
 	}
 	
 	public void prepareFolder() {

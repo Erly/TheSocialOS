@@ -27,10 +27,10 @@ public class Oauth2CallbackFB extends HttpServlet {
 			String serviceName = "";
 			
 			urlString = "https://graph.facebook.com/oauth/access_token";
-			params = "canvas=1&fbconnect=0&type=user_agent&client_id=124427357682835&" + "code=" + authCode + "&"
+			/*params = "canvas=1&fbconnect=0&type=user_agent&client_id=124427357682835&" + "code=" + authCode + "&"
 					+ "client_secret=fc7f73e8c2bc2ca3bc2f143b2d58582a&"
 					+ "redirect_uri=http://www.thesocialos.net/oauth2callbackFB";
-			serviceName = "facebook";
+			serviceName = "facebook";*/
 			
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();

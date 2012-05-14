@@ -12,6 +12,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -19,9 +22,12 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class RegisterPresenter implements Presenter {
+	
+	HandlerRegistration handlerRegistration;
 	
 	public interface Display {
 		Widget asWidget();
@@ -51,7 +57,6 @@ public class RegisterPresenter implements Presenter {
 	
 	public void bind() {
 		ElementWrapper wrapper = new ElementWrapper(display.getRegisterButton());
-		wrapper.onAttach();
 		wrapper.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -59,6 +64,19 @@ public class RegisterPresenter implements Presenter {
 				doRegister();
 			}
 		});
+		handlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
+			
+			@Override
+			public void onPreviewNativeEvent(NativePreviewEvent event) {
+				// TODO Auto-generated method stub
+				if (event.getNativeEvent().getKeyCode() == 13) {
+					display.getRegisterButton().click();
+					handlerRegistration.removeHandler();
+				}
+				
+			}
+		});
+		wrapper.onAttach();
 	}
 	
 	private void doRegister() {
