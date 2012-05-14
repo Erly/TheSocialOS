@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.TextBox;
 
 public class ProfileAttr extends Composite {
 	
@@ -23,7 +24,7 @@ public class ProfileAttr extends Composite {
 	
 	private static ProfileAttrUiBinder uiBinder = GWT.create(ProfileAttrUiBinder.class);
 	@UiField Label attrName;
-	@UiField Label attrValue;
+	@UiField TextBox attrValue;
 	
 	@UiField FocusPanel focusPanel;
 	
@@ -60,5 +61,9 @@ public class ProfileAttr extends Composite {
 	
 	public void setAttrValue(String value) {
 		attrValue.setText(value);
+	}
+	
+	public void setEditable(Boolean editable) {
+		
 	}
 }

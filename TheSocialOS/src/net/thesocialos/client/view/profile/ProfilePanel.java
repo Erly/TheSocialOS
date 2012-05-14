@@ -16,6 +16,7 @@ import net.thesocialos.shared.model.User;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.objectify.Key;
@@ -70,6 +71,8 @@ public class ProfilePanel extends Composite implements Display {
 	@UiField ProfileAttr facebook;
 	@UiField ProfileAttr twitter;
 	@UiField ProfileAttr flickr;
+	@UiField ProfileAttrArea bio;
+	@UiField Button btnEdit;
 	Map<Key<Account>, Account> accounts;
 	Google googleAccount;
 	Facebook facebookAccount;
@@ -94,34 +97,33 @@ public class ProfilePanel extends Composite implements Display {
 		address.attrValue.setText(user.getAddress());
 		
 		google.attrName.setText(TheSocialOS.getConstants().googleAccount());
-		if (null != googleAccount) {
-			google.attrValue.setText(googleAccount.getUsername()); // TODO change the email for the Google Account email
-		} else {
+		if (null != googleAccount) google.attrValue.setText(googleAccount.getUsername()); // TODO change the email for
+																							// the Google Account email
+		else {
 			google.attrValue.addStyleName("hand");
 			google.setAttrLink(googleURL, "Google Account login");
 		}
 		
 		facebook.attrName.setText(TheSocialOS.getConstants().facebookAccount());
-		if (null != facebookAccount) {
-			facebook.attrValue.setText(facebookAccount.getUsername()); // TODO change the email for the Facebook Account
-																		// name
-		} else {
+		if (null != facebookAccount) facebook.attrValue.setText(facebookAccount.getUsername()); // TODO change the email
+																								// for the Facebook
+																								// Account
+		// name
+		else {
 			facebook.attrValue.addStyleName("hand");
 			facebook.setAttrLink(facebookURL, "Facebook Account Login");
 		}
 		
 		twitter.attrName.setText(TheSocialOS.getConstants().twitterAccount());
-		if (null != twitterAccount) {
-			twitter.attrValue.setText(twitterAccount.getUsername());
-		} else {
+		if (null != twitterAccount) twitter.attrValue.setText(twitterAccount.getUsername());
+		else {
 			twitter.attrValue.addStyleName("hand");
 			twitter.setAttrLink(twitterURL, "Twitter Account Login");
 		}
 		
 		flickr.attrName.setText(TheSocialOS.getConstants().flickrAccount());
-		if (null != flickrAccount) {
-			flickr.attrValue.setText(flickrAccount.getUsername());
-		} else {
+		if (null != flickrAccount) flickr.attrValue.setText(flickrAccount.getUsername());
+		else {
 			flickr.attrValue.addStyleName("hand");
 			flickr.setAttrLink(flickrURL, "Flickr Account Login");
 		}
@@ -157,15 +159,32 @@ public class ProfilePanel extends Composite implements Display {
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {
 			Account account = it.next();
-			if (account instanceof Google) {
-				googleAccount = (Google) account;
-			} else if (account instanceof Facebook) {
-				facebookAccount = (Facebook) account;
-			} else if (account instanceof Twitter) {
-				twitterAccount = (Twitter) account;
-			} else if (account instanceof FlickR) {
-				flickrAccount = (FlickR) account;
-			}
+			if (account instanceof Google) googleAccount = (Google) account;
+			else if (account instanceof Facebook) facebookAccount = (Facebook) account;
+			else if (account instanceof Twitter) twitterAccount = (Twitter) account;
+			else if (account instanceof FlickR) flickrAccount = (FlickR) account;
 		}
+	}
+	
+	@Override
+	public ProfileAttrArea getBio() {
+		// TODO Auto-generated method stub
+		return bio;
+	}
+	
+	@Override
+	public Button getButton() {
+		// TODO Auto-generated method stub
+		return btnEdit;
+	}
+	
+	@Override
+	public void setEditable(Boolean editable) {
+		name.setEditable(editable);
+		address.setEditable(editable);
+		mobile.setEditable(editable);
+		name.setEditable(editable);
+		bio.setEditable(editable);
+		
 	}
 }

@@ -2,9 +2,11 @@ package net.thesocialos.client.presenter;
 
 import net.thesocialos.client.view.PopAsker;
 import net.thesocialos.client.view.profile.ProfileAttr;
+import net.thesocialos.client.view.profile.ProfileAttrArea;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -24,7 +26,14 @@ public class ProfilePanelPresenter implements Presenter {
 		ProfileAttr getName();
 		
 		ProfileAttr getUserTitle();
+		
+		ProfileAttrArea getBio();
+		
+		Button getButton();
+		
+		void setEditable(Boolean editable);
 	}
+	
 	SimpleEventBus eventBus;
 	Display display;
 	
@@ -67,6 +76,22 @@ public class ProfilePanelPresenter implements Presenter {
 				PopAsker asker = getNewValueAsker("Address");
 			}
 		});
+		display.getBio().getFocusPanel().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				PopAsker asker = getNewValueAsker("Bio");
+			}
+		});
+		display.getButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				display.setEditable(true);
+				
+			}
+		});
 	}
 	
 	public PopAsker getNewValueAsker(String valueName) {
@@ -90,7 +115,7 @@ public class ProfilePanelPresenter implements Presenter {
 	@Override
 	public void go(HasWidgets container) {
 		container.clear();
-		container.add(this.display.asWidget());
+		container.add(display.asWidget());
 		bind();
 	}
 	

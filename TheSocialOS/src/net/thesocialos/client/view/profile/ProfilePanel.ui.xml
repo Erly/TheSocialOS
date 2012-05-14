@@ -8,12 +8,16 @@
 		}
 	</ui:style>
 	<g:DecoratorPanel addStyleNames="{style.padding}">
-		<g:VerticalPanel>
-			<p:ProfileAttr attrName="Name:" attrValue="Juan Cuesta" ui:field="name" />
-			<p:ProfileAttr attrName="Title:" attrValue="Presidente de la comunidad" ui:field="title" />
+		<g:VerticalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_MIDDLE">
+			<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+				<g:Button ui:field="btnEdit">Edit</g:Button>
+			</g:HorizontalPanel>
 			<p:ProfileAttr attrName="Email:" attrValue="jcuesta@thesocialos.net" ui:field="email" />
-			<p:ProfileAttr attrName="Mobile:" attrValue="666666666" ui:field="mobile" />
+			<p:ProfileAttr attrName="Title:" attrValue="Presidente de la comunidad" ui:field="title" editable="false" />
+			<p:ProfileAttr attrName="Name:" attrValue="Juan Cuesta" ui:field="name" />
+			<p:ProfileAttr attrName="Mobile:" attrValue="666666666" ui:field="mobile" editable="true" />
 			<p:ProfileAttr attrName="Address:" attrValue="Desengaño 21 2ºA" ui:field="address" />
+			<p:ProfileAttrArea attrName="Bio:" attrValue="TURURURURURUURURURURURUURURRU" ui:field="bio"/>
 			<p:ProfileAttr attrName="Google Account:" attrValue="Sign in" ui:field="google" />
 			<p:ProfileAttr attrName="Facebook Account:" attrValue="Sign in" ui:field="facebook" />
 			<p:ProfileAttr attrName="Twitter Account:" attrValue="Sign in" ui:field="twitter" />

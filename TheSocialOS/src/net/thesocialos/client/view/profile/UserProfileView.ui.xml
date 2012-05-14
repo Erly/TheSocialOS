@@ -27,10 +27,7 @@
 			<g:HorizontalPanel addStyleNames="{style.topbar}" verticalAlignment="ALIGN_MIDDLE">
 				<g:Hyperlink ui:field="linkProfile" targetHistoryToken="profile" addStyleNames="{style.topbarElem}">Profile</g:Hyperlink>
 				<g:Hyperlink ui:field="linkTimeline" targetHistoryToken="profile-timeline" addStyleNames="{style.topbarElem}">Timeline</g:Hyperlink>
-				<g:Hyperlink ui:field="linkPhotos" targetHistoryToken="profile-photos" addStyleNames="{style.topbarElem}">Photos</g:Hyperlink>
-				<g:Hyperlink ui:field="linkMusic" targetHistoryToken="profile-music" addStyleNames="{style.topbarElem}">Music</g:Hyperlink>
-				<g:Hyperlink ui:field="linkVideos" targetHistoryToken="profile-videos" addStyleNames="{style.topbarElem}">Videos</g:Hyperlink>
-				<g:Hyperlink ui:field="linkLinks" targetHistoryToken="profile-links" addStyleNames="{style.topbarElem}">Links</g:Hyperlink>
+				
 				<g:Cell horizontalAlignment="ALIGN_RIGHT" width="20px">
 					<g:VerticalPanel verticalAlignment="ALIGN_TOP" height="100%">
 						<g:Button text="X" ui:field="closeButton" />
