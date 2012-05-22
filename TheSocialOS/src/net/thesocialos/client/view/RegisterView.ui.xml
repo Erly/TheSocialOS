@@ -24,7 +24,7 @@
 			<div class="rHelpers" ui:field="helpers">
 				<input class="terms" type="checkbox" ui:field="terms" value="Terms"/> Accept our <a href="#">terms of service</a>
 			</div>
-			<input class="registerButton" type="submit" ui:field="registerButton" value="Register"/>		
+			<input class="registerButton" type="button" ui:field="registerButton" value="Register"/>		
 		</form>
 		<div class="footer" ui:field="footer">
 			<table cellspacing="0" cellpadding="0" style="width: 100%; ">

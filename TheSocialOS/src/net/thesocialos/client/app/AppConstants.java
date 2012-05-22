@@ -11,5 +11,7 @@ public class AppConstants {
 	public static final int CHAT = 6;
 	public static final int MUSICFOLDERS = 7;
 	public static final int OTHERFOLDERS = 8;
-	public static final int APPMANAGER = 9;
+	public static final int VIDEOPLAYER = 9;
+	public static final int APPMANAGER = 10;
+	
 }

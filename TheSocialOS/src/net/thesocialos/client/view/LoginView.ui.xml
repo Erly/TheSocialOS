@@ -12,8 +12,12 @@
 			color: #90D5EC;
 			text-decoration: none;
 		}
+		.parent {
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
 	</ui:style>
-	<g:HTMLPanel>
+	<g:HTMLPanel addStyleNames="{style.parent}">
 		<div id="wrap">
 		<div class="logoDiv" align="center">
 			<img class="logo" src="./images/logo.png"/>

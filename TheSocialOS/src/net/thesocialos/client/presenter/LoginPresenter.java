@@ -88,7 +88,6 @@ public class LoginPresenter implements Presenter {
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("Error: " + caught.getMessage());
-				Window.alert(caught.getLocalizedMessage());
 			}
 			
 			@Override
@@ -99,7 +98,6 @@ public class LoginPresenter implements Presenter {
 					
 				} else { // The user exists and the password is correct
 					CacheLayer.UserCalls.setUser(result.getUser());
-					Window.alert(result.getUser().getEmail());
 					if (result.getDuration() < 0) Cookies.setCookie("sid", result.getSessionID());
 					else {
 						Date expires = new Date(System.currentTimeMillis() + result.getDuration());
