@@ -8,6 +8,7 @@ import java.util.Map;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
+import net.thesocialos.client.desktop.IsTypeInfo;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.view.LabelText;
@@ -32,7 +33,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class ContactsPresenter extends DesktopUnit {
+public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 	
 	public interface Display {
 		
@@ -122,15 +123,28 @@ public class ContactsPresenter extends DesktopUnit {
 	}
 	
 	@Override
+	public int getWidth() {
+		
+		return display.asWidget().getOffsetWidth();
+		
+	}
+	
+	@Override
+	public int getHeight() {
+		
+		return display.asWidget().getOffsetHeight();
+	}
+	
+	@Override
 	public int getAbsoluteLeft() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return display.asWidget().getAbsoluteLeft();
 	}
 	
 	@Override
 	public int getAbsoluteTop() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return display.asWidget().getAbsoluteTop();
 	}
 	
 	public HorizontalPanel getContactsPresenter() {
@@ -173,18 +187,6 @@ public class ContactsPresenter extends DesktopUnit {
 		
 		handlers();
 		
-	}
-	
-	@Override
-	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 	@Override
@@ -265,6 +267,11 @@ public class ContactsPresenter extends DesktopUnit {
 	@Override
 	public void setSize(int height, int width) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void toBack() {
 		
 	}
 	

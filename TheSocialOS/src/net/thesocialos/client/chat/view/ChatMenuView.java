@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -53,7 +54,11 @@ public class ChatMenuView extends Composite implements Display {
 			
 			// Add the contact image.
 			sb.appendHtmlConstant("<tr><td rowspan='3' align='center' class='chat_contactTable_imageCell'>");
-			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30px' height='35px' />");
+			if (value.getUrlAvatar() == null) sb
+					.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30px' height='35px' />");
+			else
+				sb.appendHtmlConstant("<img src=" + value.getUrlAvatar() + " width='30px' height='35px' />");
+			
 			sb.appendHtmlConstant("</td>");
 			
 			// Add the name and address.
@@ -73,6 +78,7 @@ public class ChatMenuView extends Composite implements Display {
 	@UiField Label lblSurname;
 	@UiField HTMLPanel htmlState;
 	@UiField FocusPanel FocusPanelState;
+	@UiField Image imgAvatar;
 	
 	public ChatMenuView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -140,5 +146,11 @@ public class ChatMenuView extends Composite implements Display {
 	public HTMLPanel getStateCircle() {
 		// TODO Auto-generated method stub
 		return htmlState;
+	}
+	
+	@Override
+	public Image getAvatar() {
+		// TODO Auto-generated method stub
+		return imgAvatar;
 	}
 }

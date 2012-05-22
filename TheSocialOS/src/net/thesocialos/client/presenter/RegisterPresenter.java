@@ -109,7 +109,7 @@ public class RegisterPresenter implements Presenter {
 			@Override
 			protected void XSRFcallService(AsyncCallback<Void> cb) {
 				
-				userService.register(new User(display.getEmail().trim(), display.getPassword().trim(), null, null,
+				userService.register(new User(display.getEmail().trim(), null, display.getPassword().trim(), null,
 						display.getName().trim(), display.getLastName().trim(), "User", null), cb);
 			}
 		}.retry(3);

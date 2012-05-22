@@ -29,10 +29,14 @@ public interface UserServiceAsync extends ServiceAsync {
 	
 	void register(User user, AsyncCallback<Void> callback);
 	
+	void updateUser(User user, AsyncCallback<User> callback);
+	
+	void getAvatar(AsyncCallback<String> callback);
+	
 	void setDeckColumns(ArrayList<Columns> columns, AsyncCallback<Void> callback);
 	
 	void addDeckColumn(Columns column, AsyncCallback<Void> callback);
-
+	
 	void checkChannel(ChApiContactNew newContact, AsyncCallback<Void> callback);
 	
 	void setState(STATETYPE stateType, String customMsg, AsyncCallback<Void> callback);

@@ -148,7 +148,7 @@ public abstract class DesktopUnit {
 	 * @param width
 	 */
 	public void setMaximized(Boolean maximized, int width, int height, int top, int left) {
-		if (this.maximized) {
+		if (!maximized) {
 			
 			windowDisplay.setPosition(beforeX, beforeY);
 			windowDisplay.setSize(beforeWidth, beforeHeight);
@@ -229,15 +229,18 @@ public abstract class DesktopUnit {
 	public void minimize() {
 		minimized = true;
 		maximized = false;
-		windowDisplay.hide();
+		windowDisplay.setMinimized(true);
 	}
 	
 	/**
 	 * Show the desktop Unit
 	 */
 	protected void restore() {
-		minimized = false;
-		windowDisplay.show();
+		if (minimized) {
+			minimized = !minimized;
+			windowDisplay.setMinimized(false);
+		}
+		
 	}
 	
 	/**

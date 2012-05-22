@@ -19,13 +19,13 @@ import com.googlecode.objectify.annotation.Unindexed;
 public class User implements Serializable {
 	
 	public static User toDTO(User user) {
-		return new User(user.email, user.avatar, user.background, user.firstName, user.lastName, user.role,
-				user.isConnected, user.chatState);
+		return new User(user.email, user.getUrlAvatar(), user.background, user.firstName, user.lastName, user.role,
+				user.mobilePhone, user.address, user.bio, user.isConnected, user.chatState);
 	}
 	
-	public static User toDTO(String email, String avatar, String background, String firstName, String lastName,
-			String role, String tokenChannel) {
-		return new User(email, avatar, background, firstName, lastName, role, tokenChannel);
+	public static User toDTO(String email, String urlAvatar, String background, String firstName, String lastName,
+			String role, String phone, String address, String bio, String tokenChannel) {
+		return new User(email, urlAvatar, background, firstName, lastName, role, phone, address, bio, tokenChannel);
 	}
 	
 	@Id private String email; // Email of the user
@@ -39,7 +39,15 @@ public class User implements Serializable {
 	
 	@Unindexed public STATETYPE chatState = STATETYPE.OFFLINE;
 	
-	@Unindexed private String avatar; // Avatar of the user
+	@Unindexed private String urlAvatar; // Avatar of the user
+	
+	/**
+	 * @param avatar
+	 *            the avatar to set
+	 */
+	public void setAvatar(String avatar) {
+		urlAvatar = avatar;
+	}
 	
 	@Unindexed private String background; // Background of the user
 	
@@ -48,6 +56,8 @@ public class User implements Serializable {
 	@Unindexed private String role; // The role of the user
 	
 	private String address; // address of user
+	
+	private String bio;
 	
 	@Unindexed String lastName; // lastnameString address;
 	
@@ -77,50 +87,57 @@ public class User implements Serializable {
 		
 	}
 	
-	public User(String email, String picture, String background, String firstName, String lastName, String role) {
+	public User(String email, String urlAvatar, String background, String firstName, String lastName, String role) {
 		this.email = email;
-		avatar = picture;
 		this.background = background;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.role = role;
+		this.urlAvatar = urlAvatar;
 	}
 	
-	public User(String email, String picture, String background, String firstName, String lastName, String role,
-			String tokenChannel) {
+	public User(String email, String urlAvatar, String background, String firstName, String lastName, String role,
+			String phone, String address, String bio, Boolean isConnected, STATETYPE chatState) {
 		this.email = email;
-		// password = password;
-		avatar = picture;
 		this.background = background;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.role = role;
-		this.tokenChannel = tokenChannel;
-	}
-	
-	public User(String email, String picture, String background, String firstName, String lastName, String role,
-			Boolean isConnected, STATETYPE chatState) {
-		this.email = email;
-		// password = password;
-		avatar = picture;
-		this.background = background;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.role = role;
+		mobilePhone = phone;
+		this.address = address;
+		this.bio = bio;
 		this.isConnected = isConnected;
 		this.chatState = chatState;
+		this.urlAvatar = urlAvatar;
 	}
 	
-	public User(String email, String password, String picture, String background, String firstName, String lastName,
+	public User(String email, String urlAvatar, String background, String firstName, String lastName, String role,
+			String phone, String address, String bio, String tokenChannel) {
+		this.email = email;
+		// password = password;
+		this.background = background;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.role = role;
+		mobilePhone = phone;
+		this.address = address;
+		this.bio = bio;
+		this.tokenChannel = tokenChannel;
+		this.urlAvatar = urlAvatar;
+		
+	}
+	
+	public User(String email, String urlAvatar, String password, String background, String firstName, String lastName,
 			String role, String tokenChannel) {
 		this.email = email;
 		this.password = password;
-		avatar = picture;
+		
 		this.background = background;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.role = role;
 		this.tokenChannel = tokenChannel;
+		this.urlAvatar = urlAvatar;
 	}
 	
 	public void addAccount(Key<? extends Account> account) {
@@ -208,8 +225,8 @@ public class User implements Serializable {
 		return address;
 	}
 	
-	public String getAvatar() {
-		return avatar;
+	public String getUrlAvatar() {
+		return urlAvatar;
 	}
 	
 	public String getBackground() {
@@ -340,6 +357,60 @@ public class User implements Serializable {
 	public void setOwnKey(Key<User> key) {
 		ownKey = key;
 		
+	}
+	
+	/**
+	 * @return the bio
+	 */
+	public String getBio() {
+		return bio;
+	}
+	
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	/**
+	 * @param firstName
+	 *            the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	/**
+	 * @param address
+	 *            the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	/**
+	 * @param bio
+	 *            the bio to set
+	 */
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+	
+	/**
+	 * @param lastName
+	 *            the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	/**
+	 * @param mobilePhone
+	 *            the mobilePhone to set
+	 */
+	public void setMobilePhone(String mobilePhone) {
+		this.mobilePhone = mobilePhone;
 	}
 	
 }

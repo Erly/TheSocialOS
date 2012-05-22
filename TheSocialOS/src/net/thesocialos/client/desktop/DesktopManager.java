@@ -43,8 +43,16 @@ public class DesktopManager {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				if (lastDesktopUnit != null && lastDesktopUnit.typeUnit != TypeUnit.WINDOW)
+				if ((lastDesktopUnit != null && lastDesktopUnit.typeUnit != TypeUnit.WINDOW)) {
+					if (lastDesktopUnit.getAbsoluteTop() < event.getClientY()
+							&& (lastDesktopUnit.getAbsoluteTop() + lastDesktopUnit.getHeight()) > event.getClientY()
+							&& (lastDesktopUnit.getAbsoluteLeft() < event.getClientX() && (lastDesktopUnit
+									.getAbsoluteLeft() + lastDesktopUnit.getWidth()) > event.getClientX())) return;
+					
+					lastDesktopUnit.getHeight();
 					unitsManager.removeUnit(lastDesktopUnit);
+					event.getClientX();
+				}
 				
 			}
 		};
@@ -92,12 +100,13 @@ public class DesktopManager {
 					ArrayList<DesktopUnit> hashDesktopUnits = linkedDesktopUnit.get(desktopUnit.getProgramID());
 					if (hashDesktopUnits.contains(desktopUnit)) {
 						setWindowsZPositions(desktopUnit);
+						desktopUnit.restore();
 						return true;
 					} else
 						hashDesktopUnits.add(desktopUnit);
 					
 				} else
-					setWindowsZPositions(desktopUnit);
+					return true;
 				
 			} else {
 				if (desktopUnit.isSubApplication()) return false;
@@ -108,7 +117,7 @@ public class DesktopManager {
 			}
 			if (desktopUnit.typeUnit.equals(TypeUnit.INFO)) lastDesktopUnit = desktopUnit;
 			
-			desktopUnit.open(absolutePanelScreen);
+			desktopUnit.open(absolutePanelDesktop);
 			return true;
 		}
 		
@@ -124,13 +133,13 @@ public class DesktopManager {
 				if (desktopUnit.isSubApplication()) {
 					if (linkedDesktopUnit.get(desktopUnit.getProgramID()).contains(desktopUnit)) {
 						linkedDesktopUnit.get(desktopUnit.getProgramID()).remove(desktopUnit);
-						desktopUnit.close(absolutePanelScreen);
+						desktopUnit.close(absolutePanelDesktop);
 					}
 				} else {
 					Iterator<DesktopUnit> iDesktopUnit = linkedDesktopUnit.get(desktopUnit.getProgramID()).iterator();
 					while (iDesktopUnit.hasNext()) {
 						DesktopUnit deskUnit = iDesktopUnit.next();
-						deskUnit.close(absolutePanelScreen);
+						deskUnit.close(absolutePanelDesktop);
 						
 					}
 					linkedDesktopUnit.remove(desktopUnit.getProgramID());
@@ -156,14 +165,14 @@ public class DesktopManager {
 	private void checkWindowPosition(DesktopUnit desktopUnit) {
 		if (desktopUnit.typeUnit == TypeUnit.WINDOW) {
 			if (desktopUnit.isMaximized())
-				desktopUnit.setSize(absolutePanelDesktop.getOffsetWidth() - 7,
-						absolutePanelDesktop.getOffsetHeight() - 7);
+				desktopUnit.setSize(absolutePanelDesktop.getOffsetWidth(), absolutePanelDesktop.getOffsetHeight());
+			
 			if (desktopUnit.getAbsoluteLeft() < 0) desktopUnit.setPosition(0, desktopUnit.getAbsoluteTop());
 			else if (desktopUnit.getAbsoluteLeft() + desktopUnit.getWidth() > Window.getClientWidth())
 				desktopUnit.setPosition(Window.getClientWidth() - desktopUnit.getWidth(), desktopUnit.getAbsoluteTop());
 			if (desktopUnit.getAbsoluteTop() + desktopUnit.getHeight() > Window.getClientHeight()) desktopUnit
 					.setPosition(desktopUnit.getAbsoluteLeft(), Window.getClientHeight() - desktopUnit.getHeight());
-			else if (desktopUnit.getAbsoluteTop() < 30) desktopUnit.setPosition(desktopUnit.getAbsoluteLeft(), 30);
+			else if (desktopUnit.getAbsoluteTop() < 0) desktopUnit.setPosition(desktopUnit.getAbsoluteLeft(), 0);
 		}
 		
 	}
@@ -196,7 +205,7 @@ public class DesktopManager {
 			
 			@Override
 			public void onOpen(DesktopEventOnOpen event) {
-				unitsManager.addUnit(event.getDesktopUnit());
+				if (unitsManager.addUnit(event.getDesktopUnit())) setWindowsZPositions(event.getDesktopUnit());
 				
 			}
 			
@@ -218,9 +227,9 @@ public class DesktopManager {
 		setWindowsZPositions(desktopUnit);
 		if (desktopUnit.isMaximized()) desktopUnit.setMaximized(false, 0, 0, 0, 0);
 		else
-			desktopUnit.setMaximized(true, absolutePanelDesktop.getOffsetWidth() - 7,
-					absolutePanelDesktop.getOffsetHeight() - 7, absolutePanelDesktop.getAbsoluteTop(),
-					absolutePanelDesktop.getAbsoluteLeft());
+			desktopUnit.setMaximized(true, absolutePanelDesktop.getOffsetWidth(),
+					absolutePanelDesktop.getOffsetHeight(), 0, 0);
+		// absolutePanelDesktop.setWidgetPosition(desktopUnit.windowDisplay.getWindow().asWidget(), 0, 0);
 		
 	}
 	
@@ -232,13 +241,12 @@ public class DesktopManager {
 	private void MinimizeRestoreWindow(DesktopUnit desktopUnit) {
 		if (!desktopUnit.isMinimizable()) return;
 		if (desktopUnit.isMinimized()) {
-			desktopUnit.setMinimized(false);
-			// desktopUnit.open(absolutePanelScreen);
-			
+			// desktopUnit.setMinimized(false);
+			desktopUnit.restore();
 			setWindowsZPositions(desktopUnit);
 		} else
-			desktopUnit.setMinimized(true);
-		// desktopUnit.close(absolutePanelScreen);
+			// desktopUnit.setMinimized(true);
+			desktopUnit.minimize();
 		
 	}
 	
@@ -251,6 +259,12 @@ public class DesktopManager {
 		}
 		desktopUnit.toFront();
 		
+	}
+	
+	class AplicationManager {
+		public AplicationManager() {
+			
+		}
 	}
 	
 }

@@ -104,6 +104,10 @@ public class TheSocialOS implements EntryPoint {
 		return jSessionID;
 	}
 	
+	public static void startChannelApi() {
+		net.thesocialos.client.helper.ChannelApiHelper.listenToChannel(CacheLayer.UserCalls.getUser());
+	}
+	
 	/**
 	 * Verifies if the user has a valid SessionID in a cookie. If not it checks if the token is 'login' or 'register',
 	 * else it changes the token to 'login'. Finally it loads the view that corresponds with the token whether the user
@@ -167,7 +171,7 @@ public class TheSocialOS implements EntryPoint {
 					}.retry(3);
 					
 					// User listening to the channel push
-					net.thesocialos.client.helper.ChannelApiHelper.listenToChannel(CacheLayer.UserCalls.getUser());
+					startChannelApi();
 					// comet = new Comet(eventBus);
 					// comet.listenToChannel(user);
 				}

@@ -278,8 +278,10 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			
 			@Override
 			public void onMouseDown(MouseDownEvent event) {
-				windowEventBus.fireEvent(new WindowOnTopEvent());
-				beginDragging(event);
+				if (!isMaximized) {
+					windowEventBus.fireEvent(new WindowOnTopEvent());
+					beginDragging(event);
+				}
 				
 			}
 		});
@@ -288,6 +290,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			@Override
 			public void onMouseDown(MouseDownEvent event) {
 				if (!isMaximized && isResizable) {
+					
 					windowEventBus.fireEvent(new WindowOnTopEvent());
 					beginResizing(event);
 				}
@@ -342,8 +345,8 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 			 */
 			resizing = true;
 			DOM.setCapture(getElement());
-			dragStartX = event.getX();
-			dragStartY = event.getY();
+			dragStartX = event.getClientX();
+			dragStartY = event.getClientY();
 			moveNativeHandler();
 		}
 	}
@@ -358,8 +361,8 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		else if (getAbsoluteLeft() + getOffsetWidth() > Window.getClientWidth())
 			setPopupPosition(Window.getClientWidth() - getOffsetWidth(), getAbsoluteTop());
 		if (getAbsoluteTop() + getOffsetHeight() > Window.getClientHeight()) setPopupPosition(getAbsoluteLeft(),
-				Window.getClientHeight() - getOffsetHeight());
-		else if (getAbsoluteTop() < 30) setPopupPosition(getAbsoluteLeft(), 30);
+				Window.getClientHeight() - 30 - getOffsetHeight());
+		else if (getAbsoluteTop() < 30) setPopupPosition(getAbsoluteLeft(), 0);
 	}
 	
 	/**
@@ -375,14 +378,14 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 		if (dragging) {
 			
 			int absX = x; // + getAbsoluteLeft();
-			
+			System.out.println(x + " x " + y + " y");
 			int absY = y;// + getAbsoluteTop();
 			
 			// if the mouse is off the screen to the left, right, or top, don't
 			// move the dialog box. This would let users lose dialog boxes, which
 			// would be bad for modal popups.
 			if (absX < clientLeft || absX >= windowWidth || absY < clientTop) return;
-			setPopupPosition(absX - dragStartX, absY - dragStartY);
+			setPopupPosition(absX - dragStartX, absY - dragStartY - 30);
 			checkSpace();
 		}
 	}
@@ -673,9 +676,7 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	@Override
 	public void setMinimized(Boolean minimized) {
 		
-		if (minimized) setVisible(false);
-		else
-			setVisible(true);
+		setVisible(!minimized);
 		
 	}
 	
@@ -688,11 +689,11 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	
 	@Override
 	public void setSize(int width, int height) {
-		setWidth(width + "px");
-		getWidget().setWidth(width + "px");
-		setHeight(height + "px");
-		getWidget().setHeight(height - caption.getHeight() - footer.getHeight() + "px");
-		checkSpace();
+		// setWidth(width - 25 + "px");
+		getWidget().setWidth(width - 27 + "px");
+		// setHeight(height - 25 + "px");
+		getWidget().setHeight(height - caption.getHeight() - footer.getHeight() - 9 + "px");
+		// checkSpace();
 		
 	}
 	
@@ -730,12 +731,13 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	@Override
 	public void toback() {
 		// System.out.println("to back");
-		getElement().getStyle().setZIndex(0);
+		getElement().getStyle().setZIndex(1);
 	}
 	
 	@Override
 	public void toFront() {
 		// System.out.println("to front");
+		
 		getElement().getStyle().setZIndex(100);
 		
 	}

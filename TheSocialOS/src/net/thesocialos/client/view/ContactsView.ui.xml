@@ -12,7 +12,7 @@
 		.contactsMenu {
 			position: absolute;
 			right: 25px;
-			top: 29px;
+			top: 0px;
 			z-index: 1000;
 			background-color: white;
 			

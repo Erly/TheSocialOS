@@ -85,7 +85,7 @@ public class UserHelper extends RemoteServiceServlet {
 	}
 	
 	/**
-	 * Get the loged User
+	 * Get the logged User
 	 * 
 	 * @param httpSession
 	 * @param ofy

@@ -26,6 +26,7 @@ public class ContactsView extends Composite implements Display {
 	
 	interface ContactsUiBinder extends UiBinder<Widget, ContactsView> {
 	}
+	
 	private static ContactsUiBinder uiBinder = GWT.create(ContactsUiBinder.class);
 	@UiField LabelText lblName;
 	@UiField LabelText lblSurname;
@@ -56,7 +57,7 @@ public class ContactsView extends Composite implements Display {
 		
 		@Override
 		public void render(com.google.gwt.cell.client.Cell.Context context, Group value, SafeHtmlBuilder sb) {
-			if (value == null) { return; }
+			if (value == null) return;
 			
 			sb.appendHtmlConstant("<table>");
 			
@@ -82,13 +83,16 @@ public class ContactsView extends Composite implements Display {
 		@Override
 		public void render(Context context, User value, SafeHtmlBuilder sb) {
 			// Value can be null, so do a null check..
-			if (value == null) { return; }
+			if (value == null) return;
 			
 			sb.appendHtmlConstant("<table>");
 			System.out.println(btnAddContact.getHTML());
 			// Add the contact image.
 			sb.appendHtmlConstant("<tr><td rowspan='3'>");
-			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			if (value.getUrlAvatar() == null) sb
+					.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			else
+				sb.appendHtmlConstant("<img src=" + value.getUrlAvatar() + " width='30' height='35' />");
 			sb.appendHtmlConstant("</td>");
 			
 			// Add the name and address.

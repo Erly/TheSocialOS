@@ -170,10 +170,15 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		table.setWidget(j, i, thumb);
 		table.getFlexCellFormatter().setVerticalAlignment(j, i, HasVerticalAlignment.ALIGN_TOP);
 		i++;
-		if (i % col == 0) {
-			j++;
-			i = 0;
+		try {
+			if (i % col == 0) {
+				j++;
+				i = 0;
+			}
+		} catch (ArithmeticException e) {
+			// TODO: handle exception
 		}
+		
 	}
 	
 	public void addMedia(HashSet<? extends Media> mediaSet) {

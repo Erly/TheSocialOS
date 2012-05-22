@@ -219,8 +219,11 @@
 }
 
 .userProfile {
-	width: 60%;
-	height: 80%;
+	width: 775px;
+	height: 505px;
+	 border: 0px solid #e7e7e7;
+  padding: 0px;
+  background: white;
 }
 
 .popupContent {
@@ -408,21 +411,21 @@
 	border-bottom-right-radius: 4px;*/
 }
 .sos-Window .dialogBottomCenter {
-	background: url(/thesocialos/gwt/cleano/images/hborder.png) repeat-x
+	background: url(/thesocialos/gwt/clean/images/hborder.png) repeat-x
 		0px -2945px;
-	-background: url(/thesocialos/gwt/cleano/images/hborder_ie6.png)
+	-background: url(/thesocialos/gwt/clean/images/hborder_ie6.png)
 		repeat-x 0px -2144px;
 }
 
 .sos-Window .dialogMiddleLeft {
-	background: url(/thesocialos/gwt/cleano/images/vborder.png) repeat-y
+	background: url(/thesocialos/gwt/clean/images/vborder.png) repeat-y
 		-31px 0px;
 }
 
 .sos-Window .dialogMiddleRight {
-	background: url(/thesocialos/gwt/cleano/images/vborder.png) repeat-y
+	background: url(/thesocialos/gwt/clean/images/vborder.png) repeat-y
 		-32px 0px;
-	-background: url(/thesocialos/gwt/cleano/images/vborder_ie6.png)
+	-background: url(/thesocialos/gwt/clean/images/vborder_ie6.png)
 		repeat-y -32px 0px;
 }
 
@@ -455,30 +458,30 @@
 }
 
 .sos-Window .dialogTopLeft {
-	background: url(/thesocialos/gwt/cleano/images/circles.png) no-repeat
+	background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
 		-20px 0px;
-	-background: url(/thesocialos/gwt/cleano/images/circles_ie6.png)
+	-background: url(/thesocialos/gwt/clean/images/circles_ie6.png)
 		no-repeat -20px 0px;
 }
 
 .sos-Window .dialogTopRight {
-	background: url(/thesocialos/gwt/cleano/images/circles.png) no-repeat
+	background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
 		-28px 0px;
-	-background: url(/thesocialos/gwt/cleano/images/circles_ie6.png)
+	-background: url(/thesocialos/gwt/clean/images/circles_ie6.png)
 		no-repeat -28px 0px;
 }
 
 .sos-Window .dialogBottomLeft {
-	background: url(/thesocialos/gwt/cleano/images/circles.png) no-repeat
+	background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
 		0px -36px;
-	-background: url(/thesocialos/gwt/cleano/images/circles_ie6.png)
+	-background: url(/thesocialos/gwt/clean/images/circles_ie6.png)
 		no-repeat 0px -36px;
 }
 
 .sos-Window .dialogBottomRight {
-	background: url(/thesocialos/gwt/cleano/images/circles.png) no-repeat
+	background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
 		-8px -36px;
-	-background: url(/thesocialos/gwt/cleano/images/circles_ie6.png)
+	-background: url(/thesocialos/gwt/clean/images/circles_ie6.png)
 		no-repeat -8px -36px;
 }
 
@@ -499,6 +502,50 @@
 	vertical-align: bottom;
 	text-align: center;
 }
+
+/**Profile**/
+.profile_atrib_editable{
+			border-style : solid;
+			
+			border-color: #29A9B2;
+	
+		}
+		
+.profileAttr {
+			width: 100%;
+}
+.profileAttr:hover {
+	background: #5fd1f4; /* Old browsers */
+	background: -moz-linear-gradient(left,  #5fd1f4 0%, #1068e5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#5fd1f4), color-stop(100%,#1068e5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  #5fd1f4 0%,#1068e5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  #5fd1f4 0%,#1068e5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  #5fd1f4 0%,#1068e5 100%); /* IE10+ */
+	background: linear-gradient(left,  #5fd1f4 0%,#1068e5 100%); /* W3C */
+}
+.profileAttr-editable {
+	width: 100%;
+	background: #ff7a2d; /* Old browsers */
+	background: -moz-linear-gradient(left,  #ff7a2d 0%, #bf4c00 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ff7a2d), color-stop(100%,#bf4c00)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  #ff7a2d 0%,#bf4c00 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  #ff7a2d 0%,#bf4c00 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  #ff7a2d 0%,#bf4c00 100%); /* IE10+ */
+	background: linear-gradient(left,  #ff7a2d 0%,#bf4c00 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff7a2d', endColorstr='#bf4c00',GradientType=1 ); /* IE6-9 */
+}
+.profileAttr-error {
+	width: 100%;
+	background: #e0302a; /* Old browsers */
+	background: -moz-linear-gradient(left, #e0302a 0%, #751100 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#e0302a), color-stop(100%,#751100)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left, #e0302a 0%,#751100 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left, #e0302a 0%,#751100 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left, #e0302a 0%,#751100 100%); /* IE10+ */
+	background: linear-gradient(left, #e0302a 0%,#751100 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0302a', endColorstr='#751100',GradientType=1 ); /* IE6-9 */
+}
+
 
 /* Chat Panel */
 
@@ -645,6 +692,62 @@
 	-webkit-box-shadow: 10px 10px 5px #888;
 	box-shadow: 10px 10px 5px #888;*/
 }
+.chatBlock_activated {
+	/*width:80px;
+	height:80px;*/
+	
+	background:red;
+	position:relative;
+	animation-name:myfirst;
+	animation-duration:5s;
+	animation-timing-function:linear;
+	animation-delay:0s;
+	animation-iteration-count:infinite;
+	animation-direction:alternate;
+	animation-play-state:running;
+	border-radius:3px;
+	/* Firefox: */
+	-moz-animation-name:myfirst;
+	-moz-animation-duration:5s;
+	-moz-animation-timing-function:linear;
+	-moz-animation-delay:0s;
+	-moz-animation-iteration-count:infinite;
+	-moz-animation-direction:alternate;
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:myfirst;
+	-webkit-animation-duration:5s;
+	-webkit-animation-timing-function:linear;
+	-webkit-animation-delay:0s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-direction:alternate;
+	-webkit-animation-play-state:running;
+}
+
+
+@keyframes myfirst {
+	0%   {background:red; left:0px; top:0px;}
+	25%  {background:yellow; left:0px; top:-10px;}
+	50%  {background:blue; left:0px; top:-20px;}
+	75%  {background:green; left:0px; top:-10px;}
+	100% {background:red; left:0px; top:0px;}
+}
+
+@-moz-keyframes myfirst /* Firefox */ {
+	0%   {background:red; left:0px; top:0px;}
+	25%  {background:yellow; left:0px; top:-10px;}
+	50%  {background:blue; left:0px; top:-20px;}
+	75%  {background:green; left:0px; top:-10px;}
+	100% {background:red; left:0px; top:0px;}
+}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */ {
+	0%   {background:red; left:0px; top:0px;}
+	25%  {background:yellow; left:0px; top:-10px;}
+	50%  {background:blue; left:0px; top:-20px;}
+	75%  {background:green; left:0px; top:-10px;}
+	100% {background:red; left:0px; top:0px;}
+}
 
 /*
  *	LOGIN CSS
@@ -768,63 +871,110 @@ input {
 	left: 100px;
 	font-size: 18px;
 }
-.chatBlock_activated {
-	/*width:80px;
-	height:80px;*/
-	
-	background:red;
-	position:relative;
-	animation-name:myfirst;
-	animation-duration:5s;
+
+/** App Manager */
+
+	.appManager_open{
+
+	animation-name:appManager_open;
+	animation-duration:1s;
 	animation-timing-function:linear;
-	animation-delay:2s;
-	animation-iteration-count:infinite;
+	/*animation-delay:2s;
+	animation-iteration-count:1;
+	animation-direction:alternate;*/
+	animation-play-state:running;
+	/* Firefox: */
+	-moz-animation-name:appManager_open;
+	-moz-animation-duration:1s;
+	-moz-animation-timing-function:linear;
+	/*-moz-animation-delay:2s;
+	-moz-animation-iteration-count:1;
+	-moz-animation-direction:alternate;*/
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:appManager_open;
+	-webkit-animation-duration:1s;
+	-webkit-animation-timing-function:linear;
+	/*-webkit-animation-delay:2s;
+	-webkit-animation-iteration-count:1;
+	-webkit-animation-direction:alternate;*/
+	-webkit-animation-play-state:running;
+	
+	}
+	.appManager_close{
+	
+	animation-name:appManager_open;
+	animation-duration:1s;
+	animation-timing-function:linear;
+	/*animation-delay:2s;
+	animation-iteration-count:1;*/
 	animation-direction:alternate;
 	animation-play-state:running;
-	border-radius:3px;
 	/* Firefox: */
-	-moz-animation-name:myfirst;
-	-moz-animation-duration:5s;
+	-moz-animation-name:appManager_close;
+	-moz-animation-duration:1s;
 	-moz-animation-timing-function:linear;
-	-moz-animation-delay:2s;
-	-moz-animation-iteration-count:infinite;
+	/*-moz-animation-delay:2s;
+	-moz-animation-iteration-count:1;*/
 	-moz-animation-direction:alternate;
 	-moz-animation-play-state:running;
 	/* Safari and Chrome: */
-	-webkit-animation-name:myfirst;
-	-webkit-animation-duration:5s;
+	-webkit-animation-name:appManager_close;
+	-webkit-animation-duration:1s;
 	-webkit-animation-timing-function:linear;
-	-webkit-animation-delay:2s;
-	-webkit-animation-iteration-count:infinite;
+	/*-webkit-animation-delay:2s;
+	-webkit-animation-iteration-count:1;*/
 	-webkit-animation-direction:alternate;
 	-webkit-animation-play-state:running;
+	}
+	
+@keyframes appManager_open {
+	0%   { top:-360px;}
+	25%  { top:-270px;}
+	50%  { top:-180px;}
+	75%  { top:-90px;}
+	100% { top:0px;}
 }
 
-
-@keyframes myfirst {
-	0%   {background:red; left:0px; top:0px;}
-	25%  {background:yellow; left:0px; top:-10px;}
-	50%  {background:blue; left:0px; top:-20px;}
-	75%  {background:green; left:0px; top:-10px;}
-	100% {background:red; left:0px; top:0px;}
+@-moz-keyframes appManager_open /* Firefox */ {
+	0%   { top:-360px;}
+	25%  { top:-270px;}
+	50%  { top:-180px;}
+	75%  { top:-90px;}
+	100% { top:0px;}
 }
 
-@-moz-keyframes myfirst /* Firefox */ {
-	0%   {background:red; left:0px; top:0px;}
-	25%  {background:yellow; left:0px; top:-10px;}
-	50%  {background:blue; left:0px; top:-20px;}
-	75%  {background:green; left:0px; top:-10px;}
-	100% {background:red; left:0px; top:0px;}
+@-webkit-keyframes appManager_open /* Safari and Chrome */ {
+	0%   { top:-360px;}
+	25%  { top:-270px;}
+	50%  { top:-180px;}
+	75%  { top:-90px;}
+	100% { top:0px;}
 }
 
-@-webkit-keyframes myfirst /* Safari and Chrome */ {
-	0%   {background:red; left:0px; top:0px;}
-	25%  {background:yellow; left:0px; top:-10px;}
-	50%  {background:blue; left:0px; top:-20px;}
-	75%  {background:green; left:0px; top:-10px;}
-	100% {background:red; left:0px; top:0px;}
+@keyframes appManager_close {
+	0%   { top: 0px;}
+	25%  { top:-90px;}
+	50%  { top:-180px;}
+	75%  { top:-270px;}
+	100% { top:-360px;}
 }
 
+@-moz-keyframes appManager_close /* Firefox */ {
+	0%   { top: 0px;}
+	25%  { top:-90px;}
+	50%  { top:-180px;}
+	75%  { top:-270px;}
+	100% { top:-360px;}
+}
+
+@-webkit-keyframes appManager_close /* Safari and Chrome */ {
+	0%   { top: 0px;}
+	25%  { top:-90px;}
+	50%  { top:-180px;}
+	75%  { top:-270px;}
+	100% { top:-360px;}
+}
 /**  Test zone */
 
 .speech-1 {  

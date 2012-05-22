@@ -137,14 +137,13 @@
   </servlet-mapping>
   
   <servlet>
-  	<servlet-name>uploadServlet</servlet-name>
-  	<!-- This is the default servlet, it puts files in session -->
-  	<servlet-class>gwtupload.server.UploadServlet</servlet-class>
-  </servlet>
+		<servlet-name>uploadServlet</servlet-name>
+		<servlet-class>net.thesocialos.server.UploadServlet</servlet-class>
+	</servlet>
   
   <servlet-mapping>
   	<servlet-name>uploadServlet</servlet-name>
-  	<url-pattern>*.gupld</url-pattern>
+  	<url-pattern>/upload</url-pattern>
   </servlet-mapping>
   
   <servlet>

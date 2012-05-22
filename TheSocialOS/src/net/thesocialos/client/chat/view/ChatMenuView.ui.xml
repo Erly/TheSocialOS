@@ -79,7 +79,7 @@
 				</g:HorizontalPanel>
 			</g:at>
 			<g:at left="10" top="27">
-				<g:Image url="images/anonymous_avatar.png" width="70px" height="74px" styleName="{style.border}"/>
+				<g:Image url="images/anonymous_avatar.png" width="70px" height="74px" styleName="{style.border}" ui:field="imgAvatar"/>
 			</g:at>
 			<g:at left="86" top="91">
 				<g:Button text="Test Channel" ui:field="button">Test</g:Button>

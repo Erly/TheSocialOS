@@ -56,10 +56,13 @@ public class ChatBlockView extends Composite {
 		
 	}
 	
-	public ChatBlockView(Key<User> userKey) {
+	public ChatBlockView(Key<User> userKey, String urlAvatar) {
 		this();
 		this.userKey = userKey;
 		CreatePopUP();
+		if (urlAvatar == null) lblImage.setUrl("./images/anonymous_avatar.png");
+		else
+			lblImage.setUrl(urlAvatar);
 	}
 	
 	private void CreatePopUP() {

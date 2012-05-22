@@ -18,17 +18,21 @@ public class NotificationsBoxView extends Composite implements Display {
 	
 	interface NotificationsBoxUiBinder extends UiBinder<Widget, NotificationsBoxView> {
 	}
+	
 	private static NotificationsBoxUiBinder uiBinder = GWT.create(NotificationsBoxUiBinder.class);
 	@UiField(provided = true) CellList<User> cellListFriends = new CellList<User>(new AbstractCell<User>() {
 		@Override
 		public void render(Context context, User value, SafeHtmlBuilder sb) {
 			
-			if (value == null) { return; }
+			if (value == null) return;
 			sb.appendHtmlConstant("<table>");
 			
 			// Add the contact image.
 			sb.appendHtmlConstant("<tr><td rowspan='3'>");
-			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			if (value.getUrlAvatar() == null) sb
+					.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			else
+				sb.appendHtmlConstant("<img src=" + value.getUrlAvatar() + " width='30' height='35' />");
 			sb.appendHtmlConstant("</td>");
 			
 			// Add the name and address.

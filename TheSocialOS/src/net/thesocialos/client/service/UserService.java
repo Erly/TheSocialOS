@@ -7,6 +7,7 @@ import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.exceptions.UserExistsException;
+import net.thesocialos.shared.exceptions.UserUpdateException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.User;
@@ -34,10 +35,14 @@ public interface UserService extends RemoteService {
 	
 	void register(User user) throws UserExistsException;
 	
+	User updateUser(User user) throws UserUpdateException;
+	
+	String getAvatar();
+	
 	void setDeckColumns(ArrayList<Columns> columns);
 	
 	void addDeckColumn(Columns column);
-
+	
 	void checkChannel(ChApiContactNew newContact);
 	
 	void setState(STATETYPE statetype, String customMsg);

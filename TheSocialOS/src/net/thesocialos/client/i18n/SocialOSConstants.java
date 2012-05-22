@@ -70,9 +70,6 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("Keep me logged in")
 	String keepLogged();
 	
-	@DefaultStringValue("Last Name")
-	String lastName();
-	
 	@DefaultStringValue("Loading...")
 	String loading();
 	
@@ -90,6 +87,12 @@ public interface SocialOSConstants extends Constants {
 	
 	@DefaultStringValue("Name")
 	String name();
+	
+	@DefaultStringValue("Last Name")
+	String lastName();
+	
+	@DefaultStringValue("Bio")
+	String Bio();
 	
 	@DefaultStringValue("Other")
 	String other();

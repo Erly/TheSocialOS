@@ -14,9 +14,11 @@ import net.thesocialos.shared.LoginResult;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.exceptions.UserExistsException;
+import net.thesocialos.shared.exceptions.UserUpdateException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.Google;
+import net.thesocialos.shared.model.ImageUpload;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
@@ -39,6 +41,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			user.setTokenChannel(ChannelApiHelper.createChannel(perThreadRequest.get().getSession()));
 			ofy.put(user);
 			return user.getTokenChannel();
+			
 		} catch (ChannelFailureException e) {
 			e.printStackTrace();
 			
@@ -110,8 +113,9 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			if (session.getSessionID().equalsIgnoreCase(sid)
 					&& session.getUser().getName().equalsIgnoreCase(user.getEmail()))
 			// return User.toDTO(user);
-				User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(), user.getLastName(),
-						user.getRole(), user.getTokenChannel());
+				User.toDTO(user.getEmail(), user.getUrlAvatar(), user.getBackground(), user.getName(),
+						user.getLastName(), user.getRole(), user.getMobilePhone(), user.getAddress(), user.getBio(),
+						user.getTokenChannel());
 		try {
 			session = UserHelper.getSessionWithCookies(sid, ofy);
 			user = UserHelper.getUserWithSession(session, ofy);
@@ -120,8 +124,9 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 			ofy.put(user);
 			// return User.toDTO(user);
-			return User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(),
-					user.getLastName(), user.getRole(), user.getTokenChannel());
+			return User.toDTO(user.getEmail(), user.getUrlAvatar(), user.getBackground(), user.getName(),
+					user.getLastName(), user.getRole(), user.getMobilePhone(), user.getAddress(), user.getBio(),
+					user.getTokenChannel());
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -163,8 +168,9 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		
 		ofy.put(user); // Save user
 		// return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
-		return new LoginResult(User.toDTO(user.getEmail(), user.getAvatar(), user.getBackground(), user.getName(),
-				user.getLastName(), user.getRole(), user.getTokenChannel()), httpSession.getId(), duration);
+		return new LoginResult(User.toDTO(user.getEmail(), user.getUrlAvatar(), user.getBackground(), user.getName(),
+				user.getLastName(), user.getRole(), user.getMobilePhone(), user.getAddress(), user.getBio(),
+				user.getTokenChannel()), httpSession.getId(), duration);
 	}
 	
 	@Override
@@ -303,6 +309,36 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		
 		ChannelApiHelper.sendStateToContacts(ofy.get(user.getContacts()).values().iterator(), statetype, customMsg,
 				Key.create(User.class, user.getEmail()));
+		
+	}
+	
+	@Override
+	public User updateUser(User user) throws UserUpdateException {
+		Objectify ofy = ObjectifyService.begin();
+		
+		if (UserHelper.getUserHttpSession(perThreadRequest.get().getSession()).equalsIgnoreCase(user.getEmail())) {
+			User ofyUser = ofy.get(User.class, UserHelper.getUserHttpSession(perThreadRequest.get().getSession()));
+			ofyUser.setBio(user.getBio());
+			ofyUser.setAddress(user.getAddress());
+			ofyUser.setFirstName(user.getLastName());
+			ofyUser.setLastName(user.getLastName());
+			ofyUser.setMobilePhone(user.getMobilePhone());
+			ofy.put(ofyUser);
+			return User.toDTO(ofyUser.getEmail(), ofyUser.getUrlAvatar(), ofyUser.getBackground(), ofyUser.getName(),
+					ofyUser.getLastName(), ofyUser.getRole(), ofyUser.getMobilePhone(), ofyUser.getAddress(),
+					ofyUser.getBio(), ofyUser.getTokenChannel());
+		}
+		throw new UserUpdateException("UserEmail not equals");
+		
+	}
+	
+	@Override
+	public String getAvatar() {
+		Objectify ofy = ObjectifyService.begin();
+		ImageUpload avatar;
+		User user = UserHelper
+				.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
+		return user.getUrlAvatar();
 		
 	}
 }

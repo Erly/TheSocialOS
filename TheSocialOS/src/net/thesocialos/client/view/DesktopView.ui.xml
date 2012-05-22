@@ -14,9 +14,9 @@
 			top: 29px;
 		}
 		.desktop {
-			position: absolute;
+			position: relative;
 			top: 30px;
-			bottom: 0px;
+			
 			overflow-x: hidden;
 			overflow-y: hidden;
 			background-size: 100%;
@@ -28,12 +28,16 @@
 			left: 0;
 			z-index: 1;
 		}
+		.desktopBar{
+	z-index:200;
+
+	}
 	</ui:style>
 	<g:AbsolutePanel width="100%" height="100%" ui:field="absoluteDesktop">
-		<s:DesktopBar height="30px" ui:field="desktopBar" />
+		<s:DesktopBar height="30px" ui:field="desktopBar" styleName="{style.desktopBar}" />
 		<s:StartMenu addStyleNames="{style.startMenu}" ui:field="startMenu" />
 		<s:UserMenu addStyleNames="{style.userMenu}" ui:field="userMenu" />
-		<g:AbsolutePanel width="100%" ui:field="desktop" styleName="{style.desktop}" >
+		<g:AbsolutePanel width="100%" ui:field="desktop" styleName="{style.desktop}"  >
 			<g:Image addStyleNames="{style.background}" url="images/defaultBG.png" ui:field="background" />
 		</g:AbsolutePanel>
 	</g:AbsolutePanel>

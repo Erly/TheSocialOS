@@ -2,27 +2,28 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-		.profileAttr {
-			width: 100%;
-		}
-		.profileAttr:hover {
-			background-color: aliceblue;
-		}
+
 		.profileAttrPadding {
 			padding: 10px;
 		}
 		.profileAttrName {
-			color: grey;
+			color: white;
+		}
+		.editable{
+			border-style : solid;
+			
+			border-color: #29A9B2;
+	
 		}
 		
 	</ui:style>
-	<g:FocusPanel addStyleNames="{style.profileAttr}" ui:field="focusPanel">
+	<g:FocusPanel addStyleNames="profileAttr" ui:field="focusPanel" >
 		<g:HorizontalPanel>
 			<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" addStyleNames="{style.profileAttrPadding}" width="140px">
 				<g:Label ui:field="attrName" addStyleNames="{style.profileAttrName}" />
 			</g:VerticalPanel>
 			<g:VerticalPanel addStyleNames="{style.profileAttrPadding}">
-				<g:TextBox ui:field="attrValue" textAlignment="ALIGN_CENTER"/>
+				<g:TextBox ui:field="attrValue" textAlignment="ALIGN_CENTER" width="187px" maxLength="20"/>
 			</g:VerticalPanel>
 		</g:HorizontalPanel>
 	</g:FocusPanel>
