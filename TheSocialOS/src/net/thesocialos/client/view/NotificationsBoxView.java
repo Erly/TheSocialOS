@@ -1,7 +1,6 @@
 package net.thesocialos.client.view;
 
 import net.thesocialos.client.presenter.NotificationsBoxPresenter.Display;
-import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -44,13 +43,6 @@ public class NotificationsBoxView extends Composite implements Display {
 		}
 	});
 	@UiField LabelText labelTextFriends;
-	@UiField LabelText labelTextGroups;
-	@UiField(provided = true) CellList<Group> cellListGroups = new CellList<Group>(new AbstractCell<Group>() {
-		@Override
-		public void render(Context context, Group value, SafeHtmlBuilder sb) {
-			// TODO
-		}
-	});
 	
 	@UiField StackLayoutPanel stackLayoutPanel;
 	
@@ -73,7 +65,7 @@ public class NotificationsBoxView extends Composite implements Display {
 	@Override
 	public LabelText getGroupsLabelText() {
 		// TODO Auto-generated method stub
-		return labelTextGroups;
+		return null;
 	}
 	
 	@Override

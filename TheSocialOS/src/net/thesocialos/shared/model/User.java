@@ -65,6 +65,8 @@ public class User implements Serializable {
 	
 	@Unindexed String job;
 	
+	@Unindexed private List<Key<SharedHistory>> historykey;
+	
 	private Date lastTimeActive;
 	
 	Key<Group> groups[];
@@ -411,6 +413,21 @@ public class User implements Serializable {
 	 */
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
+	}
+	
+	/**
+	 * @return the historykey
+	 */
+	public List<Key<SharedHistory>> getHistorykey() {
+		return historykey;
+	}
+	
+	/**
+	 * @param historykey
+	 *            the historykey to set
+	 */
+	public void addHistoryKey(Key<SharedHistory> historykey) {
+		this.historykey.add(historykey);
 	}
 	
 }

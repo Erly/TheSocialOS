@@ -24,9 +24,6 @@
 				<g:Tab text="Contacts">
 					<p2:CellList width="165px" height="395px" ui:field="listContacts"/>
 				</g:Tab>
-				<g:Tab text="Groups">
-					<p2:CellList width="165px" height="395px" ui:field="ListGroups"/>
-				</g:Tab>
 			</g:DecoratedTabPanel>
 			<g:AbsolutePanel height="100%" width="336px">
 				<g:at left="10" top="10">

@@ -13,5 +13,6 @@ public class AppConstants {
 	public static final int OTHERFOLDERS = 8;
 	public static final int VIDEOPLAYER = 9;
 	public static final int APPMANAGER = 10;
+	public static final int SHAREDMANAGER = 11;
 	
 }

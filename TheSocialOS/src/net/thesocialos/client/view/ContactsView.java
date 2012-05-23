@@ -53,28 +53,6 @@ public class ContactsView extends Composite implements Display {
 	@UiField Button btnGroupOpen;
 	@UiField Label lblGroupMembers;
 	@UiField Label lblGroupMembersCount;
-	@UiField(provided = true) CellList<Group> ListGroups = new CellList<Group>(new AbstractCell<Group>() {
-		
-		@Override
-		public void render(com.google.gwt.cell.client.Cell.Context context, Group value, SafeHtmlBuilder sb) {
-			if (value == null) return;
-			
-			sb.appendHtmlConstant("<table>");
-			
-			// Add the contact image.
-			sb.appendHtmlConstant("<tr><td rowspan='3'>");
-			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
-			sb.appendHtmlConstant("</td>");
-			
-			// Add the name and address.
-			sb.appendHtmlConstant("<td style='font-size:95%;'>");
-			sb.appendEscaped(value.getName());
-			sb.appendHtmlConstant("</td></tr><tr><td>");
-			sb.appendEscaped(value.getId().toString());
-			sb.appendHtmlConstant("</td></tr></table>");
-			
-		}
-	});
 	@UiField DecoratedTabPanel dTPUserGroups;
 	@UiField HorizontalPanel ContactsMenu;
 	@UiField TextBox txtSearch;
@@ -172,7 +150,7 @@ public class ContactsView extends Composite implements Display {
 	@Override
 	public CellList<Group> getGroupListBox() {
 		// TODO Auto-generated method stub
-		return ListGroups;
+		return null;
 	}
 	
 	@Override

@@ -14,9 +14,21 @@ public class ChApiChatRecvMessage extends ChApiEvent {
 	
 	private Lines line;
 	
+	public enum CHATMESSAGETYPE {
+		MESSAGE, IMAGE, VIDEO
+	};
+	
+	private CHATMESSAGETYPE messageType = CHATMESSAGETYPE.MESSAGE;
+	
 	public ChApiChatRecvMessage(long date, Key<User> contactComeFrom, String message) {
 		super();
 		
+		line = new Lines(message, contactComeFrom, date);
+	}
+	
+	public ChApiChatRecvMessage(long date, Key<User> contactComeFrom, String message, CHATMESSAGETYPE messageType) {
+		super();
+		this.messageType = messageType;
 		line = new Lines(message, contactComeFrom, date);
 	}
 	
@@ -63,6 +75,13 @@ public class ChApiChatRecvMessage extends ChApiEvent {
 	 */
 	public Lines getLine() {
 		return line;
+	}
+	
+	/**
+	 * @return the messageType
+	 */
+	public CHATMESSAGETYPE getMessageType() {
+		return messageType;
 	}
 	
 }

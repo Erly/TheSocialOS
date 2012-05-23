@@ -51,7 +51,6 @@ public class SearchBoxView extends Composite implements Display {
 	});
 	
 	@UiField Label lblFriends;
-	@UiField Label lblGroups;
 	@UiField VerticalPanel searchPanel;
 	@UiField(provided = true) CellList<Object> cellList_1 = new CellList<Object>(new AbstractCell<Object>() {
 		@Override
@@ -91,7 +90,7 @@ public class SearchBoxView extends Composite implements Display {
 	@Override
 	public Label getLabelGroups() {
 		// TODO Auto-generated method stub
-		return lblGroups;
+		return null;
 	}
 	
 	@Override
