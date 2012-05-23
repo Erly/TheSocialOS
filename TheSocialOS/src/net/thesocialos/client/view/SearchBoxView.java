@@ -123,4 +123,10 @@ public class SearchBoxView extends Composite implements Display {
 		this.cellList = cellList;
 	}
 	
+	@Override
+	public TextBox getSearchBox() {
+		// TODO Auto-generated method stub
+		return txtSearch;
+	}
+	
 }

@@ -8,6 +8,7 @@ import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.IsTypeInfo;
+import net.thesocialos.client.helper.SearchArrayList;
 import net.thesocialos.client.view.PopUpInfoContact;
 import net.thesocialos.shared.model.User;
 
@@ -17,12 +18,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -52,6 +56,8 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 		
 		StackLayoutPanel getStackLayout();
 		
+		TextBox getSearchBox();
+		
 		void setComponentsList(CellList<User> cellList);
 	}
 	
@@ -62,7 +68,7 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 	 */
 	ProvidesKey<User> KEY_USERS_PROVIDER;
 	
-	List<User> usersList = new ArrayList<User>();
+	SearchArrayList usersList = new SearchArrayList();
 	/*
 	 * Los modelos de la cajas de seleccion de los grupos
 	 */
@@ -159,7 +165,7 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 			public void onSuccess(Map<String, User> result) {
 				
 				// display.setComponentsList(new CellList<User>(usersCell()));
-				
+				result.remove(CacheLayer.UserCalls.getUser().getEmail());
 				usersList.addAll(result.values());
 				dataProvider.flush();
 				dataProvider.refresh();
@@ -208,14 +214,10 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 			}
 		});
 		
-		display.getLabelGroups().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				display.getStackLayout().showWidget(1);
-				
-			}
-		});
+		/*
+		 * display.getLabelGroups().addClickHandler(new ClickHandler() {
+		 * @Override public void onClick(ClickEvent event) { display.getStackLayout().showWidget(1); } });
+		 */
 		display.getLabelInvite().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -238,6 +240,19 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 					contactInfoPopup.show();
 				}
 				
+			}
+		});
+		display.getSearchBox().addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				// TODO Auto-generated method stub
+				System.out.println(display.getSearchBox().getText());
+				// ArrayList<User> lista = ;
+				dataProvider.setList(usersList.getSearchUsers(display.getSearchBox().getText()));
+				// System.out.println(lista.size());
+				dataProvider.flush();
+				dataProvider.refresh();
 			}
 		});
 	}
