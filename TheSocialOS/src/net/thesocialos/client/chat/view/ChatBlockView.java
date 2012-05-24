@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -41,9 +42,11 @@ public class ChatBlockView extends Composite {
 	@UiField Image lblImage;
 	@UiField AbsolutePanel background;
 	@UiField HTMLPanel htmlPanel;
+	@UiField Button lblUnreadMsg;
 	
 	Key<User> userKey;
 	private boolean activated = false;
+	private Integer messageCont = 0;
 	
 	PopupPanel popupPanel = new PopupPanel(true);
 	
@@ -53,6 +56,8 @@ public class ChatBlockView extends Composite {
 		// Scheduler.get().scheduleFixedPeriod(new ChangeColor(), 3000);
 		// background.setStyleName("chatBlock_activated", true);
 		handlers();
+		lblUnreadMsg.setText(String.valueOf(messageCont));
+		lblUnreadMsg.setVisible(false);
 		
 	}
 	
@@ -127,6 +132,14 @@ public class ChatBlockView extends Composite {
 	 */
 	public void messagesPending(Boolean pending) {
 		if (activated) htmlPanel.setStyleName("chatBlock_activated", pending);
+		if (activated && pending) {
+			lblUnreadMsg.setVisible(true);
+			messageCont++;
+			lblUnreadMsg.setText(String.valueOf(messageCont));
+		} else {
+			messageCont = 0;
+			lblUnreadMsg.setText(String.valueOf(messageCont));
+		}
 		
 	}
 	
@@ -142,8 +155,14 @@ public class ChatBlockView extends Composite {
 	 *            the activated to set
 	 */
 	public void setActivated(boolean activated) {
-		if (!activated) htmlPanel.setStyleName("chatBlock_activated", activated);
+		if (!activated) {
+			htmlPanel.setStyleName("chatBlock_activated", activated);
+			messageCont = 0;
+			lblUnreadMsg.setVisible(false);
+			lblUnreadMsg.setText(String.valueOf(messageCont));
+		}
 		this.activated = activated;
+		
 	}
 	
 }

@@ -38,7 +38,7 @@
 		
 		.chatMenu {
 		position: absolute;
-		bottom : 0;
+		bottom : 30px;
 		right: 0;
 		background: rgb(125,126,125); /* Old browsers */
 		background: -moz-linear-gradient(-45deg,  rgba(125,126,125,1) 0%, rgba(14,14,14,1) 99%); /* FF3.6+ */

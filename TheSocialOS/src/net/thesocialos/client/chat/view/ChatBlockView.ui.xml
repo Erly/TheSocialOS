@@ -10,6 +10,11 @@
 		border-width:1px;
 
 		}
+		.number_messages{
+		 position: relative;
+		 top: -86px;
+		 right: -5px;
+		}
 		
 		.image{
 		background-color: white;
@@ -28,5 +33,6 @@
 			</g:at>
 		</g:AbsolutePanel>
 		</div>
+	<g:Button styleName="{style.number_messages}" text="0" ui:field="lblUnreadMsg"/>
 	</g:HTMLPanel>
 </ui:UiBinder> 

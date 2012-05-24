@@ -72,7 +72,7 @@ public class NotificationsBoxPresenter extends DesktopUnit implements IsTypeInfo
 		dataProvider = new ListDataProvider<User>(usersList);
 		dataProvider.addDataDisplay(display.getContactsCellList());
 		display.getContactsLabelText().setText("0");
-		display.getGroupsLabelText().setText("0");
+		// display.getGroupsLabelText().setText("0");
 		handlers();
 		getContactPetitions(true);
 	}
