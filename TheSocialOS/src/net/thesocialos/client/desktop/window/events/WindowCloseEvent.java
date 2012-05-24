@@ -1,11 +1,11 @@
-package net.thesocialos.client.desktop.window;
+package net.thesocialos.client.desktop.window.events;
 
-public class WindowMaximizeEvent extends WindowEvent {
+public class WindowCloseEvent extends WindowEvent {
 	
 	@Override
 	protected void dispatch(WindowEventHandler handler) {
-		handler.onMaximize(this);
-		
+		// TODO Auto-generated method stub
+		handler.onClose(this);
 	}
 	
 	@Override

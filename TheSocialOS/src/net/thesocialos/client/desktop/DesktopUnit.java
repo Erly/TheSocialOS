@@ -1,13 +1,13 @@
 package net.thesocialos.client.desktop;
 
-import net.thesocialos.client.desktop.window.WindowDisplay;
+import net.thesocialos.client.desktop.window.events.WindowDisplay;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public abstract class DesktopUnit {
 	
 	public enum TypeUnit {
-		WINDOW, INFO, POPUP, STATIC
+		WINDOW, INFO, POPUP, STATIC, DUMMIE
 	}
 	
 	private int programID;

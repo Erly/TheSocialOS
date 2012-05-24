@@ -10,12 +10,12 @@ package com.google.gwt.user.client.ui;
  */
 
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.desktop.window.WindowDisplay;
-import net.thesocialos.client.desktop.window.WindowEndDragEvent;
-import net.thesocialos.client.desktop.window.WindowEvent;
-import net.thesocialos.client.desktop.window.WindowEventHandler;
-import net.thesocialos.client.desktop.window.WindowOnTopEvent;
-import net.thesocialos.client.desktop.window.WindowResizeEvent;
+import net.thesocialos.client.desktop.window.events.WindowDisplay;
+import net.thesocialos.client.desktop.window.events.WindowEndDragEvent;
+import net.thesocialos.client.desktop.window.events.WindowEvent;
+import net.thesocialos.client.desktop.window.events.WindowEventHandler;
+import net.thesocialos.client.desktop.window.events.WindowOnTopEvent;
+import net.thesocialos.client.desktop.window.events.WindowResizeEvent;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.EventTarget;

@@ -11,7 +11,7 @@ import net.thesocialos.client.api.YoutubeAPI;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.window.FolderWindow;
-import net.thesocialos.client.desktop.window.PlayerWindow;
+import net.thesocialos.client.desktop.window.FrameWindow;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -169,7 +169,7 @@ public class DblClickHandlerHelper {
 	}
 	
 	protected void openVideo() {
-		PlayerWindow window = new PlayerWindow(((MediaPicture) media).getUrl(), AppConstants.VIDEOPLAYER);
+		FrameWindow window = new FrameWindow(((MediaPicture) media).getUrl(), "VIDEO", AppConstants.VIDEOPLAYER);
 		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(window));
 		/*
 		 * DecoratedPopupPanel popup = new DecoratedPopupPanel(true); Frame frame = new Frame(((MediaPicture)

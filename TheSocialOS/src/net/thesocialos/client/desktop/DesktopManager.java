@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
+import net.thesocialos.client.desktop.window.FrameWindow;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -33,6 +35,9 @@ public class DesktopManager {
 		absolutePanelDesktop = Desktop;
 		this.eventBus = eventBus;
 		linkedDesktopUnit = new LinkedHashMap<Integer, ArrayList<DesktopUnit>>();
+		ArrayList<DesktopUnit> defaultUnit = new ArrayList<DesktopUnit>();
+		defaultUnit.add(new FrameWindow("DYMMY", "DUMMY", AppConstants.OTHER, false));
+		linkedDesktopUnit.put(AppConstants.OTHER, defaultUnit);
 		handlers();
 		
 		/*

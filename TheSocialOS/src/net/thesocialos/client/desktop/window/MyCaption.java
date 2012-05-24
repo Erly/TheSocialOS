@@ -1,5 +1,9 @@
 package net.thesocialos.client.desktop.window;
 
+import net.thesocialos.client.desktop.window.events.WindowCloseEvent;
+import net.thesocialos.client.desktop.window.events.WindowMaximizeEvent;
+import net.thesocialos.client.desktop.window.events.WindowMinimizeEvent;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;

@@ -9,12 +9,12 @@ import java.util.Map;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.AppConstants;
-import net.thesocialos.client.app.FrameApp;
-import net.thesocialos.client.app.IApplication;
 import net.thesocialos.client.chat.ChatManager;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
+import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
+import net.thesocialos.client.desktop.window.FrameWindow;
 import net.thesocialos.client.event.AvatarUpdateEvent;
 import net.thesocialos.client.event.AvatarUpdateEventHandler;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
@@ -160,15 +160,16 @@ public class DesktopPresenter implements Presenter {
 		refreshData();
 		
 		// Populate the Star Menu
-		ArrayList<IApplication> appsData = new ArrayList<IApplication>();
-		appsData.add(new FrameApp("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png",
-				"http://www.bitlet.org/", "1024px", "600px"));
-		appsData.add(new FrameApp("Grooveshark Player",
+		ArrayList<DesktopUnit> appsData = new ArrayList<DesktopUnit>();
+		appsData.add(new FrameWindow("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png",
+				"http://www.bitlet.org/", AppConstants.OTHER, true));
+		appsData.add(new FrameWindow("Grooveshark Player",
 				"http://img696.imageshack.us/img696/1622/11groovesharkicon256x25.png", "http://www.grooveshark.com",
-				"1024px", "600px"));
-		appsData.add(new FrameApp("Sketchpad",
+				AppConstants.OTHER, true));
+		appsData.add(new FrameWindow("Sketchpad",
 				"http://profile.ak.fbcdn.net/hprofile-ak-snc4/23295_128946130463344_2641_n.jpg",
-				"http://mugtug.com/sketchpad", "1024px", "600px"));
+				"http://mugtug.com/sketchpad", AppConstants.OTHER, true));
+		
 		// appsData.add(new ChatApp("Xmpp","http://www.bitrix.es/upload/iblock/e03/xmpp.gif",chatEventBus, new
 		// ChatPanel(),
 		// "450px", "300px"));
@@ -326,7 +327,7 @@ public class DesktopPresenter implements Presenter {
 		});
 	}
 	
-	private void bindStartMenu(ArrayList<IApplication> appsData) {
+	private void bindStartMenu(ArrayList<DesktopUnit> appsData) {
 		display.getStartMenu().setVisible(false);
 		VerticalPanel vPanel = ((StartMenu) display.getStartMenu()).getStartVPanel();
 		for (int i = 0; i < appsData.size(); i++) {

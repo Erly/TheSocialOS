@@ -1,4 +1,4 @@
-package net.thesocialos.client.desktop.window;
+package net.thesocialos.client.desktop.window.events;
 
 public class WindowMinimizeEvent extends WindowEvent {
 	

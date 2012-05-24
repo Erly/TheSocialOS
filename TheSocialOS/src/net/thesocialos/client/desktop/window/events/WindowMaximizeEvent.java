@@ -1,10 +1,10 @@
-package net.thesocialos.client.desktop.window;
+package net.thesocialos.client.desktop.window.events;
 
-public class WindowOnTopEvent extends WindowEvent {
+public class WindowMaximizeEvent extends WindowEvent {
 	
 	@Override
 	protected void dispatch(WindowEventHandler handler) {
-		handler.onTop(this);
+		handler.onMaximize(this);
 		
 	}
 	
