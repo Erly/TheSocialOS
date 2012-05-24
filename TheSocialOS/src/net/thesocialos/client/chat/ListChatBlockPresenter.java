@@ -21,7 +21,7 @@ public class ListChatBlockPresenter extends DesktopUnit {
 	HashMap<Key<User>, ChatBlockView> conversationsBlock = new HashMap<Key<User>, ChatBlockView>();
 	
 	public ListChatBlockPresenter(Display display) {
-		super(AppConstants.CHAT, null, TypeUnit.STATIC, true);
+		super(AppConstants.CHAT, "ChatBlock", null, TypeUnit.STATIC, true);
 		this.display = display;
 	}
 	

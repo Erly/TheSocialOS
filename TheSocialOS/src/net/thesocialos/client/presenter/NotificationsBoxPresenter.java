@@ -55,7 +55,7 @@ public class NotificationsBoxPresenter extends DesktopUnit implements IsTypeInfo
 	List<User> usersList = new ArrayList<User>();
 	
 	public NotificationsBoxPresenter(Display display) {
-		super(AppConstants.NOTIFICATIONS, null, TypeUnit.INFO, false);
+		super(AppConstants.NOTIFICATIONS, "Notifications", null, TypeUnit.INFO, false);
 		this.display = display;
 		
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {

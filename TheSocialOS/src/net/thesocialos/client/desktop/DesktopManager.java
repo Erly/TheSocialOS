@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
 import net.thesocialos.client.desktop.window.FrameWindow;
@@ -29,6 +30,7 @@ public class DesktopManager {
 	DesktopUnit lastDesktopUnit = null;
 	
 	UnitsManager unitsManager = new UnitsManager();
+	AplicationsManager aplicationsManager = new AplicationsManager();
 	
 	public DesktopManager(EventBus eventBus, AbsolutePanel Screen, AbsolutePanel Desktop) {
 		absolutePanelScreen = Screen;
@@ -102,6 +104,8 @@ public class DesktopManager {
 			if (lastDesktopUnit != null && lastDesktopUnit.typeUnit.equals(TypeUnit.INFO)) removeUnit(lastDesktopUnit);
 			if (linkedDesktopUnit.containsKey(desktopUnit.getProgramID())) {
 				if (desktopUnit.isSubApplication()) {
+					if (desktopUnit.getID() == AppConstants.OTHER)
+						aplicationsManager.addApplicationTocontrol(desktopUnit);
 					ArrayList<DesktopUnit> hashDesktopUnits = linkedDesktopUnit.get(desktopUnit.getProgramID());
 					if (hashDesktopUnits.contains(desktopUnit)) {
 						setWindowsZPositions(desktopUnit);
@@ -119,6 +123,7 @@ public class DesktopManager {
 				
 				desktopUnits.add(desktopUnit);
 				linkedDesktopUnit.put(desktopUnit.getID(), desktopUnits);
+				aplicationsManager.addApplicationTocontrol(desktopUnit);
 			}
 			if (desktopUnit.typeUnit.equals(TypeUnit.INFO)) lastDesktopUnit = desktopUnit;
 			
@@ -266,9 +271,32 @@ public class DesktopManager {
 		
 	}
 	
-	class AplicationManager {
-		public AplicationManager() {
+	class AplicationsManager {
+		ArrayList<DesktopUnit> desktopUnits = new ArrayList<DesktopUnit>();
+		
+		public AplicationsManager() {
 			
+		}
+		
+		public boolean addApplicationTocontrol(DesktopUnit application) {
+			if (checkApplication(application))
+				if (desktopUnits.add(application))
+					TheSocialOS.getEventBus().fireEvent(new AppManagerOpenEvent(application));
+			return false;
+		}
+		
+		public void removeApplicationToControl(DesktopUnit application) {
+			if (desktopUnits.remove(application))
+				TheSocialOS.getEventBus().fireEvent(new AppManagerCloseEvent(application));
+		}
+		
+		private boolean checkApplication(DesktopUnit application) {
+			if (AppConstants.IMAGEFOLDERS == application.getProgramID()
+					|| AppConstants.VIDEOFOLDERS == application.getProgramID()
+					|| AppConstants.VIDEOPLAYER == application.getProgramID()
+					|| AppConstants.OTHER == application.getProgramID()
+					|| AppConstants.SHAREDMANAGER == application.getProgramID()) return true;
+			return false;
 		}
 	}
 	

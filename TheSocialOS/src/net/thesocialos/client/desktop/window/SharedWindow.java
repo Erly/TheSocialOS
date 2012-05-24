@@ -10,7 +10,8 @@ import com.google.gwt.user.client.ui.WindowPanelLayout;
 public class SharedWindow extends DesktopUnit implements IApplication {
 	
 	public SharedWindow(TypeUnit typeUnit) {
-		super(AppConstants.SHAREDMANAGER, new WindowPanelLayout(new MyCaption(), new Footer()), typeUnit, false);
+		super(AppConstants.SHAREDMANAGER, "Shared Manager", new WindowPanelLayout(new MyCaption(), new Footer()),
+				typeUnit, false);
 		// TODO Auto-generated constructor stub
 	}
 	

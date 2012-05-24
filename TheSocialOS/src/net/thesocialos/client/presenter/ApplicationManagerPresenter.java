@@ -1,7 +1,16 @@
 package net.thesocialos.client.presenter;
 
+import java.util.HashMap;
+
+import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.desktop.AppManagerCloseEvent;
+import net.thesocialos.client.desktop.AppManagerEvent;
+import net.thesocialos.client.desktop.AppManagerEventHandler;
+import net.thesocialos.client.desktop.AppManagerOpenEvent;
+import net.thesocialos.client.desktop.DesktopEventOnMinimize;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.IsTypeInfo;
+import net.thesocialos.client.view.Aplication;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
@@ -13,15 +22,57 @@ import com.google.gwt.user.client.ui.Widget;
 public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeInfo {
 	Display display;
 	
+	HashMap<Aplication, DesktopUnit> applications = new HashMap<Aplication, DesktopUnit>();
+	
 	public ApplicationManagerPresenter(int programID, Display display, TypeUnit typeUnit, boolean isSubApplication) {
-		super(programID, null, typeUnit, isSubApplication);
+		super(programID, "Aplication Manager", null, typeUnit, isSubApplication);
 		this.display = display;
+		handler();
 	}
 	
 	public interface Display {
 		Widget asWidget();
 		
 		SimplePanel getHtmlPanel();
+		
+		boolean addApplication(Aplication aplication);
+	}
+	
+	private void handler() {
+		TheSocialOS.getEventBus().addHandler(AppManagerEvent.TYPE, new AppManagerEventHandler() {
+			
+			@Override
+			public void onOpen(AppManagerOpenEvent event) {
+				addUnit(event.getDesktopUnit());
+				
+			}
+			
+			@Override
+			public void onClose(AppManagerCloseEvent event) {
+				removeUnit(event.getDesktopUnit());
+				
+			}
+		});
+	}
+	
+	private void addUnit(DesktopUnit desktopUnit) {
+		if (!applications.containsValue(desktopUnit)) {
+			Aplication aplication = new Aplication(desktopUnit.name, null, this);
+			
+			display.addApplication(aplication);
+			applications.put(aplication, desktopUnit);
+			
+		}
+	}
+	
+	public void showHideApp(Aplication aplication) {
+		if (applications.containsKey(aplication))
+			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(applications.get(aplication)));
+		
+	}
+	
+	private void removeUnit(DesktopUnit desktopUnit) {
+		
 	}
 	
 	@Override

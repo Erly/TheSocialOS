@@ -74,7 +74,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 	
 	public ChatMenuPresenter(Display display, ChatManager chatManager) {
 		
-		super(AppConstants.CHAT, null, TypeUnit.STATIC, false);
+		super(AppConstants.CHAT, "Chat", null, TypeUnit.STATIC, false);
 		typeUnit = TypeUnit.STATIC;
 		this.display = display;
 		this.chatManager = chatManager;

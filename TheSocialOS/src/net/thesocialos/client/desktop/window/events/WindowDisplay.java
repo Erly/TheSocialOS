@@ -28,6 +28,8 @@ public interface WindowDisplay {
 	
 	void setWindowTitle(String text);
 	
+	String getWindowTitle();
+	
 	void toback();
 	
 	void toFront();

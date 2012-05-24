@@ -100,7 +100,7 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 	List<User> contactList;
 	
 	public ContactsPresenter(Display display) {
-		super(AppConstants.CONTACTS, null, TypeUnit.INFO, false);
+		super(AppConstants.CONTACTS, "Contacts", null, TypeUnit.INFO, false);
 		this.display = display;
 		KEY_PROVIDER = new ProvidesKey<User>() {
 			@Override

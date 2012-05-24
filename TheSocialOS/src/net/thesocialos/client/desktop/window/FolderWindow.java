@@ -89,7 +89,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	 */
 	@Deprecated
 	public FolderWindow(String title, HashSet<? extends Media> mediaSet, int idProgram) {
-		this(idProgram);
+		this(idProgram, title);
 		this.title = title;
 		int width = windowDisplay.getWidth();
 		int col = width / 152;
@@ -103,25 +103,26 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	}
 	
 	public FolderWindow(String title, String contentType, int idProgram) {
-		this(idProgram);
+		this(idProgram, title);
 		this.title = title;
 		this.contentType = contentType;
 		
 	}
 	
 	public FolderWindow(String title, WindowPanelLayout display, int idProgram) {
-		this(display, idProgram);
+		this(display, idProgram, title);
 		this.title = title;
 		
 	}
 	
-	public FolderWindow(WindowPanelLayout display, int idProgram) {
-		super(idProgram, display, TypeUnit.WINDOW, false);
+	private FolderWindow(WindowPanelLayout display, int idProgram, String name) {
+		super(idProgram, name, display, TypeUnit.WINDOW, false);
 		title = "Prueba";
 	}
 	
-	public FolderWindow(int idProgram) {
-		super(idProgram, new WindowPanelLayout(false, false, new MyCaption(), new Footer()), TypeUnit.WINDOW, false);
+	private FolderWindow(int idProgram, String name) {
+		super(idProgram, name, new WindowPanelLayout(false, false, new MyCaption(), new Footer()), TypeUnit.WINDOW,
+				false);
 		files.add(new HashSet<Media>());
 		
 		x = 1;

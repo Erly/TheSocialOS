@@ -32,9 +32,11 @@ public abstract class DesktopUnit {
 	
 	protected TypeUnit typeUnit;
 	protected WindowDisplay windowDisplay;
+	public String name;
 	
-	public DesktopUnit(int programID, WindowDisplay display, TypeUnit typeUnit, boolean isSubApplication) {
+	public DesktopUnit(int programID, String name, WindowDisplay display, TypeUnit typeUnit, boolean isSubApplication) {
 		this.programID = programID;
+		this.name = name;
 		windowDisplay = display;
 		this.typeUnit = typeUnit;
 		this.isSubApplication = isSubApplication;

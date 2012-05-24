@@ -75,7 +75,7 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 	
 	public ChatConversationPresenter(int programID, String appName, String appImageURL, Key<User> userWithChat,
 			WindowDisplay windoDisplay, Display display) {
-		super(programID, windoDisplay, TypeUnit.WINDOW, true);
+		super(programID, "Chat Conversation", windoDisplay, TypeUnit.WINDOW, true);
 		setName(appName);
 		setImage(appImageURL);
 		

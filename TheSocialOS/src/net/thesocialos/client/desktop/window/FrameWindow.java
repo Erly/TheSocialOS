@@ -26,32 +26,30 @@ public class FrameWindow extends DesktopUnit implements IApplication, isFrame {
 	
 	String url = "";
 	String urlImage;
-	String name;
+	
 	Frame frame;
 	
 	public FrameWindow(String url, String name, int idProgram, boolean isSubApplication) {
-		this(idProgram, isSubApplication);
+		this(idProgram, isSubApplication, name);
 		this.url = url;
 		
-		setName(name);
 	}
 	
 	public FrameWindow(String name, String urlImage, String url, int idProgram, boolean isSubApplication) {
-		this(idProgram, isSubApplication);
+		this(idProgram, isSubApplication, name);
 		this.url = url;
 		
-		setName(name);
 		setImage(urlImage);
 	}
 	
 	public FrameWindow(String url, String name, int idProgram) {
-		this(idProgram, false);
+		this(idProgram, false, name);
 		this.url = url;
-		setName(name);
+		
 	}
 	
-	private FrameWindow(int idProgram, boolean isSubApplication) {
-		super(idProgram, new WindowPanelLayout(new MyCaption(), new Footer()), TypeUnit.WINDOW, isSubApplication);
+	private FrameWindow(int idProgram, boolean isSubApplication, String name) {
+		super(idProgram, name, new WindowPanelLayout(new MyCaption(), new Footer()), TypeUnit.WINDOW, isSubApplication);
 		frame = new Frame();
 		frame.setSize("560px", "315px");
 		windowDisplay.getWindow().add(frame);
@@ -114,7 +112,6 @@ public class FrameWindow extends DesktopUnit implements IApplication, isFrame {
 	
 	@Override
 	public void setName(String name) {
-		this.name = name;
 		
 	}
 	

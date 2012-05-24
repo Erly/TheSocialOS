@@ -117,7 +117,8 @@ public class DesktopPresenter implements Presenter {
 	ContactsPresenter contacsPresenter;
 	SearchBoxPresenter searchBoxPresenter;
 	NotificationsBoxPresenter notificationBoxPresenter;
-	ApplicationManagerPresenter aplicationManagerPresenter;
+	ApplicationManagerPresenter aplicationManagerPresenter = new ApplicationManagerPresenter(AppConstants.APPMANAGER,
+			new AplicationManagerView(), TypeUnit.INFO, false);
 	private AbsolutePanel desktop;
 	private boolean startMenuFocused = false;
 	private boolean userMenuFocused = false;
@@ -253,9 +254,7 @@ public class DesktopPresenter implements Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				if (aplicationManagerPresenter == null)
-					aplicationManagerPresenter = new ApplicationManagerPresenter(AppConstants.APPMANAGER,
-							new AplicationManagerView(), TypeUnit.INFO, false);
+				
 				int x = display.getDesktopBar().getAppManagerButton().getAbsoluteLeft();
 				
 				aplicationManagerPresenter.setPosition(x, 0);

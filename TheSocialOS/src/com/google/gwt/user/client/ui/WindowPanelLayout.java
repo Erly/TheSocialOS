@@ -717,6 +717,12 @@ public class WindowPanelLayout extends DecoratedPopupPanel implements HasHTML, H
 	}
 	
 	@Override
+	public String getWindowTitle() {
+		// TODO Auto-generated method stub
+		return caption.getText();
+	}
+	
+	@Override
 	public void show() {
 		if (resizeHandlerRegistration == null) resizeHandlerRegistration = Window.addResizeHandler(new ResizeHandler() {
 			@Override

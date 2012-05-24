@@ -1,6 +1,10 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.presenter.ApplicationManagerPresenter;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -16,12 +20,21 @@ public class Aplication extends Composite {
 	@UiField Image lblAplicationImage;
 	@UiField Image closeButton;
 	@UiField HorizontalPanel AplicationPanel;
+	ApplicationManagerPresenter applicationManager;
 	
 	interface AplicationUiBinder extends UiBinder<Widget, Aplication> {
 	}
 	
 	public Aplication() {
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	public Aplication(String name, String url, ApplicationManagerPresenter applicationManager) {
+		this();
+		// setAplicationImage(url);
+		setAplicationName(name);
+		this.applicationManager = applicationManager;
+		bind();
 	}
 	
 	public void setAplicationImage(String url) {
@@ -38,5 +51,23 @@ public class Aplication extends Composite {
 	
 	public HorizontalPanel getApplicationPanel() {
 		return AplicationPanel;
+	}
+	
+	private void bind() {
+		getCloseButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		getApplicationPanel().addDomHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				applicationManager.showHideApp(Aplication.this);
+			}
+		}, ClickEvent.getType());
 	}
 }

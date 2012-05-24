@@ -79,7 +79,7 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 	Display display;
 	
 	public SearchBoxPresenter(Display display) {
-		super(AppConstants.SEARCHBOX, null, TypeUnit.INFO, false);
+		super(AppConstants.SEARCHBOX, "Contacts Search", null, TypeUnit.INFO, false);
 		this.display = display;
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
 			@Override

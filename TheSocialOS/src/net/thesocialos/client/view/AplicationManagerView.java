@@ -7,12 +7,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AplicationManagerView extends Composite implements Display {
 	
 	private static AplicationManagerViewUiBinder uiBinder = GWT.create(AplicationManagerViewUiBinder.class);
 	@UiField SimplePanel htmlPanel;
+	@UiField VerticalPanel addPanel;
 	
 	interface AplicationManagerViewUiBinder extends UiBinder<Widget, AplicationManagerView> {
 	}
@@ -30,6 +32,13 @@ public class AplicationManagerView extends Composite implements Display {
 	public SimplePanel getHtmlPanel() {
 		// TODO Auto-generated method stub
 		return htmlPanel;
+	}
+	
+	@Override
+	public boolean addApplication(Aplication aplication) {
+		// TODO Auto-generated method stub
+		addPanel.add(aplication);
+		return true;
 	}
 	
 }
