@@ -8,6 +8,7 @@ import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
+import net.thesocialos.client.desktop.IsTypeInfo;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 import net.thesocialos.client.view.LabelText;
 import net.thesocialos.client.view.PopAsker;
@@ -27,7 +28,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class NotificationsBoxPresenter extends DesktopUnit {
+public class NotificationsBoxPresenter extends DesktopUnit implements IsTypeInfo {
 	
 	public interface Display {
 		
@@ -54,7 +55,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	List<User> usersList = new ArrayList<User>();
 	
 	public NotificationsBoxPresenter(Display display) {
-		super(AppConstants.NOTIFICATIONS, null, TypeUnit.INFO, false);
+		super(AppConstants.NOTIFICATIONS, "Notifications", null, TypeUnit.INFO, false);
 		this.display = display;
 		
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
@@ -71,7 +72,7 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 		dataProvider = new ListDataProvider<User>(usersList);
 		dataProvider.addDataDisplay(display.getContactsCellList());
 		display.getContactsLabelText().setText("0");
-		display.getGroupsLabelText().setText("0");
+		// display.getGroupsLabelText().setText("0");
 		handlers();
 		getContactPetitions(true);
 	}
@@ -83,15 +84,28 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	}
 	
 	@Override
+	public int getWidth() {
+		
+		return display.asWidget().getOffsetWidth();
+		
+	}
+	
+	@Override
+	public int getHeight() {
+		
+		return display.asWidget().getOffsetHeight();
+	}
+	
+	@Override
 	public int getAbsoluteLeft() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return display.asWidget().getAbsoluteLeft();
 	}
 	
 	@Override
 	public int getAbsoluteTop() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return display.asWidget().getAbsoluteTop();
 	}
 	
 	private void getContactPetitions(Boolean cached) {
@@ -119,18 +133,6 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 				TheSocialOS.getEventBus().fireEvent(new ContactsPetitionChangeEvent());
 			}
 		});
-	}
-	
-	@Override
-	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 	@Override
@@ -255,8 +257,12 @@ public class NotificationsBoxPresenter extends DesktopUnit {
 	}
 	
 	@Override
+	public void toBack() {
+		
+	}
+	
+	@Override
 	public void toFront() {
-		// TODO Auto-generated method stub
 		
 	}
 	

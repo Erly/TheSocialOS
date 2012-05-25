@@ -3,11 +3,13 @@ package net.thesocialos.client.chat;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.chat.view.ChatBlockView;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.shared.model.User;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -19,7 +21,7 @@ public class ListChatBlockPresenter extends DesktopUnit {
 	HashMap<Key<User>, ChatBlockView> conversationsBlock = new HashMap<Key<User>, ChatBlockView>();
 	
 	public ListChatBlockPresenter(Display display) {
-		super(AppConstants.CHAT, null, TypeUnit.STATIC, true);
+		super(AppConstants.CHAT, "ChatBlock", null, TypeUnit.STATIC, true);
 		this.display = display;
 	}
 	
@@ -58,11 +60,24 @@ public class ListChatBlockPresenter extends DesktopUnit {
 	 * 
 	 * @param userKey
 	 */
-	public void addConvesationBlock(Key<User> userKey) {
+	public void addConvesationBlock(final Key<User> userKey) {
 		
 		if (conversationsBlock.containsKey(userKey)) return;
-		conversationsBlock.put(userKey, new ChatBlockView(userKey));
-		display.getHConverPanel().add(conversationsBlock.get(userKey));
+		CacheLayer.ContactCalls.getContact(userKey, new AsyncCallback<User>() {
+			
+			@Override
+			public void onSuccess(User result) {
+				conversationsBlock.put(userKey, new ChatBlockView(userKey, result.getUrlAvatar()));
+				display.getHConverPanel().add(conversationsBlock.get(userKey));
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}
 	

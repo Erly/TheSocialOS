@@ -1,13 +1,13 @@
 package net.thesocialos.client.desktop;
 
-import net.thesocialos.client.desktop.window.WindowDisplay;
+import net.thesocialos.client.desktop.window.events.WindowDisplay;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public abstract class DesktopUnit {
 	
 	public enum TypeUnit {
-		WINDOW, INFO, POPUP, STATIC
+		WINDOW, INFO, POPUP, STATIC, DUMMIE
 	}
 	
 	private int programID;
@@ -32,9 +32,11 @@ public abstract class DesktopUnit {
 	
 	protected TypeUnit typeUnit;
 	protected WindowDisplay windowDisplay;
+	public String name;
 	
-	public DesktopUnit(int programID, WindowDisplay display, TypeUnit typeUnit, boolean isSubApplication) {
+	public DesktopUnit(int programID, String name, WindowDisplay display, TypeUnit typeUnit, boolean isSubApplication) {
 		this.programID = programID;
+		this.name = name;
 		windowDisplay = display;
 		this.typeUnit = typeUnit;
 		this.isSubApplication = isSubApplication;
@@ -148,7 +150,7 @@ public abstract class DesktopUnit {
 	 * @param width
 	 */
 	public void setMaximized(Boolean maximized, int width, int height, int top, int left) {
-		if (this.maximized) {
+		if (!maximized) {
 			
 			windowDisplay.setPosition(beforeX, beforeY);
 			windowDisplay.setSize(beforeWidth, beforeHeight);
@@ -229,15 +231,18 @@ public abstract class DesktopUnit {
 	public void minimize() {
 		minimized = true;
 		maximized = false;
-		windowDisplay.hide();
+		windowDisplay.setMinimized(true);
 	}
 	
 	/**
 	 * Show the desktop Unit
 	 */
 	protected void restore() {
-		minimized = false;
-		windowDisplay.show();
+		if (minimized) {
+			minimized = !minimized;
+			windowDisplay.setMinimized(false);
+		}
+		
 	}
 	
 	/**

@@ -55,7 +55,6 @@
 			</g:HorizontalPanel>
 			<g:HorizontalPanel styleName="{style.white}" width="100%" height="100%" horizontalAlignment="ALIGN_CENTER">
 				<g:Label text="Friends" ui:field="lblFriends" width="225px" height="100%" styleName="{style.button}"/>
-				<g:Label text="Groups" ui:field="lblGroups" width="225px" styleName="{style.button}" height="100%"/>
 			</g:HorizontalPanel>
 		</g:VerticalPanel>
 	</g:HTMLPanel>

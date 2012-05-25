@@ -130,13 +130,9 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 		if (userNames.isEmpty()) throw new FriendNotFoundException("Not contacts found with these codes");
 		if (userNames.size() == 1) queryContact = ofy.query(User.class).filter("firstName >=", userNames.get(0))
 				.filter("firstName <", userNames.get(0) + "\uFFFD");
-		else {
-			String nextString = "";
-			for (int i = 1; i < userNames.size(); i++)
-				nextString += userNames.get(i) + " ";
+		else
 			queryContact = ofy.query(User.class).filter("firstName >=", userNames.get(0))
 					.filter("firstName <", userNames.get(0) + "\uFFFD");
-		}
 		List<User> SearchContacts = new ArrayList<User>();
 		for (User contact : queryContact) {
 			Key<User> userKey = ObjectifyService.factory().getKey(contact);

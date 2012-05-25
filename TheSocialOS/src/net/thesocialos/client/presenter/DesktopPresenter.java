@@ -8,16 +8,21 @@ import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.app.FrameApp;
-import net.thesocialos.client.app.IApplication;
+import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.chat.ChatManager;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.DesktopManager;
+import net.thesocialos.client.desktop.DesktopUnit;
+import net.thesocialos.client.desktop.DesktopUnit.TypeUnit;
+import net.thesocialos.client.desktop.window.FrameWindow;
+import net.thesocialos.client.event.AvatarUpdateEvent;
+import net.thesocialos.client.event.AvatarUpdateEventHandler;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.helper.AppIconHelper;
 import net.thesocialos.client.helper.Node;
 import net.thesocialos.client.resources.Resources;
+import net.thesocialos.client.view.AplicationManagerView;
 import net.thesocialos.client.view.ContactsView;
 import net.thesocialos.client.view.DesktopBar;
 import net.thesocialos.client.view.NotificationsBoxView;
@@ -111,8 +116,9 @@ public class DesktopPresenter implements Presenter {
 	 */
 	ContactsPresenter contacsPresenter;
 	SearchBoxPresenter searchBoxPresenter;
-	
 	NotificationsBoxPresenter notificationBoxPresenter;
+	ApplicationManagerPresenter aplicationManagerPresenter = new ApplicationManagerPresenter(AppConstants.APPMANAGER,
+			new AplicationManagerView(), TypeUnit.INFO, false);
 	private AbsolutePanel desktop;
 	private boolean startMenuFocused = false;
 	private boolean userMenuFocused = false;
@@ -143,7 +149,7 @@ public class DesktopPresenter implements Presenter {
 		// Run the desktopManager
 		desktopManager = new DesktopManager(eventBus, display.getScreen(), display.getDesktop());
 		User user = CacheLayer.UserCalls.getUser();
-		
+		ChatManager chatmanager = new ChatManager();
 		bindDesktopBar(user);
 		bindUserMenu(user);
 		bindContacts();
@@ -151,18 +157,20 @@ public class DesktopPresenter implements Presenter {
 		bindPetitionsBox();
 		bindSocialOS();
 		bindProgramMenu();
+		bindAppManager();
 		refreshData();
 		
 		// Populate the Star Menu
-		ArrayList<IApplication> appsData = new ArrayList<IApplication>();
-		appsData.add(new FrameApp("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png",
-				"http://www.bitlet.org/", "1024px", "600px"));
-		appsData.add(new FrameApp("Grooveshark Player",
+		ArrayList<DesktopUnit> appsData = new ArrayList<DesktopUnit>();
+		appsData.add(new FrameWindow("Bitlet", "http://imagenes.es.sftcdn.net/es/scrn/251000/251956/bitlet-13.png",
+				"http://www.bitlet.org/", AppConstants.OTHER, true));
+		appsData.add(new FrameWindow("Grooveshark Player",
 				"http://img696.imageshack.us/img696/1622/11groovesharkicon256x25.png", "http://www.grooveshark.com",
-				"1024px", "600px"));
-		appsData.add(new FrameApp("Sketchpad",
+				AppConstants.OTHER, true));
+		appsData.add(new FrameWindow("Sketchpad",
 				"http://profile.ak.fbcdn.net/hprofile-ak-snc4/23295_128946130463344_2641_n.jpg",
-				"http://mugtug.com/sketchpad", "1024px", "600px"));
+				"http://mugtug.com/sketchpad", AppConstants.OTHER, true));
+		
 		// appsData.add(new ChatApp("Xmpp","http://www.bitrix.es/upload/iblock/e03/xmpp.gif",chatEventBus, new
 		// ChatPanel(),
 		// "450px", "300px"));
@@ -233,23 +241,38 @@ public class DesktopPresenter implements Presenter {
 				if (notificationBoxPresenter == null)
 					notificationBoxPresenter = new NotificationsBoxPresenter(new NotificationsBoxView());
 				int x = display.getDesktopBar().getPetitionsButton().getAbsoluteLeft();
-				int y = display.getDesktopBar().getPetitionsButton().getOffsetHeight();
-				notificationBoxPresenter.setPosition(x, y);
+				
+				notificationBoxPresenter.setPosition(x, 0);
 				eventBus.fireEvent(new DesktopEventOnOpen(notificationBoxPresenter));
 				
 			}
 		});
-		// WindowPanelexmp test = new WindowPanelexmp(false, false);
-		// display.getDesktop().add(test, 50, 50);
-		// test.show();
-		// FolderWindow prueba = new FolderWindow(new WindowPanelLayout(false, false,new MyCaption(),new
-		// Footer()),AppConstants.NOTHING);
-		// prueba.setPosition(20, 20);
-		// eventBus.fireEvent(new DesktopEventOnOpen(prueba));
-		// ChatMenuPresenter chatMenu = new ChatMenuPresenter(new ChatMenuView());
-		// eventBus.fireEvent(new DesktopEventOnOpen(chatMenu));
-		ChatManager chatmanager = new ChatManager();
 	}
+	
+	private void bindAppManager() {
+		display.getDesktopBar().getAppManagerButton().addDomHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				int x = display.getDesktopBar().getAppManagerButton().getAbsoluteLeft();
+				
+				aplicationManagerPresenter.setPosition(x, 0);
+				eventBus.fireEvent(new DesktopEventOnOpen(aplicationManagerPresenter));
+				
+			}
+		}, ClickEvent.getType());
+	}
+	
+	// WindowPanelexmp test = new WindowPanelexmp(false, false);
+	// display.getDesktop().add(test, 50, 50);
+	// test.show();
+	// FolderWindow prueba = new FolderWindow(new WindowPanelLayout(false, false,new MyCaption(),new
+	// Footer()),AppConstants.NOTHING);
+	// prueba.setPosition(20, 20);
+	// eventBus.fireEvent(new DesktopEventOnOpen(prueba));
+	// ChatMenuPresenter chatMenu = new ChatMenuPresenter(new ChatMenuView());
+	// eventBus.fireEvent(new DesktopEventOnOpen(chatMenu));
 	
 	private void bindProgramMenu() {
 		/*
@@ -303,7 +326,7 @@ public class DesktopPresenter implements Presenter {
 		});
 	}
 	
-	private void bindStartMenu(ArrayList<IApplication> appsData) {
+	private void bindStartMenu(ArrayList<DesktopUnit> appsData) {
 		display.getStartMenu().setVisible(false);
 		VerticalPanel vPanel = ((StartMenu) display.getStartMenu()).getStartVPanel();
 		for (int i = 0; i < appsData.size(); i++) {
@@ -355,9 +378,20 @@ public class DesktopPresenter implements Presenter {
 	 *            The data transfer object of the user that is logged on.
 	 */
 	private void bindUserMenu(User user) {
-		if (user.getAvatar() == null) display.getAvatar().setUrl("./images/anonymous_avatar.png");
+		TheSocialOS.getEventBus().addHandler(AvatarUpdateEvent.TYPE, new AvatarUpdateEventHandler() {
+			
+			@Override
+			public void onAvatarUpdate(AvatarUpdateEvent event) {
+				
+				if (CacheLayer.UserCalls.getAvatar() == null) display.getAvatar().setUrl(
+						"./images/anonymous_avatar.png");
+				else
+					display.getAvatar().setUrl(CacheLayer.UserCalls.getAvatar());
+			}
+		});
+		if (user.getUrlAvatar() == null) display.getAvatar().setUrl("./images/anonymous_avatar.png");
 		else
-			display.getAvatar().setUrl(user.getAvatar());
+			display.getAvatar().setUrl(user.getUrlAvatar());
 		
 		display.getNameLabel().setText(user.getName() + " " + user.getLastName());
 		display.getTitleLabel().setText("User");

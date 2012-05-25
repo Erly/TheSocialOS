@@ -64,6 +64,25 @@ public class ProfileAttr extends Composite {
 	}
 	
 	public void setEditable(Boolean editable) {
+		attrValue.setEnabled(editable);
+		focusPanel.setStyleName("profileAttr-editable", editable);
+		focusPanel.setStyleName("profileAttr", !editable);
+		focusPanel.setStyleName("profileAttr-error", false);
+	}
+	
+	public void setError() {
+		focusPanel.setStyleName("profileAttr-error", true);
+		focusPanel.setStyleName("profileAttr-editable", false);
 		
+		focusPanel.setStyleName("profileAttr", false);
+	}
+	
+	public TextBox getAttrValue() {
+		return attrValue;
+	}
+	
+	public boolean getEditable() {
+		// TODO Auto-generated method stub
+		return attrValue.isEnabled();
 	}
 }

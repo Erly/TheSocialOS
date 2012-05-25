@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.thesocialos.client.api.Media;
+import net.thesocialos.client.event.AccountUpdateEvent;
+import net.thesocialos.client.event.AvatarUpdateEvent;
 import net.thesocialos.client.event.ContactsChangeEvent;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ContacsService;
@@ -30,6 +32,7 @@ import com.googlecode.objectify.Key;
 public class CacheLayer {
 	
 	static User user = null;
+	
 	private static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
 	
 	// Usuarios de la aplicaci�n
@@ -185,6 +188,26 @@ public class CacheLayer {
 			if (petitionsContacts.isEmpty() || !cached) getContactPetitions(callback);
 			else
 				callback.onSuccess(petitionsContacts);
+		}
+		
+		public static void getContact(final Key<User> contact, final AsyncCallback<User> callback) {
+			if (!CacheLayer.contacts.containsKey(contact)) getContacts(new AsyncCallback<Map<Key<User>, User>>() {
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onSuccess(Map<Key<User>, User> result) {
+					callback.onSuccess(result.get(contact));
+					
+				}
+			});
+			else
+				callback.onSuccess(CacheLayer.contacts.get(contact));
+			
 		}
 		
 		/**
@@ -491,6 +514,63 @@ public class CacheLayer {
 		
 		public static void setUser(User user) {
 			CacheLayer.user = user;
+			updateAvatar();
+		}
+		
+		public static void updateUser(String name, String surname, String address, String mobile, String bio,
+				final AsyncCallback<Boolean> callback) {
+			final User userUpdated = User.toDTO(CacheLayer.user.getEmail(), CacheLayer.user.getUrlAvatar(),
+					CacheLayer.user.getBackground(), name, surname, CacheLayer.user.getRole(), mobile, address, bio,
+					CacheLayer.user.getTokenChannel());
+			
+			new RPCXSRF<User>(userService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<User> cb) {
+					userService.updateUser(userUpdated, cb);
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+					callback.onSuccess(false);
+				}
+				
+				@Override
+				public void onSuccess(User user) {
+					CacheLayer.user = user;
+					TheSocialOS.getEventBus().fireEvent(new AccountUpdateEvent());
+					callback.onSuccess(true);
+				}
+			}.retry(3);
+		}
+		
+		public static void updateAvatar() {
+			new RPCXSRF<String>(userService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<String> cb) {
+					userService.getAvatar(cb);
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					
+				}
+				
+				@Override
+				public void onSuccess(String avatar) {
+					CacheLayer.user.setAvatar(avatar);
+					TheSocialOS.getEventBus().fireEvent(new AvatarUpdateEvent());
+					
+				}
+			}.retry(3);
+		}
+		
+		public static String getAvatar() {
+			return CacheLayer.user.getUrlAvatar();
 		}
 	}
 	

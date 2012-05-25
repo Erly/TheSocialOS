@@ -34,7 +34,11 @@ public class SearchBoxView extends Composite implements Display {
 			// Add the contact image.
 			
 			sb.appendHtmlConstant("<tr><td rowspan='3'>");
-			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			if (value.getUrlAvatar() == null) sb
+					.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			else
+				sb.appendHtmlConstant("<img src=" + value.getUrlAvatar() + " width='30' height='35' />");
+			
 			sb.appendHtmlConstant("</td>");
 			
 			// Add the name and address.
@@ -45,8 +49,8 @@ public class SearchBoxView extends Composite implements Display {
 			sb.appendHtmlConstant("</td></tr></table>");
 		}
 	});
+	
 	@UiField Label lblFriends;
-	@UiField Label lblGroups;
 	@UiField VerticalPanel searchPanel;
 	@UiField(provided = true) CellList<Object> cellList_1 = new CellList<Object>(new AbstractCell<Object>() {
 		@Override
@@ -86,7 +90,7 @@ public class SearchBoxView extends Composite implements Display {
 	@Override
 	public Label getLabelGroups() {
 		// TODO Auto-generated method stub
-		return lblGroups;
+		return null;
 	}
 	
 	@Override
@@ -117,6 +121,12 @@ public class SearchBoxView extends Composite implements Display {
 	public void setComponentsList(CellList<User> cellList) {
 		// TODO Auto-generated method stub
 		this.cellList = cellList;
+	}
+	
+	@Override
+	public TextBox getSearchBox() {
+		// TODO Auto-generated method stub
+		return txtSearch;
 	}
 	
 }

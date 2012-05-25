@@ -27,25 +27,16 @@
 			<g:HorizontalPanel addStyleNames="{style.topbar}" verticalAlignment="ALIGN_MIDDLE">
 				<g:Hyperlink ui:field="linkProfile" targetHistoryToken="profile" addStyleNames="{style.topbarElem}">Profile</g:Hyperlink>
 				<g:Hyperlink ui:field="linkTimeline" targetHistoryToken="profile-timeline" addStyleNames="{style.topbarElem}">Timeline</g:Hyperlink>
-				
-				<g:Cell horizontalAlignment="ALIGN_RIGHT" width="20px">
-					<g:VerticalPanel verticalAlignment="ALIGN_TOP" height="100%">
-						<g:Button text="X" ui:field="closeButton" />
-					</g:VerticalPanel>
-				</g:Cell>
 			</g:HorizontalPanel>
 		</g:north>
 		<g:north size="1">
 			<g:SimplePanel addStyleNames="{style.black}" />
 		</g:north>
-		<g:west size="200">
-			<d:ProfileLeftView ui:field="leftCol" width="100%" />
-		</g:west>
 		<g:west size="1">
 			<g:SimplePanel addStyleNames="{style.black}" />
 		</g:west>
 		<g:center>
-			<g:ScrollPanel ui:field="mainPanel">
+			<g:ScrollPanel ui:field="mainPanel" width="99%" height="99%">
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

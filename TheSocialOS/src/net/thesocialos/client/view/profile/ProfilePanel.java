@@ -1,5 +1,7 @@
 package net.thesocialos.client.view.profile;
 
+import gwtupload.client.SingleUploader;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -18,6 +20,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.objectify.Key;
 
@@ -66,6 +74,10 @@ public class ProfilePanel extends Composite implements Display {
 	@UiField ProfileAttr flickr;
 	@UiField ProfileAttrArea bio;
 	@UiField Button btnEdit;
+	@UiField ProfileAttr surname;
+	@UiField Image imageAvatar;
+	@UiField FormPanel uploadForm;
+	@UiField VerticalPanel vertical;
 	Map<Key<Account>, Account> accounts;
 	Google googleAccount;
 	Facebook facebookAccount;
@@ -77,9 +89,12 @@ public class ProfilePanel extends Composite implements Display {
 		initWidget(uiBinder.createAndBindUi(this));
 		populateAccountsMap();
 		User user = CacheLayer.UserCalls.getUser();
+		// btnExamine.setName("Image");
 		
 		name.attrName.setText(TheSocialOS.getConstants().name());
-		name.attrValue.setText(user.getName() + " " + user.getLastName());
+		name.attrValue.setText(user.getName());
+		surname.attrName.setText((TheSocialOS.getConstants().lastName()));
+		surname.attrValue.setText(user.getLastName());
 		title.attrName.setText(TheSocialOS.getConstants().title());
 		title.attrValue.setText(user.getRole());
 		// email.attrName.setText(TheSocialOS.getConstants()); Email is always email
@@ -88,6 +103,23 @@ public class ProfilePanel extends Composite implements Display {
 		mobile.attrValue.setText(user.getMobilePhone());
 		address.attrName.setText(TheSocialOS.getConstants().address());
 		address.attrValue.setText(user.getAddress());
+		bio.attrName.setText(TheSocialOS.getConstants().Bio());
+		bio.attrValue.setText(user.getBio());
+		SingleUploader defaultUploader = new SingleUploader();
+		
+		defaultUploader.setAutoSubmit(false);
+		defaultUploader.setServletPath("/upload");
+		defaultUploader.getForm().addSubmitCompleteHandler(new SubmitCompleteHandler() {
+			
+			@Override
+			public void onSubmitComplete(SubmitCompleteEvent event) {
+				CacheLayer.UserCalls.updateAvatar();
+				
+			}
+		});
+		
+		System.out.println(defaultUploader.getServletPath());
+		vertical.add(defaultUploader);
 		
 		google.attrName.setText(TheSocialOS.getConstants().googleAccount());
 		if (null != googleAccount) google.attrValue.setText(googleAccount.getUsername()); // TODO change the email for
@@ -178,6 +210,31 @@ public class ProfilePanel extends Composite implements Display {
 		mobile.setEditable(editable);
 		name.setEditable(editable);
 		bio.setEditable(editable);
-		
+		surname.setEditable(editable);
 	}
+	
+	@Override
+	public boolean getEditable() {
+		
+		return name.getEditable();
+	}
+	
+	@Override
+	public ProfileAttr getSurname() {
+		// TODO Auto-generated method stub
+		return surname;
+	}
+	
+	@Override
+	public Image getAvatar() {
+		// TODO Auto-generated method stub
+		return imageAvatar;
+	}
+	
+	@Override
+	public FileUpload getExamineButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

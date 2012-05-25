@@ -1,7 +1,6 @@
 package net.thesocialos.client.view;
 
 import net.thesocialos.client.presenter.NotificationsBoxPresenter.Display;
-import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -18,17 +17,21 @@ public class NotificationsBoxView extends Composite implements Display {
 	
 	interface NotificationsBoxUiBinder extends UiBinder<Widget, NotificationsBoxView> {
 	}
+	
 	private static NotificationsBoxUiBinder uiBinder = GWT.create(NotificationsBoxUiBinder.class);
 	@UiField(provided = true) CellList<User> cellListFriends = new CellList<User>(new AbstractCell<User>() {
 		@Override
 		public void render(Context context, User value, SafeHtmlBuilder sb) {
 			
-			if (value == null) { return; }
+			if (value == null) return;
 			sb.appendHtmlConstant("<table>");
 			
 			// Add the contact image.
 			sb.appendHtmlConstant("<tr><td rowspan='3'>");
-			sb.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			if (value.getUrlAvatar() == null) sb
+					.appendHtmlConstant("<img src='./images/anonymous_avatar.png' width='30' height='35' />");
+			else
+				sb.appendHtmlConstant("<img src=" + value.getUrlAvatar() + " width='30' height='35' />");
 			sb.appendHtmlConstant("</td>");
 			
 			// Add the name and address.
@@ -40,13 +43,6 @@ public class NotificationsBoxView extends Composite implements Display {
 		}
 	});
 	@UiField LabelText labelTextFriends;
-	@UiField LabelText labelTextGroups;
-	@UiField(provided = true) CellList<Group> cellListGroups = new CellList<Group>(new AbstractCell<Group>() {
-		@Override
-		public void render(Context context, Group value, SafeHtmlBuilder sb) {
-			// TODO
-		}
-	});
 	
 	@UiField StackLayoutPanel stackLayoutPanel;
 	
@@ -69,7 +65,7 @@ public class NotificationsBoxView extends Composite implements Display {
 	@Override
 	public LabelText getGroupsLabelText() {
 		// TODO Auto-generated method stub
-		return labelTextGroups;
+		return null;
 	}
 	
 	@Override

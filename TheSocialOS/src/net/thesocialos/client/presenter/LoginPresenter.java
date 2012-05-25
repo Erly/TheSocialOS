@@ -3,6 +3,7 @@ package net.thesocialos.client.presenter;
 import java.util.Date;
 
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.helper.ElementWrapper;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.UserService;
@@ -104,7 +105,7 @@ public class LoginPresenter implements Presenter {
 					}
 					CacheLayer.UserCalls.refreshAccounts();
 					CacheLayer.UserCalls.refreshColumns();
-					
+					TheSocialOS.startChannelApi();
 					History.newItem("desktop");
 				}
 			}

@@ -8,7 +8,7 @@
 		.ChatBlocks{
 			position:absolute;
 			right:262px;
-			bottom: 0px;
+			bottom: 30px;
 
 	}
 	</ui:style>

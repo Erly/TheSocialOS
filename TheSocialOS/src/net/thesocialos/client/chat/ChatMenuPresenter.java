@@ -9,6 +9,8 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.chat.events.ChatOpenConversation;
 import net.thesocialos.client.desktop.DesktopUnit;
+import net.thesocialos.client.event.AvatarUpdateEvent;
+import net.thesocialos.client.event.AvatarUpdateEventHandler;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.model.User;
 
@@ -21,6 +23,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -50,6 +53,8 @@ public class ChatMenuPresenter extends DesktopUnit {
 		FocusPanel getStateFocus();
 		
 		HTMLPanel getStateCircle();
+		
+		Image getAvatar();
 	}
 	
 	Display display;
@@ -69,7 +74,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 	
 	public ChatMenuPresenter(Display display, ChatManager chatManager) {
 		
-		super(AppConstants.CHAT, null, TypeUnit.STATIC, false);
+		super(AppConstants.CHAT, "Chat", null, TypeUnit.STATIC, false);
 		typeUnit = TypeUnit.STATIC;
 		this.display = display;
 		this.chatManager = chatManager;
@@ -149,6 +154,22 @@ public class ChatMenuPresenter extends DesktopUnit {
 				
 			}
 		});
+		/** Avatar set **/
+		if (CacheLayer.UserCalls.getAvatar() == null) display.getAvatar().setUrl("./images/anonymous_avatar.png");
+		else
+			display.getAvatar().setUrl(CacheLayer.UserCalls.getAvatar());
+		TheSocialOS.getEventBus().addHandler(AvatarUpdateEvent.TYPE, new AvatarUpdateEventHandler() {
+			
+			@Override
+			public void onAvatarUpdate(AvatarUpdateEvent event) {
+				
+				if (CacheLayer.UserCalls.getAvatar() == null) display.getAvatar().setUrl(
+						"./images/anonymous_avatar.png");
+				else
+					display.getAvatar().setUrl(CacheLayer.UserCalls.getAvatar());
+			}
+		});
+		
 	}
 	
 	private void handlers() {

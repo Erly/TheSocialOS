@@ -1,0 +1,55 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.close{
+			border: 1px;
+			border-style: solid;
+			border-color: red;
+			background-color: #DE685D;
+		}
+		.close:hover{
+			cursor: pointer;
+			background-color: #DD2110;
+		}
+		.close:active{
+			border: 1px inset white;
+			
+		}
+		.aplication{
+	-moz-user-select: none;
+   -khtml-user-select: none;
+   user-select: none;
+			background: rgb(125,126,125); /* Old browsers */
+			background: -moz-linear-gradient(-45deg, rgba(14,14,14,1) 0%, rgba(125,126,125,1) 99%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(14,14,14,1)), color-stop(99%,rgba(125,126,125,1))); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(-45deg,rgba(14,14,14,1) 0%,  rgba(125,126,125,1) 99%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(-45deg,rgba(14,14,14,1) 0%, rgba(125,126,125,1) 99%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(-45deg,rgba(14,14,14,1) 0%,  rgba(125,126,125,1) 99%); /* IE10+ */
+			background: linear-gradient(-45deg, rgba(14,14,14,1) 0%, rgba(125,126,125,1) 99%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		}
+		.aplication:hover{
+		background: rgb(125,126,125);
+		cursor: pointer;
+	
+		}
+		.dummy{
+		}
+		.unselectable {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   user-select: none;
+}
+		.{style.unselectable} {
+		}
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" height="20px" spacing="1" width="250px" styleName="{style.aplication}" ui:field="AplicationPanel">
+			<g:Image width="29px" height="29px" ui:field="lblAplicationImage" stylePrimaryName="{style.dummy}"/>
+			<g:Label text="Hola soy edu feliz navidad" height="20px" horizontalAlignment="ALIGN_CENTER" width="166px" wordWrap="false" ui:field="lblAplicationName" />
+			<g:Image url="themes/default/close-btn-on.gif" width="21px" height="23px" stylePrimaryName="{style.close}" ui:field="closeButton"/>
+		</g:HorizontalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

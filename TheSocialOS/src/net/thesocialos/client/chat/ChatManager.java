@@ -185,7 +185,8 @@ public class ChatManager {
 		if (CacheLayer.ContactCalls.isContact(contact)) {
 			if (conversations.containsKey(contact)) {
 				ChatConversationPresenter conversationPresenter = conversations.get(contact);
-				if (conversationPresenter.isOpen) conversationPresenter.setOnTop();
+				
+				if (conversationPresenter.isMinimized()) callback.onSuccess(true);
 				else {
 					chatListChatBlocksPresenter.addConvesationBlock(contact);
 					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnOpen(conversationPresenter));

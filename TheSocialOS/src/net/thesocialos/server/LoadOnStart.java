@@ -11,6 +11,7 @@ import net.thesocialos.shared.model.Facebook;
 import net.thesocialos.shared.model.FlickR;
 import net.thesocialos.shared.model.Google;
 import net.thesocialos.shared.model.Group;
+import net.thesocialos.shared.model.ImageUpload;
 import net.thesocialos.shared.model.Lines;
 import net.thesocialos.shared.model.Oauth1;
 import net.thesocialos.shared.model.Oauth2;
@@ -47,6 +48,9 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(Facebook.class);
 		ObjectifyService.register(FlickR.class);
 		ObjectifyService.register(Google.class);
+		
+		ObjectifyService.register(ImageUpload.class);
+		
 		setAllUsertoOffline();
 		
 	}

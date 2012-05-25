@@ -35,8 +35,7 @@
   <set-configuration-property name="UiBinder.useSafeHtmlTemplates" value="true" />
   
 
-  <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
-  	<extend-property name="log_level" values="DEBUG,WARN"/>
+
   	
   <script src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"/>
   <script src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"/>

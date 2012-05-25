@@ -7,6 +7,8 @@ import java.util.Map;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
+import net.thesocialos.client.desktop.IsTypeInfo;
+import net.thesocialos.client.helper.SearchArrayList;
 import net.thesocialos.client.view.PopUpInfoContact;
 import net.thesocialos.shared.model.User;
 
@@ -16,12 +18,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -29,7 +34,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class SearchBoxPresenter extends DesktopUnit {
+public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 	
 	public interface Display {
 		
@@ -51,6 +56,8 @@ public class SearchBoxPresenter extends DesktopUnit {
 		
 		StackLayoutPanel getStackLayout();
 		
+		TextBox getSearchBox();
+		
 		void setComponentsList(CellList<User> cellList);
 	}
 	
@@ -61,7 +68,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 	 */
 	ProvidesKey<User> KEY_USERS_PROVIDER;
 	
-	List<User> usersList = new ArrayList<User>();
+	SearchArrayList usersList = new SearchArrayList();
 	/*
 	 * Los modelos de la cajas de seleccion de los grupos
 	 */
@@ -72,7 +79,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 	Display display;
 	
 	public SearchBoxPresenter(Display display) {
-		super(AppConstants.SEARCHBOX, null, TypeUnit.INFO, false);
+		super(AppConstants.SEARCHBOX, "Contacts Search", null, TypeUnit.INFO, false);
 		this.display = display;
 		KEY_USERS_PROVIDER = new ProvidesKey<User>() {
 			@Override
@@ -114,28 +121,28 @@ public class SearchBoxPresenter extends DesktopUnit {
 	}
 	
 	@Override
-	public int getAbsoluteLeft() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getAbsoluteTop() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/**
-	 * Obtiene todos los grupos del servidor
-	 */
-	private void getGroups() {
+	public int getWidth() {
+		
+		return display.asWidget().getOffsetWidth();
 		
 	}
 	
 	@Override
 	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return display.asWidget().getOffsetHeight();
+	}
+	
+	@Override
+	public int getAbsoluteLeft() {
+		
+		return display.asWidget().getAbsoluteLeft();
+	}
+	
+	@Override
+	public int getAbsoluteTop() {
+		
+		return display.asWidget().getAbsoluteTop();
 	}
 	
 	/**
@@ -158,7 +165,7 @@ public class SearchBoxPresenter extends DesktopUnit {
 			public void onSuccess(Map<String, User> result) {
 				
 				// display.setComponentsList(new CellList<User>(usersCell()));
-				
+				result.remove(CacheLayer.UserCalls.getUser().getEmail());
 				usersList.addAll(result.values());
 				dataProvider.flush();
 				dataProvider.refresh();
@@ -188,12 +195,6 @@ public class SearchBoxPresenter extends DesktopUnit {
 	}
 	
 	@Override
-	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
 	public int getZposition() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -213,14 +214,10 @@ public class SearchBoxPresenter extends DesktopUnit {
 			}
 		});
 		
-		display.getLabelGroups().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				display.getStackLayout().showWidget(1);
-				
-			}
-		});
+		/*
+		 * display.getLabelGroups().addClickHandler(new ClickHandler() {
+		 * @Override public void onClick(ClickEvent event) { display.getStackLayout().showWidget(1); } });
+		 */
 		display.getLabelInvite().addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -243,6 +240,19 @@ public class SearchBoxPresenter extends DesktopUnit {
 					contactInfoPopup.show();
 				}
 				
+			}
+		});
+		display.getSearchBox().addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				// TODO Auto-generated method stub
+				System.out.println(display.getSearchBox().getText());
+				// ArrayList<User> lista = ;
+				dataProvider.setList(usersList.getSearchUsers(display.getSearchBox().getText()));
+				// System.out.println(lista.size());
+				dataProvider.flush();
+				dataProvider.refresh();
 			}
 		});
 	}
@@ -269,8 +279,12 @@ public class SearchBoxPresenter extends DesktopUnit {
 	}
 	
 	@Override
+	public void toBack() {
+		
+	}
+	
+	@Override
 	public void toFront() {
-		// TODO Auto-generated method stub
 		
 	}
 	

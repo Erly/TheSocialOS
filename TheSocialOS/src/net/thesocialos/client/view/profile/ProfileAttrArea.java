@@ -21,6 +21,7 @@ public class ProfileAttrArea extends Composite {
 	
 	public ProfileAttrArea() {
 		initWidget(uiBinder.createAndBindUi(this));
+		attrValue.getElement().setAttribute("maxlength", "50");
 	}
 	
 	public void setAttrName(String name) {
@@ -32,11 +33,24 @@ public class ProfileAttrArea extends Composite {
 	}
 	
 	public void setEditable(Boolean editable) {
-		
+		attrValue.setEnabled(editable);
+		focusPanel.setStyleName("profileAttr-editable", editable);
+		focusPanel.setStyleName("profileAttr", !editable);
+		focusPanel.setStyleName("profileAttr-error", false);
+	}
+	
+	public void setError() {
+		focusPanel.setStyleName("profileAttr-editable", false);
+		focusPanel.setStyleName("profileAttr-error", true);
+		focusPanel.setStyleName("profileAttr", false);
 	}
 	
 	public FocusPanel getFocusPanel() {
 		return focusPanel;
+	}
+	
+	public TextArea getAttrValue() {
+		return attrValue;
 	}
 	
 }

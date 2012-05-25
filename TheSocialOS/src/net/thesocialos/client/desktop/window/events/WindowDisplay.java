@@ -1,4 +1,4 @@
-package net.thesocialos.client.desktop.window;
+package net.thesocialos.client.desktop.window.events;
 
 import com.google.gwt.user.client.ui.WindowPanelLayout;
 
@@ -27,6 +27,8 @@ public interface WindowDisplay {
 	void setSize(int width, int height);
 	
 	void setWindowTitle(String text);
+	
+	String getWindowTitle();
 	
 	void toback();
 	

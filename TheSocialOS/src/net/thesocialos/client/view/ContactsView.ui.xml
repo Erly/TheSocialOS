@@ -12,7 +12,7 @@
 		.contactsMenu {
 			position: absolute;
 			right: 25px;
-			top: 29px;
+			top: 0px;
 			z-index: 1000;
 			background-color: white;
 			
@@ -23,9 +23,6 @@
 			<g:DecoratedTabPanel height="436px" ui:field="dTPUserGroups" width="143px" animationEnabled="true">
 				<g:Tab text="Contacts">
 					<p2:CellList width="165px" height="395px" ui:field="listContacts"/>
-				</g:Tab>
-				<g:Tab text="Groups">
-					<p2:CellList width="165px" height="395px" ui:field="ListGroups"/>
 				</g:Tab>
 			</g:DecoratedTabPanel>
 			<g:AbsolutePanel height="100%" width="336px">
