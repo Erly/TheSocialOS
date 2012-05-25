@@ -1,0 +1,35 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:net.thesocialos.client.view">
+	<ui:style>
+		.window{
+			position:relative;
+			width:405px;
+			height: 120px;
+			background: rgb(125,126,125); 
+			border: 10px;
+			border-style: solid;
+			border-color: #45484p;
+
+			border-bottom-width:25px;
+			border-bottom-left-radius:25px;
+			border-bottom-right-radius:25px;	
+			z-index : 100;
+			
+		}
+	</ui:style>
+	<g:HTMLPanel ui:field="htmlPanel" styleName="{style.window}">
+		<g:AbsolutePanel height="150px">
+			<g:at left="35" top="10">
+				<g:Label text="Facebook" ui:field="lblFacebook" styleName="imageUpload_media_unselected"/>
+			</g:at>
+			<g:at left="137" top="10">
+				<g:Label text="Picassa" ui:field="lblPicassa" styleName="imageUpload_media_unselected"/>
+			</g:at>
+			<g:at left="36" top="40">
+				<g:SimplePanel width="305px" height="74px" styleName="imageUpload_border" ui:field="UploadPanel"/>
+			</g:at>
+			
+		</g:AbsolutePanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 
