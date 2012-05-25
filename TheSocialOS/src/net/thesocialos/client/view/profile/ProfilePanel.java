@@ -39,19 +39,12 @@ public class ProfilePanel extends Composite implements Display {
 	
 	private String facebookURL = "https://graph.facebook.com/oauth/authorize?client_id=124427357682835&"
 			+ "display=page&redirect_uri=http://www.thesocialos.net/oauth2callbackFB&scope=user_status,"
-			+ "publish_stream,offline_access,email,user_about_me,friends_about_me,user_activities,friends_activities,"
-			+ "user_birthday,friends_birthday,user_checkins,friends_checkins,user_education_history,"
-			+ "friends_education_history,user_events,friends_events,user_groups,friends_groups,user_hometown,"
-			+ "friends_hometown,user_interests,friends_interests,user_likes,friends_likes,user_location,"
-			+ "friends_location,user_notes,friends_notes,user_photos,friends_photos,user_questions,"
-			+ "friends_questions,user_relationships,friends_relationships,user_relationship_details,"
-			+ "friends_relationship_details,user_religion_politics,friends_religion_politics,user_status,"
-			+ "friends_status,user_videos,friends_videos,user_website,friends_website,user_work_history,"
-			+ "friends_work_history,read_friendlists,read_insights,read_mailbox,read_requests,read_stream,"
-			+ "xmpp_login,ads_management,create_event,manage_friendlists,manage_notifications,user_online_presence,"
-			+ "friends_online_presence,publish_checkins,publish_stream,rsvp_event,publish_actions,user_actions.music,"
-			+ "friends_actions.music,user_actions.news,friends_actions.news,user_actions.video,friends_actions.video,"
-			+ "user_games_activity,friends_games_activity,manage_pages";
+			+ "publish_stream,offline_access,email,user_about_me,friends_about_me,user_birthday,friends_birthday,"
+			+ "user_events,friends_events,user_groups,friends_groups,friends_hometown,user_likes,friends_likes,"
+			+ "user_notes,friends_notes,user_photos,friends_photos,user_questions,friends_questions,user_status,"
+			+ "friends_status,user_videos,friends_videos,read_insights,read_mailbox,read_requests,read_stream,"
+			+ "xmpp_login,create_event,manage_notifications,publish_checkins,publish_stream,publish_actions,user_actions.music,"
+			+ "friends_actions.music,user_actions.video,friends_actions.video";
 	
 	private String twitterURL = "http://www.thesocialos.net/oauthlogin?serviceType=twitter"; /*
 																							 * "https://api.twitter.com/oauth/request_token?"
