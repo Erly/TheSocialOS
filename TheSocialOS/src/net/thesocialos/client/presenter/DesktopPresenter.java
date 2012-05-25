@@ -119,6 +119,8 @@ public class DesktopPresenter implements Presenter {
 	NotificationsBoxPresenter notificationBoxPresenter;
 	ApplicationManagerPresenter aplicationManagerPresenter = new ApplicationManagerPresenter(AppConstants.APPMANAGER,
 			new AplicationManagerView(), TypeUnit.INFO, false);
+	ResourceUploadPresenter resourceUploadPresenter;
+	
 	private AbsolutePanel desktop;
 	private boolean startMenuFocused = false;
 	private boolean userMenuFocused = false;
@@ -158,6 +160,7 @@ public class DesktopPresenter implements Presenter {
 		bindSocialOS();
 		bindProgramMenu();
 		bindAppManager();
+		bindUploadMenu();
 		refreshData();
 		
 		// Populate the Star Menu
@@ -264,16 +267,6 @@ public class DesktopPresenter implements Presenter {
 		}, ClickEvent.getType());
 	}
 	
-	// WindowPanelexmp test = new WindowPanelexmp(false, false);
-	// display.getDesktop().add(test, 50, 50);
-	// test.show();
-	// FolderWindow prueba = new FolderWindow(new WindowPanelLayout(false, false,new MyCaption(),new
-	// Footer()),AppConstants.NOTHING);
-	// prueba.setPosition(20, 20);
-	// eventBus.fireEvent(new DesktopEventOnOpen(prueba));
-	// ChatMenuPresenter chatMenu = new ChatMenuPresenter(new ChatMenuView());
-	// eventBus.fireEvent(new DesktopEventOnOpen(chatMenu));
-	
 	private void bindProgramMenu() {
 		/*
 		 * display.getDesktopBar().getProgramsButton().addClickHandler(new ClickHandler() {
@@ -301,10 +294,9 @@ public class DesktopPresenter implements Presenter {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				if (searchBoxPresenter == null) searchBoxPresenter = new SearchBoxPresenter(new SearchBoxView());
-				int x = display.getDesktopBar().getSearchBox().getAbsoluteLeft()
-						- (searchBoxPresenter.display.getSearchBoxPanel().getOffsetWidth());
-				int y = display.getDesktopBar().getSearchBox().getOffsetHeight();
-				searchBoxPresenter.setPosition(x, y);
+				int x = display.getDesktopBar().getSearchBox().getAbsoluteLeft();
+				
+				searchBoxPresenter.setPosition(x, 0);
 				eventBus.fireEvent(new DesktopEventOnOpen(searchBoxPresenter));
 			}
 		});
@@ -472,6 +464,20 @@ public class DesktopPresenter implements Presenter {
 			}
 		});
 		
+	}
+	
+	private void bindUploadMenu() {
+		display.getDesktopBar().getUploadButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				if (resourceUploadPresenter == null) resourceUploadPresenter = new ResourceUploadPresenter();
+				int x = display.getDesktopBar().getUploadButton().getAbsoluteLeft();
+				resourceUploadPresenter.setPosition(x, 0);
+				eventBus.fireEvent(new DesktopEventOnOpen(resourceUploadPresenter));
+			}
+		});
 	}
 	
 	private MenuItem createMenuItem(String menuLabel, AbstractImagePrototype menuImage, Command command) {

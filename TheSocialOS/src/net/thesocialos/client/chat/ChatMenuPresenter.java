@@ -88,6 +88,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 	}
 	
 	public void refeshContacts(Map<String, User> result) {
+		usersList.clear();
 		usersList.addAll(result.values());
 		dataProvider.flush();
 		dataProvider.refresh();

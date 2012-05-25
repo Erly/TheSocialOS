@@ -52,6 +52,7 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(ImageUpload.class);
 		
 		setAllUsertoOffline();
+		resetContacts();
 		
 	}
 	
@@ -61,6 +62,17 @@ public class LoadOnStart extends HttpServlet {
 		for (User user : queryusers) {
 			user.isConnected = false;
 			user.chatState = STATETYPE.OFFLINE;
+			ofy.put(user);
+		}
+		
+	}
+	
+	private void resetContacts() {
+		Objectify ofy = ObjectifyService.begin();
+		Query<User> queryusers = ofy.query(User.class);
+		for (User user : queryusers) {
+			user.resetContacts();
+			user.resetPetionContacts();
 			ofy.put(user);
 		}
 		

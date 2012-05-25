@@ -23,9 +23,9 @@ import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserConnected;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserDisconnect;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
+import net.thesocialos.shared.ChannelApiEvents.ChApiContactPetition;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEventHandler;
-import net.thesocialos.shared.ChannelApiEvents.ChApiPetitionNew;
 import net.thesocialos.shared.model.Account;
 
 import com.google.gwt.core.client.GWT;
@@ -130,14 +130,18 @@ public class AppController implements ValueChangeHandler<String> {
 		eventBus.addHandler(ChApiEvent.TYPE, new ChApiEventHandler() {
 			
 			@Override
-			public void onPetitionNew(ChApiPetitionNew event) {
-				System.out.println("Contact petition  " + event.getContactUser());
+			public void onPetitionNew(ChApiContactPetition event) {
+				System.out.println("Contact petition  " + event.getContactUser() + "to"
+						+ CacheLayer.UserCalls.getUser().getName());
+				CacheLayer.ContactCalls.updatePetitionsContacts(null);
 				
 			}
 			
 			@Override
 			public void onContactNew(ChApiContactNew event) {
-				System.out.println("Contact New  " + event.getContactUser());
+				System.out.println("Contact new  " + event.getContactUser() + "to"
+						+ CacheLayer.UserCalls.getUser().getName());
+				CacheLayer.ContactCalls.updateContacts(null);
 				
 			}
 			

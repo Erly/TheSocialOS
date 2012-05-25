@@ -72,12 +72,25 @@
 
 	position:absolute;
     left:35%;
-    top:0%;
-
-
-
+    top:0px;
 }
 .searchBox:hover {
+	background-color: #477ea2;
+	color: white;
+}
+.uploadBox {
+	cursor: pointer;
+	font-weight: bolder;
+
+	padding-left: 5px;
+	padding-right: 5px;
+
+	position:absolute;
+    left:30%;
+    top:0px;
+}
+
+.uploadBox:hover {
 	background-color: #477ea2;
 	color: white;
 }

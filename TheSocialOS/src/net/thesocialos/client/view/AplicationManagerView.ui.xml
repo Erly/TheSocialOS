@@ -9,7 +9,7 @@
 			background: rgb(125,126,125); 
 			border: 10px;
 			border-style: solid;
-			border-color: #4C4C4C;
+			border-color: #45484p;
 
 			border-bottom-width:25px;
 			border-bottom-left-radius:25px;

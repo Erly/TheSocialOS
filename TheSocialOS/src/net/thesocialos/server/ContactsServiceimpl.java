@@ -44,6 +44,8 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 			// contactToAccept.addContact(userKey);
 			ofy.put(userLoged);
 			ofy.put(contactToAccept);
+			ChannelApiHelper.sendContactToUser(userLoged, contactToAccept.getEmail());
+			ChannelApiHelper.sendContactToUser(contactToAccept, userLoged.getEmail());
 			return true;
 		}
 		return false;
@@ -68,6 +70,7 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 		
 		if (userPetition.addPetitionContacts(contactKey)) {
 			ofy.put(userPetition);
+			ChannelApiHelper.sendPetitionContactToUser(userPetition, contactKey.getName());
 			// UserHelper.saveUser(user, perThreadRequest.get().getSession(), ofy);
 			return true;
 		}

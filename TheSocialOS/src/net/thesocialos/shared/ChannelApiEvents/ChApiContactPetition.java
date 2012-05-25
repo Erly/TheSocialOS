@@ -8,16 +8,16 @@ package net.thesocialos.shared.ChannelApiEvents;
  * @author vssnake
  * 
  */
-public class ChApiPetitionNew extends ChApiEvent {
+public class ChApiContactPetition extends ChApiEvent {
 	
 	private String petitionNew;
 	
-	public ChApiPetitionNew(String ContactUser) {
+	public ChApiContactPetition(String ContactUser) {
 		super();
 		petitionNew = ContactUser;
 	}
 	
-	public ChApiPetitionNew() {
+	public ChApiContactPetition() {
 		super();
 	}
 	

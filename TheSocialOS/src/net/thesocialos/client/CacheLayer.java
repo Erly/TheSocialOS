@@ -13,6 +13,7 @@ import net.thesocialos.client.api.Media;
 import net.thesocialos.client.event.AccountUpdateEvent;
 import net.thesocialos.client.event.AvatarUpdateEvent;
 import net.thesocialos.client.event.ContactsChangeEvent;
+import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ContacsService;
 import net.thesocialos.client.service.ContacsServiceAsync;
@@ -173,6 +174,7 @@ public class CacheLayer {
 				public void onSuccess(Map<String, User> petitionsContacts) {
 					
 					CacheLayer.petitionsContacts = petitionsContacts;
+					TheSocialOS.getEventBus().fireEvent(new ContactsPetitionChangeEvent());
 					callback.onSuccess(petitionsContacts);
 				}
 				
@@ -226,6 +228,7 @@ public class CacheLayer {
 				@Override
 				public void onSuccess(Map<Key<User>, User> contacts) {
 					CacheLayer.contacts = contacts;
+					TheSocialOS.getEventBus().fireEvent(new ContactsChangeEvent());
 					callback.onSuccess(contacts);
 				}
 				
@@ -360,10 +363,8 @@ public class CacheLayer {
 				public void onSuccess(Map<Key<User>, User> result) {
 					
 					contacts = result;
-					if (callback != null) {
-						TheSocialOS.getEventBus().fireEvent(new ContactsChangeEvent());
+					if (callback != null) // TheSocialOS.getEventBus().fireEvent(new ContactsChangeEvent());
 						callback.onSuccess(true);
-					}
 				}
 			});
 		}

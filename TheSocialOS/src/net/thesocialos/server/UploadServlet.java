@@ -139,21 +139,20 @@ public class UploadServlet extends UploadAction {
 		String error = null;
 		String message = null;
 		BlobKey blobKey = null;
-		System.out.println(request.getContentType());
-		
 		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
 		if (blobs != null && blobs.size() > 0) {
 			
-			List<FileItem> items = new Vector<FileItem>();
+			List<BlobstoreFileItem> items = new Vector<BlobstoreFileItem>();
+			
 			for (Entry<String, List<BlobKey>> e : blobs.entrySet()) {
 				BlobstoreFileItem i = new BlobstoreFileItem(e.getKey(), "unknown", false, "");
 				/*
 				 * logger.info("BLOB-STORE-SERVLET: received file: " + e.getKey() + " " +
 				 * e.getValue().get(0).getKeyString());
 				 */
-				blobKey = e.getValue().get(0);
 				
 				items.add(i);
+				
 			}
 			String userEmail = UserHelper.getUserHttpSession(request.getSession());
 			Objectify ofy = ObjectifyService.begin();
@@ -161,14 +160,25 @@ public class UploadServlet extends UploadAction {
 			if (user == null) return;
 			ImagesService imagesService = ImagesServiceFactory.getImagesService();
 			String imageUrl = imagesService.getServingUrl(blobKey);
+			
 			ImageUpload uploadedImage = new ImageUpload();
 			uploadedImage.setKey(blobKey.getKeyString());
 			uploadedImage.setCreatedAt(new Date());
 			uploadedImage.setServingUrl(imageUrl);
-			
-			user.setAvatar(uploadedImage.getServingUrl());
-			ofy.put(uploadedImage);
-			ofy.put(user);
+			if (request.getParameter("media").isEmpty()) {
+				
+				user.setAvatar(uploadedImage.getServingUrl());
+				ofy.put(uploadedImage);
+				ofy.put(user);
+			} else {
+				/*
+				 * Si el parametro media no esta vacio. busca: facebook;picassa; donde ";" es el separador que le he
+				 * puesto
+				 */
+				items.get(0).getInputStream(); // creo que es el archivo
+				items.get(0).delete(); // borrar el blob de la blobstore
+				
+			}
 			
 		}
 		
