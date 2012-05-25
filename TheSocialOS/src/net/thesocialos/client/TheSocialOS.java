@@ -2,6 +2,7 @@ package net.thesocialos.client;
 
 import java.util.Map;
 
+import net.thesocialos.client.helper.ChannelApiHelper;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.i18n.SocialOSConstants;
 import net.thesocialos.client.i18n.SocialOSMessages;
@@ -105,7 +106,7 @@ public class TheSocialOS implements EntryPoint {
 	}
 	
 	public static void startChannelApi() {
-		net.thesocialos.client.helper.ChannelApiHelper.listenToChannel(CacheLayer.UserCalls.getUser());
+		ChannelApiHelper.listenToChannel(CacheLayer.UserCalls.getUser());
 	}
 	
 	/**
@@ -206,8 +207,22 @@ public class TheSocialOS implements EntryPoint {
 	public void onModuleLoad() {
 		singleton = this;
 		
+		loadLanguage();
 		appControler = new AppController(eventBus);
 		getLoggedUser();
+	}
+	
+	private void loadLanguage() {
+		if (null != Cookies.getCookie("_lang")) {
+			String lang = Cookies.getCookie("_lang");
+			if (null == Window.Location.getParameter("locale")) {
+				String url = Window.Location.getHref();
+				if (url.contains("#")) url = url.substring(0, Window.Location.getHref().indexOf('#'));
+				if (url.contains("?")) Window.Location.assign(url + "&locale=" + lang);
+				else
+					Window.Location.assign(url + "?locale=" + lang);
+			}
+		}
 	}
 	
 	/**

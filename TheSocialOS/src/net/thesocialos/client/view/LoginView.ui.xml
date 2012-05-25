@@ -17,7 +17,7 @@
 			overflow-x: hidden;
 		}
 	</ui:style>
-	<g:HTMLPanel addStyleNames="{style.parent}">
+	<g:HTMLPanel ui:field="html" addStyleNames="{style.parent}">
 		<div id="wrap">
 		<div class="logoDiv" align="center">
 			<img class="logo" src="./images/logo.png"/>
@@ -42,10 +42,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<image class="flags spain" src="http://www.crwflags.com/fotw/misc/wes.gif"/>
-							<image class="flags us" src="http://www.crwflags.com/fotw/misc/wus.gif"/>
-						</td>
+						<td ui:field="flags"></td>
 					</tr>
 					<tr>
 						<td align="center">

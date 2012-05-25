@@ -21,6 +21,7 @@ import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -40,6 +41,10 @@ public class LoginPresenter implements Presenter {
 		boolean getKeepLoged();
 		
 		InputElement getLoginButton();
+		
+		Anchor getSpainFlag();
+		
+		Anchor getUsaFlag();
 	}
 	
 	private final UserServiceAsync userService = GWT.create(UserService.class);
@@ -75,6 +80,20 @@ public class LoginPresenter implements Presenter {
 			}
 		});
 		wrapper.onAttach();
+		display.getSpainFlag().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				changeLanguage("es");
+			}
+		});
+		display.getUsaFlag().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				changeLanguage("en");
+			}
+		});
 	}
 	
 	/**
@@ -124,4 +143,10 @@ public class LoginPresenter implements Presenter {
 		bind();
 	}
 	
+	public void changeLanguage(String language) {
+		Cookies.setCookie("_lang", language);
+		String url = Window.Location.getHref();
+		if (url.contains("locale")) url = url.substring(0, url.indexOf("locale") - 1);
+		Window.Location.assign(url);
+	}
 }
