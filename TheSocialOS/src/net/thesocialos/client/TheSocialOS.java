@@ -23,6 +23,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.googlecode.objectify.Key;
@@ -208,6 +209,7 @@ public class TheSocialOS implements EntryPoint {
 		singleton = this;
 		
 		loadLanguage();
+		prefetchImages();
 		appControler = new AppController(eventBus);
 		getLoggedUser();
 	}
@@ -223,6 +225,25 @@ public class TheSocialOS implements EntryPoint {
 					Window.Location.assign(url + "?locale=" + lang);
 			}
 		}
+	}
+	
+	private void prefetchImages() {
+		String imagesUrl = "./images/";
+		Image.prefetch(imagesUrl + "anonymous_avatar.png");
+		Image.prefetch(imagesUrl + "defaultBG.png");
+		Image.prefetch(imagesUrl + "dragger-4x4.gif");
+		Image.prefetch(imagesUrl + "File.png");
+		Image.prefetch(imagesUrl + "Folder.png");
+		Image.prefetch(imagesUrl + "logo-big.png");
+		Image.prefetch(imagesUrl + "logo.png");
+		Image.prefetch(imagesUrl + "SocialOS-StartButton.png");
+		Image.prefetch(imagesUrl + "wpLogin.png");
+		Image.prefetch(imagesUrl + "badges/drive.png");
+		Image.prefetch(imagesUrl + "badges/facebook.png");
+		Image.prefetch(imagesUrl + "badges/flickr.png");
+		Image.prefetch(imagesUrl + "badges/picasa.png");
+		Image.prefetch(imagesUrl + "badges/twitter.png");
+		Image.prefetch(imagesUrl + "badges/youtube.png");
 	}
 	
 	/**
