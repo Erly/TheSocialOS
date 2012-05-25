@@ -2,7 +2,7 @@ package net.thesocialos.client.view;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
-import net.thesocialos.client.event.ContactEventHandler;
+import net.thesocialos.client.event.ContactPetitionChangeEventHandler;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 
 import com.google.gwt.core.client.GWT;
@@ -27,17 +27,17 @@ public class DesktopBar extends Composite {
 	@UiField FocusPanel socialOSButton;
 	@UiField FocusPanel focusContacts;
 	@UiField Label lblContacts;
-	@UiField Label lblSearchBox;
 	@UiField FocusPanel searchButton;
 	@UiField Label lblPetitions;
 	@UiField Label lblPetitionsNumber;
 	@UiField FocusPanel PetitionsButton;
 	@UiField FocusPanel startButton;
 	@UiField Aplication appManagerButton;
+	@UiField FocusPanel uploadButton;
 	
 	public DesktopBar() {
 		initWidget(uiBinder.createAndBindUi(this));
-		TheSocialOS.getEventBus().addHandler(ContactsPetitionChangeEvent.TYPE, new ContactEventHandler() {
+		TheSocialOS.getEventBus().addHandler(ContactsPetitionChangeEvent.TYPE, new ContactPetitionChangeEventHandler() {
 			
 			@Override
 			public void onContactsPetitionChange(ContactsPetitionChangeEvent event) {
@@ -64,6 +64,10 @@ public class DesktopBar extends Composite {
 	 */
 	public FocusPanel getSearchBox() {
 		return searchButton;
+	}
+	
+	public FocusPanel getUploadButton() {
+		return uploadButton;
 	}
 	
 	public Aplication getAppManagerButton() {

@@ -24,5 +24,5 @@ public interface ChApiEventHandler extends EventHandler, Serializable {
 	void onContactNew(ChApiContactNew event);
 	
 	// Petitions Events
-	void onPetitionNew(ChApiPetitionNew event);
+	void onPetitionNew(ChApiContactPetition event);
 }

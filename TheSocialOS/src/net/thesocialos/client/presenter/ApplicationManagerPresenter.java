@@ -114,7 +114,7 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 			
 		};
 		display.getHtmlPanel().setStyleName("appManager_close", true);
-		timer.schedule(1000);
+		timer.schedule(500);
 		// absolutePanel.remove(display.asWidget());
 		
 	}

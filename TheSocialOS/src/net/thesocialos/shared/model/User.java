@@ -41,14 +41,6 @@ public class User implements Serializable {
 	
 	@Unindexed private String urlAvatar; // Avatar of the user
 	
-	/**
-	 * @param avatar
-	 *            the avatar to set
-	 */
-	public void setAvatar(String avatar) {
-		urlAvatar = avatar;
-	}
-	
 	@Unindexed private String background; // Background of the user
 	
 	private String firstName; // firstname
@@ -76,7 +68,7 @@ public class User implements Serializable {
 	private List<Key<OutStandingLines>> linesOffline; // Messages send offline
 	
 	List<Key<Session>> sessions = new ArrayList<Key<Session>>();
-	List<Key<User>> contacts = new ArrayList<Key<User>>();
+	private List<Key<User>> contacts = new ArrayList<Key<User>>();
 	
 	// Las peticiones de amistad de los contactos
 	private List<Key<User>> petitionsContacts = new ArrayList<Key<User>>();
@@ -215,6 +207,14 @@ public class User implements Serializable {
 		// return false;
 	}
 	
+	/**
+	 * @param historykey
+	 *            the historykey to set
+	 */
+	public void addHistoryKey(Key<SharedHistory> historykey) {
+		this.historykey.add(historykey);
+	}
+	
 	public void addSessions(Key<Session> session) {
 		sessions.add(session);
 	}
@@ -300,6 +300,41 @@ public class User implements Serializable {
 		return sessions;
 	}
 	
+	/**
+	 * @return the bio
+	 */
+	public String getBio() {
+		return bio;
+	}
+	
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	/**
+	 * @return the historykey
+	 */
+	public List<Key<SharedHistory>> getHistorykey() {
+		return historykey;
+	}
+	
+	/**
+	 * @return the ownKey
+	 */
+	public Key<User> getOwnKey() {
+		return ownKey;
+	}
+	
+	/**
+	 * @return the tokenChannel
+	 */
+	public String getTokenChannel() {
+		return tokenChannel;
+	}
+	
 	public void overwriteAccountsList(List<Key<? extends Account>> newAccountsKeys) {
 		accounts.clear();
 		accounts.addAll(newAccountsKeys);
@@ -308,6 +343,14 @@ public class User implements Serializable {
 	public void overwriteColumnsList(List<Key<Columns>> newColumnsKeys) {
 		columns.clear();
 		columns.addAll(newColumnsKeys);
+	}
+	
+	public void resetContacts() {
+		contacts = null;
+	}
+	
+	public void resetPetionContacts() {
+		petitionsContacts = null;
 	}
 	
 	public void setAccounts(ArrayList<Key<? extends Account>> accounts) {
@@ -335,13 +378,6 @@ public class User implements Serializable {
 	}
 	
 	/**
-	 * @return the tokenChannel
-	 */
-	public String getTokenChannel() {
-		return tokenChannel;
-	}
-	
-	/**
 	 * @param tokenChannel
 	 *            the tokenChannel to set
 	 */
@@ -349,30 +385,9 @@ public class User implements Serializable {
 		this.tokenChannel = tokenChannel;
 	}
 	
-	/**
-	 * @return the ownKey
-	 */
-	public Key<User> getOwnKey() {
-		return ownKey;
-	}
-	
 	public void setOwnKey(Key<User> key) {
 		ownKey = key;
 		
-	}
-	
-	/**
-	 * @return the bio
-	 */
-	public String getBio() {
-		return bio;
-	}
-	
-	/**
-	 * @return the firstName
-	 */
-	public String getFirstName() {
-		return firstName;
 	}
 	
 	/**
@@ -416,18 +431,11 @@ public class User implements Serializable {
 	}
 	
 	/**
-	 * @return the historykey
+	 * @param avatar
+	 *            the avatar to set
 	 */
-	public List<Key<SharedHistory>> getHistorykey() {
-		return historykey;
-	}
-	
-	/**
-	 * @param historykey
-	 *            the historykey to set
-	 */
-	public void addHistoryKey(Key<SharedHistory> historykey) {
-		this.historykey.add(historykey);
+	public void setAvatar(String avatar) {
+		urlAvatar = avatar;
 	}
 	
 }

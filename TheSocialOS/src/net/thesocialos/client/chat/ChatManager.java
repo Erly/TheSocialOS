@@ -119,7 +119,7 @@ public class ChatManager {
 			
 			@Override
 			public void onContactsChange(ContactsChangeEvent event) {
-				// TODO Auto-generated method stub
+				getContacts();
 				
 			}
 		});

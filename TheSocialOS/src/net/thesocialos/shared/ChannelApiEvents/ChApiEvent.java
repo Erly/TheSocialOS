@@ -5,7 +5,8 @@ import java.io.Serializable;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ChApiEvent extends GwtEvent<ChApiEventHandler> implements Serializable, IsSerializable {
+@SuppressWarnings("serial")
+public abstract class ChApiEvent extends GwtEvent<ChApiEventHandler> implements Serializable, IsSerializable {
 	
 	/**
 	 * 
@@ -15,18 +16,6 @@ public class ChApiEvent extends GwtEvent<ChApiEventHandler> implements Serializa
 	
 	public ChApiEvent() {
 		super();
-	}
-	
-	@Override
-	public com.google.gwt.event.shared.GwtEvent.Type<ChApiEventHandler> getAssociatedType() {
-		// TODO Auto-generated method stub
-		return TYPE;
-	}
-	
-	@Override
-	protected void dispatch(ChApiEventHandler handler) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

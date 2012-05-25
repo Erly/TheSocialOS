@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
+import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
+import net.thesocialos.shared.ChannelApiEvents.ChApiContactPetition;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
 import net.thesocialos.shared.model.User;
 
@@ -75,13 +77,13 @@ public class ChannelApiHelper {
 				@Override
 				public void validateDeserialize(Class<?> clazz) throws SerializationException { // TODOAuto-generated
 																								// method stub
-				
+					
 				}
 				
 				@Override
 				public void validateSerialize(Class<?> clazz) throws SerializationException { // TODOAuto-generated
 																								// method stub
-				
+					
 				}
 			}); // return RPC.encodeResponseForSuccess(dummyMethod, channelApiEvent,
 				// //MergedSerializationPolicy.createPushSerializationPolicy());
@@ -120,23 +122,6 @@ public class ChannelApiHelper {
 		return stringSplit[1];
 	}
 	
-	/**
-	 * Send the user state for all contacts if are connected
-	 * 
-	 * @param contacts
-	 * @param state
-	 * @param custom
-	 * @param email
-	 */
-	public static void sendStateToContacts(Iterator<User> contacts, STATETYPE state, String custom, Key<User> userKey) {
-		while (contacts.hasNext()) {
-			User user = contacts.next();
-			if (user.isConnected)
-				ChannelApiHelper.sendMessage(user.getEmail(),
-						ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(state, custom, userKey)));
-		}
-	}
-	
 	public static Method getDummyMethod() {
 		try {
 			return ChannelApiHelper.class.getDeclaredMethod("dummyMethod");
@@ -157,4 +142,44 @@ public class ChannelApiHelper {
 	private ChApiEvent dummyMethod() {
 		throw new UnsupportedOperationException("This should never be called.");
 	}
+	
+	/**
+	 * Send the user state for all contacts if are connected
+	 * 
+	 * @param contacts
+	 * @param state
+	 * @param custom
+	 * @param email
+	 */
+	public static void sendStateToContacts(Iterator<User> contacts, STATETYPE state, String custom, Key<User> userKey) {
+		while (contacts.hasNext()) {
+			User user = contacts.next();
+			if (user.isConnected)
+				ChannelApiHelper.sendMessage(user.getEmail(),
+						ChannelApiHelper.encodeMessage(new ChApiChatUserChngState(state, custom, userKey)));
+		}
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param userEmail
+	 */
+	public static void sendPetitionContactToUser(User user, String userEmail) {
+		if (user.isConnected)
+			ChannelApiHelper.sendMessage(user.getEmail(),
+					ChannelApiHelper.encodeMessage(new ChApiContactPetition(userEmail)));
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param userEmail
+	 */
+	public static void sendContactToUser(User user, String userEmail) {
+		if (user.isConnected)
+			ChannelApiHelper.sendMessage(user.getEmail(),
+					ChannelApiHelper.encodeMessage(new ChApiContactNew(userEmail)));
+	}
+	
 }

@@ -14,6 +14,7 @@ public class AppConstants {
 	public static final int VIDEOPLAYER = 9;
 	public static final int APPMANAGER = 10;
 	public static final int SHAREDMANAGER = 11;
+	public static final int RESOURCEUPLOADER = 12;
 	public static final int OTHER = 99; // Windows like grooveshark
 	
 }
