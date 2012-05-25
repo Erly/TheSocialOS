@@ -11,6 +11,7 @@ import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.shared.LoginResult;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -41,6 +42,8 @@ public class LoginPresenter implements Presenter {
 		boolean getKeepLoged();
 		
 		InputElement getLoginButton();
+		
+		DivElement getError();
 		
 		Anchor getSpainFlag();
 		
@@ -111,11 +114,9 @@ public class LoginPresenter implements Presenter {
 			
 			@Override
 			public void onSuccess(LoginResult result) {
-				if (result == null) { // The user or password is incorrect
-					// Label incorrect = (Label) display.getIncorrectLabel();
-					// incorrect.setVisible(true);
-					
-				} else { // The user exists and the password is correct
+				if (result == null) display.getError().getStyle()
+						.setDisplay(com.google.gwt.dom.client.Style.Display.BLOCK);
+				else { // The user exists and the password is correct
 					CacheLayer.UserCalls.setUser(result.getUser());
 					if (result.getDuration() < 0) Cookies.setCookie("sid", result.getSessionID());
 					else {

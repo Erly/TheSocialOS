@@ -1,8 +1,10 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.LoginPresenter.Display;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.InputElement;
@@ -29,10 +31,13 @@ public class LoginView extends Composite implements Display {
 	
 	@UiField HTMLPanel html;
 	@UiField ImageElement background;
+	@UiField DivElement error;
 	@UiField InputElement email;
 	@UiField InputElement password;
 	@UiField InputElement loginButton;
 	@UiField DivElement helpers;
+	@UiField AnchorElement register;
+	@UiField AnchorElement forgotPass;
 	@UiField DivElement footer;
 	@UiField TableCellElement flags;
 	Anchor spainFlag;
@@ -47,6 +52,11 @@ public class LoginView extends Composite implements Display {
 		 * register.setText(TheSocialOS.getConstants().registerNow());
 		 * loginButton.setText(TheSocialOS.getConstants().login()); lblIncorrect.setVisible(false);
 		 */
+		
+		register.setInnerText(TheSocialOS.getConstants().registerNow());
+		forgotPass.setInnerText(TheSocialOS.getConstants().forgotPassword());
+		error.setInnerText(TheSocialOS.getConstants().error_login());
+		error.getStyle().setDisplay(com.google.gwt.dom.client.Style.Display.NONE);
 		
 		Window.addResizeHandler(new ResizeHandler() {
 			
@@ -78,6 +88,7 @@ public class LoginView extends Composite implements Display {
 	}
 	
 	protected void repositionElements() {
+		error.getStyle().setTop(background.getHeight() - 130, Unit.PX);
 		email.getStyle().setTop(background.getHeight() - 100, Unit.PX);
 		password.getStyle().setTop(background.getHeight() - 100, Unit.PX);
 		loginButton.getStyle().setTop(background.getHeight() - 100, Unit.PX);
@@ -118,5 +129,10 @@ public class LoginView extends Composite implements Display {
 	@Override
 	public Anchor getUsaFlag() {
 		return usaFlag;
+	}
+	
+	@Override
+	public DivElement getError() {
+		return error;
 	}
 }

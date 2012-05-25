@@ -23,15 +23,16 @@
 			<img class="logo" src="./images/logo.png"/>
 		</div>
 		<img class="bg" src="./images/wpLogin.png" ui:field="background"/>
+		<div class="error" ui:field="error"></div>
 		<form>
 			<input class="email" type="email" placeholder="Email Address" ui:field="email"/>
 			<input class="password" type="password" placeholder="Password" ui:field="password"/>
 			<input class="loginButton" type="button" value="Log in" ui:field="loginButton" />			
 		</form>
 		<div class="helpers" ui:field="helpers">
-			<a href="#register">Register</a>
+			<a ui:field="register" href="#register">Register</a>
 			/
-			<a href="#">Forgot your password?</a>
+			<a ui:field="forgotPass" href="#forgotPassword">Forgot your password?</a>
 		</div>
 		<div class="footer" ui:field="footer">
 			<table cellspacing="0" cellpadding="0" style="width: 100%; ">
