@@ -107,7 +107,13 @@ public class TheSocialOS implements EntryPoint {
 	}
 	
 	public static void startChannelApi() {
+		ChannelApiHelper.retry = 3;
 		ChannelApiHelper.listenToChannel(CacheLayer.UserCalls.getUser());
+	}
+	
+	public static void stopChannelApi() {
+		ChannelApiHelper.retry = 0;
+		ChannelApiHelper.socket.close();
 	}
 	
 	/**

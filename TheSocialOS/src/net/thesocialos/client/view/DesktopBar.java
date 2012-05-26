@@ -2,6 +2,10 @@ package net.thesocialos.client.view;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.event.ChannelClose;
+import net.thesocialos.client.event.ChannelEvent;
+import net.thesocialos.client.event.ChannelEventHandler;
+import net.thesocialos.client.event.ChannelOpen;
 import net.thesocialos.client.event.ContactPetitionChangeEventHandler;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
 
@@ -34,6 +38,7 @@ public class DesktopBar extends Composite {
 	@UiField FocusPanel startButton;
 	@UiField Aplication appManagerButton;
 	@UiField FocusPanel uploadButton;
+	@UiField HTMLPanel channelApi;
 	
 	public DesktopBar() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -43,6 +48,23 @@ public class DesktopBar extends Composite {
 			public void onContactsPetitionChange(ContactsPetitionChangeEvent event) {
 				lblPetitionsNumber.setText(Integer.toString(CacheLayer.ContactCalls.getCountPetitionsContanct()));
 			}
+		});
+		TheSocialOS.getEventBus().addHandler(ChannelEvent.TYPE, new ChannelEventHandler() {
+			
+			@Override
+			public void onChannelDisconnect(ChannelClose event) {
+				channelApi.setStyleName("chatMenu_circle_online", false);
+				channelApi.setStyleName("chatMenu_circle_busy", true);
+				
+			}
+			
+			@Override
+			public void onChannelConnect(ChannelOpen event) {
+				channelApi.setStyleName("chatMenu_circle_online", true);
+				channelApi.setStyleName("chatMenu_circle_busy", false);
+				
+			}
+			
 		});
 	}
 	

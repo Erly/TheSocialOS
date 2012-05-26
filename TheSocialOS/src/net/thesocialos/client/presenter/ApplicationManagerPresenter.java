@@ -26,6 +26,7 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 	Display display;
 	
 	HashMap<Aplication, DesktopUnit> applications = new HashMap<Aplication, DesktopUnit>();
+	Aplication mainApp;
 	
 	public ApplicationManagerPresenter(int programID, Display display, TypeUnit typeUnit, boolean isSubApplication) {
 		super(programID, "Aplication Manager", null, typeUnit, isSubApplication);

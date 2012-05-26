@@ -11,7 +11,7 @@
 			</g:FocusPanel>
 			</g:at>
 			<g:at left="85" top="0">
-				<p1:Aplication ui:field="appManagerButton"/>
+				<p1:Aplication ui:field="appManagerButton" aplicationName="App Manager"/>
 			</g:at>
 		</g:AbsolutePanel>
 		<g:FocusPanel height="30px" styleName="{style.uploadBox}" ui:field="uploadButton">
@@ -39,6 +39,7 @@
 				<g:Label text="5" ui:field="lblPetitionsNumber" stylePrimaryName="{style.petitionsNumber}"/>
 			</g:HorizontalPanel>
 		</g:FocusPanel>
+		<g:HTMLPanel width="25px" height="24px" styleName="{style.channelApi_status}" ui:field="channelApi"/>
 		<g:Cell horizontalAlignment="ALIGN_RIGHT" width="1">
 			<g:HorizontalPanel height="30px">
 				<g:FocusPanel width="100%" height="30px" ui:field="focusContacts">

@@ -152,8 +152,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				popUPMenu.show(event.getClientX(), event.getClientY());
+				if (!chatManager.disconnect) popUPMenu.show(event.getClientX(), event.getClientY());
 				
 			}
 		});
@@ -176,7 +175,8 @@ public class ChatMenuPresenter extends DesktopUnit {
 					clickCount++;
 					t.schedule(500);
 					if (clickCount > 1) // System.out.println("double click");
-						TheSocialOS.getEventBus().fireEvent(new ChatOpenConversation(event.getValue().getOwnKey()));
+						if (!chatManager.disconnect)
+							TheSocialOS.getEventBus().fireEvent(new ChatOpenConversation(event.getValue().getOwnKey()));
 					
 				}
 				
@@ -187,7 +187,7 @@ public class ChatMenuPresenter extends DesktopUnit {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				TheSocialOS.getEventBus().fireEvent(new ChatMenuMinimize());
+				if (!chatManager.disconnect) TheSocialOS.getEventBus().fireEvent(new ChatMenuMinimize());
 				
 			}
 		});
@@ -253,6 +253,19 @@ public class ChatMenuPresenter extends DesktopUnit {
 			return true;
 		}
 		
+	}
+	
+	public void disconnected(boolean disconnect) {
+		if (disconnect) {
+			display.getConversationsPanel().setStyleName("ChatMenu_restore", false);
+			display.getConversationsPanel().setStyleName("ChatMenu_hide", true);
+			chatManager.isHide = true;
+		} else {
+			display.getConversationsPanel().setStyleName("ChatMenu_restore", true);
+			display.getConversationsPanel().setStyleName("ChatMenu_hide", false);
+			
+			chatManager.isHide = false;
+		}
 	}
 	
 	/**

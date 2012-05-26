@@ -5,6 +5,7 @@ import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.channelApi.Channel;
 import net.thesocialos.client.channelApi.ChannelFactory;
 import net.thesocialos.client.channelApi.ChannelFactory.ChannelCreatedCallback;
+import net.thesocialos.client.channelApi.Socket;
 import net.thesocialos.client.channelApi.SocketError;
 import net.thesocialos.client.channelApi.SocketListener;
 import net.thesocialos.client.event.ChannelClose;
@@ -26,9 +27,11 @@ public class ChannelApiHelper {
 	// private Channel channel;
 	static SerializationStreamFactory pushServiceStreamFactory;
 	
-	static int retry = 3;
+	public static int retry = 3;
 	
 	public static boolean isChannelOpen = false;
+	
+	public static Socket socket;
 	
 	public ChannelApiHelper() {
 		
@@ -122,7 +125,8 @@ public class ChannelApiHelper {
 			
 			@Override
 			public void onChannelCreated(Channel channel) {
-				channel.open(new SocketListener() {
+				
+				socket = channel.open(new SocketListener() {
 					
 					@Override
 					public void onClose() {

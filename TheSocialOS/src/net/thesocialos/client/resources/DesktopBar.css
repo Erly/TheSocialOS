@@ -51,6 +51,10 @@
     top:0%;
 
 }
+.channelApi_status{
+	right:80%
+	top:0px;
+}
 .socialos:hover {
 	background-color: #477ea2;
 	color: white;

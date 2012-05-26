@@ -117,6 +117,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			
 			UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 			ofy.put(user);
+			UserHelper.checkChannelIsConnected(httpSession, ofy);
 			// return User.toDTO(user);
 			return User.toDTO(user.getEmail(), user.getUrlAvatar(), user.getBackground(), user.getName(),
 					user.getLastName(), user.getRole(), user.getMobilePhone(), user.getAddress(), user.getBio(),
@@ -161,6 +162,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		UserHelper.saveUsertohttpSession(session, user.getEmail(), httpSession);
 		
 		ofy.put(user); // Save user
+		UserHelper.checkChannelIsConnected(httpSession, ofy);
 		// return new LoginResult(User.toDTO(user), httpSession.getId(), duration);
 		return new LoginResult(User.toDTO(user.getEmail(), user.getUrlAvatar(), user.getBackground(), user.getName(),
 				user.getLastName(), user.getRole(), user.getMobilePhone(), user.getAddress(), user.getBio(),

@@ -188,4 +188,9 @@ public class UserHelper extends RemoteServiceServlet {
 		return user.getContacts().contains(contactUser);
 		
 	}
+	
+	public static synchronized void checkChannelIsConnected(HttpSession httpSession, Objectify ofy) {
+		User user = ofy.get(User.class, (String) httpSession.getAttribute(USERN));
+		ChannelApiHelper.disconnectUser(user);
+	}
 }

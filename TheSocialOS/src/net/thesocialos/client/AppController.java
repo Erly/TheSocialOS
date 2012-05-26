@@ -169,7 +169,15 @@ public class AppController implements ValueChangeHandler<String> {
 				// + event.getMessage());
 				
 			}
+			
+			@Override
+			public void chApiDisconnect() {
+				System.out.println(" a la puta calle");
+				TheSocialOS.stopChannelApi();
+				
+			}
 		});
+		
 	}
 	
 	private void checkProfile(Presenter presenter) {

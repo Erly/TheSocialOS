@@ -26,6 +26,10 @@ import net.thesocialos.client.desktop.DesktopEventOnMinimize;
 import net.thesocialos.client.desktop.DesktopEventOnOpen;
 import net.thesocialos.client.desktop.window.Footer;
 import net.thesocialos.client.desktop.window.MyCaption;
+import net.thesocialos.client.event.ChannelClose;
+import net.thesocialos.client.event.ChannelEvent;
+import net.thesocialos.client.event.ChannelEventHandler;
+import net.thesocialos.client.event.ChannelOpen;
 import net.thesocialos.client.event.ContactsChangeEvent;
 import net.thesocialos.client.event.ContactsChangeEventHandler;
 import net.thesocialos.client.helper.RPCXSRF;
@@ -51,6 +55,8 @@ public class ChatManager {
 	
 	/** If the chat is hide **/
 	boolean isHide = false;
+	
+	boolean disconnect = false;
 	
 	public ChatManager() {
 		chatMenuPresenter = new ChatMenuPresenter(new ChatMenuView(), this);
@@ -147,6 +153,26 @@ public class ChatManager {
 			@Override
 			public void onContactsChange(ContactsChangeEvent event) {
 				getContacts();
+				
+			}
+		});
+		
+		TheSocialOS.getEventBus().addHandler(ChannelEvent.TYPE, new ChannelEventHandler() {
+			
+			@Override
+			public void onChannelDisconnect(ChannelClose event) {
+				// TODO Auto-generated method stub
+				disconnect = true;
+				hideAllWindows();
+				chatListChatBlocksPresenter.hide(true);
+				chatMenuPresenter.disconnected(true);
+			}
+			
+			@Override
+			public void onChannelConnect(ChannelOpen event) {
+				disconnect = false;
+				chatListChatBlocksPresenter.hide(false);
+				chatMenuPresenter.disconnected(false);
 				
 			}
 		});
