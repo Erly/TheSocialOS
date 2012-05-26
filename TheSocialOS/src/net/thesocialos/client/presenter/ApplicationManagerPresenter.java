@@ -1,12 +1,15 @@
 package net.thesocialos.client.presenter;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.desktop.AppManagerCloseEvent;
 import net.thesocialos.client.desktop.AppManagerEvent;
 import net.thesocialos.client.desktop.AppManagerEventHandler;
 import net.thesocialos.client.desktop.AppManagerOpenEvent;
+import net.thesocialos.client.desktop.DesktopEventOnClose;
 import net.thesocialos.client.desktop.DesktopEventOnMinimize;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.IsTypeInfo;
@@ -36,6 +39,8 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 		SimplePanel getHtmlPanel();
 		
 		boolean addApplication(Aplication aplication);
+		
+		boolean removeApplication(Aplication aplication);
 	}
 	
 	private void handler() {
@@ -65,13 +70,42 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 		}
 	}
 	
+	private void removeUnit(DesktopUnit desktopUnit) {
+		if (applications.containsValue(desktopUnit)) {
+			Iterator<Entry<Aplication, DesktopUnit>> iterator = applications.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<Aplication, DesktopUnit> appDesktop = iterator.next();
+				if (appDesktop.getValue().equals(desktopUnit)) {
+					display.removeApplication(appDesktop.getKey());
+					
+					System.out.println();
+				}
+			}
+			
+		}
+	}
+	
+	private void removeUnit(Aplication app) {
+		if (applications.containsKey(app)) {
+			display.removeApplication(app);
+			applications.remove(app);
+			
+		}
+	}
+	
 	public void showHideApp(Aplication aplication) {
 		if (applications.containsKey(aplication))
 			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(applications.get(aplication), false));
 		
 	}
 	
-	private void removeUnit(DesktopUnit desktopUnit) {
+	public void closeApp(Aplication application) {
+		if (applications.containsKey(application)) {
+			
+			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnClose(applications.get(application)));
+			removeUnit(application);
+			
+		}
 		
 	}
 	
@@ -105,14 +139,12 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 		// absolutePanel.add(display.asWidget(), x, -360);
 		
 		Timer timer = new Timer() {
-			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				absolutePanel.remove(display.asWidget());
 			}
-			
 		};
+		
 		display.getHtmlPanel().setStyleName("appManager_close", true);
 		timer.schedule(500);
 		// absolutePanel.remove(display.asWidget());

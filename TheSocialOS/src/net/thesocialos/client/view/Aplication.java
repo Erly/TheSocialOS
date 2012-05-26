@@ -58,7 +58,7 @@ public class Aplication extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
+				applicationManager.closeApp(Aplication.this);
 				
 			}
 		});

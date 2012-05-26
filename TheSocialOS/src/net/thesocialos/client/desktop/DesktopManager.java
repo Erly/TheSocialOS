@@ -152,10 +152,11 @@ public class DesktopManager {
 						deskUnit.close(absolutePanelDesktop);
 						
 					}
+					aplicationsManager.removeApplicationToControl(desktopUnit);
 					linkedDesktopUnit.remove(desktopUnit.getProgramID());
 				}
+				if (desktopUnit.equals(lastDesktopUnit)) lastDesktopUnit = null;
 				
-				lastDesktopUnit = null;
 				return true;
 			}
 			return false;
@@ -290,8 +291,10 @@ public class DesktopManager {
 		}
 		
 		public void removeApplicationToControl(DesktopUnit application) {
-			if (desktopUnits.remove(application))
-				TheSocialOS.getEventBus().fireEvent(new AppManagerCloseEvent(application));
+			if (checkApplication(application))
+				if (desktopUnits.remove(application))
+					TheSocialOS.getEventBus().fireEvent(new AppManagerCloseEvent(application));
+			
 		}
 		
 		private boolean checkApplication(DesktopUnit application) {

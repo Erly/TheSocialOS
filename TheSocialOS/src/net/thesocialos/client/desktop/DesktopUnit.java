@@ -4,7 +4,7 @@ import net.thesocialos.client.desktop.window.events.WindowDisplay;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
-public abstract class DesktopUnit {
+public abstract class DesktopUnit extends Object {
 	
 	public enum TypeUnit {
 		WINDOW, INFO, POPUP, STATIC, DUMMIE
