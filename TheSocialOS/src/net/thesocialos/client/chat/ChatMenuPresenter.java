@@ -7,6 +7,7 @@ import java.util.Map;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.AppConstants;
+import net.thesocialos.client.chat.events.ChatMenuMinimize;
 import net.thesocialos.client.chat.events.ChatOpenConversation;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.event.AvatarUpdateEvent;
@@ -48,6 +49,8 @@ public class ChatMenuPresenter extends DesktopUnit {
 		
 		Label getSurname();
 		
+		Label getEmail();
+		
 		Label getStateLabel();
 		
 		FocusPanel getStateFocus();
@@ -55,6 +58,11 @@ public class ChatMenuPresenter extends DesktopUnit {
 		HTMLPanel getStateCircle();
 		
 		Image getAvatar();
+		
+		Label getMinimizeButton();
+		
+		Label getUnreadMessages();
+		
 	}
 	
 	Display display;
@@ -75,15 +83,9 @@ public class ChatMenuPresenter extends DesktopUnit {
 	public ChatMenuPresenter(Display display, ChatManager chatManager) {
 		
 		super(AppConstants.CHAT, "Chat", null, TypeUnit.STATIC, false);
-		typeUnit = TypeUnit.STATIC;
 		this.display = display;
 		this.chatManager = chatManager;
-		selectionModel = new SingleSelectionModel<User>(KEY_USERS_PROVIDER);
-		display.getCellContacts().setSelectionModel(selectionModel);
-		dataProvider = new ListDataProvider<User>(usersList);
-		dataProvider.addDataDisplay(display.getCellContacts());
-		display.getName().setText(CacheLayer.UserCalls.getUser().getName());
-		display.getSurname().setText(CacheLayer.UserCalls.getUser().getLastName());
+		
 		init();
 	}
 	
@@ -128,8 +130,33 @@ public class ChatMenuPresenter extends DesktopUnit {
 	}
 	
 	private void init() {
+		selectionModel = new SingleSelectionModel<User>(KEY_USERS_PROVIDER);
+		display.getCellContacts().setSelectionModel(selectionModel);
+		dataProvider = new ListDataProvider<User>(usersList);
+		dataProvider.addDataDisplay(display.getCellContacts());
+		display.getName().setText(CacheLayer.UserCalls.getUser().getName());
+		display.getSurname().setText(CacheLayer.UserCalls.getUser().getLastName());
+		display.getEmail().setText(CacheLayer.UserCalls.getUser().getEmail());
 		popUPMenu = new POPUPMenu();
+		/** Avatar set **/
+		if (CacheLayer.UserCalls.getAvatar() == null) display.getAvatar().setUrl("./images/anonymous_avatar.png");
+		else
+			display.getAvatar().setUrl(CacheLayer.UserCalls.getAvatar());
+		
 		handlers();
+		
+	}
+	
+	private void handlers() {
+		display.getStateFocus().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				popUPMenu.show(event.getClientX(), event.getClientY());
+				
+			}
+		});
 		
 		final Timer t = new Timer() {
 			@Override
@@ -155,10 +182,15 @@ public class ChatMenuPresenter extends DesktopUnit {
 				
 			}
 		});
-		/** Avatar set **/
-		if (CacheLayer.UserCalls.getAvatar() == null) display.getAvatar().setUrl("./images/anonymous_avatar.png");
-		else
-			display.getAvatar().setUrl(CacheLayer.UserCalls.getAvatar());
+		
+		display.getMinimizeButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				TheSocialOS.getEventBus().fireEvent(new ChatMenuMinimize());
+				
+			}
+		});
 		TheSocialOS.getEventBus().addHandler(AvatarUpdateEvent.TYPE, new AvatarUpdateEventHandler() {
 			
 			@Override
@@ -168,19 +200,6 @@ public class ChatMenuPresenter extends DesktopUnit {
 						"./images/anonymous_avatar.png");
 				else
 					display.getAvatar().setUrl(CacheLayer.UserCalls.getAvatar());
-			}
-		});
-		
-	}
-	
-	private void handlers() {
-		display.getStateFocus().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				popUPMenu.show(event.getClientX(), event.getClientY());
-				
 			}
 		});
 	}
@@ -216,6 +235,33 @@ public class ChatMenuPresenter extends DesktopUnit {
 	
 	@Override
 	public void toFront() {
+		
+	}
+	
+	public boolean hideRestore() {
+		
+		if (chatManager.isHide) {
+			display.getConversationsPanel().setStyleName("ChatMenu_restore", true);
+			display.getConversationsPanel().setStyleName("ChatMenu_hide", false);
+			display.getUnreadMessages().setText("0");
+			chatManager.isHide = !chatManager.isHide;
+			return false;
+		} else {
+			display.getConversationsPanel().setStyleName("ChatMenu_restore", false);
+			display.getConversationsPanel().setStyleName("ChatMenu_hide", true);
+			chatManager.isHide = !chatManager.isHide;
+			return true;
+		}
+		
+	}
+	
+	/**
+	 * Add a unread message on chat bar
+	 */
+	public void addUnreadMessage() {
+		if (chatManager.isHide)
+			display.getUnreadMessages().setText(
+					String.valueOf(Integer.parseInt(display.getUnreadMessages().getText()) + 1));
 		
 	}
 	

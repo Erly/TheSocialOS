@@ -18,4 +18,6 @@ public interface ChatEventHandler extends EventHandler {
 	
 	void onTopConversation(ChatTopConversations event);
 	
+	void onChatMenuHide(ChatMenuMinimize event);
+	
 }

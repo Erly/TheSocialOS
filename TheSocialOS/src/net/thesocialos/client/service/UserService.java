@@ -27,6 +27,8 @@ public interface UserService extends RemoteService {
 	
 	Map<Key<Columns>, Columns> getDeckColumns();
 	
+	void deleteCloudAccount(Account account);
+	
 	User getLoggedUser(String sid);
 	
 	LoginResult login(String email, String password, boolean keeploged);

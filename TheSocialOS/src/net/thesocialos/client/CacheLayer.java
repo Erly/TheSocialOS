@@ -27,6 +27,7 @@ import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.googlecode.objectify.Key;
 
@@ -407,10 +408,6 @@ public class CacheLayer {
 			return true;
 		}
 		
-		public static Map<Key<Account>, Account> getAccounts() {
-			return accounts;
-		}
-		
 		public static Map<Key<Columns>, Columns> getColumns() {
 			return columns;
 		}
@@ -507,6 +504,37 @@ public class CacheLayer {
 		
 		public static void setAccounts(Map<Key<Account>, Account> accounts) {
 			CacheLayer.UserCalls.accounts = accounts;
+		}
+		
+		public static Map<Key<Account>, Account> getAccounts() {
+			return accounts;
+		}
+		
+		public static void getAccounts(boolean cached, final AsyncCallback<Map<Key<Account>, Account>> callback) {
+			if (accounts != null && cached) callback.onSuccess(accounts);
+			else
+				new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						GWT.log(caught.getMessage());
+						Window.alert(caught.getMessage());
+					}
+					
+					@Override
+					public void onSuccess(Map<Key<Account>, Account> accounts) {
+						CacheLayer.UserCalls.setAccounts(accounts);
+						callback.onSuccess(accounts);
+						
+					}
+					
+					@Override
+					protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
+						userService.getCloudAccounts(cb);
+					}
+					
+				}.retry(3);
+			
 		}
 		
 		public static void setColumns(Map<Key<Columns>, Columns> columns) {

@@ -209,7 +209,7 @@ public class DesktopManager {
 			
 			@Override
 			public void onMinimize(DesktopEventOnMinimize event) {
-				MinimizeRestoreWindow(event.getDesktopUnit());
+				MinimizeRestoreWindow(event.getDesktopUnit(), event.isForceMinimized());
 				
 			}
 			
@@ -248,8 +248,12 @@ public class DesktopManager {
 	 * 
 	 * @param desktopUnit
 	 */
-	private void MinimizeRestoreWindow(DesktopUnit desktopUnit) {
+	private void MinimizeRestoreWindow(DesktopUnit desktopUnit, boolean isForce) {
 		if (!desktopUnit.isMinimizable()) return;
+		if (isForce) {
+			desktopUnit.minimize();
+			return;
+		}
 		if (desktopUnit.isMinimized()) {
 			// desktopUnit.setMinimized(false);
 			desktopUnit.restore();

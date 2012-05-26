@@ -79,6 +79,9 @@ public class ChatMenuView extends Composite implements Display {
 	@UiField HTMLPanel htmlState;
 	@UiField FocusPanel FocusPanelState;
 	@UiField Image imgAvatar;
+	@UiField Label lblMinimize;
+	@UiField Label lblUnreadMessages;
+	@UiField Label lblUserEmail;
 	
 	public ChatMenuView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -152,5 +155,23 @@ public class ChatMenuView extends Composite implements Display {
 	public Image getAvatar() {
 		// TODO Auto-generated method stub
 		return imgAvatar;
+	}
+	
+	@Override
+	public Label getEmail() {
+		// TODO Auto-generated method stub
+		return lblUserEmail;
+	}
+	
+	@Override
+	public Label getMinimizeButton() {
+		// TODO Auto-generated method stub
+		return lblMinimize;
+	}
+	
+	@Override
+	public Label getUnreadMessages() {
+		// TODO Auto-generated method stub
+		return lblUnreadMessages;
 	}
 }

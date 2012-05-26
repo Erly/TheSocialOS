@@ -151,7 +151,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 			@Override
 			public void onMinimize(WindowMinimizeEvent windowMinimizeEvent) {
 				if (isMinimizable())
-					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(FolderWindow.this));
+					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(FolderWindow.this, false));
 			}
 			
 			@Override

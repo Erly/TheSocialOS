@@ -53,7 +53,7 @@ public class FacebookAPI {
 		}
 		
 		public void setThumbnailUrl(String url) {
-			this.thumbnailURL = url;
+			thumbnailURL = url;
 		}
 		
 	}
@@ -93,13 +93,15 @@ public class FacebookAPI {
 	}
 	
 	private Facebook getFacebookAccount() {
+		// Map<Key<Account>, Account> accounts =
 		Map<Key<Account>, Account> accounts = CacheLayer.UserCalls.getAccounts();
 		Iterator<Account> it = accounts.values().iterator();
 		while (it.hasNext()) {
 			Account account = it.next();
-			if (account instanceof Facebook) { return (Facebook) account; }
+			if (account instanceof Facebook) return (Facebook) account;
 		}
 		return null;
+		
 	}
 	
 	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder,

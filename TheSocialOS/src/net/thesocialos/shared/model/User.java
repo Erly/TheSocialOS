@@ -223,6 +223,10 @@ public class User implements Serializable {
 		return accounts;
 	}
 	
+	public boolean deleteAccount(Key<Account> keyAccount) {
+		return accounts.remove(keyAccount);
+	}
+	
 	public String getAddress() {
 		return address;
 	}

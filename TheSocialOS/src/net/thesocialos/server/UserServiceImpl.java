@@ -50,12 +50,6 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		
 	}
 	
-	private String getOldChannel() {
-		Objectify ofy = ObjectifyService.begin();
-		User user = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
-		return user.getTokenChannel();
-	}
-	
 	@Override
 	public void destroy() {
 		
@@ -339,6 +333,16 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		User user = UserHelper
 				.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
 		return user.getUrlAvatar();
+		
+	}
+	
+	@Override
+	public void deleteCloudAccount(Account account) {
+		Objectify ofy = ObjectifyService.begin();
+		Key<Account> accountKey = Key.create(Account.class, account.getId());
+		User user = ofy.get(User.class, UserHelper.getUserHttpSession(perThreadRequest.get().getSession()));
+		user.deleteAccount(accountKey);
+		ofy.delete(accountKey);
 		
 	}
 }

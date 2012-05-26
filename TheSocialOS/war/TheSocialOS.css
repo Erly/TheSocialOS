@@ -1,4 +1,4 @@
-/** Add css rules here for your application. */
+0/0** Add css rules here for your application. */
 .invisiblePanel {
 	position: absolute;
 	top: 0;
@@ -664,7 +664,98 @@
 	
 }
 
-/**   Chat Blocks  **/
+/**   Chat  **/
+
+.chatMenu_position{
+	bottom : 30px;
+	right: 0;
+}
+.ChatMenu_hide{
+	bottom:  -370px;
+	animation-name:chatMenu;
+	animation-duration:500ms;
+	animation-timing-function:linear;
+	animation-play-state:running;
+	/* Firefox: */
+	-moz-animation-name:chatMenu;
+	-moz-animation-duration:500ms;
+	-moz-animation-timing-function:linear;
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:chatMenu;
+	-webkit-animation-duration:500ms;
+	-webkit-animation-timing-function:linear;
+	-webkit-animation-play-state:running;
+}
+
+.ChatMenu_restore{
+	bottom:  30px;
+	animation-name:chatMenu_restore;
+	animation-duration:500ms;
+	animation-timing-function:linear;
+
+	animation-play-state:running;
+	/* Firefox: */
+	-moz-animation-name:chatMenu_restore;
+	-moz-animation-duration:500ms;
+	-moz-animation-timing-function:linear;
+
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:chatMenu_restore;
+	-webkit-animation-duration:500ms;
+	-webkit-animation-timing-function:linear;
+
+	-webkit-animation-play-state:running;
+}
+
+@keyframes chatMenu {
+	0%   {right:0px; bottom: 30px;}
+	25%  {right:0px; bottom:-85px;}
+	50%  {right:0px; bottom:-200px;}
+	75%  {right:0px; bottom:-315px;}
+	100% {right:0px; bottom:-370px;}
+}
+
+@-moz-keyframes chatMenu /* Firefox */ {
+	0%   {right:0px; bottom: 30px;}
+	25%  {right:0px; bottom:-85px;}
+	50%  {right:0px; bottom:-200px;}
+	75%  {right:0px; bottom:-315px;}
+	100% {right:0px; bottom:-370px;}
+}
+
+@-webkit-keyframes chatMenu /* Safari and Chrome */ {
+	0%   {right:0px; bottom: 30px;}
+	25%  {right:0px; bottom:-85px;}
+	50%  {right:0px; bottom:-200px;}
+	75%  {right:0px; bottom:-315px;}
+	100% {right:0px; bottom:-370px;}
+}
+
+@keyframes chatMenu_restore {
+	0%   {right:0px; bottom:-370px;}
+	25%  {right:0px; bottom:-315px;}
+	50%  {right:0px; bottom:-200px;}
+	75%  {right:0px; bottom:-85px;}
+	100% {right:0px; bottom:30px;}
+}
+
+@-moz-keyframes chatMenu_restore /* Firefox */ {
+	0%   {right:0px; bottom:-370px;}
+	25%  {right:0px; bottom:-315px;}
+	50%  {right:0px; bottom:-200px;}
+	75%  {right:0px; bottom:-85px;}
+	100% {right:0px; bottom:30px;}
+}
+
+@-webkit-keyframes chatMenu_restore /* Safari and Chrome */ {
+	0%   {right:0px; bottom:-370px;}
+	25%  {right:0px; bottom:-315px;}
+	50%  {right:0px; bottom:-200px;}
+	75%  {right:0px; bottom:-85px;}
+	100% {right:0px; bottom:30px;}
+}
 
 .chatBlock_Popup{
 	background-color: gray;

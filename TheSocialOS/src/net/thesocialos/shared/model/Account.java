@@ -41,4 +41,8 @@ public abstract class Account implements Serializable {
 		this.username = username;
 	}
 	
+	public Long getId() {
+		return id;
+	}
+	
 }

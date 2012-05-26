@@ -1,18 +1,9 @@
 package net.thesocialos.client.view.profile;
 
 import gwtupload.client.SingleUploader;
-
-import java.util.Iterator;
-import java.util.Map;
-
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
-import net.thesocialos.shared.model.Account;
-import net.thesocialos.shared.model.Facebook;
-import net.thesocialos.shared.model.FlickR;
-import net.thesocialos.shared.model.Google;
-import net.thesocialos.shared.model.Twitter;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
@@ -27,7 +18,6 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.googlecode.objectify.Key;
 
 public class ProfilePanel extends Composite implements Display {
 	
@@ -78,16 +68,10 @@ public class ProfilePanel extends Composite implements Display {
 	@UiField Image imageAvatar;
 	@UiField FormPanel uploadForm;
 	@UiField VerticalPanel vertical;
-	Map<Key<Account>, Account> accounts;
-	Google googleAccount;
-	Facebook facebookAccount;
-	Twitter twitterAccount;
-	
-	FlickR flickrAccount;
 	
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		populateAccountsMap();
+		
 		User user = CacheLayer.UserCalls.getUser();
 		// btnExamine.setName("Image");
 		
@@ -118,40 +102,8 @@ public class ProfilePanel extends Composite implements Display {
 			}
 		});
 		
-		System.out.println(defaultUploader.getServletPath());
 		vertical.add(defaultUploader);
 		
-		google.attrName.setText(TheSocialOS.getConstants().googleAccount());
-		if (null != googleAccount) google.attrValue.setText(googleAccount.getUsername()); // TODO change the email for
-																							// the Google Account email
-		else {
-			google.attrValue.addStyleName("hand");
-			google.setAttrLink(googleURL, "Google Account login");
-		}
-		
-		facebook.attrName.setText(TheSocialOS.getConstants().facebookAccount());
-		if (null != facebookAccount) facebook.attrValue.setText(facebookAccount.getUsername()); // TODO change the email
-																								// for the Facebook
-																								// Account
-		// name
-		else {
-			facebook.attrValue.addStyleName("hand");
-			facebook.setAttrLink(facebookURL, "Facebook Account Login");
-		}
-		
-		twitter.attrName.setText(TheSocialOS.getConstants().twitterAccount());
-		if (null != twitterAccount) twitter.attrValue.setText(twitterAccount.getUsername());
-		else {
-			twitter.attrValue.addStyleName("hand");
-			twitter.setAttrLink(twitterURL, "Twitter Account Login");
-		}
-		
-		flickr.attrName.setText(TheSocialOS.getConstants().flickrAccount());
-		if (null != flickrAccount) flickr.attrValue.setText(flickrAccount.getUsername());
-		else {
-			flickr.attrValue.addStyleName("hand");
-			flickr.setAttrLink(flickrURL, "Flickr Account Login");
-		}
 	}
 	
 	@Override
@@ -177,18 +129,6 @@ public class ProfilePanel extends Composite implements Display {
 	@Override
 	public ProfileAttr getUserTitle() {
 		return title;
-	}
-	
-	private void populateAccountsMap() {
-		accounts = CacheLayer.UserCalls.getAccounts();
-		Iterator<Account> it = accounts.values().iterator();
-		while (it.hasNext()) {
-			Account account = it.next();
-			if (account instanceof Google) googleAccount = (Google) account;
-			else if (account instanceof Facebook) facebookAccount = (Facebook) account;
-			else if (account instanceof Twitter) twitterAccount = (Twitter) account;
-			else if (account instanceof FlickR) flickrAccount = (FlickR) account;
-		}
 	}
 	
 	@Override
@@ -235,6 +175,54 @@ public class ProfilePanel extends Composite implements Display {
 	public FileUpload getExamineButton() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public ProfileAttr getFacebook() {
+		// TODO Auto-generated method stub
+		return facebook;
+	}
+	
+	@Override
+	public ProfileAttr getTwitter() {
+		// TODO Auto-generated method stub
+		return twitter;
+	}
+	
+	@Override
+	public ProfileAttr getFlickR() {
+		// TODO Auto-generated method stub
+		return flickr;
+	}
+	
+	@Override
+	public ProfileAttr getGoogle() {
+		// TODO Auto-generated method stub
+		return google;
+	}
+	
+	@Override
+	public String getGoogleURL() {
+		// TODO Auto-generated method stub
+		return googleURL;
+	}
+	
+	@Override
+	public String getFlickRURL() {
+		// TODO Auto-generated method stub
+		return flickrURL;
+	}
+	
+	@Override
+	public String getTwitterURL() {
+		// TODO Auto-generated method stub
+		return twitterURL;
+	}
+	
+	@Override
+	public String getFacebookURL() {
+		// TODO Auto-generated method stub
+		return facebookURL;
 	}
 	
 }

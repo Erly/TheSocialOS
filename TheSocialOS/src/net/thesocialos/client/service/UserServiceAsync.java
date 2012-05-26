@@ -19,6 +19,8 @@ public interface UserServiceAsync extends ServiceAsync {
 	
 	void getCloudAccounts(AsyncCallback<Map<Key<Account>, Account>> callback);
 	
+	void deleteCloudAccount(Account account, AsyncCallback<Void> callback);
+	
 	void getDeckColumns(AsyncCallback<Map<Key<Columns>, Columns>> callback);
 	
 	void getLoggedUser(String sid, AsyncCallback<User> callback);

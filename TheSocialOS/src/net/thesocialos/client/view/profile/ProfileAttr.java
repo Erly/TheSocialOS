@@ -13,6 +13,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -27,6 +29,8 @@ public class ProfileAttr extends Composite {
 	@UiField TextBox attrValue;
 	
 	@UiField FocusPanel focusPanel;
+	@UiField Image closeButton;
+	@UiField HorizontalPanel hPanel;
 	
 	public ProfileAttr() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -37,6 +41,8 @@ public class ProfileAttr extends Composite {
 	}
 	
 	public void setAttrLink(final String url, final String name) {
+		attrValue.setEnabled(true);
+		
 		attrValue.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -46,11 +52,12 @@ public class ProfileAttr extends Composite {
 					
 					@Override
 					public void onClose(CloseEvent<PopupPanel> event) {
-						TheSocialOS.get();
+						
 						TheSocialOS.getEventBus().fireEvent(new AccountAddedEvent());
 					}
 				});
 				Window.open(url, name, "status=0,toolbar=0,location=0,menubar=0,height=600,width=700");
+				attrValue.setFocus(false);
 			}
 		});
 	}
@@ -63,11 +70,23 @@ public class ProfileAttr extends Composite {
 		attrValue.setText(value);
 	}
 	
+	public TextBox getAttrValue() {
+		return attrValue;
+	}
+	
+	public Label getAttrName() {
+		return attrName;
+	}
+	
 	public void setEditable(Boolean editable) {
 		attrValue.setEnabled(editable);
 		focusPanel.setStyleName("profileAttr-editable", editable);
 		focusPanel.setStyleName("profileAttr", !editable);
 		focusPanel.setStyleName("profileAttr-error", false);
+	}
+	
+	public void setCloseEnable(boolean enable) {
+		if (!enable) hPanel.remove(closeButton);
 	}
 	
 	public void setError() {
@@ -77,12 +96,12 @@ public class ProfileAttr extends Composite {
 		focusPanel.setStyleName("profileAttr", false);
 	}
 	
-	public TextBox getAttrValue() {
-		return attrValue;
-	}
-	
 	public boolean getEditable() {
 		// TODO Auto-generated method stub
 		return attrValue.isEnabled();
+	}
+	
+	public Image getCloseButton() {
+		return closeButton;
 	}
 }

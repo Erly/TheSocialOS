@@ -2,8 +2,11 @@ package net.thesocialos.client.desktop;
 
 public class DesktopEventOnMinimize extends DesktopEvent {
 	
-	public DesktopEventOnMinimize(DesktopUnit desktopUnit) {
+	private boolean minimized;
+	
+	public DesktopEventOnMinimize(DesktopUnit desktopUnit, boolean forceMinimized) {
 		super(desktopUnit);
+		minimized = forceMinimized;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -18,4 +21,12 @@ public class DesktopEventOnMinimize extends DesktopEvent {
 		// TODO Auto-generated method stub
 		return TYPE;
 	}
+	
+	/**
+	 * @return the minimized
+	 */
+	public boolean isForceMinimized() {
+		return minimized;
+	}
+	
 }

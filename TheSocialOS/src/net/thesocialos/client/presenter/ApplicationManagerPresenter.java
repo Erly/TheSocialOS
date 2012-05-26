@@ -67,7 +67,7 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 	
 	public void showHideApp(Aplication aplication) {
 		if (applications.containsKey(aplication))
-			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(applications.get(aplication)));
+			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(applications.get(aplication), false));
 		
 	}
 	

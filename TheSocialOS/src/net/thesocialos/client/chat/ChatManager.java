@@ -1,7 +1,10 @@
 package net.thesocialos.client.chat;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
@@ -10,6 +13,7 @@ import net.thesocialos.client.chat.events.ChatCloseConversation;
 import net.thesocialos.client.chat.events.ChatEvent;
 import net.thesocialos.client.chat.events.ChatEventHandler;
 import net.thesocialos.client.chat.events.ChatHideConversation;
+import net.thesocialos.client.chat.events.ChatMenuMinimize;
 import net.thesocialos.client.chat.events.ChatOpenConversation;
 import net.thesocialos.client.chat.events.ChatRecieveMessage;
 import net.thesocialos.client.chat.events.ChatSendMessage;
@@ -45,6 +49,9 @@ public class ChatManager {
 	
 	ChatServiceAsync chatService = GWT.create(ChatService.class);
 	
+	/** If the chat is hide **/
+	boolean isHide = false;
+	
 	public ChatManager() {
 		chatMenuPresenter = new ChatMenuPresenter(new ChatMenuView(), this);
 		chatListChatBlocksPresenter = new ListChatBlockPresenter(new ListChatBlocks());
@@ -68,7 +75,13 @@ public class ChatManager {
 			@Override
 			public void onRecieveMessage(final ChatRecieveMessage event) {
 				sendMessage(event.getUserKey(), event.getLine());
+				if (isHide) {
+					TheSocialOS.getEventBus().fireEvent(
+							new DesktopEventOnMinimize(conversations.get(event.getUserKey()), true));
+					chatMenuPresenter.addUnreadMessage();
+				}
 				chatListChatBlocksPresenter.messagePending(event.getUserKey());
+				
 			}
 			
 			@Override
@@ -111,6 +124,20 @@ public class ChatManager {
 			@Override
 			public void onTopConversation(ChatTopConversations event) {
 				activateConversationsBlock(event.getUserKey());
+				
+			}
+			
+			@Override
+			public void onChatMenuHide(ChatMenuMinimize event) {
+				if (isHide) {
+					chatListChatBlocksPresenter.hide(false);
+					chatMenuPresenter.hideRestore();
+					
+				} else {
+					chatListChatBlocksPresenter.hide(true);
+					chatMenuPresenter.hideRestore();
+					hideAllWindows();
+				}
 				
 			}
 		});
@@ -237,7 +264,19 @@ public class ChatManager {
 			chatListChatBlocksPresenter.setActivateConversationBlock(userKey, true);
 		}
 		
-		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(conversations.get(userKey)));
+		TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(conversations.get(userKey), false));
+	}
+	
+	private void hideAllWindows() {
+		Set<Entry<Key<User>, ChatConversationPresenter>> set = conversations.entrySet();
+		Iterator<Entry<Key<User>, ChatConversationPresenter>> iterator = set.iterator();
+		while (iterator.hasNext()) {
+			Entry<Key<User>, ChatConversationPresenter> entry = iterator.next();
+			// activateConversationsBlock(entry.getKey());
+			chatListChatBlocksPresenter.setActivateConversationBlock(entry.getKey(), true);
+			TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(entry.getValue(), true));
+		}
+		
 	}
 	
 	private void activateConversationsBlock(Key<User> userKey) {

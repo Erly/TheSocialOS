@@ -1,5 +1,8 @@
 package net.thesocialos.client.presenter;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.event.AvatarUpdateEvent;
@@ -7,6 +10,11 @@ import net.thesocialos.client.event.AvatarUpdateEventHandler;
 import net.thesocialos.client.view.PopAsker;
 import net.thesocialos.client.view.profile.ProfileAttr;
 import net.thesocialos.client.view.profile.ProfileAttrArea;
+import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.model.Facebook;
+import net.thesocialos.shared.model.FlickR;
+import net.thesocialos.shared.model.Google;
+import net.thesocialos.shared.model.Twitter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,6 +26,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.SimpleEventBus;
+import com.googlecode.objectify.Key;
 
 public class ProfilePanelPresenter implements Presenter {
 	
@@ -38,6 +47,22 @@ public class ProfilePanelPresenter implements Presenter {
 		
 		ProfileAttrArea getBio();
 		
+		ProfileAttr getFacebook();
+		
+		ProfileAttr getTwitter();
+		
+		ProfileAttr getFlickR();
+		
+		ProfileAttr getGoogle();
+		
+		String getGoogleURL();
+		
+		String getFlickRURL();
+		
+		String getTwitterURL();
+		
+		String getFacebookURL();
+		
 		Button getButton();
 		
 		Image getAvatar();
@@ -54,9 +79,15 @@ public class ProfilePanelPresenter implements Presenter {
 	
 	public String value;
 	
+	Google googleAccount;
+	Facebook facebookAccount;
+	Twitter twitterAccount;
+	FlickR flickrAccount;
+	
 	public ProfilePanelPresenter(SimpleEventBus eventBus, Display display) {
 		this.eventBus = eventBus;
 		this.display = display;
+		populateAccountsMap();
 	}
 	
 	public void bind() {
@@ -90,6 +121,40 @@ public class ProfilePanelPresenter implements Presenter {
 			public void onAvatarUpdate(AvatarUpdateEvent event) {
 				if (CacheLayer.UserCalls.getAvatar() != null) ;
 				display.getAvatar().setUrl(CacheLayer.UserCalls.getUser().getUrlAvatar());
+			}
+		});
+		
+		display.getFlickR().getCloseButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		display.getFacebook().getCloseButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		display.getTwitter().getCloseButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		display.getGoogle().getCloseButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}
@@ -145,6 +210,77 @@ public class ProfilePanelPresenter implements Presenter {
 		});
 		popup.center();
 		return asker;
+	}
+	
+	private void populateAccountsMap() {
+		// accounts =
+		CacheLayer.UserCalls.getAccounts(true, new AsyncCallback<Map<Key<Account>, Account>>() {
+			
+			@Override
+			public void onSuccess(Map<Key<Account>, Account> result) {
+				
+				Iterator<Account> it = result.values().iterator();
+				while (it.hasNext()) {
+					Account account = it.next();
+					if (account instanceof Google) googleAccount = (Google) account;
+					else if (account instanceof Facebook) facebookAccount = (Facebook) account;
+					else if (account instanceof Twitter) twitterAccount = (Twitter) account;
+					else if (account instanceof FlickR) flickrAccount = (FlickR) account;
+					asingCloudAccounts();
+				}
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+	
+	private void asingCloudAccounts() {
+		display.getGoogle().setAttrName(TheSocialOS.getConstants().googleAccount());
+		if (null != googleAccount) display.getGoogle().setAttrValue(googleAccount.getUsername()); // TODO change the
+																									// email for
+		// the Google Account email
+		else {
+			display.getGoogle().getAttrValue().addStyleName("hand");
+			display.getGoogle().setAttrLink(display.getGoogleURL(), "Google Account login");
+			
+		}
+		
+		display.getFacebook().setAttrName(TheSocialOS.getConstants().facebookAccount());
+		if (null != facebookAccount) display.getFacebook().setAttrValue(facebookAccount.getUsername()); // TODO change
+																										// the
+		// email for
+		// the Google Account email
+		else {
+			display.getFacebook().getAttrValue().addStyleName("hand");
+			display.getFacebook().setAttrLink(display.getFacebookURL(), "Facebook Account Login");
+			
+		}
+		
+		display.getTwitter().setAttrName(TheSocialOS.getConstants().twitterAccount());
+		if (null != twitterAccount) display.getTwitter().setAttrValue(twitterAccount.getUsername()); // TODO change the
+																										// email for
+		// the Google Account email
+		else {
+			display.getTwitter().getAttrValue().addStyleName("hand");
+			display.getTwitter().setAttrLink(display.getTwitterURL(), "Twitter Account Login");
+			
+		}
+		
+		display.getFlickR().setAttrName(TheSocialOS.getConstants().flickrAccount());
+		if (null != flickrAccount) display.getFlickR().setAttrValue(flickrAccount.getUsername()); // TODO change the
+																									// email for
+		// the Google Account email
+		else {
+			display.getFlickR().getAttrValue().addStyleName("hand");
+			display.getFlickR().setAttrLink(display.getFlickRURL(), "Flickr Account Login");
+			
+		}
+		
 	}
 	
 	@Override

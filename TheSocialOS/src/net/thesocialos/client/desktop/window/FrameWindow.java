@@ -77,7 +77,8 @@ public class FrameWindow extends DesktopUnit implements IApplication, isFrame {
 			
 			@Override
 			public void onMinimize(WindowMinimizeEvent windowMinimizeEvent) {
-				if (isMinimizable()) TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(FrameWindow.this));
+				if (isMinimizable())
+					TheSocialOS.getEventBus().fireEvent(new DesktopEventOnMinimize(FrameWindow.this, false));
 			}
 			
 			@Override

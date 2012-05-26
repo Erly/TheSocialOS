@@ -13,18 +13,30 @@
 			border-style : solid;
 			
 			border-color: #29A9B2;
-	
 		}
+		.close{
+			border: 1px;
+			border-style: solid;
+			border-color: red;
+			background-color: #DE685D;
+		}
+		.close:hover{
+			cursor: pointer;
+			background-color: #DD2110;
+		}
+		.close:active{
+			border: 1px inset white;
 		
 	</ui:style>
 	<g:FocusPanel addStyleNames="profileAttr" ui:field="focusPanel" >
-		<g:HorizontalPanel>
+		<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" ui:field="hPanel">
 			<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" addStyleNames="{style.profileAttrPadding}" width="140px">
 				<g:Label ui:field="attrName" addStyleNames="{style.profileAttrName}" />
 			</g:VerticalPanel>
 			<g:VerticalPanel addStyleNames="{style.profileAttrPadding}">
 				<g:TextBox ui:field="attrValue" textAlignment="ALIGN_CENTER" width="187px" maxLength="20"/>
 			</g:VerticalPanel>
+			<g:Image url="themes/default/close-btn-on.gif" width="21px" height="23px" styleName="{style.close}" ui:field="closeButton"/>
 		</g:HorizontalPanel>
 	</g:FocusPanel>
 </ui:UiBinder> 

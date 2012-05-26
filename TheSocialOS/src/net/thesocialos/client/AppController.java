@@ -98,26 +98,21 @@ public class AppController implements ValueChangeHandler<String> {
 			
 			@Override
 			public void onAcountAdd(AccountAddedEvent event) {
-				new RPCXSRF<Map<Key<Account>, Account>>(userService) {
+				CacheLayer.UserCalls.getAccounts(false, new AsyncCallback<Map<Key<Account>, Account>>() {
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						GWT.log(caught.getMessage());
-						Window.alert(caught.getMessage());
+						// TODO Auto-generated method stub
+						
 					}
 					
 					@Override
-					public void onSuccess(Map<Key<Account>, Account> accounts) {
-						CacheLayer.UserCalls.setAccounts(accounts);
+					public void onSuccess(Map<Key<Account>, Account> result) {
+						// TODO Auto-generated method stub
 						TheSocialOS.profilePresenter.goProfile();
 					}
-					
-					@Override
-					protected void XSRFcallService(AsyncCallback<Map<Key<Account>, Account>> cb) {
-						userService.getCloudAccounts(cb);
-					}
-					
-				}.retry(3);
+				});
+				
 			}
 		});
 		

@@ -68,6 +68,7 @@ public class ListChatBlockPresenter extends DesktopUnit {
 			@Override
 			public void onSuccess(User result) {
 				conversationsBlock.put(userKey, new ChatBlockView(userKey, result.getUrlAvatar()));
+				if (!display.asWidget().isVisible()) conversationsBlock.get(userKey).setActivated(true);
 				display.getHConverPanel().add(conversationsBlock.get(userKey));
 				
 			}
@@ -138,6 +139,15 @@ public class ListChatBlockPresenter extends DesktopUnit {
 	@Override
 	public void toFront() {
 		
+	}
+	
+	/**
+	 * Hide the chatBlocks
+	 * 
+	 * @param hide
+	 */
+	public void hide(boolean hide) {
+		display.asWidget().setVisible(!hide);
 	}
 	
 }
