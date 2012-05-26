@@ -14,6 +14,10 @@ public class Facebook extends Oauth2 {
 		
 	}
 	
+	public Facebook(String nick) {
+		super(nick);
+	}
+	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub

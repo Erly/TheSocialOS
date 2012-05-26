@@ -247,7 +247,7 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				// TODO Auto-generated method stub
-				System.out.println(display.getSearchBox().getText());
+				// System.out.println(display.getSearchBox().getText());
 				// ArrayList<User> lista = ;
 				dataProvider.setList(usersList.getSearchUsers(display.getSearchBox().getText()));
 				// System.out.println(lista.size());

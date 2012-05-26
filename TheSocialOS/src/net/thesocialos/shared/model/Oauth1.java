@@ -19,6 +19,10 @@ public abstract class Oauth1 extends Account {
 		
 	}
 	
+	public Oauth1(String userName) {
+		super(userName);
+	}
+	
 	/**
 	 * @return the token
 	 */

@@ -12,6 +12,7 @@ public class AccountText extends Composite {
 	
 	interface AccountTextUiBinder extends UiBinder<Widget, AccountText> {
 	}
+	
 	private static AccountTextUiBinder uiBinder = GWT.create(AccountTextUiBinder.class);
 	@UiField Button btnAccount;
 	
@@ -22,11 +23,16 @@ public class AccountText extends Composite {
 	}
 	
 	public void setAccounts(String text) {
+		btnAccount.setEnabled(true);
 		btnAccount.setText(text);
 	}
 	
 	public void setAccountText(String labelText) {
 		lblAccount.setText(labelText);
+	}
+	
+	public void disableAccount() {
+		btnAccount.setEnabled(false);
 	}
 	
 }

@@ -37,6 +37,8 @@ public class CacheLayer {
 	
 	private static Map<Key<User>, User> contacts = new LinkedHashMap<Key<User>, User>();
 	
+	private static Map<Key<User>, List<Account>> contactsAccounts = new HashMap<Key<User>, List<Account>>();
+	
 	// Usuarios de la aplicaci�n
 	private static Map<String, User> users = new LinkedHashMap<String, User>();
 	private static LinkedHashMap<String, Session> sessions;
@@ -388,6 +390,41 @@ public class CacheLayer {
 			});
 		}
 		
+		public static void getContactAccounts(final Key<User> contact, boolean cached,
+				final AsyncCallback<List<Account>> callback) {
+			if (contacts.containsKey(contact)) {
+				System.out.println();
+				if (contactsAccounts.containsKey(contact)) {
+					callback.onSuccess(contactsAccounts.get(contact));
+					System.out.println();
+				} else
+					getContactAccounts(contact, callback);
+				
+			}
+		}
+		
+		private static void getContactAccounts(final Key<User> contact, final AsyncCallback<List<Account>> callback) {
+			new RPCXSRF<List<Account>>(contactService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<List<Account>> cb) {
+					contactService.getContactAccounts(contact, cb);
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					
+				}
+				
+				@Override
+				public void onSuccess(List<Account> result) {
+					contactsAccounts.put(contact, result);
+					callback.onSuccess(result);
+					
+				}
+			}.retry(3);
+		}
 	}
 	
 	public static class GroupCalls {

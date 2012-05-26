@@ -24,6 +24,10 @@ public abstract class Account implements Serializable {
 		
 	}
 	
+	public Account(String userName) {
+		username = userName;
+	}
+	
 	/**
 	 * @return the username
 	 */
@@ -45,4 +49,11 @@ public abstract class Account implements Serializable {
 		return id;
 	}
 	
+	public static <T extends Account> Account toDTO(Account account) {
+		if (account instanceof Facebook) return new Facebook(account.getUsername());
+		if (account instanceof Google) return new Google(account.getUsername());
+		if (account instanceof Twitter) return new Twitter(account.getUsername());
+		if (account instanceof FlickR) return new FlickR(account.getUsername());
+		return null;
+	}
 }

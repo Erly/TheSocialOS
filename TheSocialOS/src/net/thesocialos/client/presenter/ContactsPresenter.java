@@ -1,6 +1,5 @@
 package net.thesocialos.client.presenter;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +8,17 @@ import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.IsTypeInfo;
-import net.thesocialos.client.service.UserService;
-import net.thesocialos.client.service.UserServiceAsync;
+import net.thesocialos.client.helper.SearchArrayList;
+import net.thesocialos.client.view.AccountText;
 import net.thesocialos.client.view.LabelText;
+import net.thesocialos.shared.model.Account;
+import net.thesocialos.shared.model.Facebook;
+import net.thesocialos.shared.model.FlickR;
+import net.thesocialos.shared.model.Google;
 import net.thesocialos.shared.model.Group;
+import net.thesocialos.shared.model.Twitter;
 import net.thesocialos.shared.model.User;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellList;
@@ -26,6 +29,7 @@ import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -52,6 +56,8 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 		LabelText getContactSearchSurname();
 		
 		LabelText getContactSurname();
+		
+		TextArea getBio();
 		
 		HorizontalPanel getContatcsMenu();
 		
@@ -82,9 +88,16 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 		TextBox getSearchBox();
 		
 		CellList<User> getUserListBox();
+		
+		AccountText getAccountFlickR();
+		
+		AccountText getAccountFacebook();
+		
+		AccountText getAccountTwitter();
+		
+		AccountText getAccountGoogle();
+		
 	}
-	
-	private final UserServiceAsync userService = GWT.create(UserService.class);
 	
 	Display display;
 	List<String> ListContacts;
@@ -97,7 +110,7 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 	SingleSelectionModel<User> contactSelectionModel;
 	ListDataProvider<User> contactDataProvider;
 	
-	List<User> contactList;
+	SearchArrayList contactList;
 	
 	public ContactsPresenter(Display display) {
 		super(AppConstants.CONTACTS, "Contacts", null, TypeUnit.INFO, false);
@@ -159,7 +172,7 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 		
 		// Le indicas a la cellList el tipo de seleccion que vas a usar
 		display.getUserListBox().setSelectionModel(contactSelectionModel);
-		contactList = new ArrayList<User>();
+		contactList = new SearchArrayList();
 		contactDataProvider = new ListDataProvider<User>(contactList);
 		
 		CacheLayer.ContactCalls.getContactsWithoutKey(false, new AsyncCallback<Map<String, User>>() {
@@ -175,11 +188,8 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 				// TODO Auto-generated method stub
 				Iterator<User> iterator = result.values().iterator();
 				
-				while (iterator.hasNext()) {
-					
+				while (iterator.hasNext())
 					contactList.add(iterator.next());
-					System.out.println(contactList.get(0).getName());
-				}
 				contactDataProvider.addDataDisplay(display.getUserListBox());
 				
 			}
@@ -199,8 +209,44 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 		contactSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
+				display.getAccountFacebook().disableAccount();
+				display.getAccountGoogle().disableAccount();
+				display.getAccountFlickR().disableAccount();
+				display.getAccountTwitter().disableAccount();
 				display.getContactName().setText(contactSelectionModel.getSelectedObject().getName());
 				display.getContactSurname().setText(contactSelectionModel.getSelectedObject().getLastName());
+				display.getBio().setText(contactSelectionModel.getSelectedObject().getBio());
+				if (contactSelectionModel.getSelectedObject().getUrlAvatar() != null) display.getImageFriend().setUrl(
+						contactSelectionModel.getSelectedObject().getUrlAvatar());
+				else
+					display.getImageFriend().setUrl("/images/anonymous_avatar.png");
+				CacheLayer.ContactCalls.getContactAccounts(contactSelectionModel.getSelectedObject().getOwnKey(),
+						false, new AsyncCallback<List<Account>>() {
+							
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onSuccess(List<Account> result) {
+								Iterator<Account> iterator = result.iterator();
+								while (iterator.hasNext()) {
+									Account account = iterator.next();
+									if (account instanceof Facebook)
+										display.getAccountFacebook().setAccounts(account.getUsername());
+									if (account instanceof FlickR)
+										display.getAccountFlickR().setAccounts(account.getUsername());
+									if (account instanceof Google)
+										display.getAccountGoogle().setAccounts(account.getUsername());
+									if (account instanceof Twitter)
+										display.getAccountTwitter().setAccounts(account.getUsername());
+									
+								}
+								
+							}
+						});
 			}
 		});
 		display.getSearchBox().addKeyUpHandler(new KeyUpHandler() {
@@ -208,7 +254,7 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				// TODO Auto-generated method stub
-				System.out.println(display.getSearchBox().getText());
+				
 				/*
 				 * new RPCXSRF<List<User>>(userService) {
 				 * @Override protected void XSRFcallService(AsyncCallback<List<User>> cb) {
@@ -216,33 +262,19 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 				 * onSuccess(List<User> returnUsers){ System.out.println(returnUsers.size()); } public void
 				 * onFailure(Throwable caught){ } }.retry(3);
 				 */
-				CacheLayer.ContactCalls.getContactsWithoutKey(false, new AsyncCallback<Map<String, User>>() {
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void onSuccess(Map<String, User> result) {
-						
-						String text[] = display.getSearchBox().getText().split(" ");
-						
-						if (text != null && text.length > 0) {
-							// display.getUserListBox().
-							contactList.clear();
-							Iterator<User> iterator = result.values().iterator();
-							while (iterator.hasNext()) {
-								User contact = iterator.next();
-								if (contact.getName().contains(text[0])) contactList.add(contact);
-							}
-							contactDataProvider.flush();
-							contactDataProvider.refresh();
-						}
-						
-					}
-				});
+				/*
+				 * CacheLayer.ContactCalls.getContactsWithoutKey(false, new AsyncCallback<Map<String, User>>() {
+				 * @Override public void onFailure(Throwable caught) { // TODO Auto-generated method stub }
+				 * @Override public void onSuccess(Map<String, User> result) { String text[] =
+				 * display.getSearchBox().getText().split(" "); if (text != null && text.length > 0) { //
+				 * display.getUserListBox(). contactList.clear(); Iterator<User> iterator = result.values().iterator();
+				 * while (iterator.hasNext()) { User contact = iterator.next(); if (contact.getName().contains(text[0]))
+				 * contactList.add(contact); } contactDataProvider.flush(); contactDataProvider.refresh(); } } });
+				 */
+				contactDataProvider.setList(contactList.getSearchUsers(display.getSearchBox().getText()));
+				// System.out.println(lista.size());
+				contactDataProvider.flush();
+				contactDataProvider.refresh();
 			}
 		});
 		

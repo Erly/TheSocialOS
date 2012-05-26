@@ -31,10 +31,10 @@ public class ContactsView extends Composite implements Display {
 	@UiField LabelText lblName;
 	@UiField LabelText lblSurname;
 	@UiField TextArea lblFriendBio;
-	@UiField AccountText accountTwitter;
-	@UiField AccountText accountPicassa;
 	@UiField AccountText accountGoogle;
-	@UiField Button btnPrivateMessage;
+	@UiField AccountText accountFacebook;
+	@UiField AccountText accountFlickR;
+	@UiField AccountText accountTwitter;
 	@UiField LabelText lblGroupName;
 	@UiField Button btnPrivateMessageSearch;
 	@UiField Button btnAddContact;
@@ -198,7 +198,7 @@ public class ContactsView extends Composite implements Display {
 	@Override
 	public Image getImageFriend() {
 		// TODO Auto-generated method stub
-		return null;
+		return imgFriend;
 	}
 	
 	@Override
@@ -229,6 +229,36 @@ public class ContactsView extends Composite implements Display {
 	public CellList getUserListBox() {
 		
 		return listContacts;
+	}
+	
+	@Override
+	public TextArea getBio() {
+		// TODO Auto-generated method stub
+		return lblFriendBio;
+	}
+	
+	@Override
+	public AccountText getAccountFlickR() {
+		// TODO Auto-generated method stub
+		return accountFlickR;
+	}
+	
+	@Override
+	public AccountText getAccountFacebook() {
+		// TODO Auto-generated method stub
+		return accountFacebook;
+	}
+	
+	@Override
+	public AccountText getAccountTwitter() {
+		// TODO Auto-generated method stub
+		return accountTwitter;
+	}
+	
+	@Override
+	public AccountText getAccountGoogle() {
+		// TODO Auto-generated method stub
+		return accountGoogle;
 	}
 	
 }

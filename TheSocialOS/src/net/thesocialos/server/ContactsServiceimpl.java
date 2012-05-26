@@ -11,6 +11,7 @@ import net.thesocialos.client.service.ContacsService;
 import net.thesocialos.shared.exceptions.ContactException;
 import net.thesocialos.shared.exceptions.FriendNotFoundException;
 import net.thesocialos.shared.exceptions.UsersNotFoundException;
+import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
@@ -182,6 +183,22 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 			users.put(user.getEmail(), User.toDTO(user));
 		
 		return users;
+	}
+	
+	@Override
+	public List<Account> getContactAccounts(Key<User> userKey) {
+		
+		Objectify ofy = ObjectifyService.begin();
+		if (UserHelper.isYourFriend(perThreadRequest.get().getSession(), ofy, userKey)) {
+			User contact = ofy.get(userKey);
+			List<Account> list = new ArrayList<Account>();
+			Iterator<Account> iterator = ofy.get(contact.getAccounts()).values().iterator();
+			while (iterator.hasNext())
+				list.add(Account.toDTO(iterator.next()));
+			return list;
+		}
+		return null;
+		
 	}
 	
 }

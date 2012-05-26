@@ -14,6 +14,10 @@ public class Google extends Oauth2 {
 		
 	}
 	
+	public Google(String userName) {
+		super(userName);
+	}
+	
 	@Override
 	public void refresh() {
 		

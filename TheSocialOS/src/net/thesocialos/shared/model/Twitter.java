@@ -18,9 +18,13 @@ public class Twitter extends Oauth1 {
 		
 	}
 	
+	public Twitter(String userName) {
+		super(userName);
+	}
+	
 	public Twitter(String token, String tokenSecret) {
-		this.setToken(token);
-		this.setTokenSecret(tokenSecret);
+		setToken(token);
+		setTokenSecret(tokenSecret);
 	}
 	
 	@Override

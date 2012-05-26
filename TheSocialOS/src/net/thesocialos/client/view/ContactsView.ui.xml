@@ -13,7 +13,7 @@
 			position: absolute;
 			right: 25px;
 			top: 0px;
-			z-index: 1000;
+			z-index: 200;
 			background-color: white;
 			
 		}
@@ -27,28 +27,27 @@
 			</g:DecoratedTabPanel>
 			<g:AbsolutePanel height="100%" width="336px">
 				<g:at left="10" top="10">
-					<g:TextBox width="284px" height="18px" styleName="{style.border}" ui:field="txtSearch"/>
+					<g:TextBox width="307px" height="18px" styleName="{style.border}" ui:field="txtSearch"/>
 				</g:at>
 				<g:at left="10" top="46">
 					<g:TabLayoutPanel barHeight="0" barUnit="EM" width="321px" height="393px" animationVertical="true" animationDuration="2">
 						<g:tab>
 							<g:header>Friends</g:header>
-							<g:VerticalPanel width="5cm" height="" verticalAlignment="ALIGN_TOP" horizontalAlignment="ALIGN_CENTER">
-								<g:HorizontalPanel width="100%" spacing="1">
+							<g:VerticalPanel width="321px" height="" verticalAlignment="ALIGN_TOP" horizontalAlignment="ALIGN_LEFT">
+								<g:HorizontalPanel width="280px" spacing="1">
 									<g:Image width="103px" height="140px" ui:field="imgFriend" url="images/anonymous_avatar.png"/>
-									<g:VerticalPanel width="200px" horizontalAlignment="ALIGN_CENTER" spacing="2">
+									<g:VerticalPanel width="200px" horizontalAlignment="ALIGN_LEFT" spacing="2">
 										<p1:LabelText height="18px" ui:field="lblName" labelText="Nombre:" text="Unai" width="197px"/>
-										<p1:LabelText width="197px" labelText="Apellidos: " text="Correa Cruz" ui:field="lblSurname"/>
-										<g:TextArea width="183px" readOnly="true" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc," height="84px" styleName="{style.border}" ui:field="lblFriendBio"/>
+										<p1:LabelText width="150px" labelText="Apellidos: " text="Correa Cruz" ui:field="lblSurname"/>
+										<g:TextArea width="200px" readOnly="true" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc," height="84px" styleName="{style.border}" ui:field="lblFriendBio"/>
 									</g:VerticalPanel>
 								</g:HorizontalPanel>
 								<g:Label width="40px" height="15px"/>
-								<g:Label text="Cuentas" horizontalAlignment="ALIGN_CENTER"/>
-								<p1:AccountText accountText="Twitter:" ui:field="accountTwitter"/>
-								<p1:AccountText accountText="Facebook:" accounts="Unai Correa" styleName="Google:"/>
-								<p1:AccountText accountText="Picassa" accounts="Vssnake" ui:field="accountPicassa"/>
-								<p1:AccountText accountText="Google+:" accounts="Vssnake" ui:field="accountGoogle"/>
-								<g:Button ui:field="btnPrivateMessage">Priv Message</g:Button>
+								<g:Label text="Cuentas" horizontalAlignment="ALIGN_CENTER" width="308px"/>
+								<p1:AccountText accountText="Twitter:" ui:field="accountTwitter" width="313px"/>
+								<p1:AccountText accountText="Facebook:" accounts="Unai Correa" styleName="Google:" width="313px" ui:field="accountFacebook"/>
+								<p1:AccountText accountText="FlickR" accounts="Vssnake" ui:field="accountFlickR" width="313px"/>
+								<p1:AccountText accountText="Google+:" accounts="Vssnake" ui:field="accountGoogle" width="313px"/>
 							</g:VerticalPanel>
 						</g:tab>
 						<g:tab>
@@ -111,9 +110,6 @@
 							</g:VerticalPanel>
 						</g:tab>
 					</g:TabLayoutPanel>
-				</g:at>
-				<g:at left="304" top="10">
-					<g:Button width="27px" height="24px" text="X"/>
 				</g:at>
 			</g:AbsolutePanel>
 			

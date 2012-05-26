@@ -6,6 +6,7 @@ import java.util.Map;
 import net.thesocialos.shared.exceptions.ContactException;
 import net.thesocialos.shared.exceptions.FriendNotFoundException;
 import net.thesocialos.shared.exceptions.UsersNotFoundException;
+import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -32,5 +33,7 @@ public interface ContacsService extends RemoteService {
 	Map<String, User> getPetitionContact() throws ContactException;
 	
 	Map<String, User> getUsers() throws UsersNotFoundException;
+	
+	List<Account> getContactAccounts(Key<User> user);
 	
 }

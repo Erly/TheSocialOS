@@ -27,6 +27,10 @@ public abstract class Oauth2 extends Account {
 		
 	}
 	
+	public Oauth2(String nick) {
+		super(nick);
+	}
+	
 	/**
 	 * @return the authToken
 	 */

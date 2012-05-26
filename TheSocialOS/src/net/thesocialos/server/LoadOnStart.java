@@ -53,7 +53,7 @@ public class LoadOnStart extends HttpServlet {
 		
 		setAllUsertoOffline();
 		// resetContacts();
-		// createCloudAccounts();
+		createCloudAccounts();
 		
 	}
 	
@@ -82,19 +82,27 @@ public class LoadOnStart extends HttpServlet {
 	private void createCloudAccounts() {
 		Objectify ofy = ObjectifyService.begin();
 		User user = ofy.get(User.class, "unai@thesocialos.net");
-		
+		User user1 = ofy.get(User.class, "virtual.solid.snake@gmail.com");
 		user.clearAccounts();
-		Facebook facebook = new Facebook();
-		facebook.setUsername("facebook");
-		user.addAccount(ofy.put(facebook));
-		FlickR flickR = new FlickR();
-		flickR.setUsername("flickr");
-		user.addAccount(ofy.put(flickR));
-		Twitter twitter = new Twitter();
-		twitter.setUsername("twitter");
+		user1.clearAccounts();
+		Facebook facebook = new Facebook("facebook1");
+		FlickR flickR = new FlickR("flickr1");
+		Twitter twitter = new Twitter("twitter1");
+		Google google = new Google("google1");
 		user.addAccount(ofy.put(twitter));
-		Google google = new Google();
+		user.addAccount(ofy.put(facebook));
+		user.addAccount(ofy.put(flickR));
 		user.addAccount(ofy.put(google));
 		ofy.put(user);
+		facebook = new Facebook("facebook2");
+		flickR = new FlickR("flickr2");
+		twitter = new Twitter("twitter2");
+		google = new Google("google2");
+		user1.addAccount(ofy.put(twitter));
+		user1.addAccount(ofy.put(facebook));
+		user1.addAccount(ofy.put(flickR));
+		user1.addAccount(ofy.put(google));
+		ofy.put(user1);
+		
 	}
 }

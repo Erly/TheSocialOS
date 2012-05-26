@@ -42,4 +42,5 @@ public interface UserServiceAsync extends ServiceAsync {
 	void checkChannel(ChApiContactNew newContact, AsyncCallback<Void> callback);
 	
 	void setState(STATETYPE stateType, String customMsg, AsyncCallback<Void> callback);
+	
 }
