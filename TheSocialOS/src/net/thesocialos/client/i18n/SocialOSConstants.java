@@ -145,6 +145,9 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("Twitter Account")
 	String twitterAccount();
 	
+	@DefaultStringValue("SIGN IN")
+	String signIN();
+	
 	@DefaultStringValue("Upload")
 	String upload();
 }

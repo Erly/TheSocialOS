@@ -343,6 +343,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		User user = ofy.get(User.class, UserHelper.getUserHttpSession(perThreadRequest.get().getSession()));
 		user.deleteAccount(accountKey);
 		ofy.delete(accountKey);
+		ofy.put(user);
 		
 	}
 }

@@ -52,7 +52,8 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(ImageUpload.class);
 		
 		setAllUsertoOffline();
-		resetContacts();
+		// resetContacts();
+		// createCloudAccounts();
 		
 	}
 	
@@ -76,5 +77,24 @@ public class LoadOnStart extends HttpServlet {
 			ofy.put(user);
 		}
 		
+	}
+	
+	private void createCloudAccounts() {
+		Objectify ofy = ObjectifyService.begin();
+		User user = ofy.get(User.class, "unai@thesocialos.net");
+		
+		user.clearAccounts();
+		Facebook facebook = new Facebook();
+		facebook.setUsername("facebook");
+		user.addAccount(ofy.put(facebook));
+		FlickR flickR = new FlickR();
+		flickR.setUsername("flickr");
+		user.addAccount(ofy.put(flickR));
+		Twitter twitter = new Twitter();
+		twitter.setUsername("twitter");
+		user.addAccount(ofy.put(twitter));
+		Google google = new Google();
+		user.addAccount(ofy.put(google));
+		ofy.put(user);
 	}
 }

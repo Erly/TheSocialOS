@@ -349,6 +349,10 @@ public class User implements Serializable {
 		columns.addAll(newColumnsKeys);
 	}
 	
+	public void clearAccounts() {
+		accounts.clear();
+	}
+	
 	public void resetContacts() {
 		contacts = null;
 	}

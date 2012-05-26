@@ -526,7 +526,7 @@ public class CacheLayer {
 					getAccounts(false, callback);
 					
 				}
-			};
+			}.retry(3);
 		}
 		
 		public static Map<Key<Account>, Account> getAccounts() {

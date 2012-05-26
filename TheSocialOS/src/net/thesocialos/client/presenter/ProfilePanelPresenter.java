@@ -129,6 +129,7 @@ public class ProfilePanelPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				DeleteAccount(flickrAccount);
+				flickrAccount = null;
 				
 			}
 		});
@@ -139,6 +140,7 @@ public class ProfilePanelPresenter implements Presenter {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				DeleteAccount(facebookAccount);
+				facebookAccount = null;
 			}
 		});
 		display.getTwitter().getCloseButton().addClickHandler(new ClickHandler() {
@@ -147,6 +149,7 @@ public class ProfilePanelPresenter implements Presenter {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				DeleteAccount(twitterAccount);
+				twitterAccount = null;
 			}
 		});
 		display.getGoogle().getCloseButton().addClickHandler(new ClickHandler() {
@@ -155,11 +158,12 @@ public class ProfilePanelPresenter implements Presenter {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				DeleteAccount(googleAccount);
+				googleAccount = null;
 			}
 		});
 	}
 	
-	private void DeleteAccount(Account account) {
+	private void DeleteAccount(final Account account) {
 		if (null != account)
 			CacheLayer.UserCalls.deleteAccount(account, new AsyncCallback<Map<Key<Account>, Account>>() {
 				
@@ -172,6 +176,7 @@ public class ProfilePanelPresenter implements Presenter {
 				@Override
 				public void onSuccess(Map<Key<Account>, Account> result) {
 					// TODO Auto-generated method stub
+					
 					populateAccountsMap();
 				}
 			});
@@ -244,8 +249,9 @@ public class ProfilePanelPresenter implements Presenter {
 					else if (account instanceof Facebook) facebookAccount = (Facebook) account;
 					else if (account instanceof Twitter) twitterAccount = (Twitter) account;
 					else if (account instanceof FlickR) flickrAccount = (FlickR) account;
-					asingCloudAccounts();
+					
 				}
+				asingCloudAccounts();
 			}
 			
 			@Override
@@ -265,6 +271,7 @@ public class ProfilePanelPresenter implements Presenter {
 		else {
 			display.getGoogle().getAttrValue().addStyleName("hand");
 			display.getGoogle().setAttrLink(display.getGoogleURL(), "Google Account login");
+			display.getGoogle().setAttrValue(TheSocialOS.getConstants().signIN());
 			
 		}
 		
@@ -276,6 +283,7 @@ public class ProfilePanelPresenter implements Presenter {
 		else {
 			display.getFacebook().getAttrValue().addStyleName("hand");
 			display.getFacebook().setAttrLink(display.getFacebookURL(), "Facebook Account Login");
+			display.getFacebook().setAttrValue(TheSocialOS.getConstants().signIN());
 			
 		}
 		
@@ -286,6 +294,7 @@ public class ProfilePanelPresenter implements Presenter {
 		else {
 			display.getTwitter().getAttrValue().addStyleName("hand");
 			display.getTwitter().setAttrLink(display.getTwitterURL(), "Twitter Account Login");
+			display.getTwitter().setAttrValue(TheSocialOS.getConstants().signIN());
 			
 		}
 		
@@ -296,6 +305,7 @@ public class ProfilePanelPresenter implements Presenter {
 		else {
 			display.getFlickR().getAttrValue().addStyleName("hand");
 			display.getFlickR().setAttrLink(display.getFlickRURL(), "Flickr Account Login");
+			display.getFlickR().setAttrValue(TheSocialOS.getConstants().signIN());
 			
 		}
 		
