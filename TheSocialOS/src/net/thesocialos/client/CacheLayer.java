@@ -506,6 +506,29 @@ public class CacheLayer {
 			CacheLayer.UserCalls.accounts = accounts;
 		}
 		
+		public static void deleteAccount(final Account account, final AsyncCallback<Map<Key<Account>, Account>> callback) {
+			new RPCXSRF<Void>(userService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<Void> cb) {
+					userService.deleteCloudAccount(account, cb);
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					GWT.log(caught.getMessage());
+					Window.alert(caught.getMessage());
+				}
+				
+				@Override
+				public void onSuccess(Void result) {
+					getAccounts(false, callback);
+					
+				}
+			};
+		}
+		
 		public static Map<Key<Account>, Account> getAccounts() {
 			return accounts;
 		}

@@ -128,7 +128,7 @@ public class ProfilePanelPresenter implements Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
+				DeleteAccount(flickrAccount);
 				
 			}
 		});
@@ -138,7 +138,7 @@ public class ProfilePanelPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				
+				DeleteAccount(facebookAccount);
 			}
 		});
 		display.getTwitter().getCloseButton().addClickHandler(new ClickHandler() {
@@ -146,7 +146,7 @@ public class ProfilePanelPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				
+				DeleteAccount(twitterAccount);
 			}
 		});
 		display.getGoogle().getCloseButton().addClickHandler(new ClickHandler() {
@@ -154,9 +154,27 @@ public class ProfilePanelPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				
+				DeleteAccount(googleAccount);
 			}
 		});
+	}
+	
+	private void DeleteAccount(Account account) {
+		if (null != account)
+			CacheLayer.UserCalls.deleteAccount(account, new AsyncCallback<Map<Key<Account>, Account>>() {
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onSuccess(Map<Key<Account>, Account> result) {
+					// TODO Auto-generated method stub
+					populateAccountsMap();
+				}
+			});
 	}
 	
 	private void checkFields(AsyncCallback<Boolean> callback) {
