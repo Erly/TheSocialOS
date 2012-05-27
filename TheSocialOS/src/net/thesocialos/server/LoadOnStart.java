@@ -1,5 +1,7 @@
 package net.thesocialos.server;
 
+import java.util.Calendar;
+
 import javax.servlet.http.HttpServlet;
 
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
@@ -17,9 +19,11 @@ import net.thesocialos.shared.model.Oauth1;
 import net.thesocialos.shared.model.Oauth2;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.SharedHistory;
+import net.thesocialos.shared.model.SharedHistory.SHARETYPE;
 import net.thesocialos.shared.model.Twitter;
 import net.thesocialos.shared.model.User;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
@@ -56,6 +60,7 @@ public class LoadOnStart extends HttpServlet {
 		setAllUsertoOffline();
 		// resetContacts();
 		// createCloudAccounts();
+		// createSharedExamples();
 		
 	}
 	
@@ -109,6 +114,20 @@ public class LoadOnStart extends HttpServlet {
 	}
 	
 	private void createSharedExamples() {
+		Objectify ofy = ObjectifyService.begin();
+		User user = ofy.get(User.class, "unai@thesocialos.net");
+		User user1 = ofy.get(User.class, "virtual.solid.snake@gmail.com");
+		
+		SharedHistory video = new SharedHistory(SHARETYPE.VIDEO,
+				"https://www.youtube.com/embed/EU3wnka0PVc?autoplay=1", "youtube video", Key.create(User.class,
+						user1.getEmail()), Calendar.getInstance().getTimeInMillis());
+		SharedHistory image = new SharedHistory(SHARETYPE.IMAGE,
+				"http://www.trackmania-carpark.com/images/skins/big/Razor%203%20640.jpg", "A modelated car",
+				Key.create(User.class, user1.getEmail()), Calendar.getInstance().getTimeInMillis());
+		
+		user.addShare(ofy.put(video));
+		user.addShare(ofy.put(image));
+		ofy.put(user);
 		
 	}
 }

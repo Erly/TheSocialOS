@@ -7,18 +7,14 @@
 	<g:HTMLPanel>
 		<g:HorizontalPanel width="100%" height="100%" borderWidth="1">
 			<g:VerticalPanel>
-				<g:TabLayoutPanel barHeight="2" barUnit="EM" width="180px" height="299px">
+				<g:TabLayoutPanel barHeight="0" barUnit="EM" width="180px" height="299px">
 					<g:tab>
 						<g:header>Images</g:header>
 						<p1:CellList ui:field="cellListImages" width="167px"/>
 					</g:tab>
-					<g:tab>
-						<g:header>Videos</g:header>
-						<p1:CellList ui:field="cellListVideos"/>
-					</g:tab>
 				</g:TabLayoutPanel>
 			</g:VerticalPanel>
-			<g:SimplePanel width="375px" height="297px"/>
+			<g:SimplePanel width="375px" height="297px" ui:field="widgetPanel"/>
 		</g:HorizontalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

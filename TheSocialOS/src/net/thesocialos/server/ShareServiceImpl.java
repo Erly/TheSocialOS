@@ -1,7 +1,8 @@
 package net.thesocialos.server;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Map;
+import java.util.List;
 
 import net.thesocialos.client.service.ShareService;
 import net.thesocialos.shared.model.SharedHistory;
@@ -16,10 +17,11 @@ import com.googlecode.objectify.ObjectifyService;
 public class ShareServiceImpl extends XsrfProtectedServiceServlet implements ShareService {
 	
 	@Override
-	public Boolean addShare(Key<User> contact, String url, SHARETYPE shareType) {
+	public Boolean addShare(Key<User> contact, String url, String title, SHARETYPE shareType) {
 		Objectify ofy = ObjectifyService.begin();
 		if (UserHelper.isYourFriend(perThreadRequest.get().getSession(), ofy, contact)) {
-			SharedHistory share = new SharedHistory(shareType, url, contact, Calendar.getInstance().getTimeInMillis());
+			SharedHistory share = new SharedHistory(shareType, url, title, contact, Calendar.getInstance()
+					.getTimeInMillis());
 			User user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()),
 					ofy);
 			user.addHistoryKey(ofy.put(share));
@@ -31,13 +33,14 @@ public class ShareServiceImpl extends XsrfProtectedServiceServlet implements Sha
 	}
 	
 	@Override
-	public Map<Key<SharedHistory>, SharedHistory> getShare() {
+	public List<SharedHistory> getShare() {
 		// TODO Auto-generated method stub
 		Objectify ofy = ObjectifyService.begin();
 		User user = UserHelper
 				.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()), ofy);
-		
-		return ofy.get(user.getShared());
+		List<SharedHistory> history = new ArrayList<SharedHistory>();
+		history.addAll(ofy.get(user.getShared()).values());
+		return history;
 	}
 	
 }

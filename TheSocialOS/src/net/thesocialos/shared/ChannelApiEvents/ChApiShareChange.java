@@ -1,7 +1,6 @@
 package net.thesocialos.shared.ChannelApiEvents;
 
-@SuppressWarnings("serial")
-public class ChApiPushDisconnect extends ChApiEvent {
+public class ChApiShareChange extends ChApiEvent {
 	
 	@Override
 	public com.google.gwt.event.shared.GwtEvent.Type<ChApiEventHandler> getAssociatedType() {
@@ -11,7 +10,8 @@ public class ChApiPushDisconnect extends ChApiEvent {
 	
 	@Override
 	protected void dispatch(ChApiEventHandler handler) {
-		handler.chApiDisconnect(this);
+		handler.onShareChange(this);
 		
 	}
+	
 }

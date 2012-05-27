@@ -24,6 +24,11 @@
 				<g:Image url="images/appIcons/lupa.png" width="25px" height="25px"/>
 			</g:HorizontalPanel>
 		</g:FocusPanel>
+		<g:FocusPanel height="30px" styleName="{style.sharedBox}" ui:field="sharedButton">
+			<g:HorizontalPanel width="100%" height="100%" verticalAlignment="ALIGN_BOTTOM">
+				<g:Image url="images/appIcons/1338115645_share.png" width="25px" height="25px"/>
+			</g:HorizontalPanel>
+		</g:FocusPanel>
 		<g:Cell horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" >
 			<g:FocusPanel height="30px" styleName="{style.socialos}" ui:field="socialOSButton">
 				<g:HorizontalPanel width="100%" height="100%">

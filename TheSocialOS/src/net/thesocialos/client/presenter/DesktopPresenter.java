@@ -27,6 +27,7 @@ import net.thesocialos.client.view.ContactsView;
 import net.thesocialos.client.view.DesktopBar;
 import net.thesocialos.client.view.NotificationsBoxView;
 import net.thesocialos.client.view.SearchBoxView;
+import net.thesocialos.client.view.SharedView;
 import net.thesocialos.client.view.StartMenu;
 import net.thesocialos.client.view.StartMenuItem;
 import net.thesocialos.client.view.deck.SocialDeck;
@@ -120,6 +121,7 @@ public class DesktopPresenter implements Presenter {
 	ApplicationManagerPresenter aplicationManagerPresenter = new ApplicationManagerPresenter(AppConstants.APPMANAGER,
 			new AplicationManagerView(), TypeUnit.INFO, false);
 	ResourceUploadPresenter resourceUploadPresenter;
+	SharedUnit sharedUnit;
 	
 	private AbsolutePanel desktop;
 	private boolean startMenuFocused = false;
@@ -161,6 +163,7 @@ public class DesktopPresenter implements Presenter {
 		bindProgramMenu();
 		bindAppManager();
 		bindUploadMenu();
+		bindSharedManager();
 		refreshData();
 		
 		// Populate the Star Menu
@@ -466,6 +469,9 @@ public class DesktopPresenter implements Presenter {
 		
 	}
 	
+	/**
+	 * Bind the upload Menu and wait to click Event to activate
+	 */
 	private void bindUploadMenu() {
 		display.getDesktopBar().getUploadButton().addClickHandler(new ClickHandler() {
 			
@@ -476,6 +482,19 @@ public class DesktopPresenter implements Presenter {
 				int x = display.getDesktopBar().getUploadButton().getAbsoluteLeft();
 				resourceUploadPresenter.setPosition(x, 0);
 				eventBus.fireEvent(new DesktopEventOnOpen(resourceUploadPresenter));
+			}
+		});
+	}
+	
+	private void bindSharedManager() {
+		display.getDesktopBar().getSharedButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if (sharedUnit == null) sharedUnit = new SharedUnit(new SharedView());
+				sharedUnit.setPosition(30, 30);
+				eventBus.fireEvent(new DesktopEventOnOpen(sharedUnit));
+				
 			}
 		});
 	}

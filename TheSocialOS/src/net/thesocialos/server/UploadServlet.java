@@ -11,6 +11,7 @@ import gwtupload.server.gae.BlobstoreFileItemFactory.BlobstoreFileItem;
 import gwtupload.server.gae.MemCacheUploadListener;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -146,35 +147,40 @@ public class UploadServlet extends UploadAction {
 			
 			for (Entry<String, List<BlobKey>> e : blobs.entrySet()) {
 				BlobstoreFileItem i = new BlobstoreFileItem(e.getKey(), "unknown", false, "");
+				i.setKey(e.getValue().get(0));
+				
 				/*
 				 * logger.info("BLOB-STORE-SERVLET: received file: " + e.getKey() + " " +
 				 * e.getValue().get(0).getKeyString());
 				 */
-				
-				items.add(i);
+				blobKey = e.getValue().get(0);
+				items.add(i);;
 				
 			}
-			String userEmail = UserHelper.getUserHttpSession(request.getSession());
-			Objectify ofy = ObjectifyService.begin();
-			User user = UserHelper.getUserWithEmail(userEmail, ofy);
-			if (user == null) return;
-			ImagesService imagesService = ImagesServiceFactory.getImagesService();
-			String imageUrl = imagesService.getServingUrl(blobKey);
 			
-			ImageUpload uploadedImage = new ImageUpload();
-			uploadedImage.setKey(blobKey.getKeyString());
-			uploadedImage.setCreatedAt(new Date());
-			uploadedImage.setServingUrl(imageUrl);
-			if (request.getParameter("media").isEmpty()) {
+			if (request.getParameter("media") == null) {
+				String userEmail = UserHelper.getUserHttpSession(request.getSession());
+				Objectify ofy = ObjectifyService.begin();
+				User user = UserHelper.getUserWithEmail(userEmail, ofy);
+				if (user == null) return;
+				ImagesService imagesService = ImagesServiceFactory.getImagesService();
 				
+				String imageUrl = imagesService.getServingUrl(blobKey);
+				
+				ImageUpload uploadedImage = new ImageUpload();
+				uploadedImage.setKey(blobKey.getKeyString());
+				uploadedImage.setCreatedAt(new Date());
+				uploadedImage.setServingUrl(imageUrl);
 				user.setAvatar(uploadedImage.getServingUrl());
 				ofy.put(uploadedImage);
 				ofy.put(user);
+				
 			} else {
 				/*
 				 * Si el parametro media no esta vacio. busca: facebook;picassa; donde ";" es el separador que le he
 				 * puesto
 				 */
+				InputStream stream = items.get(0).getInputStream();
 				items.get(0).getInputStream(); // creo que es el archivo
 				items.get(0).delete(); // borrar el blob de la blobstore
 				
