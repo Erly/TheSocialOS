@@ -28,8 +28,8 @@ import net.thesocialos.shared.model.User;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -103,17 +103,24 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 			}
 		});
 		
-		display.getSendText().addKeyUpHandler(new KeyUpHandler() {
+		display.getSendText().addKeyDownHandler(new KeyDownHandler() {
 			
 			@Override
-			public void onKeyUp(KeyUpEvent event) {
-				// TODO Auto-generated method stub
-				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-					TheSocialOS.getEventBus().fireEvent(
-							new ChatSendMessage(userWithChat, display.getSendText().getText()));
-					display.getSendText().setValue(null);
-				}
+			public void onKeyDown(KeyDownEvent event) {
+				
+				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
+					if (!display.getSendText().getText().trim().isEmpty()) {
+						TheSocialOS.getEventBus().fireEvent(
+								new ChatSendMessage(userWithChat, display.getSendText().getText()));
+						display.getSendText().setValue(null);
+						event.preventDefault();
+					} else
+						event.preventDefault();
+				
+				if ((150 - display.getSendText().getText().length()) < 0)
+					display.getSendText().setText(display.getSendText().getText().substring(0, 149));
 				display.lblCharacters().setText(String.valueOf((150 - display.getSendText().getText().length())));
+				
 			}
 		});
 		
