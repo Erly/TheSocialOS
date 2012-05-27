@@ -1,14 +1,17 @@
 package net.thesocialos.client.api;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.desktop.window.FolderWindow;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.SocialService;
 import net.thesocialos.client.service.SocialServiceAsync;
+import net.thesocialos.client.view.deck.DeckColumn;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Facebook;
 
@@ -97,6 +100,49 @@ public class FacebookAPI {
 			return url;
 		}
 		
+	}
+	
+	public class Post {
+		private String id;
+		private String user_id;
+		private String user_name;
+		private Date created_at;
+		private String text;
+		
+		/**
+		 * @return the created_at date
+		 */
+		public Date getCreated_at() {
+			return created_at;
+		}
+		
+		/**
+		 * @return the id
+		 */
+		public String getId() {
+			return id;
+		}
+		
+		/**
+		 * @return the text
+		 */
+		public String getText() {
+			return text;
+		}
+		
+		/**
+		 * @return the user_id
+		 */
+		public String getUser_id() {
+			return user_id;
+		}
+		
+		/**
+		 * @return the user_name
+		 */
+		public String getUser_name() {
+			return user_name;
+		}
 	}
 	
 	private Facebook getFacebookAccount() {
@@ -254,5 +300,48 @@ public class FacebookAPI {
 				socialService.postOnFacebook(facebookAccount, message, cb);
 			}
 		}.retry(3);
+	}
+	
+	public void loadWall(final DeckColumn panel) {
+		Facebook facebookAccount = getFacebookAccount();
+		String urlString = "https://graph.facebook.com/me/home?access_token=" + facebookAccount.getAuthToken();
+		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+		jsonp.requestObject(urlString, new AsyncCallback<JavaScriptObject>() {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log(caught.getMessage());
+			}
+			
+			@Override
+			public void onSuccess(JavaScriptObject result) {
+				JSONObject object = new JSONObject(result);
+				HashSet<Post> posts = new HashSet<Post>();
+				JSONArray array = object.get("data").isArray();
+				for (int i = 0; i < array.size(); i++) {
+					Post post = new Post();
+					post.id = array.get(i).isObject().get("id").isString().stringValue();
+					post.user_id = array.get(i).isObject().get("from").isObject().get("id").isString().stringValue();
+					post.user_name = array.get(i).isObject().get("from").isObject().get("name").isString()
+							.stringValue();
+					String text = "";
+					if (null != array.get(i).isObject().get("message")) text = array.get(i).isObject().get("message")
+							.isString().stringValue();
+					else if (null != array.get(i).isObject().get("story")) text = array.get(i).isObject().get("story")
+							.isString().stringValue();
+					else if (null != array.get(i).isObject().get("caption"))
+						text = array.get(i).isObject().get("caption").isString().stringValue();
+					post.text = text;
+					post.created_at = new Date(array.get(i).isObject().get("created_time").isString().stringValue());
+					posts.add(post);
+				}
+				Set<Post> oldPosts = panel.getPosts();
+				if (null != oldPosts && !oldPosts.isEmpty()) posts.addAll(posts);
+				else
+					panel.setPosts(posts);
+				// panel.clearPosts();
+				panel.loadPosts();
+			}
+		});
 	}
 }

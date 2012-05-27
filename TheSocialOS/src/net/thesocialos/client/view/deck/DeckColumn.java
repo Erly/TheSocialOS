@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import net.thesocialos.client.api.FacebookAPI.Post;
 import net.thesocialos.client.api.TwitterAPI.Tweet;
 import net.thesocialos.shared.model.Columns;
 
@@ -29,6 +30,7 @@ public class DeckColumn extends Composite implements HasWidgets {
 	
 	private Columns columns;
 	private Set<Tweet> tweets = new HashSet<Tweet>();
+	private Set<Post> posts = new HashSet<Post>();
 	
 	public DeckColumn() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -48,8 +50,16 @@ public class DeckColumn extends Composite implements HasWidgets {
 		tweets.add(tweet);
 	}
 	
+	public void addPost(Post post) {
+		posts.add(post);
+	}
+	
 	public void addTweets(Set<Tweet> tweetsSet) {
 		tweets.addAll(tweetsSet);
+	}
+	
+	public void addPosts(Set<Post> postsSet) {
+		posts.addAll(postsSet);
 	}
 	
 	@Override
@@ -59,6 +69,10 @@ public class DeckColumn extends Composite implements HasWidgets {
 	
 	public void clearTweets() {
 		tweets.clear();
+	}
+	
+	public void clearPosts() {
+		posts.clear();
 	}
 	
 	/**
@@ -80,17 +94,26 @@ public class DeckColumn extends Composite implements HasWidgets {
 		return tweets;
 	}
 	
+	/**
+	 * @return the posts
+	 */
+	public Set<Post> getPosts() {
+		return posts;
+	}
+	
 	@Override
 	public Iterator<Widget> iterator() {
 		return postsColumn.iterator();
 	}
 	
-	public void loadTweets() {
-		Set<TimelinePost> posts = new HashSet<TimelinePost>();
+	public void loadPosts() {
+		Set<TimelinePost> tposts = new HashSet<TimelinePost>();
+		for (Post p : posts)
+			tposts.add(new TimelinePost(p));
 		for (Tweet t : tweets)
-			posts.add(new TimelinePost(t));
+			tposts.add(new TimelinePost(t));
 		postsColumn.clear();
-		for (TimelinePost tp : posts)
+		for (TimelinePost tp : tposts)
 			postsColumn.add(tp);
 	}
 	
@@ -118,5 +141,13 @@ public class DeckColumn extends Composite implements HasWidgets {
 	 */
 	public void setTweets(Set<Tweet> tweets) {
 		this.tweets = tweets;
+	}
+	
+	/**
+	 * @param tweets
+	 *            the tweets to set
+	 */
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
 	}
 }

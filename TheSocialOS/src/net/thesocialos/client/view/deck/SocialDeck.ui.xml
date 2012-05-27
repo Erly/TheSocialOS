@@ -46,9 +46,7 @@
 				<g:HorizontalPanel width="100%" height="100%" ui:field="timelineTab"/>
 			</g:Tab>
 			<g:Tab text="Add Column">
-				<g:VerticalPanel width="100%" height="100%" ui:field="addColumnTab">
-					<s:AddColumn></s:AddColumn>
-				</g:VerticalPanel>
+				<s:AddColumn height="100%" width="100%" />
 			</g:Tab>
 			<!-- <g:Tab text="Twitter">
 				<g:HorizontalPanel width="100%" height="100%" ui:field="twitterTab"/>

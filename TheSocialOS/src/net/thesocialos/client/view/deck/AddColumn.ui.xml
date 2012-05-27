@@ -45,7 +45,9 @@
 					<s:DeckColumn ui:field="column" />
 				</g:Cell>
 				<g:Cell horizontalAlignment="ALIGN_CENTER" >
-					<g:Button text="Add Column" ui:field="addColumn" addStyleNames="{style.padding}" />
+					<g:SimplePanel addStyleNames="{style.padding}" >
+						<g:Button text="Add Column" ui:field="addColumn" />
+					</g:SimplePanel>
 				</g:Cell>
 			</g:VerticalPanel>
 		</g:Cell>

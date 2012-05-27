@@ -21,15 +21,13 @@ import net.thesocialos.shared.model.Twitter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.jsonp.client.JsonpRequestBuilder;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -122,26 +120,26 @@ public class TwitterAPI {
 		// TODO Auto-generated constructor stub
 	}
 	
-	private String getHomeTimelineSignedUrl(Twitter twitterAccount, int j, String lastId) {
-		String url = "https://api.twitter.com/1/statuses/home_timeline.json?callback=jsonCallback[" + j + "]";
+	private String getHomeTimelineSignedUrl(Twitter twitterAccount, String lastId) {
+		String url = "https://api.twitter.com/1/statuses/home_timeline.json";
 		
-		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
+		if (null != lastId && !lastId.isEmpty()) url += "?since_id=" + lastId;
 		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
 				twitterAccount.getTokenSecret(), url);
 	}
 	
-	private String getMentionsTimelineSignedUrl(Twitter twitterAccount, int j, String lastId) {
-		String url = "https://api.twitter.com/1/statuses/mentions.json?callback=jsonCallback[" + j + "]";
+	private String getMentionsTimelineSignedUrl(Twitter twitterAccount, String lastId) {
+		String url = "https://api.twitter.com/1/statuses/mentions.json";
 		
-		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
+		if (null != lastId && !lastId.isEmpty()) url += "?since_id=" + lastId;
 		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
 				twitterAccount.getTokenSecret(), url);
 	}
 	
-	private String getSearchTimelineSignedUrl(Twitter twitterAccount, int j, String query, String lastId) {
+	private String getSearchTimelineSignedUrl(Twitter twitterAccount, String query, String lastId) {
 		if (null == query || query.isEmpty()) return "";
 		if (query.contains("#")) query = query.replace("#", "%23");
-		String url = "https://search.twitter.com/search.json?q=" + query + "&callback=jsonCallback[" + j + "]";
+		String url = "https://search.twitter.com/search.json?q=" + query;
 		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
 		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
 				twitterAccount.getTokenSecret(), url);
@@ -157,10 +155,9 @@ public class TwitterAPI {
 		return null;
 	}
 	
-	private String getUserTimelineSignedUrl(Twitter twitterAccount, int j, String screen_name, String lastId) {
+	private String getUserTimelineSignedUrl(Twitter twitterAccount, String screen_name, String lastId) {
 		if (null == screen_name || screen_name.isEmpty()) screen_name = twitterAccount.getUsername();
-		String url = "https://api.twitter.com/1/statuses/user_timeline.json?screen_name=" + screen_name
-				+ "&callback=jsonCallback[" + j + "]";
+		String url = "https://api.twitter.com/1/statuses/user_timeline.json?screen_name=" + screen_name;
 		if (null != lastId && !lastId.isEmpty()) url += "&since_id=" + lastId;
 		return OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
 				twitterAccount.getTokenSecret(), url);
@@ -201,28 +198,27 @@ public class TwitterAPI {
 		for (DeckColumn col : deckColumns) {
 			Columns c = col.getColumns();
 			String url = "";
-			int j = i++;
-			if (i == 100) i = 0; // Reset the count when reaching the 100th request // NOT NECESSARY (probably)
 			if (c.getType() == Columns.TYPE.TIMELINE) {
 				if (c.getValue().equals(Columns.HOME)) {
 					col.setTitle("Timeline");
-					url = getHomeTimelineSignedUrl(twitterAccount, j, c.getLastTweetId());
+					new FacebookAPI().loadWall(col);
+					url = getHomeTimelineSignedUrl(twitterAccount, c.getLastTweetId());
 				} else if (c.getValue().equals(Columns.MENTIONS)) {
 					col.setTitle("Mentions");
-					url = getMentionsTimelineSignedUrl(twitterAccount, j, c.getLastTweetId());
+					url = getMentionsTimelineSignedUrl(twitterAccount, c.getLastTweetId());
 				} else if (c.getValue().equals(Columns.USER)) {
 					col.setTitle("Me");
-					url = getUserTimelineSignedUrl(twitterAccount, j, twitterAccount.getUsername(), c.getLastTweetId());
+					url = getUserTimelineSignedUrl(twitterAccount, twitterAccount.getUsername(), c.getLastTweetId());
 				} else {
 					col.setTitle(c.getValue());
-					url = getUserTimelineSignedUrl(twitterAccount, j, c.getValue(), c.getLastTweetId());
+					url = getUserTimelineSignedUrl(twitterAccount, c.getValue(), c.getLastTweetId());
 				}
 			} else if (c.getType() == Columns.TYPE.SEARCH) {
 				col.setTitle(c.getValue());
-				url = getSearchTimelineSignedUrl(twitterAccount, j, c.getValue(), c.getLastTweetId());
+				url = getSearchTimelineSignedUrl(twitterAccount, c.getValue(), c.getLastTweetId());
 			} else if (c.getType() == Columns.TYPE.LIST) col.setTitle(c.getValue());
 			// new TwitterAPI().loadUserTimelineInPanel(col);
-			loadTweetsInPanel(url, col, j);
+			loadTweetsInPanel(url, col);
 			// display.getAllPostColumnsPanel().add(col);
 		}
 	}
@@ -232,25 +228,31 @@ public class TwitterAPI {
 		Twitter twitterAccount = getTwitterAccount();
 		if (null == twitterAccount) return;
 		
-		String url = "https://api.twitter.com/1/statuses/home_timeline.json?callback=jsonCallback[" + j + "]";
+		String url = "https://api.twitter.com/1/statuses/home_timeline.json";
 		
 		url = OAuth.signRequest(Twitter.CONSUMER_KEY, Twitter.CONSUMER_SECRET, twitterAccount.getToken(),
 				twitterAccount.getTokenSecret(), url);
 		loadTweetsInPanel(url, panel, j);
 	}
 	
-	private void loadTweetsInPanel(String url, final DeckColumn panel, final int j) {
-		OAuth.makeJSONRequest(j, url, new JSONHandler() {
+	private void loadTweetsInPanel(String url, final DeckColumn panel) {
+		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+		jsonp.requestObject(url, new AsyncCallback<JavaScriptObject>() {
 			
 			@Override
-			public void handleJSON(JavaScriptObject obj) {
+			public void onFailure(Throwable caught) {
+				GWT.log(caught.getMessage());
+			}
+			
+			@Override
+			public void onSuccess(JavaScriptObject result) {
 				JSONArray array;
 				Columns c = panel.getColumns();
 				if (c.getType() == Columns.TYPE.SEARCH) {
-					JSONObject json = new JSONObject(obj);
+					JSONObject json = new JSONObject(result);
 					array = json.get("results").isArray();
 				} else
-					array = new JSONArray(obj);
+					array = new JSONArray(result);
 				Set<Tweet> tweets = new HashSet<Tweet>();
 				for (int i = 0; i < array.size(); i++) {
 					Tweet tweet = new Tweet();
@@ -279,17 +281,16 @@ public class TwitterAPI {
 				}
 				Set<Tweet> oldTweets = panel.getTweets();
 				if (null != oldTweets && !oldTweets.isEmpty()) tweets.addAll(tweets);
-				panel.clearTweets();
-				panel.setTweets(tweets);
-				panel.loadTweets();
-				NodeList<Element> scripts = Document.get().getElementsByTagName("head").getItem(0)
-						.getElementsByTagName("script");
-				for (int k = 0; k < scripts.getLength(); k++) {
-					Element e = scripts.getItem(k);
-					if (e.getString().contains("jsonCallback[" + j + "]")) e.removeFromParent();
-				}
+				else
+					panel.setTweets(tweets);
+				// panel.clearTweets();
+				panel.loadPosts();
 			}
 		});
+		/*
+		 * OAuth.makeJSONRequest(j, url, new JSONHandler() {
+		 * @Override public void handleJSON(JavaScriptObject obj) { } });
+		 */
 	}
 	
 	private synchronized void loadTweetsInPanel(String url, final HasWidgets panel, int j) {

@@ -1,5 +1,6 @@
 package net.thesocialos.client.view.deck;
 
+import net.thesocialos.client.api.FacebookAPI.Post;
 import net.thesocialos.client.api.TwitterAPI.Tweet;
 
 import com.google.gwt.core.client.GWT;
@@ -34,6 +35,22 @@ public class TimelinePost extends Composite {
 		user.setText(tweet.getUser_name() + " @" + tweet.getScreen_name());
 		String time = "";
 		long dif = System.currentTimeMillis() - tweet.getCreated_at().getTime();
+		if (dif < 1000) time = "now";
+		else if (dif < 60000) time = dif / 1000 + "s";
+		else if (dif < 60 * 60 * 1000) time = dif / 60 / 1000 + "m";
+		else if (dif < 24 * 60 * 60 * 1000) time = dif / 60 / 60 / 1000 + "h";
+		else
+			time = dif / 24 / 60 / 60 / 1000 + "d";
+		this.time.setText(time);
+	}
+	
+	public TimelinePost(Post fpost) {
+		initWidget(uiBinder.createAndBindUi(this));
+		photo.setUrl("");
+		post.setHTML(fpost.getText());
+		user.setText(fpost.getUser_name());
+		String time = "";
+		long dif = System.currentTimeMillis() - fpost.getCreated_at().getTime();
 		if (dif < 1000) time = "now";
 		else if (dif < 60000) time = dif / 1000 + "s";
 		else if (dif < 60 * 60 * 1000) time = dif / 60 / 1000 + "m";
