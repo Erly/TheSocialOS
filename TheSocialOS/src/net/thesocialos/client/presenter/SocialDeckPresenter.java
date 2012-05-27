@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.TwitterAPI;
 import net.thesocialos.shared.model.Columns;
 
@@ -20,6 +21,7 @@ import com.googlecode.objectify.Key;
 public class SocialDeckPresenter implements Presenter {
 	
 	TwitterAPI twitter = new TwitterAPI();
+	FacebookAPI facebook = new FacebookAPI();
 	
 	public interface Display {
 		Widget asWidget();
@@ -48,6 +50,7 @@ public class SocialDeckPresenter implements Presenter {
 				// Tweet it
 				twitter.post(postText);
 				// Post it in Facebook
+				facebook.post(postText);
 				display.getTextField().setValue("");
 			}
 		});
