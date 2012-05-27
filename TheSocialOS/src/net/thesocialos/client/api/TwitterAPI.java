@@ -188,6 +188,15 @@ public class TwitterAPI {
 		}.scheduleRepeating(50000);
 	}
 	
+	public void loadColumns(DeckColumn column) {
+		final Twitter twitterAccount = getTwitterAccount();
+		if (null == twitterAccount) return;
+		
+		deckColumns.add(column);
+		
+		loadColumns(twitterAccount);
+	}
+	
 	private void loadColumns(Twitter twitterAccount) {
 		for (DeckColumn col : deckColumns) {
 			Columns c = col.getColumns();

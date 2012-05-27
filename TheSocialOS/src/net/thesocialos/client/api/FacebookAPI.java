@@ -6,19 +6,26 @@ import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.desktop.window.FolderWindow;
+import net.thesocialos.client.helper.RPCXSRF;
+import net.thesocialos.client.service.SocialService;
+import net.thesocialos.client.service.SocialServiceAsync;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Facebook;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.jsonp.client.JsonpRequestBuilder;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.googlecode.objectify.Key;
 
 public class FacebookAPI {
+	
+	private static final SocialServiceAsync socialService = GWT.create(SocialService.class);
 	
 	public class Album implements MediaAlbum {
 		
@@ -219,5 +226,33 @@ public class FacebookAPI {
 				}
 			}
 		});
+	}
+	
+	public void post(final String message) {
+		final Facebook facebookAccount = getFacebookAccount();
+		new RPCXSRF<String>(socialService) {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				caught.printStackTrace();
+			}
+			
+			@Override
+			public void onSuccess(String result) {
+				// Window.alert(result);
+				new Timer() {
+					
+					@Override
+					public void run() {
+						// loadColumns(facebookAccount);
+					}
+				}.schedule(1000);
+			}
+			
+			@Override
+			protected void XSRFcallService(AsyncCallback<String> cb) {
+				socialService.postOnFacebook(facebookAccount, message, cb);
+			}
+		}.retry(3);
 	}
 }
