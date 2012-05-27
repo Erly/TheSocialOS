@@ -1199,6 +1199,31 @@ input {
 	100% { top:-200px;}
 }		
 
+/**Shared Manager **/
+	TABLE.sharedTableVideo{
+	color:Green;
+	
+}
+TABLE.sharedTableImage{
+	color:Blue;
+
+}
+  TD.sharedTable {
+     
+ 
+     text-align:left;
+    min-width:166px;
+    max-width:166px;
+   }
+ TD.sharedTable1{
+    
+      
+     text-align:left;
+     min-width:84px;
+     max-width:84px;
+ }
+
+
 /**  Test zone */
 
 .speech-1 {  

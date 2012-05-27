@@ -48,6 +48,16 @@
   	<url-pattern>/thesocialos/chatService</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  	<servlet-name>ShareService</servlet-name>
+  	<servlet-class>net.thesocialos.server.ShareServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>ShareService</servlet-name>
+  	<url-pattern>/thesocialos/shareService</url-pattern>
+  </servlet-mapping>
+  
   <!--  Tracking channelApi (Contections and disconnections -->
   <servlet>
   	<servlet-name>userConnectChannel</servlet-name>

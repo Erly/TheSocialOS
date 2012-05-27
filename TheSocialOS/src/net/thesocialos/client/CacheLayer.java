@@ -14,9 +14,12 @@ import net.thesocialos.client.event.AccountUpdateEvent;
 import net.thesocialos.client.event.AvatarUpdateEvent;
 import net.thesocialos.client.event.ContactsChangeEvent;
 import net.thesocialos.client.event.ContactsPetitionChangeEvent;
+import net.thesocialos.client.event.ShareHistoryChangEvent;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.service.ContacsService;
 import net.thesocialos.client.service.ContacsServiceAsync;
+import net.thesocialos.client.service.ShareService;
+import net.thesocialos.client.service.ShareServiceAsync;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
@@ -24,6 +27,7 @@ import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.Session;
+import net.thesocialos.shared.model.SharedHistory;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
@@ -39,7 +43,7 @@ public class CacheLayer {
 	
 	private static Map<Key<User>, List<Account>> contactsAccounts = new HashMap<Key<User>, List<Account>>();
 	
-	// Usuarios de la aplicaci�n
+	// Usuarios de la aplicación
 	private static Map<String, User> users = new LinkedHashMap<String, User>();
 	private static LinkedHashMap<String, Session> sessions;
 	
@@ -47,9 +51,13 @@ public class CacheLayer {
 	
 	private static Map<String, User> petitionsContacts = new LinkedHashMap<String, User>();
 	
+	private static List<SharedHistory> userShareHistory = new ArrayList<SharedHistory>();
+	
 	private final static UserServiceAsync userService = GWT.create(UserService.class);
 	
 	private final static ContacsServiceAsync contactService = GWT.create(ContacsService.class);
+	
+	private final static ShareServiceAsync sharedService = GWT.create(ShareService.class);
 	
 	/**
 	 * Se encarga de hacer las llamadas asincronas de los contactos
@@ -658,8 +666,42 @@ public class CacheLayer {
 			}.retry(3);
 		}
 		
+		/**
+		 * Get the local avatar
+		 * 
+		 * @return
+		 */
 		public static String getAvatar() {
 			return CacheLayer.user.getUrlAvatar();
+		}
+		
+		public static void getShareHistory(boolean cached, AsyncCallback<List<SharedHistory>> callback) {
+			if (!userShareHistory.isEmpty() || cached) callback.onSuccess(userShareHistory);
+			else
+				getShareHistory(callback);
+		}
+		
+		private static void getShareHistory(final AsyncCallback<List<SharedHistory>> callback) {
+			new RPCXSRF<List<SharedHistory>>(sharedService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<List<SharedHistory>> cb) {
+					sharedService.getShare(cb);
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					
+				}
+				
+				@Override
+				public void onSuccess(List<SharedHistory> history) {
+					CacheLayer.userShareHistory = history;
+					TheSocialOS.getEventBus().fireEvent(new ShareHistoryChangEvent());
+					callback.onSuccess(CacheLayer.userShareHistory);
+				}
+			}.retry(3);
 		}
 	}
 	

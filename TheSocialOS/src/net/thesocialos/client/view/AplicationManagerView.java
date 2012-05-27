@@ -36,16 +36,15 @@ public class AplicationManagerView extends Composite implements Display {
 	
 	@Override
 	public boolean addApplication(Aplication application) {
-		// TODO Auto-generated method stub
+		
 		addPanel.add(application);
 		return true;
 	}
 	
 	@Override
 	public boolean removeApplication(Aplication application) {
-		// TODO Auto-generated method stub
-		System.out.println(addPanel.remove(application));
-		return true;
+		
+		return addPanel.remove(application);
 	}
 	
 }

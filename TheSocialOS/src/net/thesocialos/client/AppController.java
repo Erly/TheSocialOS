@@ -8,6 +8,7 @@ import net.thesocialos.client.event.AccountAddedEvent;
 import net.thesocialos.client.event.AccountAddedEventHandler;
 import net.thesocialos.client.event.LogoutEvent;
 import net.thesocialos.client.event.LogoutEventHandler;
+import net.thesocialos.client.event.ShareHistoryChangEvent;
 import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.presenter.DesktopPresenter;
 import net.thesocialos.client.presenter.Presenter;
@@ -26,6 +27,8 @@ import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactPetition;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEventHandler;
+import net.thesocialos.shared.ChannelApiEvents.ChApiPushDisconnect;
+import net.thesocialos.shared.ChannelApiEvents.ChApiShareChange;
 import net.thesocialos.shared.model.Account;
 
 import com.google.gwt.core.client.GWT;
@@ -171,9 +174,15 @@ public class AppController implements ValueChangeHandler<String> {
 			}
 			
 			@Override
-			public void chApiDisconnect() {
+			public void chApiDisconnect(ChApiPushDisconnect event) {
 				System.out.println(" a la puta calle");
 				TheSocialOS.stopChannelApi();
+				
+			}
+			
+			@Override
+			public void onShareChange(ChApiShareChange event) {
+				TheSocialOS.getEventBus().fireEvent(new ShareHistoryChangEvent());
 				
 			}
 		});

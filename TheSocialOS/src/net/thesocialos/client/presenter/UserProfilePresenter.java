@@ -3,7 +3,6 @@ package net.thesocialos.client.presenter;
 import net.thesocialos.client.view.profile.ProfilePanel;
 import net.thesocialos.client.view.profile.TimelinePanel;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -46,7 +45,7 @@ public class UserProfilePresenter implements Presenter {
 	
 	@Override
 	public void go(final HasWidgets container) {
-		GWT.log("UserProfilePresenter.go");
+		
 		// container.clear(); // Clear the screen
 		viewProfilePanel.clear();
 		

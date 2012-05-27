@@ -1,6 +1,6 @@
 package net.thesocialos.client.service;
 
-import java.util.Map;
+import java.util.List;
 
 import net.thesocialos.shared.model.SharedHistory;
 import net.thesocialos.shared.model.SharedHistory.SHARETYPE;
@@ -11,7 +11,7 @@ import com.googlecode.objectify.Key;
 
 public interface ShareServiceAsync extends ServiceAsync {
 	
-	void addShare(Key<User> contact, String url, SHARETYPE type, AsyncCallback<Boolean> callback);
+	void addShare(Key<User> contact, String url, String title, SHARETYPE type, AsyncCallback<Boolean> callback);
 	
-	void getShare(AsyncCallback<Map<Key<SharedHistory>, SharedHistory>> callback);
+	void getShare(AsyncCallback<List<SharedHistory>> callback);
 }

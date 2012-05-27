@@ -39,6 +39,7 @@ public class DesktopBar extends Composite {
 	@UiField Aplication appManagerButton;
 	@UiField FocusPanel uploadButton;
 	@UiField HTMLPanel channelApi;
+	@UiField FocusPanel sharedButton;
 	
 	public DesktopBar() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -94,6 +95,10 @@ public class DesktopBar extends Composite {
 	
 	public Aplication getAppManagerButton() {
 		return appManagerButton;
+	}
+	
+	public FocusPanel getSharedButton() {
+		return sharedButton;
 	}
 	
 }

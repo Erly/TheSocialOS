@@ -11,7 +11,7 @@ public class ChApiPushDisconnect extends ChApiEvent {
 	
 	@Override
 	protected void dispatch(ChApiEventHandler handler) {
-		handler.chApiDisconnect();
+		handler.chApiDisconnect(this);
 		
 	}
 }

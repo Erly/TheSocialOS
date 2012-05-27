@@ -78,8 +78,8 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 				Entry<Aplication, DesktopUnit> appDesktop = iterator.next();
 				if (appDesktop.getValue().equals(desktopUnit)) {
 					display.removeApplication(appDesktop.getKey());
+					applications.remove(appDesktop.getKey());
 					
-					System.out.println();
 				}
 			}
 			
