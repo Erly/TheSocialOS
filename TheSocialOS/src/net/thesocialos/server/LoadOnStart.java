@@ -16,6 +16,7 @@ import net.thesocialos.shared.model.Lines;
 import net.thesocialos.shared.model.Oauth1;
 import net.thesocialos.shared.model.Oauth2;
 import net.thesocialos.shared.model.Session;
+import net.thesocialos.shared.model.SharedHistory;
 import net.thesocialos.shared.model.Twitter;
 import net.thesocialos.shared.model.User;
 
@@ -50,10 +51,11 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(Google.class);
 		
 		ObjectifyService.register(ImageUpload.class);
+		ObjectifyService.register(SharedHistory.class);
 		
 		setAllUsertoOffline();
 		// resetContacts();
-		createCloudAccounts();
+		// createCloudAccounts();
 		
 	}
 	
@@ -103,6 +105,10 @@ public class LoadOnStart extends HttpServlet {
 		user1.addAccount(ofy.put(flickR));
 		user1.addAccount(ofy.put(google));
 		ofy.put(user1);
+		
+	}
+	
+	private void createSharedExamples() {
 		
 	}
 }

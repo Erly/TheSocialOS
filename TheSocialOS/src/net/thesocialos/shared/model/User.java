@@ -77,6 +77,8 @@ public class User implements Serializable {
 	
 	List<Key<Columns>> columns = new ArrayList<Key<Columns>>();
 	
+	private List<Key<SharedHistory>> shared = new ArrayList<Key<SharedHistory>>();
+	
 	public User() {
 		
 	}
@@ -444,6 +446,25 @@ public class User implements Serializable {
 	 */
 	public void setAvatar(String avatar) {
 		urlAvatar = avatar;
+	}
+	
+	/**
+	 * @return the shared
+	 */
+	public List<Key<SharedHistory>> getShared() {
+		return shared;
+	}
+	
+	/**
+	 * @param shared
+	 *            the shared to set
+	 */
+	public void setShared(List<Key<SharedHistory>> shared) {
+		this.shared = shared;
+	}
+	
+	public void addShare(Key<SharedHistory> share) {
+		shared.add(share);
 	}
 	
 }

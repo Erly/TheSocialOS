@@ -1,4 +1,6 @@
-package net.thesocialos.client.chat.view;
+package net.thesocialos.client.view;
+
+import net.thesocialos.client.presenter.SharedUnit.Display;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
@@ -9,7 +11,7 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ChatSharedView extends Composite {
+public class SharedView extends Composite implements Display {
 	
 	private static ChatSharedViewUiBinder uiBinder = GWT.create(ChatSharedViewUiBinder.class);
 	@UiField(provided = true) CellList<Object> cellListImages = new CellList<Object>(new AbstractCell<Object>() {
@@ -25,10 +27,10 @@ public class ChatSharedView extends Composite {
 		}
 	});
 	
-	interface ChatSharedViewUiBinder extends UiBinder<Widget, ChatSharedView> {
+	interface ChatSharedViewUiBinder extends UiBinder<Widget, SharedView> {
 	}
 	
-	public ChatSharedView() {
+	public SharedView() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	

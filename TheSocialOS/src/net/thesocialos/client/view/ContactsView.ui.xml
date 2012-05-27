@@ -11,7 +11,7 @@
 		}
 		.contactsMenu {
 			position: absolute;
-			right: 25px;
+		/*	right: 25px;*/
 			top: 0px;
 			z-index: 200;
 			background-color: white;
@@ -20,9 +20,9 @@
 	</ui:style>
 	
 		<g:HorizontalPanel width="500px" height="430px" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP" spacing="1" ui:field="ContactsMenu" styleName="{style.contactsMenu}">
-			<g:DecoratedTabPanel height="436px" ui:field="dTPUserGroups" width="143px" animationEnabled="true">
+			<g:DecoratedTabPanel height="379px" ui:field="dTPUserGroups" width="143px" animationEnabled="true">
 				<g:Tab text="Contacts">
-					<p2:CellList width="165px" height="395px" ui:field="listContacts"/>
+					<p2:CellList width="165px" height="339px" ui:field="listContacts"/>
 				</g:Tab>
 			</g:DecoratedTabPanel>
 			<g:AbsolutePanel height="100%" width="336px">
@@ -30,11 +30,11 @@
 					<g:TextBox width="307px" height="18px" styleName="{style.border}" ui:field="txtSearch"/>
 				</g:at>
 				<g:at left="10" top="46">
-					<g:TabLayoutPanel barHeight="0" barUnit="EM" width="321px" height="393px" animationVertical="true" animationDuration="2">
+					<g:TabLayoutPanel barHeight="0" barUnit="EM" width="321px" height="334px" animationVertical="true" animationDuration="2">
 						<g:tab>
 							<g:header>Friends</g:header>
 							<g:VerticalPanel width="321px" height="" verticalAlignment="ALIGN_TOP" horizontalAlignment="ALIGN_LEFT">
-								<g:HorizontalPanel width="280px" spacing="1">
+								<g:HorizontalPanel width="280px" spacing="1" height="140px">
 									<g:Image width="103px" height="140px" ui:field="imgFriend" url="images/anonymous_avatar.png"/>
 									<g:VerticalPanel width="200px" horizontalAlignment="ALIGN_LEFT" spacing="2">
 										<p1:LabelText height="18px" ui:field="lblName" labelText="Nombre:" text="Unai" width="197px"/>
@@ -42,12 +42,12 @@
 										<g:TextArea width="200px" readOnly="true" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc," height="84px" styleName="{style.border}" ui:field="lblFriendBio"/>
 									</g:VerticalPanel>
 								</g:HorizontalPanel>
-								<g:Label width="40px" height="15px"/>
 								<g:Label text="Cuentas" horizontalAlignment="ALIGN_CENTER" width="308px"/>
 								<p1:AccountText accountText="Twitter:" ui:field="accountTwitter" width="313px"/>
 								<p1:AccountText accountText="Facebook:" accounts="Unai Correa" styleName="Google:" width="313px" ui:field="accountFacebook"/>
 								<p1:AccountText accountText="FlickR" accounts="Vssnake" ui:field="accountFlickR" width="313px"/>
 								<p1:AccountText accountText="Google+:" accounts="Vssnake" ui:field="accountGoogle" width="313px"/>
+								<g:Label width="40px" height="15px"/>
 							</g:VerticalPanel>
 						</g:tab>
 						<g:tab>
