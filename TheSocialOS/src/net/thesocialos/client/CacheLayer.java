@@ -473,6 +473,26 @@ public class CacheLayer {
 			}.retry(3);
 		}
 		
+		public static void addColumn(final Columns column) {
+			new RPCXSRF<Void>(userService) {
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					caught.printStackTrace();
+				}
+				
+				@Override
+				public void onSuccess(Void nothing) {
+					CacheLayer.UserCalls.refreshColumns();
+				}
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<Void> cb) {
+					userService.addDeckColumn(column, cb);
+				}
+			}.retry(3);
+		}
+		
 		public static void refreshColumns() {
 			new RPCXSRF<Map<Key<Columns>, Columns>>(userService) {
 				

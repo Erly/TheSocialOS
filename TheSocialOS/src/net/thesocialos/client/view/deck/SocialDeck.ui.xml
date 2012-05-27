@@ -1,6 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:s="urn:import:net.thesocialos.client.view.deck"
+>
 	<ui:style>
 		.deck {
 			background-color: #050505;
@@ -24,22 +26,19 @@
 	<g:VerticalPanel addStyleNames="{style.deck}" horizontalAlignment="ALIGN_CENTER" >
 		<g:Cell height="15%">
 			<g:HorizontalPanel height="100%" width="100%">
-				<g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_CENTER">
-					<g:Button ui:field="addColumnButton">Add Column</g:Button>
-				</g:Cell>
-			<g:cell verticalAlignment="MIDDLE"  horizontalAlignment="CENTER">
-				<g:HorizontalPanel>
-					<g:Cell height="">
-						<g:TextArea width="300px" height="80px" addStyleNames="{style.padding}" ui:field="textField"/>
-					</g:Cell>
-					<g:Cell verticalAlignment="ALIGN_BOTTOM">
-						<g:VerticalPanel addStyleNames="{style.padding}">
-							<g:Button ui:field="postButton">Post</g:Button>
-						</g:VerticalPanel>
-					</g:Cell>
-				</g:HorizontalPanel>
-			</g:cell>
-		</g:HorizontalPanel>
+				<g:cell verticalAlignment="MIDDLE"  horizontalAlignment="CENTER">
+					<g:HorizontalPanel>
+						<g:Cell height="">
+							<g:TextArea width="300px" height="80px" addStyleNames="{style.padding}" ui:field="textField"/>
+						</g:Cell>
+						<g:Cell verticalAlignment="ALIGN_BOTTOM">
+							<g:VerticalPanel addStyleNames="{style.padding}">
+								<g:Button ui:field="postButton">Post</g:Button>
+							</g:VerticalPanel>
+						</g:Cell>
+					</g:HorizontalPanel>
+				</g:cell>
+			</g:HorizontalPanel>
 		</g:Cell>
 		<g:Cell height="85%">
 			<g:DecoratedTabPanel width="100%" height="80%" ui:field="postsColumnsPanel" addStyleNames="{style.postsColumnsPanel}" animationEnabled="true">
@@ -48,7 +47,7 @@
 			</g:Tab>
 			<g:Tab text="Add Column">
 				<g:VerticalPanel width="100%" height="100%" ui:field="addColumnTab">
-					<g:HorizontalPanel></g:HorizontalPanel>
+					<s:AddColumn></s:AddColumn>
 				</g:VerticalPanel>
 			</g:Tab>
 			<!-- <g:Tab text="Twitter">

@@ -31,7 +31,6 @@ public class SocialDeck extends Composite implements Display {
 	 * @UiField HorizontalPanel allTab;
 	 */
 	@UiField HorizontalPanel timelineTab;
-	@UiField Button addColumnButton;
 	@UiField VerticalPanel addColumnTab;
 	
 	public SocialDeck() {
