@@ -1,5 +1,6 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.presenter.SearchBoxPresenter.Display;
 import net.thesocialos.shared.model.User;
 
@@ -28,8 +29,10 @@ public class SearchBoxView extends Composite implements Display {
 		public void render(Context context, User value, SafeHtmlBuilder sb) {
 			
 			if (value == null) return;
-			
-			sb.appendHtmlConstant("<table class='chat_state_offline'  width= '100%'>");
+			if (CacheLayer.ContactCalls.isContact(value.getOwnKey())) sb
+					.appendHtmlConstant("<table class='chat_state_online'  width= '100%'>");
+			else
+				sb.appendHtmlConstant("<table class='chat_state_offline'  width= '100%'>");
 			
 			// Add the contact image.
 			
@@ -71,6 +74,7 @@ public class SearchBoxView extends Composite implements Display {
 	
 	@Override
 	public Image getAvatarIMG() {
+		
 		// TODO Auto-generated method stub
 		return imgAvatar;
 	}

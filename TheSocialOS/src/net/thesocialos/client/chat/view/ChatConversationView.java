@@ -7,6 +7,7 @@ import net.thesocialos.shared.model.Lines;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -83,17 +84,21 @@ public class ChatConversationView extends Composite implements Display {
 	
 	public ChatConversationView() {
 		initWidget(uiBinder.createAndBindUi(this));
+		InputElement element = lblTextToSend.getElement().cast();
+		element.setSize(50);
 		
 	}
 	
 	public ChatConversationView(String firstName) {
 		initWidget(uiBinder.createAndBindUi(this));
+		InputElement element = lblTextToSend.getElement().cast();
+		element.setSize(50);
 		
 	}
 	
 	@Override
 	public ChatConversationView getChatPanel() {
-		// TODO Auto-generated method stub
+		
 		return this;
 	}
 	

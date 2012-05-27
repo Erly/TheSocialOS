@@ -156,7 +156,8 @@ public class DesktopManager {
 					linkedDesktopUnit.remove(desktopUnit.getProgramID());
 				}
 				if (desktopUnit.equals(lastDesktopUnit)) lastDesktopUnit = null;
-				
+				if (desktopUnit.getProgramID() == AppConstants.OTHER)
+					aplicationsManager.removeApplicationToControl(desktopUnit);
 				return true;
 			}
 			return false;

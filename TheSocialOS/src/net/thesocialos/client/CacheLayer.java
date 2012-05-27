@@ -28,6 +28,7 @@ import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.Session;
 import net.thesocialos.shared.model.SharedHistory;
+import net.thesocialos.shared.model.SharedHistory.SHARETYPE;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
@@ -433,6 +434,30 @@ public class CacheLayer {
 				}
 			}.retry(3);
 		}
+		
+		public static void sendShareToContact(final Key<User> contact, final SHARETYPE ShareType, final String title,
+				final String url, final AsyncCallback<Boolean> callback) {
+			new RPCXSRF<Boolean>(sharedService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<Boolean> cb) {
+					sharedService.addShare(contact, url, title, ShareType, cb);
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					
+				}
+				
+				@Override
+				public void onSuccess(Boolean result) {
+					callback.onSuccess(result);
+				}
+				
+			}.retry(3);
+			
+		}
 	}
 	
 	public static class GroupCalls {
@@ -696,12 +721,35 @@ public class CacheLayer {
 		}
 		
 		public static void getShareHistory(boolean cached, AsyncCallback<List<SharedHistory>> callback) {
-			if (!userShareHistory.isEmpty() || cached) callback.onSuccess(userShareHistory);
+			if (!userShareHistory.isEmpty() && cached) callback.onSuccess(userShareHistory);
 			else
 				getShareHistory(callback);
 		}
 		
 		private static void getShareHistory(final AsyncCallback<List<SharedHistory>> callback) {
+			new RPCXSRF<List<SharedHistory>>(sharedService) {
+				
+				@Override
+				protected void XSRFcallService(AsyncCallback<List<SharedHistory>> cb) {
+					sharedService.getShare(cb);
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					
+				}
+				
+				@Override
+				public void onSuccess(List<SharedHistory> history) {
+					CacheLayer.userShareHistory = history;
+					
+					callback.onSuccess(CacheLayer.userShareHistory);
+				}
+			}.retry(3);
+		}
+		
+		public static void updateShareHistory(final AsyncCallback<List<SharedHistory>> callback) {
 			new RPCXSRF<List<SharedHistory>>(sharedService) {
 				
 				@Override

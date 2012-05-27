@@ -179,8 +179,11 @@ public class ContactsServiceimpl extends XsrfProtectedServiceServlet implements 
 		Query<User> queryusers = ofy.query(User.class);
 		Map<String, User> users = new LinkedHashMap<String, User>();
 		if (queryusers.count() == 0) throw new UsersNotFoundException("No users in the database");
-		for (User user : queryusers)
-			users.put(user.getEmail(), User.toDTO(user));
+		for (User user : queryusers) {
+			User userto = User.toDTO(user);
+			userto.setOwnKey(Key.create(User.class, user.getEmail()));
+			users.put(user.getEmail(), userto);
+		}
 		
 		return users;
 	}

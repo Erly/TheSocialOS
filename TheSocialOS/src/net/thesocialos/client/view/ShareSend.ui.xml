@@ -1,0 +1,54 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
+	<ui:style>
+		.textBox {
+			font-size: 16px;
+		vertical-align: middle;
+		text-align: center;
+		}
+		
+		.ShareSend{
+	
+	
+		background: rgb(125,126,125); /* Old browsers */
+		background: -moz-linear-gradient(-45deg,  rgba(125,126,125,1) 0%, rgba(14,14,14,1) 99%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(125,126,125,1)), color-stop(99%,rgba(14,14,14,1))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(-45deg,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 99%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(-45deg,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 99%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(-45deg,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 99%); /* IE10+ */
+		background: linear-gradient(-45deg,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 99%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		
+
+
+		}
+	</ui:style>
+	<g:HTMLPanel styleName="{style.ShareSend}">
+		<g:AbsolutePanel height="252px">
+			<g:at left="20" top="93">
+				<g:HorizontalPanel width="103px" height="22px" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_CENTER">
+					<g:Label text="Tipo:" ui:field="lblType"/>
+					<g:Label text="Video" ui:field="lblTypeValue"/>
+				</g:HorizontalPanel>
+			</g:at>
+			<g:at left="196" top="10">
+				<g:ScrollPanel width="244px" height="235px">
+					<p1:CellList ui:field="cellList" width="100%" height="100%"/>
+				</g:ScrollPanel>
+			</g:at>
+			<g:at left="10" top="216">
+				<g:Button ui:field="buttonSend" text="Enviar:"/>
+			</g:at>
+			<g:at left="10" top="10">
+				<g:TextBox width="154px" height="55px" text="Enter the contact" styleName="{style.textBox}" ui:field="searchBox"/>
+			</g:at>
+			<g:at left="10" top="163">
+				<g:TextBox maxLength="25" ui:field="txtTitle"/>
+			</g:at>
+			<g:at left="10" top="140">
+				<g:Label text="Title:"/>
+			</g:at>
+		</g:AbsolutePanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

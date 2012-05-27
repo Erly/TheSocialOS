@@ -175,7 +175,14 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				
+				if (CacheLayer.ContactCalls.isContact(selectionModel.getSelectedObject().getOwnKey())) display
+						.getLabelInvite().setVisible(false);
+				else
+					display.getLabelInvite().setVisible(true);
+				if (selectionModel.getSelectedObject().getUrlAvatar() == null) display.getAvatarIMG().setUrl(
+						"./images/anonymous_avatar.png");
+				else
+					display.getAvatarIMG().setUrl(selectionModel.getSelectedObject().getUrlAvatar());
 			}
 		});
 		display.getComponentsList().addDomHandler(new ContextMenuHandler() {
