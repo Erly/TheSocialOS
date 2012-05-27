@@ -12,6 +12,7 @@ import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactPetition;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
 import net.thesocialos.shared.ChannelApiEvents.ChApiPushDisconnect;
+import net.thesocialos.shared.ChannelApiEvents.ChApiShareChange;
 import net.thesocialos.shared.model.User;
 
 import com.google.appengine.api.channel.ChannelFailureException;
@@ -181,6 +182,16 @@ public class ChannelApiHelper {
 		if (user.isConnected)
 			ChannelApiHelper.sendMessage(user.getEmail(),
 					ChannelApiHelper.encodeMessage(new ChApiContactNew(userEmail)));
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param userEmail
+	 */
+	public static void sendSharetoUser(User user) {
+		if (user.isConnected)
+			ChannelApiHelper.sendMessage(user.getEmail(), ChannelApiHelper.encodeMessage(new ChApiShareChange()));
 	}
 	
 	public static void disconnectUser(User user) {

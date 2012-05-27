@@ -22,10 +22,10 @@ public class ShareServiceImpl extends XsrfProtectedServiceServlet implements Sha
 		if (UserHelper.isYourFriend(perThreadRequest.get().getSession(), ofy, contact)) {
 			SharedHistory share = new SharedHistory(shareType, url, title, contact, Calendar.getInstance()
 					.getTimeInMillis());
-			User user = UserHelper.getUserWithEmail(UserHelper.getUserHttpSession(perThreadRequest.get().getSession()),
-					ofy);
+			User user = ofy.get(contact);
 			user.addHistoryKey(ofy.put(share));
 			ofy.put(user);
+			ChannelApiHelper.sendSharetoUser(user);
 			return true;
 		}
 		
