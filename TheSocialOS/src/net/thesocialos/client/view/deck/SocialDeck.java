@@ -50,9 +50,4 @@ public class SocialDeck extends Composite implements Display {
 	public TextArea getTextField() {
 		return textField;
 	}
-	
-	@Override
-	public HasClickHandlers getAddColumnButton() {
-		return null;
-	}
 }

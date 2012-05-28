@@ -176,6 +176,11 @@ public class DesktopPresenter implements Presenter {
 		appsData.add(new FrameWindow("Sketchpad",
 				"http://profile.ak.fbcdn.net/hprofile-ak-snc4/23295_128946130463344_2641_n.jpg",
 				"http://mugtug.com/sketchpad", AppConstants.OTHER, true));
+		FrameWindow futbol = new FrameWindow("Supercampeones",
+				"http://4.bp.blogspot.com/-b803Ej85MZI/Tx7rRPF2KlI/AAAAAAAAAEE/oeyr6RE00Bc/s1600/suoercampeones.png",
+				"./WebPlayer/WebPlayer.html", AppConstants.OTHER, true);
+		futbol.setSize(800, 640);
+		appsData.add(futbol);
 		
 		// appsData.add(new ChatApp("Xmpp","http://www.bitrix.es/upload/iblock/e03/xmpp.gif",chatEventBus, new
 		// ChatPanel(),

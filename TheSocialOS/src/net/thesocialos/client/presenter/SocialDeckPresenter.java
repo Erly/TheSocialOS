@@ -31,8 +31,6 @@ public class SocialDeckPresenter implements Presenter {
 		HasClickHandlers getPostButton();
 		
 		TextArea getTextField();
-		
-		HasClickHandlers getAddColumnButton();
 	}
 	
 	private final Display display;
@@ -52,13 +50,6 @@ public class SocialDeckPresenter implements Presenter {
 				// Post it in Facebook
 				facebook.post(postText);
 				display.getTextField().setValue("");
-			}
-		});
-		display.getAddColumnButton().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				
 			}
 		});
 	}

@@ -42,6 +42,7 @@ public class LoginView extends Composite implements Display {
 	@UiField TableCellElement flags;
 	Anchor spainFlag;
 	Anchor usaFlag;
+	Timer timer = null;
 	
 	public LoginView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -67,7 +68,7 @@ public class LoginView extends Composite implements Display {
 		});
 		
 		repositionElements();
-		Timer timer = new Timer() {
+		timer = new Timer() {
 			
 			@Override
 			public void run() {
@@ -76,8 +77,7 @@ public class LoginView extends Composite implements Display {
 		};
 		timer.schedule(10);
 		timer.schedule(50);
-		timer.schedule(100);
-		timer.schedule(250);
+		timer.scheduleRepeating(100);
 		
 		spainFlag = new Anchor(new SafeHtmlBuilder().appendHtmlConstant(
 				"<image class='flags spain' src='http://www.crwflags.com/fotw/misc/wes.gif'/>").toSafeHtml());
@@ -94,6 +94,9 @@ public class LoginView extends Composite implements Display {
 		loginButton.getStyle().setTop(background.getHeight() - 100, Unit.PX);
 		helpers.getStyle().setTop(background.getHeight() - 50, Unit.PX);
 		footer.getStyle().setTop(background.getHeight() + 2, Unit.PX);
+		String top = footer.getStyle().getTop();
+		int iTop = Integer.parseInt(top.substring(0, top.indexOf("px")));
+		if (iTop > 100) timer.cancel();
 	}
 	
 	@Override

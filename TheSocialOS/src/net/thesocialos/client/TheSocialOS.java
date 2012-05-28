@@ -235,6 +235,7 @@ public class TheSocialOS implements EntryPoint {
 	
 	private void prefetchImages() {
 		String imagesUrl = "./images/";
+		Image.prefetch(imagesUrl + "wpLogin.png");
 		Image.prefetch(imagesUrl + "anonymous_avatar.png");
 		Image.prefetch(imagesUrl + "defaultBG.png");
 		Image.prefetch(imagesUrl + "dragger-4x4.gif");
@@ -243,7 +244,6 @@ public class TheSocialOS implements EntryPoint {
 		Image.prefetch(imagesUrl + "logo-big.png");
 		Image.prefetch(imagesUrl + "logo.png");
 		Image.prefetch(imagesUrl + "SocialOS-StartButton.png");
-		Image.prefetch(imagesUrl + "wpLogin.png");
 		Image.prefetch(imagesUrl + "badges/drive.png");
 		Image.prefetch(imagesUrl + "badges/facebook.png");
 		Image.prefetch(imagesUrl + "badges/flickr.png");

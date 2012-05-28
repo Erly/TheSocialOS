@@ -303,6 +303,7 @@ public class FacebookAPI {
 	
 	public void loadWall(final DeckColumn panel) {
 		Facebook facebookAccount = getFacebookAccount();
+		if (null == facebookAccount) return;
 		String urlString = "https://graph.facebook.com/me/home?access_token=" + facebookAccount.getAuthToken();
 		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
 		jsonp.requestObject(urlString, new AsyncCallback<JavaScriptObject>() {
