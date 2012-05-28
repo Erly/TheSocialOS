@@ -8,6 +8,7 @@ import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.exceptions.UserUpdateException;
+import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.User;
@@ -48,4 +49,6 @@ public interface UserService extends RemoteService {
 	void checkChannel(ChApiContactNew newContact);
 	
 	void setState(STATETYPE statetype, String customMsg);
+	
+	void sendResetPass(String email) throws UsersNotFoundException;
 }

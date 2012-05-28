@@ -27,6 +27,10 @@
   <service>channel_presence</service>
   </inbound-services>
   <threadsafe>true</threadsafe>
+  
+  <inbound-services>
+  <service>mail</service>
+</inbound-services>
 
 
 </appengine-web-app>

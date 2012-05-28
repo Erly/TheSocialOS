@@ -30,9 +30,7 @@ public class DesktopBar extends Composite {
 	@UiField FocusPanel userPanel;
 	@UiField FocusPanel socialOSButton;
 	@UiField FocusPanel focusContacts;
-	@UiField Label lblContacts;
 	@UiField FocusPanel searchButton;
-	@UiField Label lblPetitions;
 	@UiField Label lblPetitionsNumber;
 	@UiField FocusPanel PetitionsButton;
 	@UiField FocusPanel startButton;
@@ -49,6 +47,10 @@ public class DesktopBar extends Composite {
 			
 			@Override
 			public void onContactsPetitionChange(ContactsPetitionChangeEvent event) {
+				if (CacheLayer.ContactCalls.getCountPetitionsContanct() != 0) lblPetitionsNumber.setStyleName(
+						"petitions-unread", true);
+				else
+					lblPetitionsNumber.setStyleName("petitions-unread", false);
 				lblPetitionsNumber.setText(Integer.toString(CacheLayer.ContactCalls.getCountPetitionsContanct()));
 			}
 		});

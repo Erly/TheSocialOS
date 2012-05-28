@@ -43,4 +43,6 @@ public interface UserServiceAsync extends ServiceAsync {
 	
 	void setState(STATETYPE stateType, String customMsg, AsyncCallback<Void> callback);
 	
+	void sendResetPass(String email, AsyncCallback<Void> callback);
+	
 }

@@ -1,11 +1,20 @@
 package net.thesocialos.server;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import net.thesocialos.client.service.UserService;
@@ -15,6 +24,7 @@ import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
 import net.thesocialos.shared.ChannelApiEvents.ChApiContactNew;
 import net.thesocialos.shared.exceptions.UserExistsException;
 import net.thesocialos.shared.exceptions.UserUpdateException;
+import net.thesocialos.shared.exceptions.UsersNotFoundException;
 import net.thesocialos.shared.model.Account;
 import net.thesocialos.shared.model.Columns;
 import net.thesocialos.shared.model.Google;
@@ -346,6 +356,53 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		user.deleteAccount(accountKey);
 		ofy.delete(accountKey);
 		ofy.put(user);
+		
+	}
+	
+	@Override
+	public void sendResetPass(String email) throws UsersNotFoundException {
+		Objectify ofy = ObjectifyService.begin();
+		User user;
+		try {
+			user = ofy.get(User.class, email);
+		} catch (NotFoundException e) {
+			throw new UsersNotFoundException("User not exist");
+		}
+		
+		Properties props = new Properties();
+		javax.mail.Session session = javax.mail.Session.getDefaultInstance(props, null);
+		
+		try {
+			Message msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("admin@thesocialos.net", "SocialOS Administratrors"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("email", "Mr. User"));
+			Random random = new Random();
+			
+			Integer password = (int) (random.nextFloat() * 1000000);
+			msg.setSubject("Your reset password");
+			String sendText = new String();
+			sendText = "<img  src='http://www.thesocialos.net/images/logo-big.png'/><table border='1'><tr><td>User:</td>"
+					+ "<td>"
+					+ email
+					+ "</td></tr><tr><td>Password:</td>"
+					+ "<td>"
+					+ password
+					+ "</td>"
+					+ "</tr>"
+					+ "</table>";
+			msg.setText(sendText);
+			Transport.send(msg);
+			user.setPassword(String.valueOf(password));
+			ofy.put(user);
+			
+		} catch (AddressException e) {
+			// ...
+		} catch (MessagingException e) {
+			// ...
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 }

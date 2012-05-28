@@ -52,8 +52,8 @@
 
 }
 .channelApi_status{
-	right:80%
-	top:0px;
+	/*right:80%
+	top:0px;*/
 	
 }
 .socialos:hover {
@@ -70,7 +70,7 @@
 .horizontalWidgetPanel{
 	position:absolute;
 	top:0px;
-	left:30%;
+	left:60%;
 }
 .sharedBox {
 	cursor: pointer;
@@ -86,11 +86,7 @@
 .searchBox {
 	cursor: pointer;
 	font-weight: bolder;
-
-	
-
-	
-    
+   
 }
 .searchBox:hover {
 	background-color: #477ea2;
@@ -99,14 +95,19 @@
 .uploadBox {
 	cursor: pointer;
 	font-weight: bolder;
-
-	
-
-	
-    
 }
 
 .uploadBox:hover {
+	background-color: #477ea2;
+	color: white;
+}
+
+.contactBox {
+	cursor: pointer;
+	font-weight: bolder;
+}
+
+.contactBox:hover {
 	background-color: #477ea2;
 	color: white;
 }
@@ -143,8 +144,7 @@
 	padding-right: 5px;
 
 	position:absolute;
-    left:60%;
-    top:0%;
+    
 
 
 }
