@@ -32,9 +32,11 @@ import net.thesocialos.client.desktop.window.events.WindowOnTopEvent;
 import net.thesocialos.client.desktop.window.events.WindowResizeEvent;
 import net.thesocialos.client.helper.DblClickHandlerHelper;
 import net.thesocialos.client.helper.MediaHelper;
+import net.thesocialos.client.view.ShareSend;
 import net.thesocialos.client.view.Thumbnail;
 import net.thesocialos.client.view.Thumbnail.SERVICE;
 import net.thesocialos.client.view.Thumbnail.TYPE;
+import net.thesocialos.shared.model.SharedHistory.SHARETYPE;
 
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -445,8 +447,15 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		
 		@Override
 		public void execute() {
-			Window.alert(lastSelectedThumbUrl);
+			// Window.alert(lastSelectedThumbUrl);
+			ShareSend share = new ShareSend(SHARETYPE.IMAGE, lastSelectedThumbUrl);
+			share.setVisible(true);
+			PopupPanel popup = new PopupPanel(true);
+			popup.setGlassEnabled(true);
+			popup.add(share);
 			popupPanel.hide();
+			popup.getElement().getStyle().setZIndex(960);
+			popup.center();
 		}
 	};
 	

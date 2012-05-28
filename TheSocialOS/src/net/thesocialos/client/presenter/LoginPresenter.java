@@ -148,6 +148,8 @@ public class LoginPresenter implements Presenter {
 		Cookies.setCookie("_lang", language);
 		String url = Window.Location.getHref();
 		if (url.contains("locale")) url = url.substring(0, url.indexOf("locale") - 1);
+		else
+			url = url.substring(0, url.indexOf("#"));
 		Window.Location.assign(url);
 	}
 }
