@@ -43,6 +43,8 @@ public class DesktopBar extends Composite {
 	
 	public DesktopBar() {
 		initWidget(uiBinder.createAndBindUi(this));
+		channelApi.setStyleName("chatMenu_circle_online", true);
+		
 		TheSocialOS.getEventBus().addHandler(ContactsPetitionChangeEvent.TYPE, new ContactPetitionChangeEventHandler() {
 			
 			@Override

@@ -110,7 +110,7 @@ public class ShareSend extends Composite {
 		usersList.clear();
 		dataProvider.flush();
 		dataProvider.refresh();
-		CacheLayer.ContactCalls.getUsers(true, new AsyncCallback<Map<String, User>>() {
+		CacheLayer.ContactCalls.getContactsWithoutKey(true, new AsyncCallback<Map<String, User>>() {
 			
 			@Override
 			public void onFailure(Throwable caught) {

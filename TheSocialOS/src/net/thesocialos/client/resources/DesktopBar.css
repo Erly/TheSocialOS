@@ -54,6 +54,7 @@
 .channelApi_status{
 	right:80%
 	top:0px;
+	
 }
 .socialos:hover {
 	background-color: #477ea2;
@@ -74,10 +75,6 @@
 .sharedBox {
 	cursor: pointer;
 	font-weight: bolder;
-
-	
-
-
     
 }
 

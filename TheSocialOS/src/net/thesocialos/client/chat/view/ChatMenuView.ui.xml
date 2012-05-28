@@ -53,7 +53,7 @@
 		background: -o-linear-gradient(-45deg,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 99%); /* Opera 11.10+ */
 		background: -ms-linear-gradient(-45deg,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 99%); /* IE10+ */
 		background: linear-gradient(-45deg,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 99%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 		
 		}
 		.chatMenu_Head {
