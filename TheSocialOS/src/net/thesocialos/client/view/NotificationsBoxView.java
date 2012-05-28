@@ -12,6 +12,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class NotificationsBoxView extends Composite implements Display {
@@ -46,6 +47,7 @@ public class NotificationsBoxView extends Composite implements Display {
 	@UiField LabelText labelTextFriends;
 	
 	@UiField StackLayoutPanel stackLayoutPanel;
+	@UiField VerticalPanel panel;
 	
 	public NotificationsBoxView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -76,6 +78,12 @@ public class NotificationsBoxView extends Composite implements Display {
 	public StackLayoutPanel getStackLayoutPanel() {
 		// TODO Auto-generated method stub
 		return stackLayoutPanel;
+	}
+	
+	@Override
+	public VerticalPanel getPanel() {
+		// TODO Auto-generated method stub
+		return panel;
 	}
 	
 }

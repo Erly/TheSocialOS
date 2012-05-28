@@ -18,9 +18,11 @@ import net.thesocialos.shared.model.User;
 
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.ListDataProvider;
@@ -41,6 +43,8 @@ public class NotificationsBoxPresenter extends DesktopUnit implements IsTypeInfo
 		LabelText getGroupsLabelText();
 		
 		StackLayoutPanel getStackLayoutPanel();
+		
+		VerticalPanel getPanel();
 	}
 	
 	Display display;
@@ -78,8 +82,18 @@ public class NotificationsBoxPresenter extends DesktopUnit implements IsTypeInfo
 	}
 	
 	@Override
-	public void close(AbsolutePanel absolutePanel) {
-		absolutePanel.remove(display.asWidget());
+	public void close(final AbsolutePanel absolutePanel) {
+		Timer timer = new Timer() {
+			@Override
+			public void run() {
+				absolutePanel.remove(display.asWidget());
+				display.asWidget().setVisible(false);
+			}
+		};
+		
+		display.getPanel().setStyleName("contactsBoxes_close", true);
+		display.getPanel().setStyleName("contactsBoxes_open", false);
+		timer.schedule(500);
 		
 	}
 	
@@ -173,6 +187,8 @@ public class NotificationsBoxPresenter extends DesktopUnit implements IsTypeInfo
 	public void open(AbsolutePanel absolutePanel) {
 		absolutePanel.add(display.asWidget(), x, y);
 		display.asWidget().setVisible(true);
+		display.getPanel().setStyleName("contactsBoxes_open", true);
+		display.getPanel().setStyleName("contactsBoxes_close", false);
 		
 	}
 	

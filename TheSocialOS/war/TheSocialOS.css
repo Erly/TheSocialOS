@@ -1115,7 +1115,7 @@ input {
 
 	.imageUpload_open{
 
-	animation-name:imageUpload_open;
+	animation-name:appManager_open;
 	animation-duration:500ms;
 	animation-timing-function:linear;
 	/*animation-delay:2s;
@@ -1142,7 +1142,7 @@ input {
 	}
 	.imageUpload_close{
 	
-	animation-name:imageUpload_open;
+	animation-name:appManager_close;
 	animation-duration:500ms;
 	animation-timing-function:linear;
 	/*animation-delay:2s;
@@ -1214,6 +1214,215 @@ input {
 	75%  { top:-150px;}
 	100% { top:-200px;}
 }		
+
+/**Contacts boxes **/
+
+	.contactsBoxes_open{
+
+	animation-name:contactsBoxes_open;
+	animation-duration:500ms;
+	animation-timing-function:linear;
+	/*animation-delay:2s;
+	animation-iteration-count:1;
+	animation-direction:alternate;*/
+	animation-play-state:running;
+	/* Firefox: */
+	-moz-animation-name:contactsBoxes_open;
+	-moz-animation-duration:500ms;
+	-moz-animation-timing-function:linear;
+	/*-moz-animation-delay:2s;
+	-moz-animation-iteration-count:1;
+	-moz-animation-direction:alternate;*/
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:contactsBoxes_open;
+	-webkit-animation-duration:500ms;
+	-webkit-animation-timing-function:linear;
+	/*-webkit-animation-delay:2s;
+	-webkit-animation-iteration-count:1;
+	-webkit-animation-direction:alternate;*/
+	-webkit-animation-play-state:running;
+	
+	}
+	.contactsBoxes_close{
+	
+	animation-name:contactsBoxes_close;
+	animation-duration:500ms;
+	animation-timing-function:linear;
+	/*animation-delay:2s;
+	animation-iteration-count:1;*/
+	animation-direction:alternate;
+	animation-play-state:running;
+	/* Firefox: */
+	-moz-animation-name:contactsBoxes_close;
+	-moz-animation-duration:500ms;
+	-moz-animation-timing-function:linear;
+	/*-moz-animation-delay:2s;
+	-moz-animation-iteration-count:1;*/
+	-moz-animation-direction:alternate;
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:contactsBoxes_close;
+	-webkit-animation-duration:500ms;
+	-webkit-animation-timing-function:linear;
+	/*-webkit-animation-delay:2s;
+	-webkit-animation-iteration-count:1;*/
+	-webkit-animation-direction:alternate;
+	-webkit-animation-play-state:running;
+	}
+	
+@keyframes contactsBoxes_open {
+	0%   { top:-452px;}
+	25%  { top:-339px;}
+	50%  { top:-206px;}
+	75%  { top:-103px;}
+	100% { top:0px;}
+}
+
+@-moz-keyframes contactsBoxes_open /* Firefox */ {
+	0%   { top:-452px;}
+	25%  { top:-339px;}
+	50%  { top:-206px;}
+	75%  { top:-103px;}
+	100% { top:0px;}
+}
+
+@-webkit-keyframes contactsBoxes_open /* Safari and Chrome */ {
+	0%   { top:-452px;}
+	25%  { top:-339px;}
+	50%  { top:-206px;}
+	75%  { top:-103px;}
+	100% { top:0px;}
+}
+
+@keyframes contactsBoxes_close {
+	0%   { top:0px;}
+	25%  { top:-103px;}
+	50%  { top:-206px;}
+	75%  { top:-339px;}
+	100% { top:-452px;}
+}
+
+@-moz-keyframes contactsBoxes_close /* Firefox */ {
+	0%   { top:0px;}
+	25%  { top:-103px;}
+	50%  { top:-206px;}
+	75%  { top:-339px;}
+	100% { top:-452px;}
+}
+
+@-webkit-keyframes contactsBoxes_close /* Safari and Chrome */ {
+	0%   { top:0px;}
+	25%  { top:-103px;}
+	50%  { top:-206px;}
+	75%  { top:-339px;}
+	100% { top:-452px;}
+}
+
+/**Contacts **/
+
+.contacts_open{
+
+	animation-name:contacts_open;
+	animation-duration:500ms;
+	animation-timing-function:linear;
+	/*animation-delay:2s;
+	animation-iteration-count:1;
+	animation-direction:alternate;*/
+	animation-play-state:running;
+	/* Firefox: */
+	-moz-animation-name:contacts_open;
+	-moz-animation-duration:500ms;
+	-moz-animation-timing-function:linear;
+	/*-moz-animation-delay:2s;
+	-moz-animation-iteration-count:1;
+	-moz-animation-direction:alternate;*/
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:contacts_open;
+	-webkit-animation-duration:500ms;
+	-webkit-animation-timing-function:linear;
+	/*-webkit-animation-delay:2s;
+	-webkit-animation-iteration-count:1;
+	-webkit-animation-direction:alternate;*/
+	-webkit-animation-play-state:running;
+	
+	}
+	.contacts_close{
+	
+	animation-name:contacts_close;
+	animation-duration:500ms;
+	animation-timing-function:linear;
+	/*animation-delay:2s;
+	animation-iteration-count:1;*/
+	animation-direction:alternate;
+	animation-play-state:running;
+	/* Firefox: */
+	-moz-animation-name:ccontacts_close;
+	-moz-animation-duration:500ms;
+	-moz-animation-timing-function:linear;
+	/*-moz-animation-delay:2s;
+	-moz-animation-iteration-count:1;*/
+	-moz-animation-direction:alternate;
+	-moz-animation-play-state:running;
+	/* Safari and Chrome: */
+	-webkit-animation-name:contacts_close;
+	-webkit-animation-duration:500ms;
+	-webkit-animation-timing-function:linear;
+	/*-webkit-animation-delay:2s;
+	-webkit-animation-iteration-count:1;*/
+	-webkit-animation-direction:alternate;
+	-webkit-animation-play-state:running;
+	}
+	
+@keyframes contacts_open {
+	0%   { top:-520px; right:0px;}
+	25%  { top:-390px; right:0px;}
+	50%  { top:-260px; right:0px;}
+	75%  { top:-130px; right:0px;}
+	100% { top:0px; right:0px;}
+}
+
+@-moz-keyframes contacts_open /* Firefox */ {
+	0%   { top:-520px; right:0px;}
+	25%  { top:-390px; right:0px;}
+	50%  { top:-260px; right:0px;}
+	75%  { top:-130px; right:0px;}
+	100% { top:0px; right:0px;}
+}
+
+@-webkit-keyframes contacts_open /* Safari and Chrome */ {
+	0%   { top:-520px; right:0px;}
+	25%  { top:-390px; right:0px;}
+	50%  { top:-260px; right:0px;}
+	75%  { top:-130px; right:0px;}
+	100% { top:0px; right:0px;}
+}
+
+@keyframes contacts_close {
+	0%   { top:0px; right:0px;}
+	25%  { top:-130px; right:0px;}
+	50%  { top:-260px; right:0px;}
+	75%  { top:-390px; right:0px;}
+	100% { top:-520px; right:0px;}
+}
+
+@-moz-keyframes contacts_close /* Firefox */ {
+	0%   { top:0px; right:0px;}
+	25%  { top:-130px; right:0px;}
+	50%  { top:-260px; right:0px;}
+	75%  { top:-390px; right:0px;}
+	100% { top:-520px; right:0px;}
+}
+
+@-webkit-keyframes contacts_close /* Safari and Chrome */ {
+	0%   { top:0px; right:0px;}
+	25%  { top:-130px; right:0px;}
+	50%  { top:-260px; right:0px;}
+	75%  { top:-390px; right:0px;}
+	100% { top:-520px; right:0px;}
+}		
+
 
 /**Shared Manager **/
 	TABLE.sharedTableVideo{

@@ -23,10 +23,12 @@ import net.thesocialos.shared.model.User;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -98,6 +100,8 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 		
 		AccountText getAccountGoogle();
 		
+		HTMLPanel getHtmlPanel();
+		
 	}
 	
 	Display display;
@@ -131,8 +135,18 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 	 */
 	
 	@Override
-	public void close(AbsolutePanel absolutepanel) {
-		absolutepanel.remove(display.asWidget());
+	public void close(final AbsolutePanel absolutePanel) {
+		Timer timer = new Timer() {
+			@Override
+			public void run() {
+				absolutePanel.remove(display.asWidget());
+				display.asWidget().setVisible(false);
+			}
+		};
+		
+		display.getHtmlPanel().setStyleName("contacts_close", true);
+		display.getHtmlPanel().setStyleName("contacts_open", false);
+		timer.schedule(500);
 		
 	}
 	
@@ -289,7 +303,10 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 		
 		absolutePanel.add(display.asWidget());
 		display.asWidget().setVisible(true);
+		
 		getFriends();
+		display.getHtmlPanel().setStyleName("contacts_open", true);
+		display.getHtmlPanel().setStyleName("contacts_close", false);
 	}
 	
 	@Override

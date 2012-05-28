@@ -31,6 +31,7 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 	public ApplicationManagerPresenter(int programID, Display display, TypeUnit typeUnit, boolean isSubApplication) {
 		super(programID, "Aplication Manager", null, typeUnit, isSubApplication);
 		this.display = display;
+		display.asWidget().setVisible(false);
 		handler();
 	}
 	
@@ -42,6 +43,7 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 		boolean addApplication(Aplication aplication);
 		
 		boolean removeApplication(Aplication aplication);
+		
 	}
 	
 	private void handler() {
@@ -118,13 +120,16 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
+		
 		if (absolutePanel.getWidgetIndex(display.asWidget()) == -1) {
 			absolutePanel.add(display.asWidget(), x, y);
 			display.asWidget().setVisible(true);
-		} else
-			absolutePanel.setWidgetPosition(display.asWidget(), x, 0);
-		display.getHtmlPanel().setStyleName("appManager_open", true);
-		display.getHtmlPanel().setStyleName("appManager_close", false);
+			display.getHtmlPanel().setStyleName("appManager_open", true);
+			display.getHtmlPanel().setStyleName("appManager_close", false);
+		} else {
+			
+		}
+		// absolutePanel.setWidgetPosition(display.asWidget(), x, 0);
 		
 		// display.asWidget().getElement().setAttribute("position", "absolute");
 		
@@ -143,10 +148,12 @@ public class ApplicationManagerPresenter extends DesktopUnit implements IsTypeIn
 			@Override
 			public void run() {
 				absolutePanel.remove(display.asWidget());
+				display.asWidget().setVisible(false);
 			}
 		};
 		
 		display.getHtmlPanel().setStyleName("appManager_close", true);
+		display.getHtmlPanel().setStyleName("appManager_open", false);
 		timer.schedule(500);
 		// absolutePanel.remove(display.asWidget());
 		

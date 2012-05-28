@@ -101,6 +101,7 @@ public class DesktopManager {
 		 * @return True si se a podido abrir // False si ya estaba abierto
 		 */
 		public boolean addUnit(DesktopUnit desktopUnit) {
+			if (desktopUnit.equals(lastDesktopUnit)) return true;
 			if (lastDesktopUnit != null && lastDesktopUnit.typeUnit.equals(TypeUnit.INFO)) removeUnit(lastDesktopUnit);
 			if (linkedDesktopUnit.containsKey(desktopUnit.getProgramID())) {
 				if (desktopUnit.isSubApplication()) {

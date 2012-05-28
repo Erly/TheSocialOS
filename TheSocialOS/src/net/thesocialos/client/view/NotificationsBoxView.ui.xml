@@ -13,7 +13,7 @@
 		}
 	</ui:style>
 	
-		<g:VerticalPanel width="451px" height="217px"  borderWidth="1">
+		<g:VerticalPanel width="451px" height="217px"  borderWidth="1" ui:field="panel">
 			<g:StackLayoutPanel width="100%" height="270px" unit="EM" ui:field="stackLayoutPanel">
 				<g:stack>
 					<g:header size="2">Contacts</g:header>

@@ -27,7 +27,7 @@
 	
 			
 	</ui:style>
-	<g:HTMLPanel styleName="{style.black}"  width="458px" height="291px">
+	<g:HTMLPanel styleName="{style.black}"  width="458px" height="291px" ui:field="htmlPanel">
 		<g:VerticalPanel ui:field="searchPanel" width="453px" height="287px" horizontalAlignment="ALIGN_LEFT" styleName="{style.black}">
 			<g:TextBox width="99%" height="39px" styleName="{style.font}" text="Enter the text here...." ui:field="txtSearch"/>
 			<g:HorizontalPanel height="213px" >

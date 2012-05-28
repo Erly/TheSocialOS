@@ -158,13 +158,14 @@ public class SharedUnit extends DesktopUnit implements IApplication {
 	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
+		if (!windowDisplay.getWindow().isAttached()) {
+			windowDisplay.setWindowTitle(getName());
+			absolutePanel.add(windowDisplay.getWindow(), x, y);
+			windowDisplay.setSize(605, 358);
+			windowDisplay.getWindow().setVisible(true);
+			populateCellList(true);
+		}
 		
-		windowDisplay.setWindowTitle(getName());
-		absolutePanel.add(windowDisplay.getWindow(), x, y);
-		windowDisplay.setSize(605, 358);
-		windowDisplay.getWindow().setVisible(true);
-		
-		populateCellList(true);
 	}
 	
 	@Override

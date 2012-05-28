@@ -16,6 +16,7 @@ import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSe
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -36,24 +37,7 @@ public class ContactsView extends Composite implements Display {
 	@UiField AccountText accountFacebook;
 	@UiField AccountText accountFlickR;
 	@UiField AccountText accountTwitter;
-	@UiField LabelText lblGroupName;
-	@UiField Button btnPrivateMessageSearch;
-	@UiField Button btnAddContact;
-	@UiField LabelText lblNameSearch;
-	@UiField LabelText lblSurnameSearch;
-	@UiField TextArea lblBioGroup;
-	@UiField LabelText lblGroupNameSearch;
-	@UiField TextArea LblBioGroupSearch;
-	@UiField Label lblIntegrators;
-	@UiField Button btnAskInvitation;
-	@UiField Label lblIntegratorsNumber;
-	@UiField Image imgUserSearch;
 	@UiField Image imgFriend;
-	@UiField Image imgGroup;
-	@UiField Image imgGroupSearch;
-	@UiField Button btnGroupOpen;
-	@UiField Label lblGroupMembers;
-	@UiField Label lblGroupMembersCount;
 	@UiField DecoratedTabPanel dTPUserGroups;
 	@UiField HorizontalPanel ContactsMenu;
 	@UiField TextBox txtSearch;
@@ -65,7 +49,7 @@ public class ContactsView extends Composite implements Display {
 			if (value == null) return;
 			
 			sb.appendHtmlConstant("<table>");
-			System.out.println(btnAddContact.getHTML());
+			
 			// Add the contact image.
 			sb.appendHtmlConstant("<tr><td rowspan='3'>");
 			if (value.getUrlAvatar() == null) sb
@@ -83,6 +67,7 @@ public class ContactsView extends Composite implements Display {
 		}
 	});
 	@UiField Label lblAccounts;
+	@UiField HTMLPanel htmlPanel;
 	
 	public ContactsView() {
 		
@@ -265,6 +250,12 @@ public class ContactsView extends Composite implements Display {
 	public AccountText getAccountGoogle() {
 		// TODO Auto-generated method stub
 		return accountGoogle;
+	}
+	
+	@Override
+	public HTMLPanel getHtmlPanel() {
+		// TODO Auto-generated method stub
+		return htmlPanel;
 	}
 	
 }

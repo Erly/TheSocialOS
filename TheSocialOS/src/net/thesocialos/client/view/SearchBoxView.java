@@ -12,6 +12,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
@@ -68,6 +69,7 @@ public class SearchBoxView extends Composite implements Display {
 	@UiField Image imgAvatar;
 	
 	@UiField StackLayoutPanel stackLayout;
+	@UiField HTMLPanel htmlPanel;
 	
 	public SearchBoxView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -135,6 +137,12 @@ public class SearchBoxView extends Composite implements Display {
 	public TextBox getSearchBox() {
 		// TODO Auto-generated method stub
 		return txtSearch;
+	}
+	
+	@Override
+	public HTMLPanel getHtmlPanel() {
+		// TODO Auto-generated method stub
+		return htmlPanel;
 	}
 	
 }

@@ -21,8 +21,10 @@ import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
@@ -57,6 +59,8 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 		StackLayoutPanel getStackLayout();
 		
 		TextBox getSearchBox();
+		
+		HTMLPanel getHtmlPanel();
 		
 		void setComponentsList(CellList<User> cellList);
 	}
@@ -115,8 +119,19 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 	}
 	
 	@Override
-	public void close(AbsolutePanel absolutePanel) {
-		absolutePanel.remove(display.asWidget());
+	public void close(final AbsolutePanel absolutePanel) {
+		Timer timer = new Timer() {
+			@Override
+			public void run() {
+				absolutePanel.remove(display.asWidget());
+				display.asWidget().setVisible(false);
+			}
+		};
+		
+		display.getHtmlPanel().setStyleName("contactsBoxes_close", true);
+		display.getHtmlPanel().setStyleName("appManager_open", false);
+		timer.schedule(500);
+		// absolutePanel.remove(display.asWidget());
 		
 	}
 	
@@ -266,9 +281,14 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 	
 	@Override
 	public void open(AbsolutePanel absolutePanel) {
-		absolutePanel.add(display.asWidget(), x, y);
-		display.asWidget().setVisible(true);
-		getUsers();
+		if (!display.asWidget().isAttached()) {
+			absolutePanel.add(display.asWidget(), x, y);
+			display.asWidget().setVisible(true);
+			display.getHtmlPanel().setStyleName("contactsBoxes_open", true);
+			display.getHtmlPanel().setStyleName("contactsBoxes_close", false);
+			
+			getUsers();
+		}
 		
 	}
 	
