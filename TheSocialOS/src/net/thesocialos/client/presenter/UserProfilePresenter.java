@@ -3,6 +3,10 @@ package net.thesocialos.client.presenter;
 import net.thesocialos.client.view.profile.ProfilePanel;
 import net.thesocialos.client.view.profile.TimelinePanel;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -23,6 +27,8 @@ public class UserProfilePresenter implements Presenter {
 		 * getLinksButton(); void setData(UserDTO user);
 		 */
 		
+		HasClickHandlers getCloseButton();
+		
 		SimplePanel getMainPanel();
 	}
 	
@@ -40,7 +46,14 @@ public class UserProfilePresenter implements Presenter {
 	 * Binds this presenter to its view, loads data on its elements and adds its handlers.
 	 */
 	public void bind() {
-		
+		display.getCloseButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				viewProfilePanel.hide();
+				History.newItem("#desktop");
+			}
+		});
 	}
 	
 	@Override

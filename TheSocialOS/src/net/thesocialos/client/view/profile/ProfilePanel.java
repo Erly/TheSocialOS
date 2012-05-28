@@ -89,6 +89,10 @@ public class ProfilePanel extends Composite implements Display {
 		address.attrValue.setText(user.getAddress());
 		bio.attrName.setText(TheSocialOS.getConstants().Bio());
 		bio.attrValue.setText(user.getBio());
+		if (user.getUrlAvatar() != null) imageAvatar.setUrl(user.getUrlAvatar());
+		else
+			imageAvatar.setUrl("./images/anonymous_avatar.png");
+		
 		SingleUploader defaultUploader = new SingleUploader();
 		
 		defaultUploader.setAutoSubmit(false);
