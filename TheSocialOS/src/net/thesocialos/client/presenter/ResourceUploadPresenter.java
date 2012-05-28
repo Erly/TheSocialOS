@@ -6,23 +6,15 @@ import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.IsTypeInfo;
 import net.thesocialos.client.view.ResourceUploadView;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
-import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Hidden;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ResourceUploadPresenter extends DesktopUnit implements IsTypeInfo {
 	Display display;
 	boolean facebook = false;
-	boolean picassa = false;
+	boolean picasa = false;
 	
 	public ResourceUploadPresenter() {
 		super(AppConstants.RESOURCEUPLOADER, "Resource Uploader", null, TypeUnit.INFO, false);
@@ -33,55 +25,31 @@ public class ResourceUploadPresenter extends DesktopUnit implements IsTypeInfo {
 	public interface Display {
 		Widget asWidget();
 		
-		Label getFacebook();
+		// Label getFacebook();
 		
-		Label getPicassa();
+		// Label getPicasa();
 		
-		HTMLPanel getHtmlPanel();
+		SimplePanel getHtmlPanel();
 		
 		SingleUploader getUploader();
 	}
 	
 	private void bind() {
-		display.getFacebook().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				facebook = !facebook;
-				display.getFacebook().setStyleName("imageUpload_media_selected", facebook);
-				display.getFacebook().setStyleName("imageUpload_media_unselected", !facebook);
-				
-			}
-		});
-		display.getPicassa().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				picassa = !picassa;
-				display.getPicassa().setStyleName("imageUpload_media_selected", picassa);
-				display.getPicassa().setStyleName("imageUpload_media_unselected", !picassa);
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		display.getUploader().getForm().addSubmitHandler(new SubmitHandler() {
-			
-			@Override
-			public void onSubmit(SubmitEvent event) {
-				String value = "";
-				if (picassa) value = value + "picassa;";
-				if (facebook) value = value + "facebook;";
-				display.getUploader().getForm().add(new Hidden("media", value));
-				
-			}
-		});
-		display.getUploader().getForm().addSubmitCompleteHandler(new SubmitCompleteHandler() {
-			
-			@Override
-			public void onSubmitComplete(SubmitCompleteEvent event) {
-				
-			}
-		});
+		/*
+		 * display.getFacebook().addClickHandler(new ClickHandler() {
+		 * @Override public void onClick(ClickEvent event) { facebook = !facebook;
+		 * display.getFacebook().setStyleName("imageUpload_media_selected", facebook);
+		 * display.getFacebook().setStyleName("imageUpload_media_unselected", !facebook); } });
+		 * display.getPicasa().addClickHandler(new ClickHandler() {
+		 * @Override public void onClick(ClickEvent event) { picasa = !picasa;
+		 * display.getPicasa().setStyleName("imageUpload_media_selected", picasa);
+		 * display.getPicasa().setStyleName("imageUpload_media_unselected", !picasa); } });
+		 * display.getUploader().getForm().addSubmitHandler(new SubmitHandler() {
+		 * @Override public void onSubmit(SubmitEvent event) { String value = ""; if (picasa) value = value + "picasa;";
+		 * if (facebook) value = value + "facebook;"; display.getUploader().getForm().add(new Hidden("media", value)); }
+		 * }); display.getUploader().getForm().addSubmitCompleteHandler(new SubmitCompleteHandler() {
+		 * @Override public void onSubmitComplete(SubmitCompleteEvent event) { } });
+		 */
 	}
 	
 	@Override

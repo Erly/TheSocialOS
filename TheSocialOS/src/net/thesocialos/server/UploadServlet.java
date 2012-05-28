@@ -182,6 +182,12 @@ public class UploadServlet extends UploadAction {
 				 */
 				InputStream stream = items.get(0).getInputStream();
 				items.get(0).getInputStream(); // creo que es el archivo
+				String media = request.getParameter("media");
+				if (media.contains("picasa")) {
+					
+				} else if (media.contains("facebook")) {
+					
+				}
 				items.get(0).delete(); // borrar el blob de la blobstore
 				
 			}

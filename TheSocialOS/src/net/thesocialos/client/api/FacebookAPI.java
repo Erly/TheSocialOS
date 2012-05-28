@@ -154,7 +154,6 @@ public class FacebookAPI {
 			if (account instanceof Facebook) return (Facebook) account;
 		}
 		return null;
-		
 	}
 	
 	private void loadAlbumInFolder(final Album album, String cover_photo_id, final FolderWindow folder,

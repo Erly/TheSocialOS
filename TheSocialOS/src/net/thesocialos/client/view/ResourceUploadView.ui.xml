@@ -5,7 +5,7 @@
 		.window{
 			position:relative;
 			width:405px;
-			height: 120px;
+			height: 130px;
 			background: rgb(125,126,125); 
 			border: 10px;
 			border-style: solid;
@@ -15,10 +15,14 @@
 			border-bottom-left-radius:25px;
 			border-bottom-right-radius:25px;	
 			z-index : 100;
-			
+		}
+		.fileUpload {
+			padding: 5px 4px;
+			font-size: small;
 		}
 	</ui:style>
-	<g:HTMLPanel ui:field="htmlPanel" styleName="{style.window}">
+	<g:SimplePanel ui:field="simplePanel" styleName="{style.window}">
+		<!--
 		<g:AbsolutePanel height="150px">
 			<g:at left="35" top="10">
 				<g:Label text="Facebook" ui:field="lblFacebook" styleName="imageUpload_media_unselected"/>
@@ -30,6 +34,17 @@
 				<g:SimplePanel width="305px" height="74px" styleName="imageUpload_border" ui:field="UploadPanel"/>
 			</g:at>
 			
-		</g:AbsolutePanel>
-	</g:HTMLPanel>
+		</g:AbsolutePanel> 
+		 -->
+		<g:FormPanel ui:field="imgForm" encoding="multipart/form-data" action="https://graph.facebook.com/me/photos" method="POST">
+			<g:VerticalPanel>
+				<g:Hidden ui:field="token" name="access_token" />
+				<g:Label text="Please choose a photo: " />
+				<g:FileUpload name="source" ui:field="fileUpload" styleName="{style.fileUpload}" />
+				<g:Label text="Please choose a photo: " />
+				<g:TextBox name="message" ui:field="description" />
+				<g:SubmitButton text="Upload" ui:field="uploadButton" />
+			</g:VerticalPanel>
+		</g:FormPanel>
+	</g:SimplePanel>
 </ui:UiBinder> 
