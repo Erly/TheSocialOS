@@ -449,12 +449,12 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		public void execute() {
 			// Window.alert(lastSelectedThumbUrl);
 			ShareSend share = new ShareSend(SHARETYPE.IMAGE, lastSelectedThumbUrl);
+			share.setVisible(true);
 			PopupPanel popup = new PopupPanel(true);
 			popup.setGlassEnabled(true);
 			popup.add(share);
-			popup.setWidth(share.getOffsetWidth() + "px");
-			popup.getParent().getElement().getStyle().setZIndex(960);
 			popupPanel.hide();
+			popup.getElement().getStyle().setZIndex(960);
 			popup.center();
 		}
 	};
