@@ -339,7 +339,7 @@ public class FacebookAPI {
 				else
 					panel.setPosts(posts);
 				// panel.clearPosts();
-				panel.loadPosts();
+				panel.loadAll();
 			}
 		});
 	}

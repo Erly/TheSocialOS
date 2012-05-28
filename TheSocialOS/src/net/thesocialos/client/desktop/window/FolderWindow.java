@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.thesocialos.client.TheSocialOS;
+import net.thesocialos.client.advanced.AdvClickListener;
 import net.thesocialos.client.api.DriveAPI;
 import net.thesocialos.client.api.FacebookAPI;
 import net.thesocialos.client.api.FlickrAPI;
@@ -38,13 +39,21 @@ import net.thesocialos.client.view.Thumbnail.TYPE;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.WindowPanelLayout;
 
 public class FolderWindow extends DesktopUnit implements IApplication {
@@ -68,6 +77,8 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	InfoPanel infoPanel = new InfoPanel();
 	FlexTable table = new FlexTable();
 	public String title = "";
+	public String lastSelectedThumbUrl = "";
+	
 	private int i = 0;
 	private int j = 0;
 	private boolean hasAlbums = false;
@@ -76,6 +87,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	private List<Media> parent = new ArrayList<Media>();
 	private List<Set<Media>> files = new ArrayList<Set<Media>>();
 	private int arrayPosition = 0;
+	private final PopupPanel popupPanel = new PopupPanel(true);
 	
 	/**
 	 * @deprecated Use the constructor that doesn't pass a HashSet and add the folders dynamically using addMedia
@@ -125,6 +137,14 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 				false);
 		files.add(new HashSet<Media>());
 		
+		MenuBar popupMenuBar = new MenuBar(true);
+		MenuItem shareItem = new MenuItem("Share", true, shareCommand);
+		popupMenuBar.addItem(shareItem);
+		popupMenuBar.setVisible(true);
+		popupPanel.add(popupMenuBar);
+		// popupMenuBar.getElement().getStyle().setZIndex(1000);
+		popupMenuBar.getParent().getElement().getStyle().setZIndex(1000);
+		
 		x = 1;
 		y = 30;
 		windowDisplay.addWindowEvents(new WindowEventHandler() {
@@ -167,12 +187,42 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		});
 	}
 	
-	private void printMedia(Media media, int col) {
+	private void printMedia(final Media media, int col) {
 		TypeAndService typeAndService = getTypeAndService(media);
 		// If it a picture prefetch it, so the popup loads in the correct position (and the image loads faster ;) )
-		if (typeAndService.type == TYPE.PICTURE) Image.prefetch(((MediaPicture) media).getUrl());
 		Thumbnail thumb = new Thumbnail(media.getThumbnailURL(), media.getName(), typeAndService.type,
 				typeAndService.service);
+		if (typeAndService.type == TYPE.PICTURE) {
+			Image.prefetch(((MediaPicture) media).getUrl());
+			thumb.addAdvClickListener(new AdvClickListener() {
+				
+				@Override
+				public void onClick(Widget sender) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onRightClick(Widget sender, Event event) {
+					lastSelectedThumbUrl = ((MediaPicture) media).getUrl();
+					int x = DOM.eventGetClientX(event);
+					int y = DOM.eventGetClientY(event);
+					if (Window.getClientHeight() - y < popupPanel.getElement().getClientHeight())
+						y = y - popupPanel.getOffsetHeight();
+					if (Window.getClientHeight() - x < popupPanel.getElement().getClientWidth())
+						x = x - popupPanel.getOffsetWidth();
+					
+					popupPanel.setPopupPosition(x, y);
+					popupPanel.show();
+				}
+				
+				@Override
+				public void onClick(Widget sender, Event event) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
 		thumb.addDoubleClickHandler(new DblClickHandlerHelper(this, media).getDoubleClickHandler());
 		thumb.setTitle(media.getDescription());
 		table.setWidget(j, i, thumb);
@@ -390,5 +440,14 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		arrayPosition++;
 		files.add(new HashSet<Media>());
 	}
+	
+	Command shareCommand = new Command() {
+		
+		@Override
+		public void execute() {
+			Window.alert(lastSelectedThumbUrl);
+			popupPanel.hide();
+		}
+	};
 	
 }

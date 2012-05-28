@@ -1,11 +1,13 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.advanced.AdvClickListener;
+import net.thesocialos.client.advanced.AdvFocusPanel;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -45,7 +47,7 @@ public class Thumbnail extends Composite implements HasText {
 	@UiField Image badge;
 	@UiField Label text;
 	@UiField Label subText;
-	@UiField FocusPanel panel;
+	@UiField AdvFocusPanel panel;
 	private TYPE type;
 	private SERVICE service;
 	
@@ -123,6 +125,10 @@ public class Thumbnail extends Composite implements HasText {
 		this.text.setText(text);
 		setType(type);
 		setService(service);
+	}
+	
+	public void addAdvClickListener(AdvClickListener listener) {
+		panel.addClickListener(listener);
 	}
 	
 	public void addDoubleClickHandler(DoubleClickHandler handler) {

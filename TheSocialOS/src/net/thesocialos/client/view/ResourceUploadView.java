@@ -47,13 +47,14 @@ public class ResourceUploadView extends Composite implements Display {
 		// uploader.setAutoSubmit(false);
 		// uploader.setServletPath("/upload");
 		// UploadPanel.add(uploader);
-		Facebook facebookAccount = getFacebookAccount();
+		final Facebook facebookAccount = getFacebookAccount();
 		if (null != facebookAccount) token.setValue(facebookAccount.getAuthToken());
 		imgForm.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 			
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
-				
+				imgForm.reset();
+				if (null != facebookAccount) token.setValue(facebookAccount.getAuthToken());
 			}
 		});
 		

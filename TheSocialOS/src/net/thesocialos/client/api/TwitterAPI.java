@@ -284,7 +284,7 @@ public class TwitterAPI {
 				else
 					panel.setTweets(tweets);
 				// panel.clearTweets();
-				panel.loadPosts();
+				panel.loadAll();
 			}
 		});
 		/*

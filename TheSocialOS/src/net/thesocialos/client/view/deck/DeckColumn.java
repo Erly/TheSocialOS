@@ -106,10 +106,28 @@ public class DeckColumn extends Composite implements HasWidgets {
 		return postsColumn.iterator();
 	}
 	
+	public void loadAll() {
+		Set<TimelinePost> tposts = new HashSet<TimelinePost>();
+		for (Post p : posts)
+			tposts.add(new TimelinePost(p));
+		for (Tweet t : tweets)
+			tposts.add(new TimelinePost(t));
+		postsColumn.clear();
+		for (TimelinePost tp : tposts)
+			postsColumn.add(tp);
+	}
+	
 	public void loadPosts() {
 		Set<TimelinePost> tposts = new HashSet<TimelinePost>();
 		for (Post p : posts)
 			tposts.add(new TimelinePost(p));
+		postsColumn.clear();
+		for (TimelinePost tp : tposts)
+			postsColumn.add(tp);
+	}
+	
+	public void loadTweets() {
+		Set<TimelinePost> tposts = new HashSet<TimelinePost>();
 		for (Tweet t : tweets)
 			tposts.add(new TimelinePost(t));
 		postsColumn.clear();

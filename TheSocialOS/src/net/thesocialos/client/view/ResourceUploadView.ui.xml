@@ -41,7 +41,7 @@
 				<g:Hidden ui:field="token" name="access_token" />
 				<g:Label text="Please choose a photo: " />
 				<g:FileUpload name="source" ui:field="fileUpload" styleName="{style.fileUpload}" />
-				<g:Label text="Please choose a photo: " />
+				<g:Label text="Say something about this photo: " />
 				<g:TextBox name="message" ui:field="description" />
 				<g:SubmitButton text="Upload" ui:field="uploadButton" />
 			</g:VerticalPanel>
