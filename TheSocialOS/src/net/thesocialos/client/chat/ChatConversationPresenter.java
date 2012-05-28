@@ -97,8 +97,17 @@ public class ChatConversationPresenter extends DesktopUnit implements IApplicati
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				TheSocialOS.getEventBus().fireEvent(new ChatSendMessage(userWithChat, display.getSendText().getText()));
-				display.getSendText().setText("");
+				if (!display.getSendText().getText().trim().isEmpty()) {
+					TheSocialOS.getEventBus().fireEvent(
+							new ChatSendMessage(userWithChat, display.getSendText().getText()));
+					display.getSendText().setValue(null);
+					event.preventDefault();
+				} else
+					event.preventDefault();
+				
+				if ((150 - display.getSendText().getText().length()) < 0)
+					display.getSendText().setText(display.getSendText().getText().substring(0, 149));
+				display.lblCharacters().setText(String.valueOf((150 - display.getSendText().getText().length())));
 				
 			}
 		});

@@ -148,8 +148,8 @@ public class LoadOnStart extends HttpServlet {
 		
 		try {
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("admin@thesocialos.net", "SocialOS Administratrors"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("email", "Mr. User"));
+			msg.setFrom(new InternetAddress("unai@thesocialos.net", "SocialOS Administrator"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email, "Mr. User"));
 			Random random = new Random();
 			Integer password = (int) (random.nextFloat() * 1000000);
 			msg.setSubject("Your Example.com account has been activated");
@@ -167,9 +167,9 @@ public class LoadOnStart extends HttpServlet {
 			Transport.send(msg);
 			
 		} catch (AddressException e) {
-			// ...
+			e.printStackTrace();
 		} catch (MessagingException e) {
-			// ...
+			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
