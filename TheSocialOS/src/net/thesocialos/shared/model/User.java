@@ -57,7 +57,7 @@ public class User implements Serializable {
 	
 	@Unindexed String job;
 	
-	private List<Key<SharedHistory>> historykey;
+	private List<Key<SharedHistory>> historykey = new ArrayList<Key<SharedHistory>>();
 	
 	private Date lastTimeActive;
 	
