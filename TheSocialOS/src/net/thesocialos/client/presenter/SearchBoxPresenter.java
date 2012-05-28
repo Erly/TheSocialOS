@@ -241,7 +241,7 @@ public class SearchBoxPresenter extends DesktopUnit implements IsTypeInfo {
 				User contactUser;
 				if ((contactUser = selectionModel.getSelectedObject()) != null) {
 					PopUpInfoContact contactInfoPopup = new PopUpInfoContact(contactUser.getEmail(), contactUser
-							.getName(), contactUser.getLastName());
+							.getName(), contactUser.getLastName(), contactUser.getUrlAvatar());
 					contactInfoPopup.setGlassEnabled(true);
 					contactInfoPopup.center();
 					contactInfoPopup.show();

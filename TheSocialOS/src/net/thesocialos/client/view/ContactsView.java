@@ -1,5 +1,6 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ContactsPresenter.Display;
 import net.thesocialos.shared.model.Group;
 import net.thesocialos.shared.model.User;
@@ -81,6 +82,7 @@ public class ContactsView extends Composite implements Display {
 			sb.appendHtmlConstant("</td></tr></table>");
 		}
 	});
+	@UiField Label lblAccounts;
 	
 	public ContactsView() {
 		
@@ -102,6 +104,10 @@ public class ContactsView extends Composite implements Display {
 		// contactForm.setContact(selectionModel.getSelectedObject());
 		// }
 		// });
+		lblName.lblLabel.setText(TheSocialOS.getConstants().name());
+		lblSurname.lblLabel.setText(TheSocialOS.getConstants().lastName());
+		lblAccounts.setText(TheSocialOS.getConstants().accounts());
+		listContacts.setTitle(TheSocialOS.getConstants().contacts());
 		
 	}
 	
@@ -226,7 +232,7 @@ public class ContactsView extends Composite implements Display {
 	}
 	
 	@Override
-	public CellList getUserListBox() {
+	public CellList<User> getUserListBox() {
 		
 		return listContacts;
 	}

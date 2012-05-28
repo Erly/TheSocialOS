@@ -1,6 +1,7 @@
 package net.thesocialos.client.view;
 
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.SearchBoxPresenter.Display;
 import net.thesocialos.shared.model.User;
 
@@ -70,6 +71,9 @@ public class SearchBoxView extends Composite implements Display {
 	
 	public SearchBoxView() {
 		initWidget(uiBinder.createAndBindUi(this));
+		lblInvite.setText(TheSocialOS.getConstants().invite());
+		lblInfo.setText(TheSocialOS.getConstants().info());
+		txtSearch.setText(TheSocialOS.getConstants().entherTheText());
 	}
 	
 	@Override

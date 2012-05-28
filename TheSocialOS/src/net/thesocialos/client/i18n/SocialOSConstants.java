@@ -150,4 +150,20 @@ public interface SocialOSConstants extends Constants {
 	
 	@DefaultStringValue("Upload")
 	String upload();
+	
+	@DefaultStringValue("Empty")
+	String empty();
+	
+	@DefaultStringValue("Accounts")
+	String accounts();
+	
+	@DefaultStringValue("Invite")
+	String invite();
+	
+	@DefaultStringValue("Information")
+	String info();
+	
+	@DefaultStringValue("Enter the contact here...")
+	String entherTheText();
+	
 }

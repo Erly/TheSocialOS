@@ -14,7 +14,7 @@
 				<g:Label height="5px"/>
 				<g:Label text="Nombre Cuenta:" ui:field="lblAccount"/>
 			</g:VerticalPanel>
-			<g:Button ui:field="btnAccount" text="@Vssnake" height="30px" width="100px"/>
+			<g:Button ui:field="btnAccount" text="No account" height="30px" width="100px" enabled="false"/>
 		</g:HorizontalPanel>
 		
 </ui:UiBinder> 

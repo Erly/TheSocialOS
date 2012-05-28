@@ -1,5 +1,6 @@
 package net.thesocialos.client.view;
 
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.NotificationsBoxPresenter.Display;
 import net.thesocialos.shared.model.User;
 
@@ -48,6 +49,9 @@ public class NotificationsBoxView extends Composite implements Display {
 	
 	public NotificationsBoxView() {
 		initWidget(uiBinder.createAndBindUi(this));
+		labelTextFriends.lblLabel.setText(TheSocialOS.getConstants().contacts());
+		cellListFriends.setTitle(TheSocialOS.getConstants().contacts());
+		stackLayoutPanel.setHeaderHTML(0, TheSocialOS.getConstants().contacts());
 	}
 	
 	@Override

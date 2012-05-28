@@ -367,33 +367,33 @@
 }
 
 .sos-Window .Caption {
-	background: #F1F1F1;
-	padding: 1px 1px 1px 1px;
+	background: #3F3F3F;
+	/*padding: 1px 1px 1px 1px;*/
 	cursor: default;
 	font-family: Arial Unicode MS, Arial, sans-serif;
 	font-weight: bold;
-	border-bottom: 1px solid #bbbbbb;
-	border-top: 1px solid #F1F1F1;
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
+	color:white;
+	
+	/*border-top-left-radius: 4px;
+	border-top-right-radius: 4px;*/
 	user-select: none;
 }
 
 .sos-Window .Footer {
-	background: #F1F1F1;
-	padding: 1px 1px 1px 1px;
-	border-bottom-left-radius : 4px;
-	border-bottom-right-radius : 4px;
+	background: #3F3F3F;
+	/*padding: 1px 1px 1px 1px;*/
+	/*border-bottom-left-radius : 4px;
+	border-bottom-right-radius : 4px;*/
 }
 .sos-Window .Footer-resize{
-	background: #F1F1F1;
+	background: #3F3F3F;
 	cursor:se-resize;
 	
 }
 
 
 .sos-Window .resize{
-	background: #F1F1F1;
+	background: #7A7A7A;
 
 }
 .sos-Window .resize:hover{
@@ -418,15 +418,17 @@
 }
 
 .sos-Window .dialogMiddleLeft {
-	background: url(/thesocialos/gwt/clean/images/vborder.png) repeat-y
-		-31px 0px;
+	background: #3F3F3F;
+	/*background: url(/thesocialos/gwt/clean/images/vborder.png) repeat-y
+		-31px 0px;*/
 }
 
 .sos-Window .dialogMiddleRight {
-	background: url(/thesocialos/gwt/clean/images/vborder.png) repeat-y
+	background: #3F3F3F;
+	/*background: url(/thesocialos/gwt/clean/images/vborder.png) repeat-y
 		-32px 0px;
 	-background: url(/thesocialos/gwt/clean/images/vborder_ie6.png)
-		repeat-y -32px 0px;
+		repeat-y -32px 0px;*/
 }
 
 .sos-Window .dialogTopLeftInner {
@@ -454,35 +456,49 @@
 
 .sos-window .dialogTopCenter {
 	/*border-radius: 4px;*/
-	background: black;
+	
+	background: #3F3F3F;
+	
 }
 
 .sos-Window .dialogTopLeft {
-	background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
+	background: #3F3F3F;
+
+	border-top-left-radius: 8px;
+	/*background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
 		-20px 0px;
 	-background: url(/thesocialos/gwt/clean/images/circles_ie6.png)
-		no-repeat -20px 0px;
+		no-repeat -20px 0px;*/
 }
 
 .sos-Window .dialogTopRight {
-	background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
+	background: #3F3F3F;
+
+	border-top-right-radius: 8px;
+	/*background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
 		-28px 0px;
 	-background: url(/thesocialos/gwt/clean/images/circles_ie6.png)
-		no-repeat -28px 0px;
+		no-repeat -28px 0px;*/
 }
 
 .sos-Window .dialogBottomLeft {
-	background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
+	background: #3F3F3F;
+
+	border-bottom-left-radius: 4px;
+	/*background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
 		0px -36px;
 	-background: url(/thesocialos/gwt/clean/images/circles_ie6.png)
-		no-repeat 0px -36px;
+		no-repeat 0px -36px;*/
 }
 
 .sos-Window .dialogBottomRight {
-	background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
+	background: #3F3F3F;
+
+	border-bottom-right-radius: 8px;
+	/*background: url(/thesocialos/gwt/clean/images/circles.png) no-repeat
 		-8px -36px;
 	-background: url(/thesocialos/gwt/clean/images/circles_ie6.png)
-		no-repeat -8px -36px;
+		no-repeat -8px -36px;*/
 }
 
 .gwt-TabPanelBottom {

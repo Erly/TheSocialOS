@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.thesocialos.client.CacheLayer;
+import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.app.AppConstants;
 import net.thesocialos.client.desktop.DesktopUnit;
 import net.thesocialos.client.desktop.IsTypeInfo;
@@ -209,7 +210,10 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 		contactSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				display.getAccountFacebook().disableAccount();
+				display.getAccountFacebook().setAccounts(TheSocialOS.getConstants().empty());
+				display.getAccountGoogle().setAccounts(TheSocialOS.getConstants().empty());
+				display.getAccountTwitter().setAccounts(TheSocialOS.getConstants().empty());
+				display.getAccountFacebook().setAccounts(TheSocialOS.getConstants().empty());
 				display.getAccountGoogle().disableAccount();
 				display.getAccountFlickR().disableAccount();
 				display.getAccountTwitter().disableAccount();

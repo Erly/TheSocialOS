@@ -15,7 +15,7 @@
 	<g:HTMLPanel>
 	
 			<g:HorizontalPanel width="370px" height="100px" borderWidth="1" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
-				<g:Image url="images/anonymous_avatar.png" width="122px" height="144px"/>
+				<g:Image url="images/anonymous_avatar.png" width="122px" height="144px" ui:field="avatarImg"/>
 				<g:AbsolutePanel height="152px" width="274px">
 					<g:at left="10" top="81">
 						<p1:LabelText width="209px" height="18px" labelText="Nombre:" text="Unai" ui:field="lblName"/>

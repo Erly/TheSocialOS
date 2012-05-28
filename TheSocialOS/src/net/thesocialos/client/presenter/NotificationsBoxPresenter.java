@@ -234,7 +234,7 @@ public class NotificationsBoxPresenter extends DesktopUnit implements IsTypeInfo
 			@Override
 			public void execute() {
 				PopUpInfoContact contactInfoPopup = new PopUpInfoContact(user.getEmail(), user.getName(), user
-						.getLastName());
+						.getLastName(), user.getUrlAvatar());
 				contactInfoPopup.setGlassEnabled(true);
 				contactInfoPopup.center();
 				contactInfoPopup.show();
