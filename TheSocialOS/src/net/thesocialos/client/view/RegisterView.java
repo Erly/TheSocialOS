@@ -66,7 +66,6 @@ public class RegisterView extends Composite implements Display {
 			}
 		});
 		
-		repositionElements();
 		timer = new Timer() {
 			
 			@Override

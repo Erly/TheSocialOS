@@ -67,7 +67,6 @@ public class LoginView extends Composite implements Display {
 			}
 		});
 		
-		repositionElements();
 		timer = new Timer() {
 			
 			@Override
