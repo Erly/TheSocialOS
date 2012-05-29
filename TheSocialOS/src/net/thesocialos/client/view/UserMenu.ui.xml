@@ -15,12 +15,6 @@
 				</g:VerticalPanel>
 			</g:HorizontalPanel>
 			<g:Label styleName="{style.hSeparator}" />
-			<g:FlowPanel addStyleNames="{style.socialPanel}">
-				<g:Label text="Twitter" />
-				<g:Label text="Facebook" />
-				<g:Label text="Google+" />
-			</g:FlowPanel>
-			<g:Label styleName="{style.hSeparator}" />
 			<g:Cell horizontalAlignment="ALIGN_CENTER">
 				<g:HorizontalPanel width="80%">
 				<g:Cell horizontalAlignment="ALIGN_LEFT">

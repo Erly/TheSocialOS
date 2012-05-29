@@ -28,6 +28,4 @@
   </inbound-services>
   <threadsafe>true</threadsafe>
 
-
-
 </appengine-web-app>

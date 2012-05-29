@@ -7,14 +7,13 @@
 			padding: 5px;
 		}
 		.prueba {
-		border-style: solid;
-		border-colour: red;
-
+			border-style: solid;
+			border-colour: red;
+		}
+		.font{
+			 color:white;
+		}
 	}
-	.font{
-	 color:white;
-	}
-}
 	</ui:style>
 	<g:SimplePanel addStyleNames="{style.padding}">
 		
@@ -32,12 +31,12 @@
 			<g:VerticalPanel  verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_CENTER">
 				<g:FormPanel ui:field="uploadForm">
 					<g:HorizontalPanel width="100%" height="100%">
-					<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" width="315px" ui:field="vertical">
-						<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" width="248px">
-							<g:Image width="130px" height="176px" ui:field="imageAvatar"/>
-						</g:HorizontalPanel>
-					</g:VerticalPanel>
-				</g:HorizontalPanel>
+						<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" width="315px" ui:field="vertical">
+							<g:Cell horizontalAlignment="ALIGN_CENTER">
+								<g:Image width="130px" height="176px" ui:field="imageAvatar"/>
+							</g:Cell>
+						</g:VerticalPanel>
+					</g:HorizontalPanel>
 				</g:FormPanel>
 				<p:ProfileAttr attrName="Google Account:" attrValue="Sign in" ui:field="google" editable="false" closeEnable="true" height="46px" />
 				<p:ProfileAttr attrName="Facebook Account:" attrValue="Sign in" ui:field="facebook" editable="false" closeEnable="true" height="46px" />

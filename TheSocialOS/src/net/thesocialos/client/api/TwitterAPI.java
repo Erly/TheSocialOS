@@ -112,6 +112,8 @@ public class TwitterAPI {
 		}
 	}
 	
+	public static Timer timer = null;
+	
 	private Set<DeckColumn> deckColumns = new HashSet<DeckColumn>();
 	
 	private int i = 0;
@@ -176,22 +178,63 @@ public class TwitterAPI {
 		}
 		loadColumns(twitterAccount);
 		
-		new Timer() {
+		timer = new Timer() {
 			
 			@Override
 			public void run() {
-				loadColumns(twitterAccount);
+				loadColumns(twitterAccount, display);
 			}
-		}.scheduleRepeating(50000);
+		};
+		timer.scheduleRepeating(50000);
 	}
 	
 	public void loadColumns(DeckColumn column) {
 		final Twitter twitterAccount = getTwitterAccount();
 		if (null == twitterAccount) return;
-		
 		deckColumns.add(column);
-		
 		loadColumns(twitterAccount);
+	}
+	
+	private void loadColumns(Twitter twitterAccount, final Display display) {
+		Map<Key<Columns>, Columns> columns = CacheLayer.UserCalls.getColumns();
+		Set<Columns> columnsSet = new HashSet<Columns>(columns.values());
+		if (columnsSet.size() != deckColumns.size()) {
+			deckColumns.clear();
+			display.getAllPostColumnsPanel().clear();
+			for (Columns c : columnsSet) {
+				DeckColumn col = new DeckColumn();
+				col.setColumns(c);
+				deckColumns.add(col);
+				display.getAllPostColumnsPanel().add(col);
+				col.getParent().setWidth("300px");
+			}
+		}
+		for (DeckColumn col : deckColumns) {
+			Columns c = col.getColumns();
+			String url = "";
+			if (c.getType() == Columns.TYPE.TIMELINE) {
+				if (c.getValue().equals(Columns.HOME)) {
+					col.setTitle("Timeline");
+					new FacebookAPI().loadWall(col);
+					url = getHomeTimelineSignedUrl(twitterAccount, c.getLastTweetId());
+				} else if (c.getValue().equals(Columns.MENTIONS)) {
+					col.setTitle("Mentions");
+					url = getMentionsTimelineSignedUrl(twitterAccount, c.getLastTweetId());
+				} else if (c.getValue().equals(Columns.USER)) {
+					col.setTitle("Me");
+					url = getUserTimelineSignedUrl(twitterAccount, twitterAccount.getUsername(), c.getLastTweetId());
+				} else {
+					col.setTitle(c.getValue());
+					url = getUserTimelineSignedUrl(twitterAccount, c.getValue(), c.getLastTweetId());
+				}
+			} else if (c.getType() == Columns.TYPE.SEARCH) {
+				col.setTitle(c.getValue());
+				url = getSearchTimelineSignedUrl(twitterAccount, c.getValue(), c.getLastTweetId());
+			} else if (c.getType() == Columns.TYPE.LIST) col.setTitle(c.getValue());
+			// new TwitterAPI().loadUserTimelineInPanel(col);
+			loadTweetsInPanel(url, col);
+			// display.getAllPostColumnsPanel().add(col);
+		}
 	}
 	
 	private void loadColumns(Twitter twitterAccount) {
@@ -331,13 +374,7 @@ public class TwitterAPI {
 			@Override
 			public void onSuccess(String result) {
 				// Window.alert(result);
-				new Timer() {
-					
-					@Override
-					public void run() {
-						loadColumns(twitterAccount);
-					}
-				}.schedule(1000);
+				timer.schedule(1000);
 			}
 			
 			@Override

@@ -88,6 +88,7 @@ public class AddColumn extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				CacheLayer.UserCalls.addColumn(column.getColumns());
+				TwitterAPI.timer.schedule(5000);
 			}
 		});
 		column.getParent().getElement().getStyle().setWidth(100, Unit.PCT);

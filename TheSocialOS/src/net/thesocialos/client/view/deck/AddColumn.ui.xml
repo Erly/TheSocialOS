@@ -41,7 +41,7 @@
 		</g:Cell>
 		<g:Cell width="34%" height="100%">
 			<g:VerticalPanel height="100%">
-				<g:Cell horizontalAlignment="ALIGN_CENTER" >
+				<g:Cell horizontalAlignment="ALIGN_CENTER" height="100%" >
 					<s:DeckColumn ui:field="column" />
 				</g:Cell>
 				<g:Cell horizontalAlignment="ALIGN_CENTER" >
