@@ -219,6 +219,7 @@ public class AppController implements ValueChangeHandler<String> {
 			}
 		};
 		History.newItem("login");
+		Window.Location.reload();
 	}
 	
 	public SimpleEventBus getChatEventBus() {
@@ -310,6 +311,7 @@ public class AppController implements ValueChangeHandler<String> {
 					new RequestPassWordView()));
 			else
 				History.newItem("login");
+			
 		}
 	}
 	

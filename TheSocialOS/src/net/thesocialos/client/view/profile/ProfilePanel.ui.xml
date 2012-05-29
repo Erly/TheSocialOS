@@ -13,6 +13,11 @@
 		.font{
 			 color:white;
 		}
+		.password{
+		
+		
+}
+
 	}
 	</ui:style>
 	<g:SimplePanel addStyleNames="{style.padding}">
@@ -26,7 +31,10 @@
 			<p:ProfileAttr attrName="Mobile:" attrValue="666666666" ui:field="mobile" editable="false" closeEnable="false" />
 			<p:ProfileAttr attrName="Address:" attrValue="Desengaño 21 2ºA" ui:field="address" editable="false" closeEnable="false" />
 			<p:ProfileAttrArea attrName="Bio:" attrValue="TURURURURURUURURURURURUURURRU" ui:field="bio" editable="false"/>
-			<g:Button ui:field="btnEdit">Edit</g:Button>
+			<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" width="100%">
+				<g:Button text="Change Password" ui:field="button"/>
+				<g:Button ui:field="btnEdit">Edit</g:Button>
+			</g:HorizontalPanel>
 			</g:VerticalPanel>
 			<g:VerticalPanel  verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_CENTER">
 				<g:FormPanel ui:field="uploadForm">

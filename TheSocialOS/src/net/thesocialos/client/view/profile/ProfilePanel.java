@@ -4,11 +4,14 @@ import gwtupload.client.SingleUploader;
 import net.thesocialos.client.CacheLayer;
 import net.thesocialos.client.TheSocialOS;
 import net.thesocialos.client.presenter.ProfilePanelPresenter.Display;
+import net.thesocialos.client.view.ChngPasswordPopUP;
 import net.thesocialos.shared.model.User;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -68,6 +71,7 @@ public class ProfilePanel extends Composite implements Display {
 	@UiField Image imageAvatar;
 	@UiField FormPanel uploadForm;
 	@UiField VerticalPanel vertical;
+	@UiField Button button;
 	
 	public ProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -229,4 +233,8 @@ public class ProfilePanel extends Composite implements Display {
 		return facebookURL;
 	}
 	
+	@UiHandler("button")
+	void onButtonClick(ClickEvent event) {
+		new ChngPasswordPopUP();
+	}
 }

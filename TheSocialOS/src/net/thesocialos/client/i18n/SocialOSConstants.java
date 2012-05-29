@@ -174,4 +174,28 @@ public interface SocialOSConstants extends Constants {
 	
 	@DefaultStringValue("The password has been reset. The password has been sent to email")
 	String passwordResetCorretly();
+	
+	@DefaultStringValue("Old Password:")
+	String oldPass();
+	
+	@DefaultStringValue("New Password:")
+	String newPassword1();
+	
+	@DefaultStringValue("Repeat new password:")
+	String newPassword2();
+	
+	@DefaultStringValue("The password do not match")
+	String passwordDontMatch();
+	
+	@DefaultStringValue("The current password is not valid")
+	String passworNotValid();
+	
+	@DefaultStringValue("Password change correctly")
+	String passwordChangeCorretly();
+	
+	@DefaultStringValue("Password changer")
+	String passwordChanger();
+	
+	@DefaultStringValue("Cambiar")
+	String change();
 }
