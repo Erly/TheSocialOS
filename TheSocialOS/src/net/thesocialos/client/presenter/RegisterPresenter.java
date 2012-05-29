@@ -44,6 +44,8 @@ public class RegisterPresenter implements Presenter {
 		
 		String getPassword2();
 		
+		InputElement getTermsChkBox();
+		
 		InputElement getRegisterButton();
 	}
 	
@@ -103,9 +105,14 @@ public class RegisterPresenter implements Presenter {
 		if (display.getName().trim().isEmpty() || display.getLastName().trim().isEmpty()) {
 			incorrect.setText(TheSocialOS.getConstants().error_emptyTxt()); // Change the incorrect label text
 			incorrect.setVisible(true); // Make the incorrect label visible
-			
 			return;
 		}
+		if (!display.getTermsChkBox().isChecked()) {
+			incorrect.setText(TheSocialOS.getConstants().error_terms()); // Change the incorrect label text
+			incorrect.setVisible(true); // Make the incorrect label visible
+			return;
+		}
+		
 		new RPCXSRF<Void>(userService) {
 			
 			@Override
