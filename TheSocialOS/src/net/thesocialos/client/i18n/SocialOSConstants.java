@@ -60,6 +60,9 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("A serialization error ocurred. Try again.")
 	String error_Serialization();
 	
+	@DefaultStringValue("You have to accept our terms of use")
+	String error_terms();
+	
 	@DefaultStringValue("This is taking too long, try again")
 	String error_Timeout();
 	
@@ -195,5 +198,4 @@ public interface SocialOSConstants extends Constants {
 	
 	@DefaultStringValue("Cambiar")
 	String change();
-	
 }

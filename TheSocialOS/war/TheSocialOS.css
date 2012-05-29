@@ -957,6 +957,12 @@ input {
 	border: 1px solid #282D2A;
 	padding: 6px;
 }
+.rError {
+	font-size: 17px;
+	color: red;
+	position: absolute;
+	left: 100px;
+}
 .rEmail {
 	position: absolute;
 	left: 100px;
@@ -985,6 +991,9 @@ input {
 	background-color: #4BF;
 	border: 1px solid #282D2A;
 	padding: 6px;
+}
+.registerButton:hover {
+	background-color: #AAD450;
 }
 .rHelpers {
 	position: absolute;

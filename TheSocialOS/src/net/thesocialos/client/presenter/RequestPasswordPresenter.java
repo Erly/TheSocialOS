@@ -22,7 +22,7 @@ public class RequestPasswordPresenter implements Presenter {
 	
 	Display display;
 	private final UserServiceAsync userService = GWT.create(UserService.class);
-	PopupPanel panel = new PopupPanel(false, true);
+	PopupPanel panel = new PopupPanel(true, true);
 	
 	public RequestPasswordPresenter(Display display) {
 		this.display = display;

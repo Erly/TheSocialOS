@@ -108,7 +108,7 @@ public class RegisterView extends Composite implements Display {
 	
 	@Override
 	public HasText getIncorrect() {
-		return null;
+		return incorrect;
 	}
 	
 	@Override
@@ -134,5 +134,10 @@ public class RegisterView extends Composite implements Display {
 	@Override
 	public InputElement getRegisterButton() {
 		return registerButton;
+	}
+	
+	@Override
+	public InputElement getTermsChkBox() {
+		return terms;
 	}
 }
