@@ -13,7 +13,7 @@
 			padding: 5px;
 		}
 	</ui:style>
-	<g:HorizontalPanel width="100%" addStyleNames="{style.post}" height="">
+	<g:HorizontalPanel width="100%" addStyleNames="{style.post}" ui:field="panel">
 		<g:Image ui:field="photo" width="40px" height="40px" addStyleNames="{style.padding}" />
 		<g:VerticalPanel width="100%">
 			<g:HTML ui:field="post" text="Tweet" />
