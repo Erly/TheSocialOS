@@ -80,9 +80,9 @@ public class LoginView extends Composite implements Display {
 		timer.scheduleRepeating(100);
 		
 		spainFlag = new Anchor(new SafeHtmlBuilder().appendHtmlConstant(
-				"<image class='flags spain' src='http://www.crwflags.com/fotw/misc/wes.gif'/>").toSafeHtml());
+				"<image class='flags spain' src='./images/flags/wes.gif'/>").toSafeHtml());
 		usaFlag = new Anchor(new SafeHtmlBuilder().appendHtmlConstant(
-				"<image class='flags spain' src='http://www.crwflags.com/fotw/misc/wus.gif'/>").toSafeHtml());
+				"<image class='flags spain' src='./images/flags/wus.gif'/>").toSafeHtml());
 		html.add(spainFlag, flags);
 		html.add(usaFlag, flags);
 	}

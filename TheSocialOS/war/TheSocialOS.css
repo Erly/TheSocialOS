@@ -90,6 +90,12 @@
 	background: linear-gradient(top, white, cornflowerblue); /* W3C */
 }
 
+.fbTimelinePost {
+	border: 1px solid lightgrey;
+	padding: 3px;
+	background-color: 8b9dc3;
+}
+
 .incorrect {
 	color: Red;
 }

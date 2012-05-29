@@ -67,6 +67,11 @@ public class LoginPresenter implements Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				if (display.getEmail().isEmpty() && display.getPassword().isEmpty()) {
+					display.getError().getStyle().setDisplay(com.google.gwt.dom.client.Style.Display.BLOCK);
+					display.getError().setInnerText(TheSocialOS.getConstants().error_Email());
+				}
+				
 				doLogin();
 			}
 		});
@@ -114,9 +119,10 @@ public class LoginPresenter implements Presenter {
 			
 			@Override
 			public void onSuccess(LoginResult result) {
-				if (result == null) display.getError().getStyle()
-						.setDisplay(com.google.gwt.dom.client.Style.Display.BLOCK);
-				else { // The user exists and the password is correct
+				if (result == null) {
+					display.getError().getStyle().setDisplay(com.google.gwt.dom.client.Style.Display.BLOCK);
+					display.getError().setInnerText(TheSocialOS.getConstants().error_login());
+				} else { // The user exists and the password is correct
 					CacheLayer.UserCalls.setUser(result.getUser());
 					if (result.getDuration() < 0) Cookies.setCookie("sid", result.getSessionID());
 					else {

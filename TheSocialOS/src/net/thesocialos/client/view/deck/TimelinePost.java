@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -18,10 +19,10 @@ public class TimelinePost extends Composite {
 	}
 	
 	private static TimelinePostUiBinder uiBinder = GWT.create(TimelinePostUiBinder.class);
+	@UiField HorizontalPanel panel;
 	@UiField Image photo;
 	@UiField HTML post;
 	@UiField Label user;
-	
 	@UiField Label time;
 	
 	public TimelinePost() {
@@ -46,6 +47,7 @@ public class TimelinePost extends Composite {
 	
 	public TimelinePost(Post fpost) {
 		initWidget(uiBinder.createAndBindUi(this));
+		panel.setStyleName("fbTimelinePost");
 		photo.setUrl("");
 		post.setHTML(fpost.getText());
 		user.setText(fpost.getUser_name());
@@ -58,6 +60,7 @@ public class TimelinePost extends Composite {
 		else
 			time = dif / 24 / 60 / 60 / 1000 + "d";
 		this.time.setText(time);
+		photo.removeFromParent();
 	}
 	
 	/**

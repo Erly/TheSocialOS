@@ -8,13 +8,18 @@
 			width: 212px;
 			padding: 30px;
 		}
+		.parent {
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
 	</ui:style>
-	<g:HTMLPanel>
+	<g:HTMLPanel ui:field="html" addStyleNames="{style.parent}">
 		<div id="wrap">
 		<div class="logoDiv" align="center">
 			<img class="logo" src="./images/logo.png"/>
 		</div>
 		<img class="bg" src="./images/wpLogin.png" ui:field="background"/>
+		<g:Label ui:field="incorrect" />
 		<form>
 			<input class="firstName" type="text" ui:field="firstName" placeholder="First name"/>
 			<input class="secondName" type="text" ui:field="secondName" placeholder="Second name"/>
@@ -36,8 +41,7 @@
 					</tr>
 					<tr>
 						<td>
-							<image class="flags spain" src="http://www.crwflags.com/fotw/misc/wes.gif"/>
-							<image class="flags us" src="http://www.crwflags.com/fotw/misc/wus.gif"/>
+							<td ui:field="flags"></td>
 						</td>
 					</tr>
 					<tr>
