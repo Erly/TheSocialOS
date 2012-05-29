@@ -143,6 +143,7 @@ public class LoadOnStart extends HttpServlet {
 	
 	private void sendEmail() {
 		String email = "virtual.solid.snake@gmail.com";
+		
 		Properties props = new Properties();
 		javax.mail.Session session = javax.mail.Session.getDefaultInstance(props, null);
 		
@@ -150,6 +151,7 @@ public class LoadOnStart extends HttpServlet {
 			Message msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress("unai@thesocialos.net", "SocialOS Administrator"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email, "Mr. User"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email, "Mr. Erly"));
 			Random random = new Random();
 			Integer password = (int) (random.nextFloat() * 1000000);
 			msg.setSubject("Your Example.com account has been activated");
@@ -163,7 +165,8 @@ public class LoadOnStart extends HttpServlet {
 					+ "</td>"
 					+ "</tr>"
 					+ "</table>";
-			msg.setText(sendText);
+			
+			msg.setContent(sendText, "text/html");
 			Transport.send(msg);
 			
 		} catch (AddressException e) {

@@ -26,7 +26,7 @@
 		<g:north size="50">
 			<g:HorizontalPanel addStyleNames="{style.topbar}" verticalAlignment="ALIGN_MIDDLE">
 				<g:Hyperlink ui:field="linkProfile" targetHistoryToken="profile" addStyleNames="{style.topbarElem}">Profile</g:Hyperlink>
-				<g:Hyperlink ui:field="linkTimeline" targetHistoryToken="profile-timeline" addStyleNames="{style.topbarElem}">Timeline</g:Hyperlink>
+				
 			</g:HorizontalPanel>
 		</g:north>
 		<g:north size="1">

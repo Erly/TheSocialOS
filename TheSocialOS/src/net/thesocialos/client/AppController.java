@@ -13,11 +13,13 @@ import net.thesocialos.client.helper.RPCXSRF;
 import net.thesocialos.client.presenter.DesktopPresenter;
 import net.thesocialos.client.presenter.Presenter;
 import net.thesocialos.client.presenter.RegisterPresenter;
+import net.thesocialos.client.presenter.RequestPasswordPresenter;
 import net.thesocialos.client.presenter.UserProfilePresenter;
 import net.thesocialos.client.service.UserService;
 import net.thesocialos.client.service.UserServiceAsync;
 import net.thesocialos.client.view.DesktopView;
 import net.thesocialos.client.view.RegisterView;
+import net.thesocialos.client.view.RequestPassWordView;
 import net.thesocialos.client.view.profile.UserProfileView;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatRecvMessage;
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState;
@@ -267,6 +269,11 @@ public class AppController implements ValueChangeHandler<String> {
 		TheSocialOS.profilePresenter.goProfileVideos();
 	}
 	
+	private void loadForgotPassword(Presenter presenter) {
+		
+		presenter.go(null);
+	}
+	
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String token = event.getValue();
@@ -286,6 +293,7 @@ public class AppController implements ValueChangeHandler<String> {
 				else if (token.equals("profile-music")) loadProfileMusic(presenter);
 				else if (token.equals("profile-videos")) loadProfileVideos(presenter);
 				else if (token.equals("profile-links")) loadProfileLinks(presenter);
+				
 				else if (token.equals("account-added")) // token = lastToken = "profile";
 				accountAdded();
 				// eventBus.fireEvent(new AccountAddedEvent());
@@ -298,7 +306,9 @@ public class AppController implements ValueChangeHandler<String> {
 			} else if (token.equals("login")) {
 				TheSocialOS.get().showLoginView();
 				return;
-			} else
+			} else if (token.equals("forgotPassword")) loadForgotPassword(new RequestPasswordPresenter(
+					new RequestPassWordView()));
+			else
 				History.newItem("login");
 		}
 	}

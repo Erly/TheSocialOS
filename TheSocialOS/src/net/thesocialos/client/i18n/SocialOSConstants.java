@@ -166,4 +166,10 @@ public interface SocialOSConstants extends Constants {
 	@DefaultStringValue("Enter the contact here...")
 	String entherTheText();
 	
+	@DefaultStringValue("Send")
+	String send();
+	
+	@DefaultStringValue("The password has been reset. The password has been sent to email")
+	String passwordResetCorretly();
+	
 }

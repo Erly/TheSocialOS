@@ -19,7 +19,7 @@
 	<g:SimplePanel addStyleNames="{style.padding}">
 		
 		<g:HorizontalPanel spacing="2" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
-			<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_MIDDLE" spacing="2" styleName="{style.prueba}">
+			<g:VerticalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_MIDDLE" styleName="{style.prueba}">
 			<p:ProfileAttr attrName="Email:" attrValue="jcuesta@thesocialos.net" ui:field="email" editable="false" closeEnable="false" />
 			<p:ProfileAttr attrName="Title:" attrValue="Presidente de la comunidad" ui:field="title" editable="false" closeEnable="false" />
 			<p:ProfileAttr attrName="Name:" attrValue="Juan Cuesta" ui:field="name" editable="false" closeEnable="false" />
@@ -39,10 +39,10 @@
 					</g:VerticalPanel>
 				</g:HorizontalPanel>
 				</g:FormPanel>
-				<p:ProfileAttr attrName="Google Account:" attrValue="Sign in" ui:field="google" editable="false" closeEnable="true" />
-				<p:ProfileAttr attrName="Facebook Account:" attrValue="Sign in" ui:field="facebook" editable="false" closeEnable="true" />
-				<p:ProfileAttr attrName="Twitter Account:" attrValue="Sign in" ui:field="twitter" editable="false" closeEnable="true" />
-				<p:ProfileAttr attrName="Flickr Account:" attrValue="Sign in" ui:field="flickr" editable="false" closeEnable="true" />
+				<p:ProfileAttr attrName="Google Account:" attrValue="Sign in" ui:field="google" editable="false" closeEnable="true" height="46px" />
+				<p:ProfileAttr attrName="Facebook Account:" attrValue="Sign in" ui:field="facebook" editable="false" closeEnable="true" height="46px" />
+				<p:ProfileAttr attrName="Twitter Account:" attrValue="Sign in" ui:field="twitter" editable="false" closeEnable="true" height="46px" />
+				<p:ProfileAttr attrName="Flickr Account:" attrValue="Sign in" ui:field="flickr" editable="false" closeEnable="true" height="46px" />
 			</g:VerticalPanel>
 		</g:HorizontalPanel>
 		

@@ -45,4 +45,6 @@ public interface UserServiceAsync extends ServiceAsync {
 	
 	void sendResetPass(String email, AsyncCallback<Void> callback);
 	
+	void changePassWord(String oldPassWord, String newPassword, AsyncCallback<Boolean> callback);
+	
 }

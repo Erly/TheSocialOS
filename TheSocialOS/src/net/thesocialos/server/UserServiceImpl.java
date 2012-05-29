@@ -374,10 +374,9 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 		
 		try {
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("admin@thesocialos.net", "SocialOS Administratrors"));
+			msg.setFrom(new InternetAddress("unai@thesocialos.net", "SocialOS Administrator"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("email", "Mr. User"));
 			Random random = new Random();
-			
 			Integer password = (int) (random.nextFloat() * 1000000);
 			msg.setSubject("Your reset password");
 			String sendText = new String();
@@ -390,19 +389,36 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 					+ "</td>"
 					+ "</tr>"
 					+ "</table>";
-			msg.setText(sendText);
+			
+			msg.setContent(sendText, "text/html");
 			Transport.send(msg);
-			user.setPassword(String.valueOf(password));
+			user.setPassword(BCrypt.hashpw(String.valueOf(password), BCrypt.gensalt()));
 			ofy.put(user);
 			
 		} catch (AddressException e) {
-			// ...
+			e.printStackTrace();
 		} catch (MessagingException e) {
-			// ...
+			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@Override
+	public Boolean changePassWord(String oldPassWord, String newPassword) {
+		Objectify ofy = ObjectifyService.begin();
+		User user;
+		try {
+			user = UserHelper.getUserSession(perThreadRequest.get().getSession(), ofy);
+			
+		} catch (NotFoundException e) {
+			return false;
+		}
+		
+		if (!BCrypt.checkpw(oldPassWord, user.getPassword())) return false;
+		user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+		ofy.put(user);
+		return true;
 	}
 }
