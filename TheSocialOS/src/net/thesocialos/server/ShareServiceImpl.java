@@ -23,7 +23,7 @@ public class ShareServiceImpl extends XsrfProtectedServiceServlet implements Sha
 			SharedHistory share = new SharedHistory(shareType, url, title, contact, Calendar.getInstance()
 					.getTimeInMillis());
 			User user = ofy.get(contact);
-			user.addHistoryKey(ofy.put(share));
+			user.addShare(ofy.put(share));
 			ofy.put(user);
 			ChannelApiHelper.sendSharetoUser(user);
 			return true;

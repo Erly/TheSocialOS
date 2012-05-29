@@ -77,8 +77,6 @@ public class User implements Serializable {
 	
 	List<Key<Columns>> columns = new ArrayList<Key<Columns>>();
 	
-	private List<Key<SharedHistory>> shared = new ArrayList<Key<SharedHistory>>();
-	
 	public User() {
 		
 	}
@@ -209,14 +207,6 @@ public class User implements Serializable {
 		// return false;
 	}
 	
-	/**
-	 * @param historykey
-	 *            the historykey to set
-	 */
-	public void addHistoryKey(Key<SharedHistory> historykey) {
-		this.historykey.add(historykey);
-	}
-	
 	public void addSessions(Key<Session> session) {
 		sessions.add(session);
 	}
@@ -321,13 +311,8 @@ public class User implements Serializable {
 	}
 	
 	/**
-	 * @return the historykey
-	 */
-	public List<Key<SharedHistory>> getHistorykey() {
-		return historykey;
-	}
-	
-	/**
+	 * /**
+	 * 
 	 * @return the ownKey
 	 */
 	public Key<User> getOwnKey() {
@@ -452,7 +437,7 @@ public class User implements Serializable {
 	 * @return the shared
 	 */
 	public List<Key<SharedHistory>> getShared() {
-		return shared;
+		return historykey;
 	}
 	
 	/**
@@ -460,11 +445,11 @@ public class User implements Serializable {
 	 *            the shared to set
 	 */
 	public void setShared(List<Key<SharedHistory>> shared) {
-		this.shared = shared;
+		historykey = shared;
 	}
 	
 	public void addShare(Key<SharedHistory> share) {
-		shared.add(share);
+		historykey.add(share);
 	}
 	
 }
