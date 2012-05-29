@@ -329,8 +329,10 @@ public class FacebookAPI {
 							.isString().stringValue();
 					else if (null != array.get(i).isObject().get("story")) text = array.get(i).isObject().get("story")
 							.isString().stringValue();
-					else if (null != array.get(i).isObject().get("caption"))
-						text = array.get(i).isObject().get("caption").isString().stringValue();
+					else if (null != array.get(i).isObject().get("caption")) text = array.get(i).isObject()
+							.get("caption").isString().stringValue();
+					else if (null != array.get(i).isObject().get("description"))
+						text = array.get(i).isObject().get("description").isString().stringValue();
 					post.text = text;
 					post.created_at = new Date(array.get(i).isObject().get("created_time").isString().stringValue());
 					posts.add(post);
