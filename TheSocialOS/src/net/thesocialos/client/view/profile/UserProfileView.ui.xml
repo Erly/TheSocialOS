@@ -22,8 +22,6 @@
 			padding-left: 15px;
 			padding-top: 15px;
 		}
-		.GWT-Button {
-		}
 	</ui:style>
 	<g:DockLayoutPanel width="100%" height="100%" unit='PX' addStyleNames="{style.profile}">
 

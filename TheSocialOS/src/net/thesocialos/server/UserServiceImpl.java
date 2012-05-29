@@ -326,7 +326,7 @@ public class UserServiceImpl extends XsrfProtectedServiceServlet implements User
 			User ofyUser = ofy.get(User.class, UserHelper.getUserHttpSession(perThreadRequest.get().getSession()));
 			ofyUser.setBio(user.getBio());
 			ofyUser.setAddress(user.getAddress());
-			ofyUser.setFirstName(user.getLastName());
+			ofyUser.setFirstName(user.getFirstName());
 			ofyUser.setLastName(user.getLastName());
 			ofyUser.setMobilePhone(user.getMobilePhone());
 			ofy.put(ofyUser);
