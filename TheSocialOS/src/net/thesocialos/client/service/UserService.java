@@ -51,4 +51,6 @@ public interface UserService extends RemoteService {
 	void setState(STATETYPE statetype, String customMsg);
 	
 	void sendResetPass(String email) throws UsersNotFoundException;
+	
+	Boolean changePassWord(String oldPassWord, String newPassword);
 }
