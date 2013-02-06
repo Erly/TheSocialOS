@@ -51,7 +51,7 @@ public class UserProfilePresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				viewProfilePanel.hide();
-				History.newItem("#desktop");
+				History.newItem("desktop");
 			}
 		});
 	}

@@ -227,8 +227,9 @@ public class ContactsPresenter extends DesktopUnit implements IsTypeInfo {
 				display.getAccountFacebook().setAccounts(TheSocialOS.getConstants().empty());
 				display.getAccountGoogle().setAccounts(TheSocialOS.getConstants().empty());
 				display.getAccountTwitter().setAccounts(TheSocialOS.getConstants().empty());
-				display.getAccountFacebook().setAccounts(TheSocialOS.getConstants().empty());
+				display.getAccountFlickR().setAccounts(TheSocialOS.getConstants().empty());
 				display.getAccountGoogle().disableAccount();
+				display.getAccountFacebook().disableAccount();
 				display.getAccountFlickR().disableAccount();
 				display.getAccountTwitter().disableAccount();
 				display.getContactName().setText(contactSelectionModel.getSelectedObject().getName());

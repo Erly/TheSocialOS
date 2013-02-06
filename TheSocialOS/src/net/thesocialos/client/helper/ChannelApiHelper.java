@@ -10,6 +10,7 @@ import net.thesocialos.client.channelApi.SocketError;
 import net.thesocialos.client.channelApi.SocketListener;
 import net.thesocialos.client.event.ChannelClose;
 import net.thesocialos.client.event.ChannelOpen;
+import net.thesocialos.client.event.ContactsChangeEvent;
 import net.thesocialos.client.service.ChannelService;
 import net.thesocialos.shared.ChannelApiEvents.ChApiEvent;
 import net.thesocialos.shared.messages.ChannelTextMessage;
@@ -153,6 +154,7 @@ public class ChannelApiHelper {
 					@Override
 					public void onOpen() {
 						TheSocialOS.getEventBus().fireEvent(new ChannelOpen());
+						TheSocialOS.getEventBus().fireEvent(new ContactsChangeEvent());
 						System.out.println("Canal abierto " + CacheLayer.UserCalls.getUser().getEmail());
 						isChannelOpen = true;
 						retry = 3;

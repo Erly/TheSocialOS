@@ -65,6 +65,7 @@ public class ChngPasswordPopUP extends Composite {
 	private void bind() {
 		popUP.setWidth("297px");
 		popUP.setHeight("204px");
+		popUP.getElement().getStyle().setZIndex(900);
 		popUP.add(this);
 		popUP.center();
 		popUP.show();

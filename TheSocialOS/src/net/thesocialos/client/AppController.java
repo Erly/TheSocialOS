@@ -289,12 +289,12 @@ public class AppController implements ValueChangeHandler<String> {
 					presenter = new DesktopPresenter(new SimpleEventBus[] { eventBus, chatEventBus }, new DesktopView());
 					presenter.go(TheSocialOS.get().root);
 				} else if (token.equals("profile")) loadProfile(presenter);
-				else if (token.equals("profile-timeline")) loadProfileTimeline(presenter);
-				else if (token.equals("profile-photos")) loadProfilePhotos(presenter);
-				else if (token.equals("profile-music")) loadProfileMusic(presenter);
-				else if (token.equals("profile-videos")) loadProfileVideos(presenter);
-				else if (token.equals("profile-links")) loadProfileLinks(presenter);
-				
+				/*
+				 * else if (token.equals("profile-timeline")) loadProfileTimeline(presenter); else if
+				 * (token.equals("profile-photos")) loadProfilePhotos(presenter); else if
+				 * (token.equals("profile-music")) loadProfileMusic(presenter); else if (token.equals("profile-videos"))
+				 * loadProfileVideos(presenter); else if (token.equals("profile-links")) loadProfileLinks(presenter);
+				 */
 				else if (token.equals("account-added")) // token = lastToken = "profile";
 				accountAdded();
 				// eventBus.fireEvent(new AccountAddedEvent());

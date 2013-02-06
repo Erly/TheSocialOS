@@ -44,6 +44,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -89,6 +90,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 	private List<Media> parent = new ArrayList<Media>();
 	private List<Set<Media>> files = new ArrayList<Set<Media>>();
 	private int arrayPosition = 0;
+	private boolean isVideo = false;
 	private final PopupPanel popupPanel = new PopupPanel(true);
 	
 	/**
@@ -206,6 +208,7 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 				
 				@Override
 				public void onRightClick(Widget sender, Event event) {
+					isVideo = false;
 					lastSelectedThumbUrl = ((MediaPicture) media).getUrl();
 					int x = DOM.eventGetClientX(event);
 					int y = DOM.eventGetClientY(event);
@@ -215,7 +218,13 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 						x = x - popupPanel.getOffsetWidth();
 					
 					popupPanel.setPopupPosition(x, y);
-					popupPanel.show();
+					new Timer() {
+						
+						@Override
+						public void run() {
+							popupPanel.show();
+						}
+					}.schedule(10);
 				}
 				
 				@Override
@@ -225,6 +234,41 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 				}
 			});
 		}
+		if (typeAndService.type == TYPE.VIDEO) thumb.addAdvClickListener(new AdvClickListener() {
+			
+			@Override
+			public void onClick(Widget sender) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onRightClick(Widget sender, Event event) {
+				isVideo = true;
+				lastSelectedThumbUrl = ((MediaPicture) media).getUrl();
+				int x = DOM.eventGetClientX(event);
+				int y = DOM.eventGetClientY(event);
+				if (Window.getClientHeight() - y < popupPanel.getElement().getClientHeight())
+					y = y - popupPanel.getOffsetHeight();
+				if (Window.getClientHeight() - x < popupPanel.getElement().getClientWidth())
+					x = x - popupPanel.getOffsetWidth();
+				
+				popupPanel.setPopupPosition(x, y);
+				new Timer() {
+					
+					@Override
+					public void run() {
+						popupPanel.show();
+					}
+				}.schedule(10);
+			}
+			
+			@Override
+			public void onClick(Widget sender, Event event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		thumb.addDoubleClickHandler(new DblClickHandlerHelper(this, media).getDoubleClickHandler());
 		thumb.setTitle(media.getDescription());
 		table.setWidget(j, i, thumb);
@@ -448,7 +492,10 @@ public class FolderWindow extends DesktopUnit implements IApplication {
 		@Override
 		public void execute() {
 			// Window.alert(lastSelectedThumbUrl);
-			ShareSend share = new ShareSend(SHARETYPE.IMAGE, lastSelectedThumbUrl);
+			ShareSend share = new ShareSend();
+			if (isVideo) share = new ShareSend(SHARETYPE.VIDEO, lastSelectedThumbUrl);
+			else
+				share = new ShareSend(SHARETYPE.IMAGE, lastSelectedThumbUrl);
 			share.setVisible(true);
 			PopupPanel popup = new PopupPanel(true);
 			popup.setGlassEnabled(true);

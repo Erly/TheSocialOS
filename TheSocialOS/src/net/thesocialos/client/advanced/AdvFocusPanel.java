@@ -24,6 +24,9 @@ public class AdvFocusPanel extends FocusPanel implements AdvClickNotifier {
 	@Override
 	public void onBrowserEvent(Event e) {
 		GWT.log("onBrowserEvent", null);
+		e.cancelBubble(true);
+		e.stopPropagation();
+		e.preventDefault();
 		switch (DOM.eventGetType(e)) {
 		case Event.ONMOUSEUP:
 			if (DOM.eventGetButton(e) == NativeEvent.BUTTON_LEFT) {
@@ -31,16 +34,12 @@ public class AdvFocusPanel extends FocusPanel implements AdvClickNotifier {
 				listener.onClick(this, e);
 			}
 			
-			if (DOM.eventGetButton(e) == NativeEvent.BUTTON_RIGHT) {
-				GWT.log("Event.BUTTON_RIGHT", null);
-				listener.onRightClick(this, e);
-			}
+			if (DOM.eventGetButton(e) == NativeEvent.BUTTON_RIGHT) GWT.log("Event.BUTTON_RIGHT", null);
 			break;
 		
 		case Event.ONCONTEXTMENU:
 			GWT.log("Event.ONCONTEXTMENU", null);
-			e.stopPropagation();
-			e.preventDefault();
+			listener.onRightClick(this, e);
 			break;
 		
 		default:

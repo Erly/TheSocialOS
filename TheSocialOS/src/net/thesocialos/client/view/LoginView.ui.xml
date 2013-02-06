@@ -19,9 +19,6 @@
 	</ui:style>
 	<g:HTMLPanel ui:field="html" addStyleNames="{style.parent}">
 		<div id="wrap">
-		<div class="logoDiv" align="center">
-			<img class="logo" src="./images/logo.png"/>
-		</div>
 		<img class="bg" src="./images/wpLogin.png" ui:field="background"/>
 		<div class="error" ui:field="error"></div>
 		<form>
