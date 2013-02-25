@@ -1,16 +1,6 @@
 package net.thesocialos.server;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServlet;
 
 import net.thesocialos.shared.ChannelApiEvents.ChApiChatUserChngState.STATETYPE;
@@ -67,7 +57,6 @@ public class LoadOnStart extends HttpServlet {
 		ObjectifyService.register(SharedHistory.class);
 		
 		setAllUsertoOffline();
-		sendEmail();
 		// resetContacts();
 		// createCloudAccounts();
 		// createSharedExamples();
@@ -139,43 +128,5 @@ public class LoadOnStart extends HttpServlet {
 		user.addShare(ofy.put(image));
 		ofy.put(user);
 		
-	}
-	
-	private void sendEmail() {
-		String email = "virtual.solid.snake@gmail.com";
-		
-		Properties props = new Properties();
-		javax.mail.Session session = javax.mail.Session.getDefaultInstance(props, null);
-		
-		try {
-			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("unai@thesocialos.net", "SocialOS Administrator"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email, "Mr. User"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email, "Mr. Erly"));
-			Random random = new Random();
-			Integer password = (int) (random.nextFloat() * 1000000);
-			msg.setSubject("Your Example.com account has been activated");
-			String sendText = new String();
-			sendText = "<img  src='http://www.thesocialos.net/images/logo-big.png'/><table border='1'><tr><td>User:</td>"
-					+ "<td>"
-					+ email
-					+ "</td></tr><tr><td>Password:</td>"
-					+ "<td>"
-					+ password
-					+ "</td>"
-					+ "</tr>"
-					+ "</table>";
-			
-			msg.setContent(sendText, "text/html");
-			Transport.send(msg);
-			
-		} catch (AddressException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
