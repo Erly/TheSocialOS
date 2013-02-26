@@ -22,6 +22,8 @@ free to fork it and work on it if you feel like it. This code is now being porte
 [Dart][d], because we think it's a cleaner solution than GWT and it's a technology 
 with a brilliant future that lets us use future technologies like [Web Components][wc] NOW.
 
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/1612c123749a30ae365a77bbac416f4e "githalytics.com")](http://githalytics.com/Erly/TheSocialOS)
+
 [gwt]: https://developers.google.com/web-toolkit/
 [d]: http://www.dartlang.org
 [wc]: http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html
