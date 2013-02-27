@@ -14,6 +14,15 @@ We believe that:
 - Working in open source is the way to go.
 
 
+Demo
+------
+
+If you want to try it, you only have to visit http://www.thesocialos.net if you want 
+a more secure version you can visit https://thesocialos.appspot.com (no SSL with the 
+domain, sorry) but we can't assure that everything is working with this version, 
+probably it won't.
+
+
 Future
 -------
 
